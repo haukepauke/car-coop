@@ -1,21 +1,49 @@
-version: '3'
-
+version: "2"
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-13}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-      POSTGRES_USER: ${POSTGRES_USER:-symfony}
-    volumes:
-      - db-data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+    www:
+        build: .
+        ports: 
+            - "8001:80"
+        volumes:
+            - .:/var/www/html/
+        links:
+            - db
+        networks:
+            - default
+        environment:
+            APACHE_DOCUMENT_ROOT: /var/www/html/public/
+    db:
+        image: mariadb:10.4
+        ports: 
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: carcoop
+            MYSQL_USER: carcoop
+            MYSQL_PASSWORD: carcoop
+            MYSQL_ROOT_PASSWORD: carcoop
+        volumes:
+            - persistent:/var/lib/mysql
+        networks:
+            - default
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links: 
+            - db:db
+        ports:
+            - 8000:80
+        environment:
+            MYSQL_USER: carcoop
+            MYSQL_PASSWORD: carcoop
+            MYSQL_ROOT_PASSWORD: carcoop
+        logging:
+            driver: none
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - 1025:1025
+            - 8025:8025
+        logging:
+            driver: none
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  db-data:
-###< doctrine/doctrine-bundle ###
+    persistent:
