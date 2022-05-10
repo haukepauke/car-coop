@@ -29,6 +29,16 @@ class Trip
     #[ORM\JoinColumn(nullable: false)]
     private $car;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'trips')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $costs;
+
+    #[ORM\Column(type: 'string', length: 30)]
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +100,42 @@ class Trip
     public function setCar(?Car $car): self
     {
         $this->car = $car;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCosts(): ?float
+    {
+        return $this->costs;
+    }
+
+    public function setCosts(?float $costs): self
+    {
+        $this->costs = $costs;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

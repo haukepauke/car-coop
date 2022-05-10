@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <a href="{{ path('app_car_new') }}" class="btn btn-primary pull-right">
+    Create <span class="fa fa-plus-circle"></span>
+    </a>
+    <h1>All Cars</h1>
+    <table class="table">
+         <thead>
+            <tr>
+                <th>Name</th>
+                <th>License Plate</th>
+                <th>Mileage</th>
+                <th>Mileage Unit</th>
+                <th>Make</th>
+                <th>Vendor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+                <tr>
+                    <td>{{ car.name }}</td>
+                    <td>{{ car.licensePlate }}</td>
+                    <td>{{ car.mileage }}</td>
+                    <td>{{ car.milageUnit }}</td>
+                    <td>{{ car.make }}</td>
+                    <td>{{ car.vendor }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

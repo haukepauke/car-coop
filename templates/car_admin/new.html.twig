@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <h1>Add a new car</h1>
+
+    {{ form_start(carForm)}}
+        {{ form_widget(carForm) }}
+
+        <button type="submit" class="btn btn-primary">Add car</button>
+    {{ form_end(carForm) }}
+{% endblock %}

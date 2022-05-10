@@ -15,16 +15,19 @@ class Car
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 15)]
+    #[ORM\Column(type: 'string', length: 30)]
+    private $name;
+
+    #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private $licensePlate;
 
     #[ORM\Column(type: 'integer')]
     private $mileage;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $make;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $vendor;
 
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Trip::class, orphanRemoval: true)]
@@ -33,10 +36,17 @@ class Car
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Expense::class, orphanRemoval: true)]
     private $expenses;
 
+    #[ORM\OneToMany(mappedBy: 'car', targetEntity: UserType::class, orphanRemoval: true)]
+    private $userTypes;
+
+    #[ORM\Column(type: 'string', length: 10)]
+    private $milageUnit;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
         $this->expenses = new ArrayCollection();
+        $this->userTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,6 +158,68 @@ class Car
                 $expense->setCar(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of name.
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name.
+     *
+     * @param mixed $name
+     */
+    public function setName($name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserType>
+     */
+    public function getUserTypes(): Collection
+    {
+        return $this->userTypes;
+    }
+
+    public function addUserType(UserType $userType): self
+    {
+        if (!$this->userTypes->contains($userType)) {
+            $this->userTypes[] = $userType;
+            $userType->setCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserType(UserType $userType): self
+    {
+        if ($this->userTypes->removeElement($userType)) {
+            // set the owning side to null (unless already changed)
+            if ($userType->getCar() === $this) {
+                $userType->setCar(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMilageUnit(): ?string
+    {
+        return $this->milageUnit;
+    }
+
+    public function setMilageUnit(string $milageUnit): self
+    {
+        $this->milageUnit = $milageUnit;
 
         return $this;
     }

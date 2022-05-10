@@ -32,6 +32,10 @@ class Expense
     #[ORM\JoinColumn(nullable: false)]
     private $car;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'expenses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +109,18 @@ class Expense
     public function setCar(?Car $car): self
     {
         $this->car = $car;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
