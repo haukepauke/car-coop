@@ -14,6 +14,7 @@
                 <th>Mileage Unit</th>
                 <th>Make</th>
                 <th>Vendor</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,10 @@
                     <td>{{ car.milageUnit }}</td>
                     <td>{{ car.make }}</td>
                     <td>{{ car.vendor }}</td>
+                    <td>
+                        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_car_show',  {car: car.id}) }}';">Show car <span class="fa-solid fa-car"></span></button>
+                        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_car_edit',  {car: car.id}) }}';">Edit car <span class="fas fa-edit"></span></button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

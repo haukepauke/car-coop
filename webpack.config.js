@@ -70,7 +70,7 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    // .autoProvidejQuery()
     .addPlugin(new CopyWebpackPlugin({
         patterns: [ 
             // copies to {output}/img

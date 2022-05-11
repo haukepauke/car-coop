@@ -11,8 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Trip>
  *
- * @method Trip|null find($id, $lockMode = null, $lockVersion = null)
- * @method Trip|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Trip find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Trip findOneBy(array $criteria, array $orderBy = null)
  * @method Trip[]    findAll()
  * @method Trip[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -47,22 +47,17 @@ class TripRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Trip[] Returns an array of Trip objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByCar($car)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('t.car = :val')
+            ->setParameter('val', $car)
             ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(100)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Trip

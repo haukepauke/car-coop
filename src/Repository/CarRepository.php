@@ -11,8 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Car>
  *
- * @method Car|null find($id, $lockMode = null, $lockVersion = null)
- * @method Car|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Car find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Car findOneBy(array $criteria, array $orderBy = null)
  * @method Car[]    findAll()
  * @method Car[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -50,22 +50,21 @@ class CarRepository extends ServiceEntityRepository
     // /**
     //  * @return Car[] Returns an array of Car objects
     //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllForUser($user)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('car')
+            ->join('car.userTypes', 'ut')
+            ->join('ut.users', 'u')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user)
+            ->orderBy('car.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
-    public function findOneBySomeField($value): ?Car
+    public function findOneBySomeFieldu($value): ?Car
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <h1>Edit trip with {{ car.name }}</h1>
+
+    {{ form_start(tripForm)}}
+        {{ form_widget(tripForm) }}
+
+        <button type="submit" class="btn btn-primary">Edit trip</button>
+    {{ form_end(tripForm) }}
+{% endblock %}

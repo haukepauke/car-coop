@@ -49,6 +49,11 @@ class Car
         $this->userTypes = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -222,5 +227,21 @@ class Car
         $this->milageUnit = $milageUnit;
 
         return $this;
+    }
+
+    /**
+     * Returns true if the user given is also a user of the car.
+     */
+    public function hasUser(User $user)
+    {
+        foreach ($this->getUserTypes() as $userType) {
+            foreach ($userType->getUsers() as $carUsers) {
+                if ($user->getId() === $carUsers->getID()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

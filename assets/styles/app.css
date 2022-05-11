@@ -2,5 +2,10 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
 body {
-    background-color: lightgray;
+    background-color: white;
 }
+
+footer {
+    background-color: #000;
+    color: white;
+  }

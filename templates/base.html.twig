@@ -5,33 +5,57 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+         
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
-        {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
+        <header>
+            <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">
+                    <i class="fa-solid fa-car"></i>
+                    <i class="fa-solid fa-van-shuttle"></i>
+                    <i class="fa-solid fa-truck-moving"></i>
+                    Car Coop
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </nav>
+        </header>
+        <main>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
 
-        {% endfor %}
-        {% block body %}
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div>
-                        {% block content_body %}
-                        {% endblock %}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
+
+            {% block body %}
+                <div class="row">
+                    <div class="col-xl-12 col-md-6">
+                        <div>
+                            {% block content_body %}
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        {% endblock %}
+            {% endblock %}
+        </main>
+
+        <footer class="py-4 bg-light mt-auto">
+            <p>Footer Text</p>
+        </footer>
     </body>
 </html>
