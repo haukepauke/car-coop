@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: Payment::class, orphanRemoval: true)]
     private $paymentsReceived;
 
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Invitation::class, orphanRemoval: true)]
+    private $invitations;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
@@ -56,6 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->userTypes = new ArrayCollection();
         $this->paymentsMade = new ArrayCollection();
         $this->paymentsReceived = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -328,7 +332,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $mileage = 0;
 
         foreach ($this->getTrips() as $trip) {
-            $mileage += $trip->getMileage();
+            if ($trip->isCompleted()) {
+                $mileage += $trip->getMileage();
+            }
         }
 
         return $mileage;
@@ -339,7 +345,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $balance = 0.0;
 
         foreach ($this->getTrips() as $trip) {
-            $balance -= $trip->getCosts();
+            if ($trip->isCompleted()) {
+                $balance -= $trip->getCosts();
+            }
         }
 
         foreach ($this->getExpenses() as $expense) {
@@ -355,5 +363,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $balance;
+    }
+
+    /**
+     * @return Collection<int, Invitation>
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getCreatedBy() === $this) {
+                $invitation->setCreatedBy(null);
+            }
+        }
+
+        return $this;
     }
 }

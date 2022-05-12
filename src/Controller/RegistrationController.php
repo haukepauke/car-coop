@@ -36,10 +36,54 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
-                $user,
-                $form->get('plainPassword')->getData()
-            )
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
             );
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // generate a signed url and email it to the user
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
+                (new TemplatedEmail())
+                    ->from(new Address('webmaster@car-coop.net', 'Car Coop Mail Bot'))
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+            // do anything else you need here, like send an email
+
+            return $this->redirectToRoute('app_homepage');
+        }
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/register/invited/{hash}', name: 'app_register_invited')]
+    public function registerInvited(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        // TODO Check hash
+        // TODO get car
+
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            // TODO set car and usertype for user
 
             $entityManager->persist($user);
             $entityManager->flush();

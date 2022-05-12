@@ -16,7 +16,7 @@ class Trip
     #[ORM\Column(type: 'integer')]
     private $startMileage;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $endMileage;
 
     #[ORM\Column(type: 'date')]
@@ -118,7 +118,11 @@ class Trip
 
     public function getCosts(): ?float
     {
-        return $this->costs;
+        if ($this->isCompleted()) {
+            return $this->costs;
+        }
+
+        return 0.0;
     }
 
     public function setCosts(?float $costs): self
@@ -140,8 +144,21 @@ class Trip
         return $this;
     }
 
-    public function getMileage()
+    public function getMileage(): int
     {
-        return $this->getEndMileage() - $this->getStartMileage();
+        if ($this->isCompleted()) {
+            return $this->getEndMileage() - $this->getStartMileage();
+        }
+
+        return 0;
+    }
+
+    public function isCompleted(): bool
+    {
+        if (null !== $this->getEndDate() && null !== $this->getEndMileage()) {
+            return true;
+        }
+
+        return false;
     }
 }

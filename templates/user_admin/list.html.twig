@@ -2,26 +2,55 @@
 
 {% block content_body %}
     <h1>Users of {{ car.name }}</h1>
-    <table class="table">
-         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>{{ car.milageUnit }} driven</th>
-                <th>Money spent</th>
-                <th>Balance</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
+    <div>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.tripMileage }}</td>
-                    <td>{{ user.moneySpent|format_currency('EUR', locale='de') }}
-                    <td>{{ user.balance|format_currency('EUR', locale='de') }}</td>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>{{ car.milageUnit }} driven</th>
+                    <th>Money spent</th>
+                    <th>Balance</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.tripMileage|number_format(0, ',', '.') }}</td>
+                        <td>{{ user.moneySpent|format_currency('EUR', locale='de') }}
+                        <td>{{ user.balance|format_currency('EUR', locale='de') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h2>Pending invites</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Invited by</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invitation in invitations %}
+                    <tr>
+                        <td>{{ invitation.createdAt|date('d.m.Y') }}</td>
+                        <td>{{ invitation.email }}</td>
+                        <td>{{ invitation.userType }}</td>
+                        <td>{{ invitation.status }}
+                        <td>{{ invitation.createdBy.name }}</td>
+                        <td>delete, renew</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

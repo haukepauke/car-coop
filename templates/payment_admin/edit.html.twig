@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <h1>Edit payment with {{ car.name }}</h1>
+
+    {{ form_start(paymentForm)}}
+        {{ form_widget(paymentForm) }}
+
+        <button type="submit" class="btn btn-primary">Edit payment</button>
+    {{ form_end(paymentForm) }}
+{% endblock %}

@@ -51,6 +51,7 @@ class Car
         $this->expenses = new ArrayCollection();
         $this->userTypes = new ArrayCollection();
         $this->payments = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -277,5 +278,13 @@ class Car
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Invitation>
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
     }
 }

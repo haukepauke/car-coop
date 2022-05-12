@@ -28,9 +28,17 @@ class UserType
     #[ORM\Column(type: 'float')]
     private $pricePerUnit;
 
+    #[ORM\OneToMany(mappedBy: 'userType', targetEntity: Invitation::class, orphanRemoval: true)]
+    private $invitations;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -94,6 +102,36 @@ class UserType
     public function setPricePerUnit(float $pricePerUnit): self
     {
         $this->pricePerUnit = $pricePerUnit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invitation>
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setUserType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getUserType() === $this) {
+                $invitation->getUserType(null);
+            }
+        }
 
         return $this;
     }

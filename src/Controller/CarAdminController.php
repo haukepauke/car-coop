@@ -7,6 +7,7 @@ use App\Entity\UserType;
 use App\Form\CarFormType;
 use App\Repository\CarRepository;
 use App\Repository\ExpenseRepository;
+use App\Repository\PaymentRepository;
 use App\Repository\TripRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -95,20 +96,28 @@ class CarAdminController extends AbstractController
     }
 
     #[Route('/admin/car/show/{car}', name: 'app_car_show')]
-    public function show($car, CarRepository $carRepo, TripRepository $tripRepo, ExpenseRepository $expenseRepo): Response
-    {
+    public function show(
+        $car,
+        CarRepository $carRepo,
+        TripRepository $tripRepo,
+        ExpenseRepository $expenseRepo,
+        PaymentRepository $paymentRepo
+    ): Response {
         $carObj = $carRepo->find($car);
         $trips = $tripRepo->findbyCar($carObj);
         $expenses = $expenseRepo->findByCar($carObj);
+        $payments = $paymentRepo->findByCar($carObj);
 
         // users are only allowed to see their cars
         if ($carObj->hasUser($this->getUser())) {
             return $this->render(
                 'car_admin/show.html.twig',
                 [
+                    'user' => $this->getUser(),
                     'car' => $carObj,
                     'trips' => $trips,
                     'expenses' => $expenses,
+                    'payments' => $payments,
                 ]
             );
         }

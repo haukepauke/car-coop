@@ -36,7 +36,9 @@ class TripAdminController extends AbstractController
 
             $trip->setCosts($tc->calculateTripCosts($trip));
 
-            $carObj->setMileage($trip->getEndMileage());
+            if ($trip->isCompleted()) {
+                $carObj->setMileage($trip->getEndMileage());
+            }
 
             $em->persist($trip);
             $em->persist($carObj);
@@ -62,7 +64,7 @@ class TripAdminController extends AbstractController
         $carObj = $trip->getCar();
         $form = $this->createForm(TripFormType::class, $trip);
 
-        if ($carObj->getMileage() !== $trip->getEndMileage() && !($form->isSubmitted() && $form->isValid())) {
+        if ($carObj->getMileage() !== $trip->getEndMileage() && $trip->isCompleted() && !($form->isSubmitted() && $form->isValid())) {
             $this->addFlash('error', 'Trip editing aborted. Newer trips for this vehicle exist. Only the last trip can be edited.');
         } elseif ($this->getUser() !== $trip->getUser()) {
             $this->addFlash('error', 'You can only edit your own trips.');

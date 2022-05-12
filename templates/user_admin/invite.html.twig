@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <h1>Invite user for {{ car.name }}</h1>
+
+    {{ form_start(invitationForm)}}
+        {{ form_widget(invitationForm) }}
+
+        <button type="submit" class="btn btn-primary">Invite user</button>
+    {{ form_end(invitationForm) }}
+{% endblock %}
