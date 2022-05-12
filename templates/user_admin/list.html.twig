@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <h1>Users of {{ car.name }}</h1>
+    <table class="table">
+         <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>{{ car.milageUnit }} driven</th>
+                <th>Money spent</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.tripMileage }}</td>
+                    <td>{{ user.moneySpent|format_currency('EUR', locale='de') }}
+                    <td>{{ user.balance|format_currency('EUR', locale='de') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

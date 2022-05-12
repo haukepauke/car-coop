@@ -43,11 +43,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: Payment::class, orphanRemoval: true)]
+    private $paymentsMade;
+
+    #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: Payment::class, orphanRemoval: true)]
+    private $paymentsReceived;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
         $this->trips = new ArrayCollection();
         $this->userTypes = new ArrayCollection();
+        $this->paymentsMade = new ArrayCollection();
+        $this->paymentsReceived = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -234,5 +242,118 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPaymentsMade(): Collection
+    {
+        return $this->paymentsMade;
+    }
+
+    public function addPaymentsMade(Payment $paymentsMade): self
+    {
+        if (!$this->paymentsMade->contains($paymentsMade)) {
+            $this->paymentsMade[] = $paymentsMade;
+            $paymentsMade->setFromUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaymentsMade(Payment $paymentsMade): self
+    {
+        if ($this->paymentsMade->removeElement($paymentsMade)) {
+            // set the owning side to null (unless already changed)
+            if ($paymentsMade->getFromUser() === $this) {
+                $paymentsMade->setFromUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPaymentsReceived(): Collection
+    {
+        return $this->paymentsReceived;
+    }
+
+    public function addPaymentsReceived(Payment $paymentsReceived): self
+    {
+        if (!$this->paymentsReceived->contains($paymentsReceived)) {
+            $this->paymentsReceived[] = $paymentsReceived;
+            $paymentsReceived->setToUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaymentsReceived(Payment $paymentsReceived): self
+    {
+        if ($this->paymentsReceived->removeElement($paymentsReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($paymentsReceived->getToUser() === $this) {
+                $paymentsReceived->setToUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMoneySpent()
+    {
+        $amount = 0;
+
+        foreach ($this->getExpenses() as $expense) {
+            $amount += $expense->getAmount();
+        }
+
+        foreach ($this->paymentsMade as $payment) {
+            $amount += $payment->getAmount();
+        }
+
+        foreach ($this->getPaymentsReceived() as $payment) {
+            $amount -= $payment->getAmount();
+        }
+
+        return $amount;
+    }
+
+    public function getTripMileage()
+    {
+        $mileage = 0;
+
+        foreach ($this->getTrips() as $trip) {
+            $mileage += $trip->getMileage();
+        }
+
+        return $mileage;
+    }
+
+    public function getBalance()
+    {
+        $balance = 0.0;
+
+        foreach ($this->getTrips() as $trip) {
+            $balance -= $trip->getCosts();
+        }
+
+        foreach ($this->getExpenses() as $expense) {
+            $balance += $expense->getAmount();
+        }
+
+        foreach ($this->paymentsMade as $payment) {
+            $balance += $payment->getAmount();
+        }
+
+        foreach ($this->getPaymentsReceived() as $payment) {
+            $balance -= $payment->getAmount();
+        }
+
+        return $balance;
     }
 }

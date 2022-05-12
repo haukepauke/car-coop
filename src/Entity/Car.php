@@ -42,11 +42,15 @@ class Car
     #[ORM\Column(type: 'string', length: 10)]
     private $milageUnit;
 
+    #[ORM\OneToMany(mappedBy: 'car', targetEntity: Payment::class, orphanRemoval: true)]
+    private $payments;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
         $this->expenses = new ArrayCollection();
         $this->userTypes = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -236,12 +240,42 @@ class Car
     {
         foreach ($this->getUserTypes() as $userType) {
             foreach ($userType->getUsers() as $carUsers) {
-                if ($user->getId() === $carUsers->getID()) {
+                if ($user->getId() === $carUsers->getId()) {
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getCar() === $this) {
+                $payment->setCar(null);
+            }
+        }
+
+        return $this;
     }
 }

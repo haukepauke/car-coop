@@ -44,7 +44,7 @@ class TripAdminController extends AbstractController
 
             $this->addFlash('success', 'Trip created!');
 
-            return $this->redirectToRoute('app_trip_list', ['car' => $carObj->getId()]);
+            return $this->redirectToRoute('app_car_show', ['car' => $carObj->getId()]);
         }
 
         return $this->render(
@@ -81,7 +81,7 @@ class TripAdminController extends AbstractController
 
                 $this->addFlash('success', 'Trip updated!');
 
-                return $this->redirectToRoute('app_trip_list', ['car' => $carObj->getId()]);
+                return $this->redirectToRoute('app_car_show', ['car' => $carObj->getId()]);
             }
 
             return $this->render(
@@ -114,6 +114,6 @@ class TripAdminController extends AbstractController
             $this->addFlash('error', 'Trip deletion aborted. Newer trips for this vehicle exist. Only the last trip can be deleted.');
         }
 
-        return $this->redirectToRoute('app_trip_list', ['car' => $car->getId()]);
+        return $this->redirectToRoute('app_car_show', ['car' => $car->getId()]);
     }
 }

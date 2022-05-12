@@ -139,4 +139,9 @@ class Trip
 
         return $this;
     }
+
+    public function getMileage()
+    {
+        return $this->getEndMileage() - $this->getStartMileage();
+    }
 }

@@ -15,6 +15,7 @@
         <button type="link" class="btn btn-primary" onclick="location.href='/admin/calendar';">Show calendar <span class="fa-solid fa-calendar"></span></button>
         <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_trip_new',  {car: car.id}) }}';">Add trip <span class="fa fa-plus-circle"></span></button>
         <button type="link" class="btn btn-primary" onclick="location.href='/admin/expense/new/{{ car.id }}';">Add expense <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_user_list',  {car: car.id}) }}';">List user <span class="fa fa-list"></span></button>
         <button type="link" class="btn btn-primary" onclick="location.href='/admin/user/invite/{{ car.id }}';">Invite User <span class="fa fa-plus-circle"></span></button>
     </div>
     <div>
@@ -24,9 +25,10 @@
                 <tr>
                     <th>User</th>
                     <th>Start Date</th>
-                    <th>Start Mileage</th>
                     <th>End Date</th>
+                    <th>Start Mileage</th>
                     <th>End Mileage</th>
+                    <th>{{ car.milageUnit }} driven</th>
                     <th>Type</th>
                     <th>Costs</th>
                     <th>Actions</th>
@@ -37,9 +39,10 @@
                     <tr>
                         <td>{{ trip.user.name }}</td>
                         <td>{{ trip.startDate|date('d.m.Y') }}</td>
-                        <td>{{ trip.startMileage }}</td>
                         <td>{{ trip.endDate|date('d.m.Y') }}</td>
+                        <td>{{ trip.startMileage }}</td>
                         <td>{{ trip.endMileAge }}</td>
+                        <td>{{ trip.mileage }}</td>
                         <td>{{ trip.type }}</td>
                         <td>{{ trip.costs|format_currency('EUR', locale='de')}}</td>
                         <td>
