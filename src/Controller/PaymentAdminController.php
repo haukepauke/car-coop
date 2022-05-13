@@ -48,7 +48,7 @@ class PaymentAdminController extends AbstractController
         }
 
         return $this->render(
-            'payment_admin/new.html.twig',
+            'admin/payment/new.html.twig',
             [
                 'paymentForm' => $form->createView(),
                 'car' => $carObj,
@@ -79,7 +79,7 @@ class PaymentAdminController extends AbstractController
         }
 
         return $this->render(
-            'payment_admin/edit.html.twig',
+            'admin/payment/edit.html.twig',
             [
                 'paymentForm' => $form->createView(),
                 'car' => $carObj,

@@ -40,7 +40,7 @@ class ExpenseAdminController extends AbstractController
         }
 
         return $this->render(
-            'expense_admin/new.html.twig',
+            'admin/expense/new.html.twig',
             [
                 'expenseForm' => $form->createView(),
                 'car' => $carObj,
@@ -70,7 +70,7 @@ class ExpenseAdminController extends AbstractController
             }
 
             return $this->render(
-                'expense_admin/edit.html.twig',
+                'admin/expense/edit.html.twig',
                 [
                     'expenseForm' => $form->createView(),
                     'car' => $carObj,

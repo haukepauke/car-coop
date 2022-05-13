@@ -50,7 +50,7 @@ class TripAdminController extends AbstractController
         }
 
         return $this->render(
-            'trip_admin/new.html.twig',
+            'admin/trip/new.html.twig',
             [
                 'tripForm' => $form->createView(),
                 'car' => $carObj,
@@ -87,7 +87,7 @@ class TripAdminController extends AbstractController
             }
 
             return $this->render(
-                'trip_admin/edit.html.twig',
+                'admin/trip/edit.html.twig',
                 [
                     'tripForm' => $form->createView(),
                     'car' => $carObj,

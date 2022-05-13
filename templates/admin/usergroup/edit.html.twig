@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <h1>Edit usergroup of {{ car.name }}</h1>
+
+    {{ form_start(usergroupForm)}}
+        {{ form_widget(usergroupForm) }}
+
+        <button type="submit" class="btn btn-primary">Edit Usergroup</button>
+    {{ form_end(usergroupForm) }}
+{% endblock %}

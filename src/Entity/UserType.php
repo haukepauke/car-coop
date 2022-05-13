@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * TODO: Refactor class name to UserGroup without breaking doctrine migrations.
+ */
 #[ORM\Entity(repositoryClass: UserTypeRepository::class)]
 class UserType
 {

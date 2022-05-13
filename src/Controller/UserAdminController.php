@@ -11,34 +11,27 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserAdminController extends AbstractController
 {
-    #[Route('/admin/user', name: 'app_user')]
-    public function index(): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
-    }
-
     #[Route('/admin/user/list/{car}', name: 'app_user_list')]
     public function list(CarRepository $carRepo, UserRepository $userRepo, $car, InvitationRepository $invitationRepo)
     {
         $carObj = $carRepo->find($car);
         $users = $userRepo->findByCar($carObj);
         $invites = $invitationRepo->findByCar($carObj);
+        $usergroups = $carObj->getUserTypes();
 
         // users are only allowed to see the users of their car
         if ($carObj->hasUser($this->getUser())) {
             return $this->render(
-                'user_admin/list.html.twig',
+                'admin/user/list.html.twig',
                 [
                     'car' => $carObj,
                     'users' => $users,
                     'invitations' => $invites,
+                    'usergroups' => $usergroups,
                 ]
             );
         }
@@ -81,7 +74,7 @@ class UserAdminController extends AbstractController
         }
 
         return $this->render(
-            'user_admin/invite.html.twig',
+            'admin/user/invite.html.twig',
             [
                 'invitationForm' => $form->createView(),
                 'car' => $carObj,

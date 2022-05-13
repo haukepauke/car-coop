@@ -53,4 +53,35 @@
             </tbody>
         </table>
     </div>
+    <div>
+        <h2>Usergroups</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price per {{ car.milageUnit }}</th>
+                    <td>Members</td>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usergroup in usergroups %}
+                    <tr>
+                        <td>{{ usergroup.name }}</td>
+                        <td>{{ usergroup.pricePerUnit|format_currency('EUR', locale='de') }}</td>
+                        <td>{% for member in usergroup.users %}
+                                {{ member.name }} {% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                        {% if usergroup.users|length == 0 %}
+                            <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}'><i class="fas fa-trash"></i></a>
+                        {% endif %}
+                            <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}'><i class="fas fa-edit"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

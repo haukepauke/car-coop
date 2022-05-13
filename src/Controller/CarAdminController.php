@@ -42,7 +42,7 @@ class CarAdminController extends AbstractController
         }
 
         return $this->render(
-            'car_admin/new.html.twig',
+            'admin/car/new.html.twig',
             [
                 'carForm' => $form->createView(),
             ]
@@ -74,7 +74,7 @@ class CarAdminController extends AbstractController
         }
 
         return $this->render(
-            'car_admin/edit.html.twig',
+            'admin/car/edit.html.twig',
             [
                 'carForm' => $form->createView(),
                 'car' => $car,
@@ -88,7 +88,7 @@ class CarAdminController extends AbstractController
         $cars = $carRepo->findAllForUser($this->getUser());
 
         return $this->render(
-            'car_admin/list.html.twig',
+            'admin/car/list.html.twig',
             [
                 'cars' => $cars,
             ]
@@ -111,7 +111,7 @@ class CarAdminController extends AbstractController
         // users are only allowed to see their cars
         if ($carObj->hasUser($this->getUser())) {
             return $this->render(
-                'car_admin/show.html.twig',
+                'admin/car/show.html.twig',
                 [
                     'user' => $this->getUser(),
                     'car' => $carObj,
