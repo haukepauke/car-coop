@@ -394,4 +394,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getCar(): ?Car
+    {
+        $usergroup = $this->getUserTypes()->get(0);
+
+        return $usergroup->getCar();
+    }
 }

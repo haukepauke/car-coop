@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block content_body %}
-    <h1>{{ car.name }}</h1>
+<div class="col-xl-12 col-md-8">
+    <h4>{{ car.name }}</h4>
 
     <div>
         <table>
@@ -12,119 +13,126 @@
     </div>
 
     <div>
-        <button type="link" class="btn btn-primary" onclick="location.href='/admin/calendar';">Show calendar <span class="fa-solid fa-calendar"></span></button>
-        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_trip_new',  {car: car.id}) }}';">Add trip <span class="fa fa-plus-circle"></span></button>
-        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_expense_new',  {car: car.id}) }}';">Add expense <span class="fa fa-plus-circle"></span></button>
-        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_payment_new',  {car: car.id}) }}';">Add payment <span class="fa fa-plus-circle"></span></button>
-        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_user_list',  {car: car.id}) }}';">List user <span class="fa fa-list"></span></button>
-        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_user_invite',  {car: car.id}) }}';">Invite User <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='/admin/calendar';">Show calendar <span class="fa-solid fa-calendar"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_trip_new',  {car: car.id}) }}';">Add trip <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_expense_new',  {car: car.id}) }}';">Add expense <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_payment_new',  {car: car.id}) }}';">Add payment <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_user_list',  {car: car.id}) }}';">List user <span class="fa fa-list"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_user_invite',  {car: car.id}) }}';">Invite User <span class="fa fa-plus-circle"></span></button>
     </div>
     <div>
-        <h2>Trips</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Start {{ car.milageUnit }}</th>
-                    <th>End {{ car. milageUnit }}</th>
-                    <th>{{ car.milageUnit }} driven</th>
-                    <th>Type</th>
-                    <th>Costs</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for trip in trips %}
+        <h5>Trips</h5>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-secondary">
                     <tr>
-                        <td>{{ trip.user.name }}</td>
-                        <td>{{ trip.startDate|date('d.m.Y') }}</td>
-                        <td>{{ trip.endDate|date('d.m.Y') }}</td>
-                        <td>{{ trip.startMileage|number_format(0, ',', '.') }}</td>
-                        <td>{{ trip.endMileAge|number_format(0, ',', '.') }}</td>
-                        <td>{{ trip.mileage|number_format(0, ',', '.') }}</td>
-                        <td>{{ trip.type }}</td>
-                        <td>{{ trip.costs|format_currency('EUR', locale='de')}}</td>
-                        <td>{% if trip.isCompleted() %}<i class="fas fa-square-check"></i>{% else %}<i class="fa-regular fa-square"></i>{% endif %}</td>
-                        <td>
-                        {% if loop.last %}
-                            <a href='{{ path('app_trip_delete', {trip: trip.id}) }}'><i class="fas fa-trash"></i></a>
-                            <a href='{{ path('app_trip_edit', {trip: trip.id}) }}'><i class="fas fa-edit"></i></a>
-                        {% endif %}
-                        </td>
+                        <th class="text-center">User</th>
+                        <th class="text-center">Start Date</th>
+                        <th class="text-center">End Date</th>
+                        <th class="text-center">Start {{ car.milageUnit }}</th>
+                        <th class="text-center">End {{ car. milageUnit }}</th>
+                        <th class="text-center">{{ car.milageUnit }} driven</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Costs</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <h2>Expenses</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Comment</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in expenses %}
-                    <tr>
-                        <td>{{ expense.user.name }}</td>
-                        <td>{{ expense.date|date('d.m.Y') }}</td>
-                        <td>{{ expense.type }}</td>
-                        <td>{{ expense.name}}</td>
-                        <td>{{ expense.amount|format_currency('EUR', locale='de')}}</td>
-                        <td>{{ expense.comment }}</td>
-                        <td>
-                            <a href='{{ path('app_expense_delete', {expense: expense.id}) }}'><i class="fas fa-trash"></i></a>
-                            <a href='{{ path('app_expense_edit', {expense: expense.id}) }}'><i class="fas fa-edit"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <h2>Payments</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Amount</th>
-                    <th>Type</th>
-                    <th>Comment</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for payment in payments %}
-                    <tr>
-                        <td>{{ payment.date|date('d.m.Y') }}</td>
-                        <td>{{ payment.fromUser }}</td>
-                        <td>{{ payment.toUser }}</td>
-                        <td>{{ payment.amount|format_currency('EUR', locale='de')}}</td>
-                        <td>{{ payment.type}}</td>
-                        <td>{{ payment.comment }}</td>
-                        <td>
-                            {% if user.email == payment.fromUser.email or user.email == payment.toUser.email %}
-                                <a href='{{ path('app_payment_delete', {payment: payment.id}) }}'><i class="fas fa-trash"></i></a>
-                                <a href='{{ path('app_payment_edit', {payment: payment.id}) }}'><i class="fas fa-edit"></i></a>
+                </thead>
+                <tbody>
+                    {% for trip in trips %}
+                        <tr>
+                            <td class="text-center">{{ trip.user.name }}</td>
+                            <td class="text-center">{{ trip.startDate|date('d.m.Y') }}</td>
+                            <td class="text-center">{{ trip.endDate|date('d.m.Y') }}</td>
+                            <td class="text-center">{{ trip.startMileage|number_format(0, ',', '.') }}</td>
+                            <td class="text-center">{{ trip.endMileAge|number_format(0, ',', '.') }}</td>
+                            <td class="text-center">{{ trip.mileage|number_format(0, ',', '.') }}</td>
+                            <td class="text-center">{{ trip.type }}</td>
+                            <td class="text-center">{{ trip.costs|format_currency('EUR', locale='de')}}</td>
+                            <td class="text-center">{% if trip.isCompleted() %}<i class="fas fa-square-check text-success"></i>{% else %}<i class="fa-regular fa-square text-muted"></i>{% endif %}</td>
+                            <td class="text-center">
+                            {% if loop.last %}
+                                <a href='{{ path('app_trip_edit', {trip: trip.id}) }}'><i class="fas fa-edit"></i></a>
+                                <a href='{{ path('app_trip_delete', {trip: trip.id}) }}'><i class="fas fa-trash text-danger"></i></a>
                             {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <div>
+        <h5>Expenses</h5>
+        <div class="table-responsive">
+            <table class="table">
+                 <thead class="table-secondary">
+                    <tr>
+                        <th class="text-center">User</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Amount</th>
+                        <th class="text-center">Comment</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                        <tr>
+                            <td class="text-center">{{ expense.user.name }}</td>
+                            <td class="text-center">{{ expense.date|date('d.m.Y') }}</td>
+                            <td class="text-center">{{ expense.type }}</td>
+                            <td class="text-center">{{ expense.name}}</td>
+                            <td class="text-center">{{ expense.amount|format_currency('EUR', locale='de')}}</td>
+                            <td class="text-center">{{ expense.comment }}</td>
+                            <td class="text-center">
+                                <a href='{{ path('app_expense_edit', {expense: expense.id}) }}'><i class="fas fa-edit"></i></a>
+                                <a href='{{ path('app_expense_delete', {expense: expense.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <h5>Payments</h5>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-secondary">
+                    <tr>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">From</th>
+                        <th class="text-center">To</th>
+                        <th class="text-center">Amount</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Comment</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                        <tr>
+                            <td class="text-center">{{ payment.date|date('d.m.Y') }}</td>
+                            <td class="text-center">{{ payment.fromUser }}</td>
+                            <td class="text-center">{{ payment.toUser }}</td>
+                            <td class="text-center">{{ payment.amount|format_currency('EUR', locale='de')}}</td>
+                            <td class="text-center">{{ payment.type}}</td>
+                            <td class="text-center">{{ payment.comment }}</td>
+                            <td class="text-center">
+                                {% if user.email == payment.fromUser.email or user.email == payment.toUser.email %}
+                                    <a href='{{ path('app_payment_edit', {payment: payment.id}) }}'><i class="fas fa-edit"></i></a>
+                                    <a href='{{ path('app_payment_delete', {payment: payment.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

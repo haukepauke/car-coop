@@ -1,87 +1,95 @@
 {% extends 'base.html.twig' %}
 
 {% block content_body %}
-    <h1>Users of {{ car.name }}</h1>
+<div class="col-xl-12 col-md-8">
+    <h4>Users of {{ car.name }}</h4>
     <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>{{ car.milageUnit }} driven</th>
-                    <th>Money spent</th>
-                    <th>Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-secondary">
                     <tr>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.tripMileage|number_format(0, ',', '.') }}</td>
-                        <td>{{ user.moneySpent|format_currency('EUR', locale='de') }}
-                        <td>{{ user.balance|format_currency('EUR', locale='de') }}</td>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">{{ car.milageUnit }} driven</th>
+                        <th class="text-center">Money spent</th>
+                        <th class="text-center">Balance</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td class="text-center">{{ user.name }}</td>
+                            <td class="text-center">{{ user.email }}</td>
+                            <td class="text-center">{{ user.tripMileage|number_format(0, ',', '.') }}</td>
+                            <td class="text-center">{{ user.moneySpent|format_currency('EUR', locale='de') }}
+                            <td class="text-center">{{ user.balance|format_currency('EUR', locale='de') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     <div>
-        <h2>Pending invites</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Email</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                    <th>Invited by</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for invitation in invitations %}
+        <h5>Pending invites</h5>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-secondary">
                     <tr>
-                        <td>{{ invitation.createdAt|date('d.m.Y') }}</td>
-                        <td>{{ invitation.email }}</td>
-                        <td>{{ invitation.userType }}</td>
-                        <td>{{ invitation.status }}
-                        <td>{{ invitation.createdBy.name }}</td>
-                        <td>delete, renew</td>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Invited by</th>
+                        <th class="text-center">Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for invitation in invitations %}
+                        <tr>
+                            <td class="text-center">{{ invitation.createdAt|date('d.m.Y') }}</td>
+                            <td class="text-center">{{ invitation.email }}</td>
+                            <td class="text-center">{{ invitation.userType }}</td>
+                            <td class="text-center">{{ invitation.status }}
+                            <td class="text-center">{{ invitation.createdBy.name }}</td>
+                            <td class="text-center">delete, renew</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     <div>
-        <h2>Usergroups</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Price per {{ car.milageUnit }}</th>
-                    <td>Members</td>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for usergroup in usergroups %}
+        <h5>Usergroups</h5>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-secondary">
                     <tr>
-                        <td>{{ usergroup.name }}</td>
-                        <td>{{ usergroup.pricePerUnit|format_currency('EUR', locale='de') }}</td>
-                        <td>{% for member in usergroup.users %}
-                                {{ member.name }} {% if not loop.last %}, {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                        {% if usergroup.users|length == 0 %}
-                            <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}'><i class="fas fa-trash"></i></a>
-                        {% endif %}
-                            <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}'><i class="fas fa-edit"></i></a>
-                        </td>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Price per {{ car.milageUnit }}</th>
+                        <td class="text-center">Members</td>
+                        <th class="text-center">Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for usergroup in usergroups %}
+                        <tr>
+                            <td class="text-center">{{ usergroup.name }}</td>
+                            <td class="text-center">{{ usergroup.pricePerUnit|format_currency('EUR', locale='de') }}</td>
+                            <td class="text-center">{% for member in usergroup.users %}
+                                    {{ member.name }} {% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="text-center">
+                            {% if usergroup.users|length == 0 %}
+                                <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}'><i class="fas fa-trash"></i></a>
+                            {% endif %}
+                                <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}'><i class="fas fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
 {% endblock %}

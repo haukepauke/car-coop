@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Car;
 use App\Entity\UserType;
 use App\Form\CarFormType;
 use App\Repository\CarRepository;
@@ -49,9 +48,13 @@ class CarAdminController extends AbstractController
         );
     }
 
-    #[Route('/admin/car/edit/{car}', name: 'app_car_edit')]
-    public function edit(Car $car, EntityManagerInterface $em, Request $request): Response
+    #[Route('/admin/car/edit', name: 'app_car_edit')]
+    public function edit(EntityManagerInterface $em, Request $request): Response
     {
+        $car = $this->getUser()->getCar();
+
+        // TODO: Disable mileage field when trips exist
+
         $form = $this->createForm(CarFormType::class, $car);
 
         $form->handleRequest($request);
@@ -95,14 +98,18 @@ class CarAdminController extends AbstractController
         );
     }
 
-    #[Route('/admin/car/show/{car}', name: 'app_car_show')]
+    #[Route('/admin/car/show', name: 'app_car_show')]
     public function show(
-        $car,
         CarRepository $carRepo,
         TripRepository $tripRepo,
         ExpenseRepository $expenseRepo,
         PaymentRepository $paymentRepo
     ): Response {
+        $car = $this->getUser()->getCar();
+        if (null === $car) {
+            return $this->redirectToRoute('app_car_new');
+        }
+
         $carObj = $carRepo->find($car);
         $trips = $tripRepo->findbyCar($carObj);
         $expenses = $expenseRepo->findByCar($carObj);

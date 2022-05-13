@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block content_body %}
-    <h1>Update {{ car.name }}</h1>
+<div class="col-xl-6 col-md-4">
+    <h4>Update {{ car.name }}</h4>
 
     {{ form_start(carForm)}}
         {{ form_widget(carForm) }}
 
-        <button type="submit" class="btn btn-primary">Edit car</button>
+        <button type="submit" class="btn btn-outline-dark">Edit car</button>
     {{ form_end(carForm) }}
+</div>
 {% endblock %}

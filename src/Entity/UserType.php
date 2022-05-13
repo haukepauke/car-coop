@@ -22,7 +22,7 @@ class UserType
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'userTypes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $car;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'userTypes')]

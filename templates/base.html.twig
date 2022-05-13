@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,47 +15,47 @@
         {% endblock %}
     </head>
     <body>
-        <header>
-            <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">
-                    <i class="fa-solid fa-car"></i>
-                    <i class="fa-solid fa-van-shuttle"></i>
-                    <i class="fa-solid fa-truck-moving"></i>
-                    Car Coop
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </nav>
-        </header>
-        <main>
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
+        <div class="container-fluid p-0">
+            <header>
+                <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark p-2">
+                    <a class="navbar-brand" href="#">
+                        <i class="fa-solid fa-car"></i>
+                        <i class="fa-solid fa-van-shuttle"></i>
+                        <i class="fa-solid fa-truck-moving"></i>
+                        Car Coop
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </nav>
+            </header>
+            <main>
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success border">
+                        {{ message }}
+                    </div>
+                {% endfor %}
 
-            {% for message in app.flashes('error') %}
-                <div class="alert alert-danger">
-                    {{ message }}
-                </div>
-            {% endfor %}
-            
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger border">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                
 
-            {% block body %}
-                <div class="row">
-                    <div class="col-xl-12 col-md-6">
-                        <div>
-                            {% block content_body %}
-                            {% endblock %}
+                {% block body %}
+                    <div class="container-lg">
+                        <div class="row p-3">
+                                {% block content_body %}
+                                {% endblock %}
                         </div>
                     </div>
-                </div>
-            {% endblock %}
-        </main>
+                {% endblock %}
+            </main>
 
-        <footer class="py-4 bg-light mt-auto">
-            <p>Footer Text</p>
-        </footer>
+            <footer class="mt-auto p-2">
+                <p>Footer Text</p>
+            </footer>
+        </div>
     </body>
 </html>

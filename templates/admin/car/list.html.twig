@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block content_body %}
-    <a href="{{ path('app_car_new') }}" class="btn btn-primary pull-right">
+<div class="col-xl-12 col-md-8">
+    <a href="{{ path('app_car_new') }}" class="btn btn-outline-dark my-3">
     Create <span class="fa fa-plus-circle"></span>
     </a>
-    <h1>All Cars</h1>
+    <h4>All Cars</h4>
     <table class="table">
-         <thead>
+          <thead class="table-secondary">
             <tr>
                 <th>Name</th>
                 <th>License Plate</th>
@@ -27,11 +28,12 @@
                     <td>{{ car.make }}</td>
                     <td>{{ car.vendor }}</td>
                     <td>
-                        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_car_show',  {car: car.id}) }}';">Show car <span class="fa-solid fa-car"></span></button>
-                        <button type="link" class="btn btn-primary" onclick="location.href='{{ path('app_car_edit',  {car: car.id}) }}';">Edit car <span class="fas fa-edit"></span></button>
+                        <button type="link" class="btn btn-outline-dark" onclick="location.href='{{ path('app_car_show',  {car: car.id}) }}';">Show car <span class="fa-solid fa-car"></span></button>
+                        <button type="link" class="btn btn-outline-dark" onclick="location.href='{{ path('app_car_edit',  {car: car.id}) }}';">Edit car <span class="fas fa-edit"></span></button>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
 {% endblock %}

@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block content_body %}
-    <h1>Add a new payment with {{ car.name }}</h1>
+<div class="col-xl-6 col-md-4">
+    <h4>Add a new payment with {{ car.name }}</h4>
 
     {{ form_start(paymentForm)}}
         {{ form_widget(paymentForm) }}
 
-        <button type="submit" class="btn btn-primary">Add payment</button>
+        <button type="submit" class="btn btn-outline-dark my-3">Add payment</button>
     {{ form_end(paymentForm) }}
+</div>
 {% endblock %}
