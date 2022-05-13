@@ -4,18 +4,20 @@ namespace App\Controller;
 
 use App\Entity\Invitation;
 use App\Form\InvitationFormType;
+use App\Form\UserFormType;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserAdminController extends AbstractController
 {
     #[Route('/admin/user/list', name: 'app_user_list')]
-    public function list(UserRepository $userRepo, InvitationRepository $invitationRepo)
+    public function list(UserRepository $userRepo, InvitationRepository $invitationRepo): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -39,7 +41,7 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/invite', name: 'app_user_invite')]
-    public function invite(EntityManagerInterface $em, Request $request)
+    public function invite(EntityManagerInterface $em, Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -76,6 +78,32 @@ class UserAdminController extends AbstractController
             [
                 'invitationForm' => $form->createView(),
                 'car' => $car,
+            ]
+        );
+    }
+
+    #[Route('/admin/user/edit', name: 'app_user_edit')]
+    public function edit(EntityManagerInterface $em, Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserFormType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'User updated!');
+
+            return $this->redirectToRoute('app_user_list');
+        }
+
+        return $this->render(
+            'admin/user/edit.html.twig',
+            [
+                'userForm' => $form->createView(),
             ]
         );
     }

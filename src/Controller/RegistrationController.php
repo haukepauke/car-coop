@@ -41,6 +41,9 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            // set random color to start with
+            $user->setColor('#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -82,6 +85,9 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+
+            // set random color to start with
+            $user->setColor('#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
 
             // TODO set car and usertype for user
 

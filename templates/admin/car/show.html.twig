@@ -11,7 +11,6 @@
             </tr>
         </table>
     </div>
-
     <div>
         <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='/admin/calendar';">Show calendar <span class="fa-solid fa-calendar"></span></button>
         <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_trip_new',  {car: car.id}) }}';">Add trip <span class="fa fa-plus-circle"></span></button>
@@ -21,4 +20,19 @@
         <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_user_invite',  {car: car.id}) }}';">Invite User <span class="fa fa-plus-circle"></span></button>
     </div>
 </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
 {% endblock %}

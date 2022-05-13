@@ -45,6 +45,9 @@ class Car
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Payment::class, orphanRemoval: true)]
     private $payments;
 
+    #[ORM\OneToMany(mappedBy: 'Car', targetEntity: Booking::class, orphanRemoval: true)]
+    private $bookings;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
@@ -52,6 +55,7 @@ class Car
         $this->userTypes = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->invitations = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -286,5 +290,35 @@ class Car
     public function getInvitations(): Collection
     {
         return $this->invitations;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getCar() === $this) {
+                $booking->setCar(null);
+            }
+        }
+
+        return $this;
     }
 }

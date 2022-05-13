@@ -52,6 +52,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Invitation::class, orphanRemoval: true)]
     private $invitations;
 
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Booking::class, orphanRemoval: true)]
+    private $bookings;
+
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    private $color;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
@@ -60,6 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->paymentsMade = new ArrayCollection();
         $this->paymentsReceived = new ArrayCollection();
         $this->invitations = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -400,5 +407,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $usergroup = $this->getUserTypes()->get(0);
 
         return $usergroup->getCar();
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getUser() === $this) {
+                $booking->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
+
+        return $this;
     }
 }

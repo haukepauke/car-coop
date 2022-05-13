@@ -10,6 +10,7 @@
                     <tr>
                         <th class="text-center">Name</th>
                         <th class="text-center">Email</th>
+                        <th class="text-center">Calendar color</th>
                         <th class="text-center">{{ car.milageUnit }} driven</th>
                         <th class="text-center">Money spent</th>
                         <th class="text-center">Balance</th>
@@ -20,6 +21,7 @@
                         <tr>
                             <td class="text-center">{{ user.name }}</td>
                             <td class="text-center">{{ user.email }}</td>
+                            <td class="text-center"><i class="fas fa-circle" style="color: {{ user.color }}"></i></td>
                             <td class="text-center">{{ user.tripMileage|number_format(0, ',', '.') }}</td>
                             <td class="text-center">{{ user.moneySpent|format_currency('EUR', locale='de') }}
                             <td class="text-center">{{ user.balance|format_currency('EUR', locale='de') }}</td>
