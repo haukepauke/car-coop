@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\UserType;
 use App\Form\UserTypeFormType;
-use App\Repository\CarRepository;
 use App\Repository\UserTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,16 +13,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserGroupAdminController extends AbstractController
 {
-    #[Route('/admin/usergroup/new/{car}', name: 'app_usergroup_new')]
-    public function new(EntityManagerInterface $em, CarRepository $carRepo, Request $request, $car): Response
+    #[Route('/admin/usergroup/new', name: 'app_usergroup_new')]
+    public function new(EntityManagerInterface $em, Request $request): Response
     {
-        $carObj = $carRepo->find($car);
-        if (!$carObj->hasUser($this->getUser())) {
-            $this->redirectToRoute('app_car_list');
-        }
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
 
         $usergroup = new UserType();
-        $usergroup->setCar($carObj);
+        $usergroup->setCar($car);
 
         $form = $this->createForm(UserTypeFormType::class, $usergroup);
 
@@ -36,14 +34,14 @@ class UserGroupAdminController extends AbstractController
 
             $this->addFlash('success', 'Usergroup created!');
 
-            return $this->redirectToRoute('app_user_list', ['car' => $carObj->getId()]);
+            return $this->redirectToRoute('app_user_list', ['car' => $car->getId()]);
         }
 
         return $this->render(
             'admin/usergroup/new.html.twig',
             [
                 'usergroupForm' => $form->createView(),
-                'car' => $carObj,
+                'car' => $car,
             ]
         );
     }

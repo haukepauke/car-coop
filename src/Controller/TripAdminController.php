@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Trip;
 use App\Form\TripFormType;
-use App\Repository\CarRepository;
 use App\Repository\TripRepository;
 use App\Service\TripCostCalculatorService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,18 +14,35 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TripAdminController extends AbstractController
 {
-    #[Route('/admin/trip/new/{car}', name: 'app_trip_new')]
-    public function new(TripCostCalculatorService $tc, EntityManagerInterface $em, CarRepository $carRepo, Request $request, $car): Response
+    #[Route('/admin/trip/list', name: 'app_trip_list')]
+    public function list(TripRepository $tripsRepo)
     {
-        $carObj = $carRepo->find($car);
-        if (!$carObj->hasUser($this->getUser())) {
-            $this->redirectToRoute('app_car_list');
-        }
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
+
+        $trips = $tripsRepo->findByCar($car);
+
+        return $this->render(
+            'admin/trip/list.html.twig',
+            [
+                'car' => $car,
+                'trips' => $trips,
+            ]
+        );
+    }
+
+    #[Route('/admin/trip/new', name: 'app_trip_new')]
+    public function new(TripCostCalculatorService $tc, EntityManagerInterface $em, Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
 
         $trip = new Trip();
-        $trip->setStartMileage($carObj->getMileage());
+        $trip->setStartMileage($car->getMileage());
         $trip->setUser($this->getUser());
-        $trip->setCar($carObj);
+        $trip->setCar($car);
 
         $form = $this->createForm(TripFormType::class, $trip);
 
@@ -37,23 +53,23 @@ class TripAdminController extends AbstractController
             $trip->setCosts($tc->calculateTripCosts($trip));
 
             if ($trip->isCompleted()) {
-                $carObj->setMileage($trip->getEndMileage());
+                $car->setMileage($trip->getEndMileage());
             }
 
             $em->persist($trip);
-            $em->persist($carObj);
+            $em->persist($car);
             $em->flush();
 
             $this->addFlash('success', 'Trip created!');
 
-            return $this->redirectToRoute('app_car_show', ['car' => $carObj->getId()]);
+            return $this->redirectToRoute('app_trip_list');
         }
 
         return $this->render(
             'admin/trip/new.html.twig',
             [
                 'tripForm' => $form->createView(),
-                'car' => $carObj,
+                'car' => $car,
             ]
         );
     }
@@ -61,10 +77,10 @@ class TripAdminController extends AbstractController
     #[Route('/admin/trip/edit/{trip}', name: 'app_trip_edit')]
     public function edit(TripCostCalculatorService $tc, EntityManagerInterface $em, Request $request, Trip $trip): Response
     {
-        $carObj = $trip->getCar();
+        $car = $trip->getCar();
         $form = $this->createForm(TripFormType::class, $trip);
 
-        if ($carObj->getMileage() !== $trip->getEndMileage() && $trip->isCompleted() && !($form->isSubmitted() && $form->isValid())) {
+        if ($car->getMileage() !== $trip->getEndMileage() && $trip->isCompleted() && !($form->isSubmitted() && $form->isValid())) {
             $this->addFlash('error', 'Trip editing aborted. Newer trips for this vehicle exist. Only the last trip can be edited.');
         } elseif ($this->getUser() !== $trip->getUser()) {
             $this->addFlash('error', 'You can only edit your own trips.');
@@ -75,27 +91,27 @@ class TripAdminController extends AbstractController
 
                 $trip->setCosts($tc->calculateTripCosts($trip));
 
-                $carObj->setMileage($trip->getEndMileage());
+                $car->setMileage($trip->getEndMileage());
 
                 $em->persist($trip);
-                $em->persist($carObj);
+                $em->persist($car);
                 $em->flush();
 
                 $this->addFlash('success', 'Trip updated!');
 
-                return $this->redirectToRoute('app_car_show', ['car' => $carObj->getId()]);
+                return $this->redirectToRoute('app_trip_list');
             }
 
             return $this->render(
                 'admin/trip/edit.html.twig',
                 [
                     'tripForm' => $form->createView(),
-                    'car' => $carObj,
+                    'car' => $car,
                 ]
             );
         }
 
-        return $this->redirectToRoute('app_car_show', ['car' => $carObj->getId()]);
+        return $this->redirectToRoute('app_trip_list');
     }
 
     #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete')]
@@ -116,6 +132,6 @@ class TripAdminController extends AbstractController
             $this->addFlash('error', 'Trip deletion aborted. Newer trips for this vehicle exist. Only the last trip can be deleted.');
         }
 
-        return $this->redirectToRoute('app_car_show', ['car' => $car->getId()]);
+        return $this->redirectToRoute('app_trip_list');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Invitation;
 use App\Form\InvitationFormType;
-use App\Repository\CarRepository;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
@@ -15,37 +14,36 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserAdminController extends AbstractController
 {
-    #[Route('/admin/user/list/{car}', name: 'app_user_list')]
-    public function list(CarRepository $carRepo, UserRepository $userRepo, $car, InvitationRepository $invitationRepo)
+    #[Route('/admin/user/list', name: 'app_user_list')]
+    public function list(UserRepository $userRepo, InvitationRepository $invitationRepo)
     {
-        $carObj = $carRepo->find($car);
-        $users = $userRepo->findByCar($carObj);
-        $invites = $invitationRepo->findByCar($carObj);
-        $usergroups = $carObj->getUserTypes();
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
 
-        // users are only allowed to see the users of their car
-        if ($carObj->hasUser($this->getUser())) {
-            return $this->render(
-                'admin/user/list.html.twig',
-                [
-                    'car' => $carObj,
-                    'users' => $users,
-                    'invitations' => $invites,
-                    'usergroups' => $usergroups,
-                ]
-            );
-        }
+        $users = $userRepo->findByCar($car);
+        $invites = $invitationRepo->findByCar($car);
+        $usergroups = $car->getUserTypes();
+
+        return $this->render(
+            'admin/user/list.html.twig',
+            [
+                'car' => $car,
+                'users' => $users,
+                'invitations' => $invites,
+                'usergroups' => $usergroups,
+            ]
+        );
 
         return $this->redirectToRoute('app_car_list');
     }
 
-    #[Route('/admin/user/invite/{car}', name: 'app_user_invite')]
-    public function invite(EntityManagerInterface $em, Request $request, CarRepository $carRepo, $car)
+    #[Route('/admin/user/invite', name: 'app_user_invite')]
+    public function invite(EntityManagerInterface $em, Request $request)
     {
-        $carObj = $carRepo->find($car);
-        if (!$carObj->hasUser($this->getUser())) {
-            $this->redirectToRoute('app_car_list');
-        }
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
 
         $invitation = new Invitation();
         $invitation->setCreatedBy($this->getUser());
@@ -54,7 +52,7 @@ class UserAdminController extends AbstractController
         $form = $this->createForm(
             InvitationFormType::class,
             $invitation,
-            ['car' => $carObj]
+            ['car' => $car]
         );
 
         $form->handleRequest($request);
@@ -70,14 +68,14 @@ class UserAdminController extends AbstractController
 
             $this->addFlash('success', 'Invitation created!');
 
-            return $this->redirectToRoute('app_user_list', ['car' => $carObj->getId()]);
+            return $this->redirectToRoute('app_user_list', ['car' => $car->getId()]);
         }
 
         return $this->render(
             'admin/user/invite.html.twig',
             [
                 'invitationForm' => $form->createView(),
-                'car' => $carObj,
+                'car' => $car,
             ]
         );
     }

@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block content_body %}
 <div class="col-xl-12 col-md-8">
@@ -28,6 +28,9 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="clearfix">
+        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_user_invite') }}';">Invite User <span class="fa fa-plus-circle"></span></button>
     </div>
     <div>
         <h5>Pending invites</h5>
@@ -80,15 +83,18 @@
                                 {% endfor %}
                             </td>
                             <td class="text-center">
+                            <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}'><i class="fas fa-edit"></i></a>
                             {% if usergroup.users|length == 0 %}
-                                <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}'><i class="fas fa-trash"></i></a>
+                                <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}'><i class="fas fa-trash text-danger"></i></a>
                             {% endif %}
-                                <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}'><i class="fas fa-edit"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div class="clearfix">
+            <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_usergroup_new') }}';">Add Usergroup <span class="fa fa-plus-circle"></span></button>
         </div>
     </div>
 </div>

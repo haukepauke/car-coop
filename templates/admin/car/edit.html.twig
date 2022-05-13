@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block content_body %}
 <div class="col-xl-6 col-md-4">
@@ -7,7 +7,7 @@
     {{ form_start(carForm)}}
         {{ form_widget(carForm) }}
 
-        <button type="submit" class="btn btn-outline-dark">Edit car</button>
+        <button type="submit" class="btn btn-outline-dark my-3">Update car</button>
     {{ form_end(carForm) }}
 </div>
 {% endblock %}

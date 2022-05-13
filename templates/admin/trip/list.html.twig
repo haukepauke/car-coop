@@ -1,0 +1,49 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content_body %}
+<div class="col-xl-12 col-md-8">
+    <h5>Trips</h5>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-secondary">
+                <tr>
+                    <th class="text-center">User</th>
+                    <th class="text-center">Start Date</th>
+                    <th class="text-center">End Date</th>
+                    <th class="text-center">Start {{ car.milageUnit }}</th>
+                    <th class="text-center">End {{ car. milageUnit }}</th>
+                    <th class="text-center">{{ car.milageUnit }} driven</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Costs</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in trips %}
+                    <tr>
+                        <td class="text-center">{{ trip.user.name }}</td>
+                        <td class="text-center">{{ trip.startDate|date('d.m.Y') }}</td>
+                        <td class="text-center">{{ trip.endDate|date('d.m.Y') }}</td>
+                        <td class="text-center">{{ trip.startMileage|number_format(0, ',', '.') }}</td>
+                        <td class="text-center">{{ trip.endMileAge|number_format(0, ',', '.') }}</td>
+                        <td class="text-center">{{ trip.mileage|number_format(0, ',', '.') }}</td>
+                        <td class="text-center">{{ trip.type }}</td>
+                        <td class="text-center">{{ trip.costs|format_currency('EUR', locale='de')}}</td>
+                        <td class="text-center">{% if trip.isCompleted() %}<i class="fas fa-square-check text-success"></i>{% else %}<i class="fa-regular fa-square text-muted"></i>{% endif %}</td>
+                        <td class="text-center">
+                        {% if loop.last %}
+                            <a href='{{ path('app_trip_edit', {trip: trip.id}) }}'><i class="fas fa-edit"></i></a>
+                            <a href='{{ path('app_trip_delete', {trip: trip.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="clearfix">
+        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_trip_new') }}';">Add trip <span class="fa fa-plus-circle"></span></button>
+    </div>
+</div>
+{% endblock %}

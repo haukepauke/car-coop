@@ -51,7 +51,9 @@ class CarAdminController extends AbstractController
     #[Route('/admin/car/edit', name: 'app_car_edit')]
     public function edit(EntityManagerInterface $em, Request $request): Response
     {
-        $car = $this->getUser()->getCar();
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
 
         // TODO: Disable mileage field when trips exist
 
@@ -105,7 +107,10 @@ class CarAdminController extends AbstractController
         ExpenseRepository $expenseRepo,
         PaymentRepository $paymentRepo
     ): Response {
-        $car = $this->getUser()->getCar();
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
+
         if (null === $car) {
             return $this->redirectToRoute('app_car_new');
         }

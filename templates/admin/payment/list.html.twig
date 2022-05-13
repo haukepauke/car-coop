@@ -1,0 +1,43 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content_body %}
+<div class="col-xl-12 col-md-8">
+    <h4>Payments for {{ car.name }}</h4>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-secondary">
+                <tr>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">From</th>
+                    <th class="text-center">To</th>
+                    <th class="text-center">Amount</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Comment</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                    <tr>
+                        <td class="text-center">{{ payment.date|date('d.m.Y') }}</td>
+                        <td class="text-center">{{ payment.fromUser.name }}</td>
+                        <td class="text-center">{{ payment.toUser.name }}</td>
+                        <td class="text-center">{{ payment.amount|format_currency('EUR', locale='de')}}</td>
+                        <td class="text-center">{{ payment.type}}</td>
+                        <td class="text-center">{{ payment.comment }}</td>
+                        <td class="text-center">
+                            {% if user.email == payment.fromUser.email or user.email == payment.toUser.email %}
+                                <a href='{{ path('app_payment_edit', {payment: payment.id}) }}'><i class="fas fa-edit"></i></a>
+                                <a href='{{ path('app_payment_delete', {payment: payment.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="clearfix">
+        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_payment_new') }}';">Add payment <span class="fa fa-plus-circle"></span></button>
+    </div>
+</div>
+{% endblock %}

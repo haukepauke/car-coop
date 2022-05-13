@@ -17,13 +17,16 @@
     <body>
         <div class="container-fluid p-0">
             <header>
-                <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark p-2">
-                    <a class="navbar-brand" href="#">
+                <nav class="navbar navbar-expand-lg bg-dark p-2">
+                    <a class="navbar-brand text-white" href="#">
                         <i class="fa-solid fa-car"></i>
                         <i class="fa-solid fa-van-shuttle"></i>
                         <i class="fa-solid fa-truck-moving"></i>
-                        Car Coop
+                        <b>Car Coop</b>
                     </a>
+                    {% block main_navigation %}
+
+                    {% endblock%}
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>

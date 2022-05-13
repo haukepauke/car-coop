@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Payment;
 use App\Form\PaymentFormType;
-use App\Repository\CarRepository;
 use App\Repository\PaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -15,16 +14,34 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PaymentAdminController extends AbstractController
 {
-    #[Route('/admin/payment/new/{car}', name: 'app_payment_new')]
-    public function new(EntityManagerInterface $em, CarRepository $carRepo, Request $request, $car): Response
+    #[Route('/admin/payment/list', name: 'app_payment_list')]
+    public function list(PaymentRepository $payRepo)
     {
-        $carObj = $carRepo->find($car);
-        if (!$carObj->hasUser($this->getUser())) {
-            $this->redirectToRoute('app_car_list');
-        }
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
+
+        $payments = $payRepo->findByCar($car);
+
+        return $this->render(
+            'admin/payment/list.html.twig',
+            [
+                'car' => $car,
+                'payments' => $payments,
+                'user' => $user,
+            ]
+        );
+    }
+
+    #[Route('/admin/payment/new', name: 'app_payment_new')]
+    public function new(EntityManagerInterface $em, Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $car = $user->getCar();
 
         $payment = new Payment();
-        $payment->setCar($carObj);
+        $payment->setCar($car);
 
         $form = $this->createForm(PaymentFormType::class, $payment);
 
@@ -40,18 +57,18 @@ class PaymentAdminController extends AbstractController
             $em->persist($payment);
             $em->flush();
 
-            // inform other user
+            // TODO: inform other user
 
             $this->addFlash('success', 'Payment created!');
 
-            return $this->redirectToRoute('app_car_show', ['car' => $carObj->getId()]);
+            return $this->redirectToRoute('app_payment_list');
         }
 
         return $this->render(
             'admin/payment/new.html.twig',
             [
                 'paymentForm' => $form->createView(),
-                'car' => $carObj,
+                'car' => $car,
             ]
         );
     }
@@ -59,7 +76,7 @@ class PaymentAdminController extends AbstractController
     #[Route('/admin/payment/edit/{payment}', name: 'app_payment_edit')]
     public function edit(EntityManagerInterface $em, Request $request, Payment $payment): Response
     {
-        $carObj = $payment->getCar();
+        $car = $payment->getCar();
         $form = $this->createForm(PaymentFormType::class, $payment);
 
         // TODO: check that user is either sender or receiver of payment before allowing to edit
@@ -75,18 +92,18 @@ class PaymentAdminController extends AbstractController
 
             $this->addFlash('success', 'Payment updated!');
 
-            return $this->redirectToRoute('app_car_show', ['car' => $carObj->getId()]);
+            return $this->redirectToRoute('app_payment_list');
         }
 
         return $this->render(
             'admin/payment/edit.html.twig',
             [
                 'paymentForm' => $form->createView(),
-                'car' => $carObj,
+                'car' => $car,
             ]
         );
 
-        return $this->redirectToRoute('app_trip_list', ['car' => $carObj->getId()]);
+        return $this->redirectToRoute('app_payment_list');
     }
 
     #[Route('/admin/payment/delete/{payment}', name: 'app_payment_delete')]
@@ -95,7 +112,6 @@ class PaymentAdminController extends AbstractController
         // ensure that user can only delete payment it is involved in
 
         $payment = $paymentRepo->find($payment);
-        $car = $payment->getCar();
         $em->remove($payment);
         $em->flush();
 
@@ -103,6 +119,6 @@ class PaymentAdminController extends AbstractController
 
         $this->addFlash('success', 'Payment deleted.');
 
-        return $this->redirectToRoute('app_car_show', ['car' => $car->getId()]);
+        return $this->redirectToRoute('app_payment_list');
     }
 }
