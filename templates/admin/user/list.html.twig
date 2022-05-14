@@ -8,6 +8,7 @@
             <table class="table">
                 <thead class="table-secondary">
                     <tr>
+                        <th></th>
                         <th class="text-center">Name</th>
                         <th class="text-center">Email</th>
                         <th class="text-center">Calendar color</th>
@@ -19,12 +20,17 @@
                 <tbody>
                     {% for user in users %}
                         <tr>
-                            <td class="text-center">{{ user.name }}</td>
-                            <td class="text-center">{{ user.email }}</td>
-                            <td class="text-center"><i class="fas fa-circle" style="color: {{ user.color }}"></i></td>
-                            <td class="text-center">{{ user.tripMileage|number_format(0, ',', '.') }}</td>
-                            <td class="text-center">{{ user.moneySpent|format_currency('EUR', locale='de') }}
-                            <td class="text-center">{{ user.balance|format_currency('EUR', locale='de') }}</td>
+                            <td>
+                            {% if user.profilePicturePath|default %}
+                                <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="50" width="50">
+                            {% endif %}
+                            </td>
+                            <td class="align-middle text-center">{{ user.name }}</td>
+                            <td class="align-middle text-center">{{ user.email }}</td>
+                            <td class="align-middle text-center"><i class="fas fa-circle" style="color: {{ user.color }}"></i></td>
+                            <td class="align-middle text-center">{{ user.tripMileage|number_format(0, ',', '.') }}</td>
+                            <td class="align-middle text-center">{{ user.moneySpent|format_currency('EUR', locale='de') }}
+                            <td class="align-middle text-center">{{ user.balance|format_currency('EUR', locale='de') }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -51,12 +57,12 @@
                 <tbody>
                     {% for invitation in invitations %}
                         <tr>
-                            <td class="text-center">{{ invitation.createdAt|date('d.m.Y') }}</td>
-                            <td class="text-center">{{ invitation.email }}</td>
-                            <td class="text-center">{{ invitation.userType }}</td>
-                            <td class="text-center">{{ invitation.status }}
-                            <td class="text-center">{{ invitation.createdBy.name }}</td>
-                            <td class="text-center">delete, renew</td>
+                            <td class="align-middle text-center">{{ invitation.createdAt|date('d.m.Y') }}</td>
+                            <td class="align-middle text-center">{{ invitation.email }}</td>
+                            <td class="align-middle text-center">{{ invitation.userType }}</td>
+                            <td class="align-middle text-center">{{ invitation.status }}
+                            <td class="align-middle text-center">{{ invitation.createdBy.name }}</td>
+                            <td class="align-middle text-center">delete, renew</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -71,20 +77,20 @@
                     <tr>
                         <th class="text-center">Name</th>
                         <th class="text-center">Price per {{ car.milageUnit }}</th>
-                        <td class="text-center">Members</td>
+                        <td class="align-middle text-center">Members</td>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for usergroup in usergroups %}
                         <tr>
-                            <td class="text-center">{{ usergroup.name }}</td>
-                            <td class="text-center">{{ usergroup.pricePerUnit|format_currency('EUR', locale='de') }}</td>
-                            <td class="text-center">{% for member in usergroup.users %}
+                            <td class="align-middle text-center">{{ usergroup.name }}</td>
+                            <td class="align-middle text-center">{{ usergroup.pricePerUnit|format_currency('EUR', locale='de') }}</td>
+                            <td class="align-middle text-center">{% for member in usergroup.users %}
                                     {{ member.name }} {% if not loop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
-                            <td class="text-center">
+                            <td class="align-middle text-center">
                             <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}'><i class="fas fa-edit"></i></a>
                             {% if usergroup.users|length == 0 %}
                                 <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}'><i class="fas fa-trash text-danger"></i></a>

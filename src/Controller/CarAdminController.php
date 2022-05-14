@@ -76,7 +76,7 @@ class CarAdminController extends AbstractController
             /** @var UploadedFile $picture */
             $picture = $form->get('picture')->getData();
             if ($picture) {
-                $pictureFilename = $fileUploader->upload($picture);
+                $pictureFilename = $fileUploader->upload($picture, 'cars');
                 $car->setProfilePicturePath($pictureFilename);
             }
 

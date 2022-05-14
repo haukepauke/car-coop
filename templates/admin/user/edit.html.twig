@@ -5,7 +5,26 @@
     <h4>Edit profile</h4>
 
     {{ form_start(userForm)}}
-        {{ form_widget(userForm) }}
+        {{ form_row(userForm.email) }}
+        {{ form_row(userForm.name) }}
+        <div class="row">
+            <div class="col-sm-3">
+            {{ form_row(userForm.color) }}
+            </div>
+            <div class="col-sm-9">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9">
+            {{ form_row(userForm.picture) }}
+            </div>
+             <div class="col-sm-3">
+            {% if userForm.vars.data.profilePicturePath|default %}
+                <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ userForm.vars.data.profilePicturePath)|imagine_filter('profile_thumb') }}" height="100" width="100">
+            {% endif %}
+            </div>
+        </div>
 
         <button type="submit" class="btn btn-outline-dark my-3">Update your profile</button>
     {{ form_end(userForm) }}

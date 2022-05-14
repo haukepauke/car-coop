@@ -7,9 +7,11 @@ use App\Form\InvitationFormType;
 use App\Form\UserFormType;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
+use App\Service\FileUploaderService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,7 +85,7 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/edit', name: 'app_user_edit')]
-    public function edit(EntityManagerInterface $em, Request $request): Response
+    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
@@ -91,6 +93,13 @@ class UserAdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+
+            /** @var UploadedFile $picture */
+            $picture = $form->get('picture')->getData();
+            if ($picture) {
+                $pictureFilename = $fileUploader->upload($picture, 'users');
+                $user->setProfilePicturePath($pictureFilename);
+            }
 
             $em->persist($user);
             $em->flush();

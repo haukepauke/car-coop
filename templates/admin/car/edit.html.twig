@@ -5,7 +5,22 @@
     <h4>Update {{ car.name }}</h4>
 
     {{ form_start(carForm)}}
-        {{ form_widget(carForm) }}
+        {{ form_row(carForm.name) }}
+        {{ form_row(carForm.licensePlate)}}
+        {{ form_row(carForm.mileage) }}
+        {{ form_row(carForm.milageUnit) }}
+        {{ form_row(carForm.make) }}
+        {{ form_row(carForm.vendor) }}
+        <div class="row">
+            <div class="col-sm-9">
+            {{ form_row(carForm.picture) }}
+            </div>
+             <div class="col-sm-3">
+            {% if carForm.vars.data.profilePicturePath|default %}
+                <img class="rounded-circle" src="{{ asset('/uploads/cars/' ~ carForm.vars.data.profilePicturePath)|imagine_filter('profile_thumb') }}" height="100" width="100">
+            {% endif %}
+            </div>
+        </div>
 
         <button type="submit" class="btn btn-outline-dark my-3">Update car</button>
     {{ form_end(carForm) }}

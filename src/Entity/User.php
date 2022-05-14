@@ -58,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
     private $color;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $profilePicturePath;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
@@ -447,6 +450,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setColor(?string $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getProfilePicturePath(): ?string
+    {
+        return $this->profilePicturePath;
+    }
+
+    public function setProfilePicturePath(?string $profilePicturePath): self
+    {
+        $this->profilePicturePath = $profilePicturePath;
 
         return $this;
     }
