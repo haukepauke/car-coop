@@ -65,7 +65,11 @@
                             <td class="align-middle text-center">{{ invitation.userType }}</td>
                             <td class="align-middle text-center">{{ invitation.status }}
                             <td class="align-middle text-center">{{ invitation.createdBy.name }}</td>
-                            <td class="align-middle text-center">delete, renew</td>
+                            <td class="align-middle text-center">
+                            {% if app.user.email == invitation.createdBy.email %}
+                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                            {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

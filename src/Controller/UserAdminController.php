@@ -137,4 +137,21 @@ class UserAdminController extends AbstractController
             ]
         );
     }
+
+    #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete')]
+    public function delete(EntityManagerInterface $em, InvitationRepository $inviteRepo, $invite)
+    {
+        $invite = $inviteRepo->find($invite);
+
+        if ($this->getUser() !== $invite->getCreatedBy()) {
+            $this->addFlash('error', 'Invitation was created by another user. You can only delete invites created by yourself.');
+        }
+
+        $em->remove($invite);
+        $em->flush();
+
+        $this->addFlash('success', 'Invitation deleted.');
+
+        return $this->redirectToRoute('app_user_list');
+    }
 }
