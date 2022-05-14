@@ -18,14 +18,6 @@
             </tr>
         </table>
     </div>
-    <div>
-        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='/admin/calendar';">Show calendar <span class="fa-solid fa-calendar"></span></button>
-        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_trip_new',  {car: car.id}) }}';">Add trip <span class="fa fa-plus-circle"></span></button>
-        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_expense_new',  {car: car.id}) }}';">Add expense <span class="fa fa-plus-circle"></span></button>
-        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_payment_new',  {car: car.id}) }}';">Add payment <span class="fa fa-plus-circle"></span></button>
-        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_user_list',  {car: car.id}) }}';">List user <span class="fa fa-list"></span></button>
-        <button type="link" class="btn btn-outline-dark my-3" onclick="location.href='{{ path('app_user_invite',  {car: car.id}) }}';">Invite User <span class="fa fa-plus-circle"></span></button>
-    </div>
 </div>
 {% endblock %}
 

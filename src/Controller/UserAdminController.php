@@ -10,10 +10,13 @@ use App\Repository\UserRepository;
 use App\Service\FileUploaderService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserAdminController extends AbstractController
@@ -43,7 +46,7 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/invite', name: 'app_user_invite')]
-    public function invite(EntityManagerInterface $em, Request $request): Response
+    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -62,13 +65,31 @@ class UserAdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $invitation = $form->getData();
+
+            // TODO Check if email address already exists in user table
+            // TODO Check if email address already in invites
+
             $invitation->setHash(bin2hex(random_bytes(80)));
             $invitation->setCreatedAt(new DateTimeImmutable());
 
             $em->persist($invitation);
             $em->flush();
 
-            // send message for sending invitation email
+            $mailer->send(
+                (new TemplatedEmail())
+                    ->from(new Address('webmaster@car-coop.net', 'Car Coop Mail Bot'))
+                    ->to($invitation->getEmail())
+                    ->subject('You have been invited to join car sharing with Car Coop!')
+                    ->htmlTemplate(
+                        'admin/user/email/invite.html.twig'
+                    )
+                    ->context(
+                        [
+                            'invitation' => $invitation,
+                            'car' => $car,
+                        ]
+                    )
+            );
 
             $this->addFlash('success', 'Invitation created!');
 

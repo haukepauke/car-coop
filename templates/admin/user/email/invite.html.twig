@@ -1,0 +1,12 @@
+<p>
+    Hi! You have been invited by {{ app.user.name }}({{ app.user.email }}) to join car sharing for {{ car.name }} at Car Coop!
+</p>
+
+<p>
+    Please click the following link to register: <br><br>
+    <a href="{{ url('app_register_invited', {hash: invitation.hash}) }}">Register for Car Coop</a>.
+</p>
+
+<p>
+    Cheers!
+</p>

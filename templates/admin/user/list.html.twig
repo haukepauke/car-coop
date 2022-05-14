@@ -42,6 +42,7 @@
     <div class="clearfix">
         <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_user_invite') }}';">Invite User <span class="fa fa-plus-circle"></span></button>
     </div>
+    {% if invitations|length >0 %}
     <div>
         <h5>Pending invites</h5>
         <div class="table-responsive">
@@ -71,6 +72,7 @@
             </table>
         </div>
     </div>
+    {% endif %}
     <div>
         <h5>Usergroups</h5>
         <div class="table-responsive">

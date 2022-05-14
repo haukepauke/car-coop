@@ -28,18 +28,19 @@ class CarAdminController extends AbstractController
             $car = $form->getData();
             $em->persist($car);
 
+            // Set default usergroup
             $userType = new UserType();
             $userType->setCar($car);
-            $userType->setName('CAR_ADMIN');
+            $userType->setName('Crew');
             $userType->setPricePerUnit(0.30);
             $userType->addUser($this->getUser());
             $em->persist($userType);
 
             $em->flush();
 
-            $this->addFlash('success', 'Car created!');
+            $this->addFlash('success', 'Car created, Default Usergroup created!');
 
-            return $this->redirectToRoute('app_car_list');
+            return $this->redirectToRoute('app_car_show');
         }
 
         return $this->render(
@@ -66,13 +67,6 @@ class CarAdminController extends AbstractController
             $car = $form->getData();
             $em->persist($car);
 
-            $userType = new UserType();
-            $userType->setCar($car);
-            $userType->setName('CAR_ADMIN');
-            $userType->setPricePerUnit(0.30);
-            $userType->addUser($this->getUser());
-            $em->persist($userType);
-
             /** @var UploadedFile $picture */
             $picture = $form->get('picture')->getData();
             if ($picture) {
@@ -84,7 +78,7 @@ class CarAdminController extends AbstractController
 
             $this->addFlash('success', 'Car updated!');
 
-            return $this->redirectToRoute('app_car_list');
+            return $this->redirectToRoute('app_car_show');
         }
 
         return $this->render(
@@ -142,7 +136,5 @@ class CarAdminController extends AbstractController
                 ]
             );
         }
-
-        return $this->redirectToRoute('app_car_list');
     }
 }

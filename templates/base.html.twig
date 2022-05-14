@@ -51,7 +51,11 @@
                         <nav class="navbar navbar-expand-sm mx-3">
                             <div class="nav-item dropdown">
                                 <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown">
-                                    <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="50" width="50">
+                                    {% if app.user.profilePicturePath| default %}
+                                        <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="50" width="50">
+                                    {% else %}
+                                        <img class="rounded-circle" src="{{ asset('/build/static/default-user.jpg')|imagine_filter('profile_thumb') }}" height="50" width="50">
+                                    {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{{ path('app_user_edit') }}">Edit profile</a></li>

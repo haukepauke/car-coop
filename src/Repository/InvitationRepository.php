@@ -60,15 +60,14 @@ class InvitationRepository extends ServiceEntityRepository
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Invitation
+    public function findOneByHash($hash)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('i.hash = :val')
+            ->setParameter('val', $hash)
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

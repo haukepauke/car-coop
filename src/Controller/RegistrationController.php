@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\InvitationRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -68,12 +69,24 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register/invited/{hash}', name: 'app_register_invited')]
-    public function registerInvited(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-    {
-        // TODO Check hash
-        // TODO get car
+    public function registerInvited(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        InvitationRepository $inviteRepo,
+        $hash
+    ): Response {
+        $invite = $inviteRepo->findOneByHash($hash);
+        if (null === $invite) {
+            $this->addFlash('error', 'Invitation not found (or has expired)!');
+
+            return $this->redirectToRoute('app_homepage');
+        }
+        $userType = $invite->getUserType();
 
         $user = new User();
+        $user->addUserType($userType);
+        $user->setEmail($invite->getEmail());
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -89,9 +102,8 @@ class RegistrationController extends AbstractController
             // set random color to start with
             $user->setColor('#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
 
-            // TODO set car and usertype for user
-
             $entityManager->persist($user);
+            $entityManager->remove($invite);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
@@ -104,7 +116,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_homepage');
         }
@@ -131,6 +142,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_car_show');
     }
 }
