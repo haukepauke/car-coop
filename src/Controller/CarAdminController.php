@@ -8,8 +8,10 @@ use App\Repository\CarRepository;
 use App\Repository\ExpenseRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\TripRepository;
+use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,7 +51,7 @@ class CarAdminController extends AbstractController
     }
 
     #[Route('/admin/car/edit', name: 'app_car_edit')]
-    public function edit(EntityManagerInterface $em, Request $request): Response
+    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -70,6 +72,13 @@ class CarAdminController extends AbstractController
             $userType->setPricePerUnit(0.30);
             $userType->addUser($this->getUser());
             $em->persist($userType);
+
+            /** @var UploadedFile $picture */
+            $picture = $form->get('picture')->getData();
+            if ($picture) {
+                $pictureFilename = $fileUploader->upload($picture);
+                $car->setProfilePicturePath($pictureFilename);
+            }
 
             $em->flush();
 

@@ -5,10 +5,12 @@ namespace App\Form;
 use App\Entity\Car;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class CarFormType extends AbstractType
 {
@@ -49,6 +51,28 @@ class CarFormType extends AbstractType
                 [
                     'help' => 'Car vendor (optional)',
                     'required' => false,
+                ]
+            )
+            ->add(
+                'picture',
+                FileType::class,
+                [
+                    'label' => 'Profile picture',
+                    'mapped' => false,
+                    'required' => false,
+                    'constraints' => [
+                        new File(
+                            [
+                                'maxSize' => '4096k',
+                                'mimeTypes' => [
+                                    'image/jpeg',
+                                    'image/png',
+                                    'image/gif',
+                                ],
+                                'mimeTypesMessage' => 'Please upload a Jpeg, PNG or GIF image',
+                            ]
+                        ),
+                    ],
                 ]
             )
         ;

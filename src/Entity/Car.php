@@ -48,6 +48,9 @@ class Car
     #[ORM\OneToMany(mappedBy: 'Car', targetEntity: Booking::class, orphanRemoval: true)]
     private $bookings;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $profilePicturePath;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
@@ -318,6 +321,18 @@ class Car
                 $booking->setCar(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfilePicturePath(): ?string
+    {
+        return $this->profilePicturePath;
+    }
+
+    public function setProfilePicturePath(?string $profilePicturePath): self
+    {
+        $this->profilePicturePath = $profilePicturePath;
 
         return $this;
     }
