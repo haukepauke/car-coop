@@ -2,7 +2,14 @@
 
 {% block content_body %}
 <div class="col-xl-12 col-md-8">
-    <h4><img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="100" height="100"/> {{ car.name }}</h4>
+    <h4>
+    {% if car.profilePicturePath|default %}
+        <img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="100" height="100"/>
+    {% else %}
+        <img class="rounded-circle" src="{{ asset('/build/static/default-car.jpg')|imagine_filter('profile_thumb') }}" height="100" width="100">
+    {% endif %} 
+    {{ car.name }}
+    </h4>
 
     <div>
         <table>
