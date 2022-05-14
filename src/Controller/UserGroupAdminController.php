@@ -56,6 +56,10 @@ class UserGroupAdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $usergroup = $form->getData();
 
+            // TODO:
+            // - if user is in another group for the same car, remove user from that group
+            // - if user has no group after update, abort with error message
+
             $em->persist($usergroup);
             $em->persist($carObj);
             $em->flush();

@@ -16,6 +16,8 @@ class UserTypeFormType extends AbstractType
         $builder
             ->add('name', TextType::class, ['help' => 'Choose a unique name for the group!'])
             ->add('pricePerUnit', MoneyType::class, ['help' => 'Set the price users of this group pay per km/mile driving the vehicle.'])
+            // TODO: query for users of current car only
+            ->add('users')
         ;
     }
 

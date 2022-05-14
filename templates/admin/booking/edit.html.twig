@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+<div class="col-xl-6 col-md-4">
+    <h4>Edit booking for {{ car.name }}</h4>
+
+    {{ form_start(bookingForm)}}
+        {{ form_widget(bookingForm) }}
+
+        <button type="submit" class="btn btn-outline-dark my-3">Update booking</button>
+        <button type="link" class="btn btn-outline-danger my-3" onclick="location.href='{{ path('app_booking_delete',  {booking: booking.id}) }}';return false;">Delete booking <i class="fas fa-trash"></i></button>
+    {{ form_end(bookingForm) }}
+</div>
+{% endblock %}
