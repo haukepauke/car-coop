@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\UserType;
 use App\Form\UserTypeFormType;
-use App\Repository\UserTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,9 +80,8 @@ class UserGroupAdminController extends AbstractController
     }
 
     #[Route('/admin/usergroup/delete/{usergroup}', name: 'app_usergroup_delete')]
-    public function delete(EntityManagerInterface $em, UserTypeRepository $usergroupRepo, $usergroup)
+    public function delete(EntityManagerInterface $em, UserType $usergroup)
     {
-        $usergroup = $usergroupRepo->find($usergroup);
         $car = $usergroup->getCar();
 
         // only allow to delete groups without users

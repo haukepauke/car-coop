@@ -4,39 +4,50 @@ namespace App\Entity;
 
 use App\Repository\TripRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TripRepository::class)]
 class Trip
 {
+    public const TYPES = ['vacation', 'transport', 'service'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\Positive()]
     private $startMileage;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\Expression('this.getEndMileage() > this.getStartMileage()', message: 'Did you drive backwards?!')]
     private $endMileage;
 
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank()]
     private $startDate;
 
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\Expression('this.getEndDate() === null || this.getEndDate() > this.getStartDate()', message: 'End date has to be empty or to be after the startdate')]
     private $endDate;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'trips')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $car;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'trips')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $user;
 
     #[ORM\Column(type: 'float', nullable: true)]
+    #[Assert\PositiveOrZero()]
     private $costs;
 
     #[ORM\Column(type: 'string', length: 30)]
+    #[Assert\Choice(Trip::TYPES)]
     private $type;
 
     public function getId(): ?int

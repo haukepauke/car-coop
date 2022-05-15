@@ -6,6 +6,7 @@ use App\Repository\UserTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TODO: Refactor class name to UserGroup without breaking doctrine migrations.
@@ -19,16 +20,19 @@ class UserType
     private $id;
 
     #[ORM\Column(type: 'string', length: 30)]
+    #[Assert\NotBlank()]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'userTypes')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotBlank()]
     private $car;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'userTypes')]
     private $users;
 
     #[ORM\Column(type: 'float')]
+    #[Assert\PositiveOrZero()]
     private $pricePerUnit;
 
     #[ORM\OneToMany(mappedBy: 'userType', targetEntity: Invitation::class, orphanRemoval: true)]

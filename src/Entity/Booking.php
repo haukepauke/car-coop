@@ -4,19 +4,24 @@ namespace App\Entity;
 
 use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 class Booking
 {
+    public const STATUS = ['fixed', 'maybe'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\GreaterThan(value: 'today', message: 'Bookings can not be made for the past')]
     private $startDate;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\Expression('this.getEndDate() > this.getStartDate()', message: 'End date must be after start date of booking')]
     private $endDate;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -24,13 +29,16 @@ class Booking
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $user;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $car;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Assert\Choice(Booking::STATUS)]
     private $status;
 
     public function getId(): ?int

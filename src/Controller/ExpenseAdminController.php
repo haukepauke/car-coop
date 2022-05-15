@@ -52,7 +52,7 @@ class ExpenseAdminController extends AbstractController
 
             $this->addFlash('success', 'Expense created!');
 
-            return $this->redirectToRoute('app_car_show');
+            return $this->redirectToRoute('app_expense_list');
         }
 
         return $this->render(
@@ -82,7 +82,7 @@ class ExpenseAdminController extends AbstractController
 
                 $this->addFlash('success', 'Expense updated!');
 
-                return $this->redirectToRoute('app_car_show');
+                return $this->redirectToRoute('app_expense_list');
             }
 
             return $this->render(
@@ -98,14 +98,12 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/delete/{expense}', name: 'app_expense_delete')]
-    public function delete(EntityManagerInterface $em, ExpenseRepository $expenseRepo, $expense)
+    public function delete(EntityManagerInterface $em, Expense $expense)
     {
-        $expense = $expenseRepo->find($expense);
-
         if ($this->getUser() !== $expense->getUser()) {
             $this->addFlash('error', 'You can only delete your own expenses.');
 
-            return $this->redirectToRoute('app_trip_list');
+            return $this->redirectToRoute('app_expense_list');
         }
 
         $em->remove($expense);
@@ -113,6 +111,6 @@ class ExpenseAdminController extends AbstractController
 
         $this->addFlash('success', 'Expense deleted.');
 
-        return $this->redirectToRoute('app_car_show');
+        return $this->redirectToRoute('app_expense_list');
     }
 }

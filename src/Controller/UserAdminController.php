@@ -67,7 +67,7 @@ class UserAdminController extends AbstractController
             $invitation = $form->getData();
 
             // TODO Check if email address already exists in user table
-            // TODO Check if email address already in invites
+            // TODO Check if email address already has invites
 
             $invitation->setHash(bin2hex(random_bytes(80)));
             $invitation->setCreatedAt(new DateTimeImmutable());
@@ -139,10 +139,8 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete')]
-    public function delete(EntityManagerInterface $em, InvitationRepository $inviteRepo, $invite)
+    public function delete(EntityManagerInterface $em, Invitation $invite)
     {
-        $invite = $inviteRepo->find($invite);
-
         if ($this->getUser() !== $invite->getCreatedBy()) {
             $this->addFlash('error', 'Invitation was created by another user. You can only delete invites created by yourself.');
         }

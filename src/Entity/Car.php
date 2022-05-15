@@ -6,22 +6,27 @@ use App\Repository\CarRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarRepository::class)]
 class Car
 {
+    public const MILEAGE_UNITS = ['km', 'mi'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 30)]
+    #[Assert\NotBlank()]
     private $name;
 
     #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private $licensePlate;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\PositiveOrZero(message: 'Please enter a positive value')]
     private $mileage;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -40,6 +45,7 @@ class Car
     private $userTypes;
 
     #[ORM\Column(type: 'string', length: 10)]
+    #[Assert\Choice(Car::MILEAGE_UNITS)]
     private $milageUnit;
 
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Payment::class, orphanRemoval: true)]

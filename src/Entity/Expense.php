@@ -4,25 +4,31 @@ namespace App\Entity;
 
 use App\Repository\ExpenseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ExpenseRepository::class)]
 class Expense
 {
+    public const TYPES = ['fuel', 'maut', 'service', 'other'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Choice(Expense::TYPES)]
     private $type;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank()]
     private $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
     #[ORM\Column(type: 'float')]
+    #[Assert\Positive(message: 'Please provide the amount you have spent')]
     private $amount;
 
     #[ORM\Column(type: 'date')]
@@ -30,10 +36,12 @@ class Expense
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'expenses')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $car;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'expenses')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $user;
 
     public function getId(): ?int

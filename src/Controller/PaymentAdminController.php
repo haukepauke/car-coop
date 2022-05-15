@@ -43,12 +43,15 @@ class PaymentAdminController extends AbstractController
         $payment = new Payment();
         $payment->setCar($car);
 
-        $form = $this->createForm(PaymentFormType::class, $payment);
+        $form = $this->createForm(
+            PaymentFormType::class,
+            $payment,
+            ['car' => $car]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $payment = $form->getData();
-            $payment->setFromUser($this->getUser());
 
             if ($payment->getToUser() === $payment->getFromUser()) {
                 throw new Exception('Payment sender and receiver can not be the same user');
@@ -76,10 +79,19 @@ class PaymentAdminController extends AbstractController
     #[Route('/admin/payment/edit/{payment}', name: 'app_payment_edit')]
     public function edit(EntityManagerInterface $em, Request $request, Payment $payment): Response
     {
-        $car = $payment->getCar();
-        $form = $this->createForm(PaymentFormType::class, $payment);
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($payment->getFromUser() !== $user && $payment->getToUser() !== $user) {
+            $this->addFlash('error', 'You can only edit payments, you are involved in.');
 
-        // TODO: check that user is either sender or receiver of payment before allowing to edit
+            return $this->redirectToRoute('app_payment_list');
+        }
+        $car = $payment->getCar();
+        $form = $this->createForm(
+            PaymentFormType::class,
+            $payment,
+            ['car' => $car]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -107,11 +119,16 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/delete/{payment}', name: 'app_payment_delete')]
-    public function delete(EntityManagerInterface $em, PaymentRepository $paymentRepo, $payment)
+    public function delete(EntityManagerInterface $em, Payment $payment)
     {
-        // ensure that user can only delete payment it is involved in
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($payment->getFromUser() !== $user && $payment->getToUser() !== $user) {
+            $this->addFlash('error', 'You can only delete payments, you are involved in.');
 
-        $payment = $paymentRepo->find($payment);
+            return $this->redirectToRoute('app_payment_list');
+        }
+
         $em->remove($payment);
         $em->flush();
 

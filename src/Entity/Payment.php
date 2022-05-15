@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\PaymentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 class Payment
 {
+    public const TYPES = ['cash', 'paypal', 'banktransfer', 'other'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -17,9 +20,11 @@ class Payment
     private $date;
 
     #[ORM\Column(type: 'float')]
+    #[Assert\Positive()]
     private $amount;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Assert\Choice(Payment::TYPES)]
     private $type;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'paymentsMade')]
@@ -28,6 +33,8 @@ class Payment
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'paymentsReceived')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
+    #[Assert\Expression('this.getFromUser() !== this.getToUser()', message: 'Payment sender and receiver must be different users')]
     private $toUser;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -35,6 +42,7 @@ class Payment
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'payments')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $car;
 
     public function getId(): ?int

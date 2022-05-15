@@ -115,13 +115,12 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete')]
-    public function delete(EntityManagerInterface $em, TripRepository $tripRepo, $trip)
+    public function delete(EntityManagerInterface $em, Trip $trip)
     {
-        $trip = $tripRepo->find($trip);
         $car = $trip->getCar();
 
         // only allow to delete last trip for car
-        if ($car->getMileage() === $trip->getEndMileage()) {
+        if ($car->getMileage() === $trip->getEndMileage() || !$trip->isCompleted()) {
             $car->setMileage($trip->getStartMileage());
             $em->persist($car);
             $em->remove($trip);

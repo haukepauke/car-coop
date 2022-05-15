@@ -4,33 +4,42 @@ namespace App\Entity;
 
 use App\Repository\InvitationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InvitationRepository::class)]
 class Invitation
 {
+    public const STATUS = ['new', 'expired'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank()]
     private $hash;
 
     #[ORM\Column(type: 'string', length: 10)]
+    #[Assert\Choice(Invitation::STATUS)]
     private $status;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotBlank()]
     private $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'invitations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $createdBy;
 
     #[ORM\ManyToOne(targetEntity: UserType::class, inversedBy: 'invitations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     private $userType;
 
     #[ORM\Column(type: 'string', length: 150)]
+    #[Assert\Email()]
     private $email;
 
     public function getId(): ?int
