@@ -7,6 +7,8 @@ use App\Form\TripFormType;
 use App\Repository\TripRepository;
 use App\Service\TripCostCalculatorService;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,20 +16,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TripAdminController extends AbstractController
 {
-    #[Route('/admin/trip/list', name: 'app_trip_list')]
-    public function list(TripRepository $tripsRepo)
+    #[Route('/admin/trip/list/{page<\d+>}', name: 'app_trip_list')]
+    public function list(TripRepository $tripsRepo, int $page = 1)
     {
         /** @var User $user */
         $user = $this->getUser();
         $car = $user->getCar();
 
-        $trips = $tripsRepo->findByCar($car);
+        $queryBuilder = $tripsRepo->createFindByCarQueryBuilder($car);
+
+        $pagination = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagination->setMaxPerPage(20);
+        $pagination->setCurrentPage($page);
 
         return $this->render(
             'admin/trip/list.html.twig',
             [
                 'car' => $car,
-                'trips' => $trips,
+                'pager' => $pagination,
             ]
         );
     }

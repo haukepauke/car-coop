@@ -46,4 +46,21 @@ class PaymentRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    public function findByCar($car)
+    {
+        return $this->createFindByCarQueryBuilder($car)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function createFindByCarQueryBuilder($car)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.car = :val')
+            ->setParameter('val', $car)
+            ->orderBy('p.id', 'ASC')
+        ;
+    }
 }

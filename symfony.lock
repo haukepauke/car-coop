@@ -1,4 +1,7 @@
 {
+    "babdev/pagerfanta-bundle": {
+        "version": "v3.6.1"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -104,6 +107,15 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
+    },
+    "pagerfanta/core": {
+        "version": "v3.6.1"
+    },
+    "pagerfanta/doctrine-orm-adapter": {
+        "version": "v3.6.1"
+    },
+    "pagerfanta/twig": {
+        "version": "v3.6.1"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"

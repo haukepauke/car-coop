@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for expense in expenses %}
+                    {% for expense in pager %}
                         <tr>
                             <td class="text-center">{{ expense.user.name }}</td>
                             <td class="text-center">{{ expense.date|date('d.m.Y') }}</td>
@@ -31,6 +31,7 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    {{ pagerfanta(pager) }}
                 </tbody>
             </table>
         </div>

@@ -49,25 +49,19 @@ class TripRepository extends ServiceEntityRepository
 
     public function findByCar($car)
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.car = :val')
-            ->setParameter('val', $car)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(100)
+        return $this->createFindByCarQueryBuilder($car)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Trip
+    public function createFindByCarQueryBuilder($car)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+            ->andWhere('t.car = :val')
+            ->setParameter('val', $car)
+            ->orderBy('t.id', 'ASC')
+            ->setMaxResults(100)
         ;
     }
-    */
 }

@@ -7,6 +7,8 @@ use App\Form\PaymentFormType;
 use App\Repository\PaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,20 +16,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PaymentAdminController extends AbstractController
 {
-    #[Route('/admin/payment/list', name: 'app_payment_list')]
-    public function list(PaymentRepository $payRepo)
+    #[Route('/admin/payment/list/{page<\d+>}', name: 'app_payment_list')]
+    public function list(PaymentRepository $payRepo, int $page = 1)
     {
         /** @var User $user */
         $user = $this->getUser();
         $car = $user->getCar();
 
-        $payments = $payRepo->findByCar($car);
+        $queryBuilder = $payRepo->createFindByCarQueryBuilder($car);
+        $pagination = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagination->setMaxPerPage(20);
+        $pagination->setCurrentPage($page);
 
         return $this->render(
             'admin/payment/list.html.twig',
             [
                 'car' => $car,
-                'payments' => $payments,
+                'pager' => $pagination,
                 'user' => $user,
             ]
         );

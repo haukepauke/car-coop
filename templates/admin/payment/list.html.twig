@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for payment in payments %}
+                {% for payment in pager %}
                     <tr>
                         <td class="text-center">{{ payment.date|date('d.m.Y') }}</td>
                         <td class="text-center">{{ payment.fromUser.name }}</td>
@@ -33,6 +33,7 @@
                         </td>
                     </tr>
                 {% endfor %}
+                {{ pagerfanta(pager) }}
             </tbody>
         </table>
     </div>

@@ -20,7 +20,8 @@
                 </tr>
             </thead>
             <tbody>
-                {% for trip in trips %}
+                {% for trip in pager %}
+                {% set remainingItems = (pager.getNbResults() - ((pager.currentPage - 1) * pager.maxPerPage)) %}
                     <tr>
                         <td class="text-center">{{ trip.user.name }}</td>
                         <td class="text-center">{{ trip.startDate|date('d.m.Y') }}</td>
@@ -32,13 +33,14 @@
                         <td class="text-center">{{ trip.costs|format_currency('EUR', locale='de')}}</td>
                         <td class="text-center">{% if trip.isCompleted() %}<i class="fas fa-square-check text-success"></i>{% else %}<i class="fa-regular fa-square text-muted"></i>{% endif %}</td>
                         <td class="text-center">
-                        {% if loop.last %}
+                        {% if remainingItems == 1 or loop.last %}
                             <a href='{{ path('app_trip_edit', {trip: trip.id}) }}'><i class="fas fa-edit"></i></a>
                             <a href='{{ path('app_trip_delete', {trip: trip.id}) }}'><i class="fas fa-trash text-danger"></i></a>
                         {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
+                {{ pagerfanta(pager) }}
             </tbody>
         </table>
     </div>

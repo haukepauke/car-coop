@@ -49,25 +49,18 @@ class ExpenseRepository extends ServiceEntityRepository
 
     public function findByCar($car)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.car = :val')
-            ->setParameter('val', $car)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(100)
+        return $this->createFindByCarQueryBuilder($car)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Expense
+    public function createFindByCarQueryBuilder($car)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+            ->andWhere('e.car = :val')
+            ->setParameter('val', $car)
+            ->orderBy('e.id', 'ASC')
         ;
     }
-    */
 }

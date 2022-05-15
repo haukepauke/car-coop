@@ -6,6 +6,8 @@ use App\Entity\Expense;
 use App\Form\ExpenseFormType;
 use App\Repository\ExpenseRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,20 +15,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExpenseAdminController extends AbstractController
 {
-    #[Route('/admin/expense/list', name: 'app_expense_list')]
-    public function list(ExpenseRepository $expRepo)
+    #[Route('/admin/expense/list/{page<\d+>}', name: 'app_expense_list')]
+    public function list(ExpenseRepository $expRepo, int $page = 1)
     {
         /** @var User $user */
         $user = $this->getUser();
         $car = $user->getCar();
 
-        $expenses = $expRepo->findByCar($car);
+        $queryBuilder = $expRepo->createFindByCarQueryBuilder($car);
+        $pagination = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagination->setMaxPerPage(20);
+        $pagination->setCurrentPage($page);
 
         return $this->render(
             'admin/expense/list.html.twig',
             [
                 'car' => $car,
-                'expenses' => $expenses,
+                'pager' => $pagination,
             ]
         );
     }
