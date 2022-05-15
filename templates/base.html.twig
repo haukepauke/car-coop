@@ -18,9 +18,9 @@
             <header>
                 <nav class="navbar navbar-expand-lg bg-dark p-2">
                     <a class="navbar-brand text-white" href="#">
-                        <i class="fa-solid fa-car"></i>
-                        <i class="fa-solid fa-van-shuttle"></i>
-                        <i class="fa-solid fa-truck-moving"></i>
+                       
+                        <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
+
                         <b>Car Coop</b>
                     </a>
                     <div class="container-fluid">
@@ -54,7 +54,7 @@
                                     {% if app.user.profilePicturePath| default %}
                                         <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="50" width="50">
                                     {% else %}
-                                        <img class="rounded-circle" src="{{ asset('/build/static/default-user.jpg')|imagine_filter('profile_thumb') }}" height="50" width="50">
+                                        <img class="rounded-circle" src="{{ asset('/build/static/default-user.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
                                     {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">

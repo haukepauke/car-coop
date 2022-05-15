@@ -6,7 +6,7 @@
     {% if car.profilePicturePath|default %}
         <img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="100" height="100"/>
     {% else %}
-        <img class="rounded-circle" src="{{ asset('/build/static/default-car.jpg')|imagine_filter('profile_thumb') }}" height="100" width="100">
+        <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="100" width="100">
     {% endif %} 
     {{ car.name }}
     </h4>
