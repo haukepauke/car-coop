@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
-
-{% block body %}
+{% block content_body %}
 <div class="col-xl-6 col-md-4">
-    <form method="post">
+    <h4>Log in!</h4>
+   
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -14,8 +13,7 @@
                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
         {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <form method="post">
         <label for="inputEmail">Email</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
         <label for="inputPassword">Password</label>
