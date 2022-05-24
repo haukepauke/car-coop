@@ -2,7 +2,7 @@
 
 {% block content_body %}
 <div class="col-xl-6 col-md-4">
-    <h4>Update {{ car.name }}</h4>
+    <h4>{{ 'update'|trans }} {{ car.name }}</h4>
 
     {{ form_start(carForm)}}
         {{ form_row(carForm.name) }}
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-outline-dark my-3">Update car</button>
+        <button type="submit" class="btn btn-outline-dark my-3">{{ 'car.update'|trans }}</button>
     {{ form_end(carForm) }}
 </div>
 {% endblock %}

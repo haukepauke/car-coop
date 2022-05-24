@@ -2,12 +2,12 @@
 
 {% block content_body %}
 <div class="col-xl-6 col-md-4">
-    <h4>Add a new car</h4>
+    <h4>{{ 'car.add'|trans }}</h4>
 
     {{ form_start(carForm)}}
         {{ form_widget(carForm) }}
 
-        <button type="submit" class="btn btn-outline-dark my-3">Create car</button>
+        <button type="submit" class="btn btn-outline-dark my-3">{{ 'car.create'|trans }}</button>
     {{ form_end(carForm) }}
 </div>
 {% endblock %}

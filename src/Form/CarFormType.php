@@ -17,13 +17,21 @@ class CarFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, ['help' => 'Choose a unique name for the car!'])
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'help' => 'car.form.help.name',
+                    'label' => 'car.form.name',
+                ]
+            )
             ->add(
                 'licensePlate',
                 TextType::class,
                 [
-                    'help' => 'Which license plate does the car have (optional)',
+                    'help' => 'car.form.help.licenseplate',
                     'required' => false,
+                    'label' => 'car.form.licenseplate',
                 ]
             )
             ->add('mileage', IntegerType::class, ['help' => 'Distance, this car has done in its live so far (be exact here)'])
@@ -35,29 +43,32 @@ class CarFormType extends AbstractType
                         'Kilometers' => 'km',
                         'Miles' => 'mi',
                     ],
+                    'label' => 'car.form.mileageunit',
                 ]
             )
             ->add(
                 'make',
                 TextType::class,
                 [
-                    'help' => 'Model name of the car (optional)',
+                    'help' => 'car.form.help.make',
                     'required' => false,
+                    'label' => 'car.form.make',
                 ]
             )
             ->add(
                 'vendor',
                 TextType::class,
                 [
-                    'help' => 'Car vendor (optional)',
+                    'help' => 'car.form.help.vendor',
                     'required' => false,
+                    'label' => 'car.form.vendor',
                 ]
             )
             ->add(
                 'picture',
                 FileType::class,
                 [
-                    'label' => 'Profile picture',
+                    'label' => 'car.form.profile.picture',
                     'mapped' => false,
                     'required' => false,
                     'constraints' => [
@@ -69,7 +80,7 @@ class CarFormType extends AbstractType
                                     'image/png',
                                     'image/gif',
                                 ],
-                                'mimeTypesMessage' => 'Please upload a Jpeg, PNG or GIF image',
+                                'mimeTypesMessage' => 'car.form.help.profile.picture',
                             ]
                         ),
                     ],

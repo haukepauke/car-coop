@@ -2,11 +2,12 @@
 
 {% block content_body %}
 <div class="col-xl-6 col-md-4">
-    <h4>Edit profile</h4>
+    <h4>{{ 'user.profile.edit'| trans }}</h4>
 
     {{ form_start(userForm)}}
         {{ form_row(userForm.email) }}
         {{ form_row(userForm.name) }}
+        {{ form_row(userForm.locale) }}
         <div class="row">
             <div class="col-sm-3">
             {{ form_row(userForm.color) }}
@@ -26,7 +27,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-outline-dark my-3">Update your profile</button>
+        <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.profile.update'|trans }}</button>
     {{ form_end(userForm) }}
 </div>
 {% endblock %}

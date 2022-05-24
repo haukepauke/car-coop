@@ -2,18 +2,18 @@
 
 {% block content_body %}
 <div class="col-xl-12 col-md-8">
-    <h4>Payments for {{ car.name }}</h4>
+    <h4>{{ 'payments.for'|trans }} {{ car.name }}</h4>
     <div class="table-responsive">
         <table class="table">
             <thead class="table-secondary">
                 <tr>
-                    <th class="text-center">Date</th>
-                    <th class="text-center">From</th>
-                    <th class="text-center">To</th>
-                    <th class="text-center">Amount</th>
-                    <th class="text-center">Type</th>
-                    <th class="text-center">Comment</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">{{ 'date.date'|trans }}</th>
+                    <th class="text-center">{{ 'from'|trans }}</th>
+                    <th class="text-center">{{ 'to'|trans }}</th>
+                    <th class="text-center">{{ 'amount'|trans }}</th>
+                    <th class="text-center">{{ 'payments.type'|trans }}</th>
+                    <th class="text-center">{{ 'comment'|trans }}</th>
+                    <th class="text-center">{{ 'actions'|trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@
                         <td class="text-center">{{ payment.date|date('d.m.Y') }}</td>
                         <td class="text-center">{{ payment.fromUser.name }}</td>
                         <td class="text-center">{{ payment.toUser.name }}</td>
-                        <td class="text-center">{{ payment.amount|format_currency('EUR', locale='de')}}</td>
+                        <td class="text-center">{{ payment.amount|format_currency('EUR', locale=app.user.locale)}}</td>
                         <td class="text-center">{{ payment.type}}</td>
                         <td class="text-center">{{ payment.comment }}</td>
                         <td class="text-center">
@@ -38,7 +38,7 @@
         </table>
     </div>
     <div class="clearfix">
-        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_payment_new') }}';">Add payment <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_payment_new') }}';">{{ 'payments.add.new'|trans }} <span class="fa fa-plus-circle"></span></button>
     </div>
 </div>
 {% endblock %}

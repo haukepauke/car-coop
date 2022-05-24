@@ -1,0 +1,157 @@
+
+actions: Aktionen
+admin: Administration
+amount: Betrag
+booking:
+  new: Neue Buchung
+  add: 
+    for: Buchung hinzufügen für
+  create: Buchung erstellen
+  edit:
+    for: Buchung bearbeiten für
+  form:
+    startdate: Anfangsdatum
+    enddate: Enddatum
+    title: Beschreibung
+    status: Status
+  calendar: Buchungskalender
+  delete: Buchung löschen
+  update: Buchung aktualisieren
+car:
+  add: Auto hinzufügen
+  create: Auto erstellen
+  form:
+    help:
+      name: Wähle einen guten Namen für Dein Auto
+      licenseplate: Was steht auf dem Nummernschild des Autos (optional)
+      make: Die Modellbezeichnung des Autos (optional)
+      profile:
+        picture: Bitte lade ein Bild im Jpeg, PNG oder GIF Format hoch (optional)
+      vendor: Der Hersteller des Autos (optional)
+    licenseplate: Nummernschild
+    name: Name
+    make: Modellbezeichnung
+    profile:
+      picture: Profilbild
+    vendor: Autohersteller
+    mileageunit: Entfernungsmaß
+  manage: Auto bearbeiten
+  mileage: Tachostand
+  update: Auto aktualisieren
+confirm:
+  email: E-Mail-Adresse bestätigen
+comment: Anmerkungen
+costs: Kosten
+date:
+  date: Datum
+  start: Start Datum
+  end: End Datum
+email: E-Mail 
+end: Ende
+expenses:
+  expenses: Ausgaben
+  for: Ausgaben für
+  form:
+    fuel: Sprit
+    maut: Maut
+    service: Werkstatt/Service
+    other: Anderes
+  name: Bezeichnung
+  type: Ausgabenart
+  edit:
+    update: Ausgabe aktualisieren
+    for: Ausgabe bearbeiten für
+  add:
+    new: Neue Ausgabe
+    add: Ausgabe erstellen
+    for: Neue Ausgabe für
+from: von
+invitation:
+  invite: Benuter*in einladen
+  for: Einladung erstellen für
+  status: Einladungsstatus
+  invited:
+    by: Eingeladen von
+  pending: Offene Einladungen
+log:
+  in: Logge Dich ein
+members: Mitglieder
+money:
+  balance: Kontostand
+  spent: Geld ausgegeben
+password: Passwort
+payments:
+  payments: Zahlungen
+  add:
+    new: Neue Zahlung
+    for: Neue Zahlung für
+    add: Zahlung hinzufügen
+  for: Zahlungen für
+  edit:
+    update: Zahlung aktualisieren
+    for: Zahlung bearbeiten für
+  type: Zahlungsart
+price:
+  per: Preis pro
+  unit: km/mi
+  help:
+    per:
+      unit: Lege den Preis einer Fahrt pro Kilometer/Meile fest.
+start: Start
+status: Status
+user:
+  user: Benutzer*in
+  users: Benutzer*innen
+  calendar:
+    color: Kalenderfarbe
+  driven: gefahren
+  group:
+    group: Benutzungsgruppe
+    new: Neue Gruppe
+    name: Gruppenname
+    help:
+      name: Wähle einen einprägsamen Namen für die Gruppe!
+  groups: Benutzungsgruppen
+  locale: Sprache
+  logged:
+    in:
+      as: Du bist eingeloggt als
+  login: Einloggen
+  logout: Ausloggen
+  manage: User verwalten
+  name: Name
+  of: Benutzer*innen von
+  profile:
+    edit: Profil bearbeiten
+    update: Profil aktualisieren
+    picture: Profilbild
+  register: Registrieren
+  type: Gruppe
+update: Bearbeite
+welcome: Willkommen
+calendar: Kalender
+terms:
+  agree: Nutzungsbedigungen zustimmen
+  must:
+    agree: Du musst unseren Nutzungsbedingungen zustimmen.
+to: an
+trips:
+  trips: Fahrten
+  driven: zurückgelegt
+  logbook: Fahrtenbuch
+  edit:
+    with: Fahrt bearbeiten mit
+    update: Fahrt aktualisieren
+  add:
+    add: Fahrt hinzufügen
+    new: Neue Fahrt
+    with: Neue Fahrt mit
+  type: Typ
+  mileage:
+    start: Tachostand Start
+    end: Tachostand Ende
+remember:
+  me: Erinnere Dich an mich
+sharing:
+  is:
+    caring: Sharing is caring

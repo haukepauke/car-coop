@@ -12,25 +12,37 @@ class TripFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // $trip = $options['data'] ?? null;
-        // $isEdit = $trip && $trip->getId();
-
         $builder
             ->add(
                 'startMileage',
                 null,
-                ['disabled' => true]
+                [
+                    'disabled' => true,
+                    'label' => 'trips.mileage.start',
+                ]
             )
-            ->add('endMileage')
+            ->add(
+                'endMileage',
+                null,
+                [
+                    'label' => 'trips.mileage.end',
+                ]
+            )
             ->add(
                 'startDate',
                 null,
-                ['widget' => 'single_text']
+                [
+                    'widget' => 'single_text',
+                    'label' => 'date.start',
+                ]
             )
             ->add(
                 'endDate',
                 null,
-                ['widget' => 'single_text']
+                [
+                    'widget' => 'single_text',
+                    'label' => 'date.end',
+                ]
             )
             ->add(
                 'type',
@@ -41,6 +53,7 @@ class TripFormType extends AbstractType
                         'Transport' => 'transport',
                         'Workshop/Service' => 'service',
                     ],
+                    'label' => 'trips.type',
                 ]
             )
         ;

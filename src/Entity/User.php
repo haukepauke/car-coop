@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const LOCALES = ['en', 'de'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -64,6 +66,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $profilePicturePath;
+
+    #[ORM\Column(type: 'string', length: 2)]
+    #[Assert\Choice(User::LOCALES)]
+    private $locale;
 
     public function __construct()
     {
@@ -466,6 +472,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProfilePicturePath(?string $profilePicturePath): self
     {
         $this->profilePicturePath = $profilePicturePath;
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }

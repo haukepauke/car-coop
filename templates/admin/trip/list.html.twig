@@ -2,21 +2,21 @@
 
 {% block content_body %}
 <div class="col-xl-12 col-md-8">
-    <h5>Trips</h5>
+    <h5>{{ 'trips.logbook'|trans }}</h5>
     <div class="table-responsive">
         <table class="table">
             <thead class="table-secondary">
                 <tr>
-                    <th class="text-center">User</th>
-                    <th class="text-center">Start Date</th>
-                    <th class="text-center">End Date</th>
-                    <th class="text-center">Start {{ car.milageUnit }}</th>
-                    <th class="text-center">End {{ car. milageUnit }}</th>
-                    <th class="text-center">{{ car.milageUnit }} driven</th>
-                    <th class="text-center">Type</th>
-                    <th class="text-center">Costs</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">{{ 'user.user'|trans }}</th>
+                    <th class="text-center">{{ 'date.start'|trans }}</th>
+                    <th class="text-center">{{ 'date.end'|trans }}</th>
+                    <th class="text-center">{{ 'start'|trans }} {{ car.milageUnit }}</th>
+                    <th class="text-center">{{ 'end'|trans }} {{ car. milageUnit }}</th>
+                    <th class="text-center">{{ car.milageUnit }} {{ 'trips.driven'|trans }}</th>
+                    <th class="text-center">{{ 'trips.type'|trans }}</th>
+                    <th class="text-center">{{ 'costs'|trans }}</th>
+                    <th class="text-center">{{ 'status'|trans }}</th>
+                    <th class="text-center">{{ 'actions'|trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +45,7 @@
         </table>
     </div>
     <div class="clearfix">
-        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_trip_new') }}';">Add trip <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_trip_new') }}';">{{ 'trips.add.new'|trans }} <span class="fa fa-plus-circle"></span></button>
     </div>
 </div>
 {% endblock %}

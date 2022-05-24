@@ -15,7 +15,13 @@ class InvitationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add(
+                'email',
+                null,
+                [
+                    'label' => 'email',
+                ]
+            )
             ->add(
                 'userType',
                 EntityType::class,
@@ -29,6 +35,7 @@ class InvitationFormType extends AbstractType
                             ->setMaxResults(10)
                             ;
                     },
+                    'label' => 'user.group.group',
                 ]
             )
         ;

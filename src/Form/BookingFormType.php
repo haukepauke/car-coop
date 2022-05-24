@@ -17,18 +17,25 @@ class BookingFormType extends AbstractType
             ->add(
                 'startDate',
                 null,
-                ['widget' => 'single_text']
+                [
+                    'widget' => 'single_text',
+                    'label' => 'booking.form.startdate',
+                ]
             )
             ->add(
                 'endDate',
                 null,
-                ['widget' => 'single_text']
+                [
+                    'widget' => 'single_text',
+                    'label' => 'booking.form.enddate',
+                ]
             )
             ->add(
                 'title',
                 TextType::class,
                 [
                     'required' => false,
+                    'label' => 'booking.form.title',
                 ]
             )
             ->add(
@@ -39,6 +46,7 @@ class BookingFormType extends AbstractType
                         'Fixed!' => 'fixed',
                         'Maybe?' => 'maybe',
                     ],
+                    'label' => 'booking.form.status',
                 ]
             )
         ;

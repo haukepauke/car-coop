@@ -2,7 +2,7 @@
 
 {% block content_body %}
 <div class="col-xl-6 col-md-4">
-    <h4>Log in!</h4>
+    <h4>{{ 'log.in'|trans }}!</h4>
    
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -10,13 +10,13 @@
 
         {% if app.user %}
             <div class="mb-3">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                {{ 'user.looged.in.as'|trans }} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'user.logout'|trans }}</a>
             </div>
         {% endif %}
         <form method="post">
-        <label for="inputEmail">Email</label>
+        <label for="inputEmail">{{ 'email'|trans }}</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-        <label for="inputPassword">Password</label>
+        <label for="inputPassword">{{ 'password'|trans }}</label>
         <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
         <input type="hidden" name="_csrf_token"
@@ -27,13 +27,13 @@
 
         <div class="checkbox mb-3">
             <label>
-                <input type="checkbox" name="_remember_me"> Remember me
+                <input type="checkbox" name="_remember_me"> {{ 'remember.me'|trans }}
             </label>
         </div>
 
 
         <button class="btn btn-lg btn-outline-dark my-3" type="submit">
-            Sign in
+            {{ 'log.in'|trans }}
         </button>
     </form>
 </div>

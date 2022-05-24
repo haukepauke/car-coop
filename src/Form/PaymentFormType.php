@@ -20,11 +20,17 @@ class PaymentFormType extends AbstractType
             ->add(
                 'date',
                 null,
-                ['widget' => 'single_text']
+                [
+                    'widget' => 'single_text',
+                    'label' => 'date.date',
+                ]
             )
             ->add(
                 'amount',
-                MoneyType::class
+                MoneyType::class,
+                [
+                    'label' => 'amount',
+                ]
             )
             ->add(
                 'type',
@@ -36,6 +42,7 @@ class PaymentFormType extends AbstractType
                         'Bank transfer' => 'banktransfer',
                         'Other' => 'other',
                     ],
+                    'label' => 'payments.type',
                 ]
             )
             ->add(
@@ -51,6 +58,7 @@ class PaymentFormType extends AbstractType
                             ->orderBy('u.email', 'ASC')
                             ;
                     },
+                    'label' => 'from',
                 ]
             )
             ->add(
@@ -66,6 +74,7 @@ class PaymentFormType extends AbstractType
                             ->orderBy('u.email', 'ASC')
                             ;
                     },
+                    'label' => 'to',
                 ]
             )
             ->add('comment')

@@ -55,6 +55,8 @@ class UserAdminController extends AbstractController
         $invitation = new Invitation();
         $invitation->setCreatedBy($this->getUser());
         $invitation->setStatus('new');
+        $invitation->setHash(bin2hex(random_bytes(80)));
+        $invitation->setCreatedAt(new DateTimeImmutable());
 
         $form = $this->createForm(
             InvitationFormType::class,
@@ -68,9 +70,6 @@ class UserAdminController extends AbstractController
 
             // TODO Check if email address already exists in user table
             // TODO Check if email address already has invites
-
-            $invitation->setHash(bin2hex(random_bytes(80)));
-            $invitation->setCreatedAt(new DateTimeImmutable());
 
             $em->persist($invitation);
             $em->flush();

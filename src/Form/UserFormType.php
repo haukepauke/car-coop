@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,14 +16,43 @@ class UserFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('name')
-            ->add('color', ColorType::class)
+            ->add(
+                'email',
+                null,
+                [
+                    'label' => 'email',
+                ]
+            )
+            ->add(
+                'name',
+                null,
+                [
+                    'label' => 'user.name',
+                ]
+            )
+            ->add(
+                'locale',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'English' => 'en',
+                        'Deutsch' => 'de',
+                    ],
+                    'label' => 'user.locale',
+                ]
+            )
+            ->add(
+                'color',
+                ColorType::class,
+                [
+                    'label' => 'user.calendar.color',
+                ]
+            )
             ->add(
                 'picture',
                 FileType::class,
                 [
-                    'label' => 'Profile picture',
+                    'label' => 'user.profile.picture',
                     'mapped' => false,
                     'required' => false,
                     'constraints' => [

@@ -13,35 +13,49 @@ class ExpenseFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // $expense = $options['data'] ?? null;
-        // $isEdit = $expense && $expense->getId();
-
         $builder
             ->add(
                 'date',
                 null,
-                ['widget' => 'single_text']
+                [
+                    'widget' => 'single_text',
+                    'label' => 'date.date',
+                ]
             )
             ->add(
                 'type',
                 ChoiceType::class,
                 [
                     'choices' => [
-                        'Fuel' => 'fuel',
-                        'Maut' => 'maut',
-                        'Workshop/Service' => 'service',
-                        'Other' => 'other',
+                        'expenses.form.fuel' => 'fuel',
+                        'expenses.form.maut' => 'maut',
+                        'expenses.form.service' => 'service',
+                        'expenses.form.other' => 'other',
                     ],
+                    'label' => 'expenses.type',
                 ]
             )
             ->add(
-                'name'
+                'name',
+                null,
+                [
+                    'label' => 'expenses.name',
+                ]
             )
-            ->add('comment')
+            ->add(
+                'comment',
+                null,
+                [
+                    'label' => 'comment',
+                ]
+            )
 
             ->add(
                 'amount',
-                MoneyType::class
+                MoneyType::class,
+                [
+                    'label' => 'amount',
+                ]
             )
         ;
     }

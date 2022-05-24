@@ -2,19 +2,19 @@
 
 {% block content_body %}
 <div class="col-xl-12 col-md-8">
-    <h4>Users of {{ car.name }}</h4>
+    <h4>{{ 'user.of'|trans }} {{ car.name }}</h4>
     <div>
         <div class="table-responsive">
             <table class="table">
                 <thead class="table-secondary">
                     <tr>
                         <th></th>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Email</th>
-                        <th class="text-center">Calendar color</th>
-                        <th class="text-center">{{ car.milageUnit }} driven</th>
-                        <th class="text-center">Money spent</th>
-                        <th class="text-center">Balance</th>
+                        <th class="text-center">{{ 'user.user'|trans }}</th>
+                        <th class="text-center">{{ 'email'|trans }}</th>
+                        <th class="text-center">{{ 'user.calendar.color'|trans }}</th>
+                        <th class="text-center">{{ car.milageUnit }} {{ 'user.driven'|trans }}</th>
+                        <th class="text-center">{{ 'money.spent'|trans }}</th>
+                        <th class="text-center">{{ 'money.balance'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,21 +40,21 @@
         </div>
     </div>
     <div class="clearfix">
-        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_user_invite') }}';">Invite User <span class="fa fa-plus-circle"></span></button>
+        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_user_invite') }}';">{{ 'invitation.invite'|trans }} <span class="fa fa-plus-circle"></span></button>
     </div>
     {% if invitations|length >0 %}
     <div>
-        <h5>Pending invites</h5>
+        <h5>{{ 'invitation.pending'|trans }}</h5>
         <div class="table-responsive">
             <table class="table">
                 <thead class="table-secondary">
                     <tr>
-                        <th class="text-center">Date</th>
-                        <th class="text-center">Email</th>
-                        <th class="text-center">Type</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Invited by</th>
-                        <th class="text-center">Actions</th>
+                        <th class="text-center">{{ 'date.date'|trans }}</th>
+                        <th class="text-center">{{ 'email'|trans }}</th>
+                        <th class="text-center">{{ 'user.type'|trans }}</th>
+                        <th class="text-center">{{ 'invitation.status'|trans }}</th>
+                        <th class="text-center">{{ 'invitation.invited.by'|trans }}</th>
+                        <th class="text-center">{{ 'actions'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,15 +78,15 @@
     </div>
     {% endif %}
     <div>
-        <h5>Usergroups</h5>
+        <h5>{{ 'user.groups'|trans }}</h5>
         <div class="table-responsive">
             <table class="table">
                 <thead class="table-secondary">
                     <tr>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Price per {{ car.milageUnit }}</th>
-                        <td class="align-middle text-center">Members</td>
-                        <th class="text-center">Actions</th>
+                        <th class="text-center">{{ 'name'|trans }}</th>
+                        <th class="text-center">{{ 'price.per'|trans }} {{ car.milageUnit }}</th>
+                        <th class="align-middle text-center">{{ 'members'|trans }}</th>
+                        <th class="text-center">{{ 'actions'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,7 +110,7 @@
             </table>
         </div>
         <div class="clearfix">
-            <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_usergroup_new') }}';">Add Usergroup <span class="fa fa-plus-circle"></span></button>
+            <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_usergroup_new') }}';">{{ 'user.group.new'|trans }} <span class="fa fa-plus-circle"></span></button>
         </div>
     </div>
 </div>

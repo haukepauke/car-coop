@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     car_picture_directory: '%kernel.project_dir%/public/uploads'
+    app.supported_locales: ['en', 'de']
 
 services:
     # default configuration for services in *this* file
@@ -22,6 +23,8 @@ services:
             - '../src/Kernel.php'
 
     App\EventSubscriber\CalendarSubscriber:
+
+    App\EventSubscriber\UserLocaleSubscriber:
 
     App\Service\FileUploaderService:
         arguments:

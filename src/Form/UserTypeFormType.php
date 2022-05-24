@@ -14,10 +14,30 @@ class UserTypeFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, ['help' => 'Choose a unique name for the group!'])
-            ->add('pricePerUnit', MoneyType::class, ['help' => 'Set the price users of this group pay per km/mile driving the vehicle.'])
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'help' => 'user.group.help.name',
+                    'label' => 'user.group.name',
+                ]
+            )
+            ->add(
+                'pricePerUnit',
+                MoneyType::class,
+                [
+                    'help' => 'price.help.per.unit',
+                    'label' => 'price.per'.' '.'price.unit',
+                ]
+            )
             // TODO: query for users of current car only
-            ->add('users')
+            ->add(
+                'users',
+                null,
+                [
+                    'label' => 'user.users',
+                ]
+            )
         ;
     }
 

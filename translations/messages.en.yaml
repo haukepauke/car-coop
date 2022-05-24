@@ -1,0 +1,34 @@
+
+admin: Admin
+car:
+  manage: Manage car
+for: for
+email: Email
+expenses: Expenses
+log:
+  in: Log in
+payment:
+  type: Zahlart
+payments: Payments
+password: Password
+
+user:
+  logged:
+    in:
+      as: You are logged in as
+  login: Login
+  logout: Logout
+  manage: Manage users
+  profile:
+    edit: Edit profile
+  register: Register
+
+welcome: Welcome
+calendar: Calendar
+trips: Trips
+
+remember:
+  me: Remember me
+sharing:
+  is:
+    caring: Sharing is caring

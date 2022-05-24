@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ 'welcome'|trans({}, 'messages') }}!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -28,22 +28,22 @@
                         <nav class="navbar navbar-expand-sm">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_booking_show') }}">Calendar</a>
+                                        <a class="nav-link text-white" href="{{ path('app_booking_show') }}">{{ 'calendar'|trans }}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_trip_list') }}">Trips</a>
+                                        <a class="nav-link text-white" href="{{ path('app_trip_list') }}">{{ 'trips.trips'|trans }}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_expense_list') }}">Expenses</a>
+                                        <a class="nav-link text-white" href="{{ path('app_expense_list') }}">{{ 'expenses.expenses'|trans }}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_payment_list') }}">Payments</a>
+                                        <a class="nav-link text-white" href="{{ path('app_payment_list') }}">{{ 'payments.payments'|trans }}</a>
                                     </li>
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
+                                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">{{ 'admin'|trans }}</a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{ path('app_car_edit') }}">Manage car</a></li>
-                                            <li><a class="dropdown-item" href="{{ path('app_user_list') }}">Manage users</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_car_edit') }}">{{ 'car.manage'|trans }}</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_user_list') }}">{{ 'user.manage'|trans }}</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -58,18 +58,18 @@
                                     {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ path('app_user_edit') }}">Edit profile</a></li>
-                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_user_edit') }}">{{ 'user.profile.edit'|trans }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'user.logout'|trans }}</a></li>
                                 </ul>
                             </div>
                         </nav>
                         {% else %}
                         <nav class="navbar navbar-expand-sm">
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{ path('app_login') }}">Login</a>
+                                <a class="nav-link text-white" href="{{ path('app_login') }}">{{ 'user.login'|trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{ path('app_register') }}">Register</a>
+                                <a class="nav-link text-white" href="{{ path('app_register') }}">{{ 'user.register'|trans }}</a>
                             </li>
                         </nav>
                         {% endif %}
@@ -101,7 +101,7 @@
             </main>
 
             <footer class="p-2">
-                <p>Sharing is caring!</p>
+                <p>{{ 'sharing.is.caring'|trans }}!</p>
             </footer>
         </div>
     </body>
