@@ -11,8 +11,6 @@ class CarCoopController extends AbstractController
     #[Route('/', name: 'app_homepage')]
     public function homepage(): Response
     {
-        return $this->render(
-            'homepage.html.twig'
-        );
+        return $this->redirectToRoute('app_login');
     }
 }
