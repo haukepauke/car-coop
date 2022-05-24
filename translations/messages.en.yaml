@@ -1,32 +1,155 @@
 
-admin: Admin
+actions: Actions
+admin: Administration
+amount: Amount
+booking:
+  new: New Booking
+  add: 
+    for: Add booking for
+  create: Create Booking
+  edit:
+    for: Edit booking for
+  form:
+    startdate: Start date
+    enddate: End date
+    title: Description
+    status: Status
+  calendar: Booking Calendar
+  delete: Delete Booking
+  update: Update Booking
 car:
-  manage: Manage car
-for: for
-email: Email
-expenses: Expenses
+  add: Add Car
+  create: Create Car
+  form:
+    help:
+      name: Choose a nice name for the car
+      licenseplate: What's on the license palte(optional)
+      make: The make of the car (optional)
+      profile:
+        picture: Upload a picture in Jpeg, PNG oder GIF format (optional)
+      vendor: The vendor of the vehicle (optional)
+    licenseplate: License plate
+    name: Name
+    make: Make
+    profile:
+      picture: Profile pictre
+    vendor: Vendor
+    mileageunit: Mileage unit
+  manage: Edit car
+  mileage: Mileage
+  update: Update car
+confirm:
+  email: Confirm email
+comment: Comments
+costs: Costs
+date:
+  date: Date
+  start: Start date
+  end: End date
+email: Email 
+end: End
+expenses:
+  expenses: Expenses
+  for: Expenses for
+  form:
+    fuel: Fuel
+    maut: Maut
+    service: Workshop/Service
+    other: Other
+  name: Name
+  type: Expense type
+  edit:
+    update: Update expense
+    for: Edit expense for
+  add:
+    new: New expense
+    add: Add expense
+    for: New expense for
+from: from
+invitation:
+  invite: Invite user
+  for: Create invitation for
+  status: Invitation status
+  invited:
+    by: Invited by
+  pending: Pending invitations
 log:
   in: Log in
-payment:
-  type: Zahlart
-payments: Payments
+members: Members
+money:
+  balance: Balance
+  spent: Money spent
 password: Password
-
+payments:
+  payments: Payments
+  add:
+    new: New payment
+    for: New payment for
+    add: Add payment
+  for: Payment for
+  edit:
+    update: Update payment
+    for: Edit payment for
+  type: Payment type
+price:
+  per: Price per
+  unit: km/mi
+  help:
+    per:
+      unit: Set the price per kilometer/mile driven.
+start: Start
+status: Status
 user:
+  user: User
+  users: Users
+  calendar:
+    color: Calendar color
+  driven: driven
+  group:
+    group: User group
+    new: New group
+    name: Group name
+    help:
+      name: Coose a good name for the group!
+  groups: User group
+  locale: Language
   logged:
     in:
-      as: You are logged in as
+      as: Logged in as
   login: Login
   logout: Logout
-  manage: Manage users
+  manage: Manage user
+  name: Name
+  of: Users of
   profile:
     edit: Edit profile
+    update: Update profile
+    picture: Profile picture
   register: Register
-
-welcome: Welcome
+  type: Group
+update: Update
+welcome: Welome
 calendar: Calendar
-trips: Trips
-
+terms:
+  agree: Agree with terms
+  must:
+    agree: You need to agree to our usage terms.
+to: to
+trips:
+  trips: Trips
+  driven: driven
+  logbook: Logbook
+  edit:
+    with: Edit trip with
+    update: Update trip
+  add:
+    add: Add trip
+    new: New trip
+    with: New trip with
+  type: Type
+  mileage:
+    start: Mileage start
+    end: Mileage end
 remember:
   me: Remember me
 sharing:
