@@ -342,4 +342,17 @@ class Car
 
         return $this;
     }
+
+    public function getUsers(): ArrayCollection
+    {
+        $users = new ArrayCollection();
+
+        foreach ($this->getUserTypes() as $userType) {
+            foreach ($userType->getUsers() as $user) {
+                $users->add($user);
+            }
+        }
+
+        return $users;
+    }
 }

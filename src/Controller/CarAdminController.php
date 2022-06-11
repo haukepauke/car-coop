@@ -8,6 +8,7 @@ use App\Repository\CarRepository;
 use App\Repository\ExpenseRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\TripRepository;
+use App\Service\CarChartService;
 use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -108,7 +109,8 @@ class CarAdminController extends AbstractController
         CarRepository $carRepo,
         TripRepository $tripRepo,
         ExpenseRepository $expenseRepo,
-        PaymentRepository $paymentRepo
+        PaymentRepository $paymentRepo,
+        CarChartService $charts
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
@@ -133,6 +135,7 @@ class CarAdminController extends AbstractController
                     'trips' => $trips,
                     'expenses' => $expenses,
                     'payments' => $payments,
+                    'distanceChart' => $charts->getDistanceDrivenByUserChart($car),
                 ]
             );
         }
