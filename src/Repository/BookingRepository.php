@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Booking;
 use App\Entity\Car;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -48,19 +49,23 @@ class BookingRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByCar(Car $car, int $limit)
+    public function findByCar(DateTime $startDate, DateTime $endDate, Car $car, int $limit)
     {
-        return $this->createFindByCarQueryBuilder($car, $limit)
+        return $this->createFindByCarQueryBuilder($startDate, $endDate, $car, $limit)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function createFindByCarQueryBuilder(Car $car, int $limit)
+    public function createFindByCarQueryBuilder(DateTime $startDate, DateTime $endDate, Car $car, int $limit)
     {
         return $this->createQueryBuilder('b')
             ->andWhere('b.car = :val')
+            ->andWhere('b.startDate >= :startDate')
+            ->andWhere('b.endDate <= :endDate')
             ->setParameter('val', $car)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
             ->orderBy('b.startDate', 'ASC')
             ->setMaxResults($limit)
         ;

@@ -127,10 +127,10 @@ class CarAdminController extends AbstractController
         $trips = $tripRepo->findbyCar($carObj);
         $expenses = $expenseRepo->findByCar($carObj);
         $payments = $paymentRepo->findByCar($carObj);
-        $bookings = $bookingRepo->findByCar($carObj, 3);
 
         $firstDayOfYear = new DateTime('first day of January');
         $lastDayOfYear = new DateTime('last day of December');
+        $bookings = $bookingRepo->findByCar(new DateTime(), $lastDayOfYear, $carObj, 3);
         $distanceTravelled = $car->getDistanceTravelled($firstDayOfYear, $lastDayOfYear);
         $moneySpent = $car->getMoneySpent($firstDayOfYear, $lastDayOfYear);
 
