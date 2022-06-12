@@ -17,12 +17,22 @@
         <div class="container-fluid p-0">
             <header>
                 <nav class="navbar navbar-expand-lg bg-dark p-2">
-                    <a class="navbar-brand text-white" href="#">
+                    {%if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                     <a class="navbar-brand text-white" href="{{ path('app_car_show') }}">
                        
+                    {% if car.profilePicturePath|default %}
+                        <img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="50" height="50"/>
+                    {% else %}
                         <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
-
+                    {% endif %} 
+                        <b>{{ car.name }}</b>
+                    </a>
+                    {% else %}
+                    <a class="navbar-brand text-white" href="#">
+                        <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
                         <b>Car Coop</b>
                     </a>
+                    {% endif %}
                     <div class="container-fluid">
                         {%if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <nav class="navbar navbar-expand-sm">

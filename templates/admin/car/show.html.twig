@@ -2,18 +2,9 @@
 
 {% block content_body %}
 <div class="col-xl-12 col-md-8">
-    <h4>
-    {% if car.profilePicturePath|default %}
-        <img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="100" height="100"/>
-    {% else %}
-        <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="100" width="100">
-    {% endif %} 
-    {{ car.name }}
-    </h4>
-
     <div class="container">
-        <div class="row pt-5">
-            <div class="col"><h5>{{ 'car.data'|trans }}</h5></div>
+        <div class="row">
+            <div class="col"><h4>{{ 'car.data'|trans }}</h4></div>
         </div>
          <div class="row">
             <div class="col">{{ 'car.form.licenseplate'|trans}}: {{ car.licensePlate}}</div>
@@ -26,7 +17,7 @@
             <div class="col">{{ 'car.season.spent'|trans}} {{ "now"|date("Y") }}: {{ moneySpent}}€</div>
         </div>
         <div class="row pt-5">
-            <div class="col"><h5>{{ 'car.bookings.next'|trans }}</h5></div>
+            <div class="col"><h4>{{ 'car.bookings.next'|trans }}</h4></div>
         </div>
         <div class="row">
             <div class="col">
@@ -55,7 +46,7 @@
             </div>
         </div>
         <div class="row pt-5">
-            <div class="col"><h5>{{ 'car.statistics'|trans }}</h5></div>
+            <div class="col"><h4>{{ 'car.statistics'|trans }}</h4></div>
         </div>
         <div class="row">
             <div class="col chart">
