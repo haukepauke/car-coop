@@ -83,9 +83,14 @@ invitation:
 log:
   in: Logge Dich ein
 members: Mitglieder
+mileage:
+  per:
+    user: Zurückgelegte Entfernung pro Benutzer*in
 money:
   balance: Kontostand
   spent: Geld ausgegeben
+  user:
+    balance: Kontostand pro Benutzer*in
 password: Passwort
 payments:
   payments: Zahlungen

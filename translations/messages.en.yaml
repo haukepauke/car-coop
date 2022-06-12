@@ -83,9 +83,14 @@ invitation:
 log:
   in: Log in
 members: Members
+mileage:
+  per:
+    user: Travelled distance per user
 money:
   balance: Balance
   spent: Money spent
+  user:
+    balance: Balance per user
 password: Password
 payments:
   payments: Payments

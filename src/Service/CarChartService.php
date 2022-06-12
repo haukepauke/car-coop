@@ -3,16 +3,21 @@
 namespace App\Service;
 
 use App\Entity\Car;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
 class CarChartService
 {
     private ChartBuilderInterface $chartBuilder;
+    private TranslatorInterface $translator;
 
-    public function __construct(ChartBuilderInterface $chartBuilder)
-    {
+    public function __construct(
+        ChartBuilderInterface $chartBuilder,
+        TranslatorInterface $translator
+    ) {
         $this->chartBuilder = $chartBuilder;
+        $this->translator = $translator;
     }
 
     public function getDistanceDrivenByUserChart(Car $car): Chart
@@ -33,7 +38,6 @@ class CarChartService
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Balance',
                     'backgroundColor' => $colors,
                     'data' => $mileAge,
                     'hoverOffset' => 4,
@@ -46,7 +50,7 @@ class CarChartService
             'plugins' => [
                 'title' => [
                     'display' => true,
-                    'text' => 'Mileage per User',
+                    'text' => $this->translator->trans('mileage.per.user'),
                 ],
             ],
         ]);
@@ -74,13 +78,13 @@ class CarChartService
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Balance',
+                    'label' => $this->translator->trans('money.balance'),
                     'backgroundColor' => '#000',
                     'data' => $balance,
                     'hoverOffset' => 4,
                 ],
                 [
-                    'label' => 'Money spent',
+                    'label' => $this->translator->trans('money.spent'),
                     'backgroundColor' => '#999',
                     'data' => $moneySpent,
                     'hoverOffset' => 4,
@@ -92,7 +96,7 @@ class CarChartService
             'plugins' => [
                 'title' => [
                     'display' => true,
-                    'text' => 'Balance per User',
+                    'text' => $this->translator->trans('money.user.balance'),
                 ],
             ],
         ]);
