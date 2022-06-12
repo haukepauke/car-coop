@@ -55,9 +55,14 @@ class CalendarSubscriber implements EventSubscriberInterface
         ;
 
         foreach ($bookings as $booking) {
+            $title = $booking->getUser()->getName();
+            if ($booking->getTitle()) {
+                $title .= ' - '.$booking->getTitle();
+            }
+
             // this create the events with your data (here booking data) to fill calendar
             $bookingEvent = new Event(
-                $booking->getUser()->getName().':'.$booking->getStatus(),
+                $title,
                 $booking->getStartDate(),
                 $booking->getEndDate() // If the end date is null or not defined, a all day event is created.
             );

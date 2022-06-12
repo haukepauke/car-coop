@@ -2,6 +2,7 @@
 actions: Actions
 admin: Administration
 amount: Amount
+banktransfer: Bank transfer
 booking:
   new: New Booking
   add: 
@@ -45,6 +46,7 @@ car:
     spent: Money spent in
   statistics: Statistics
   update: Update car
+cash: Cash
 confirm:
   email: Confirm email
 comment: Comments
@@ -72,7 +74,9 @@ expenses:
     new: New expense
     add: Add expense
     for: New expense for
+fixed: Confirmed
 from: from
+fuel: Fuel
 invitation:
   invite: Invite user
   for: Create invitation for
@@ -82,6 +86,8 @@ invitation:
   pending: Pending invitations
 log:
   in: Log in
+maut: Toll
+maybe: Maybe
 members: Members
 mileage:
   per:
@@ -91,6 +97,7 @@ money:
   spent: Money spent
   user:
     balance: Balance per user
+other: Other
 password: Password
 payments:
   payments: Payments
@@ -103,12 +110,14 @@ payments:
     update: Update payment
     for: Edit payment for
   type: Payment type
+paypal: Paypal
 price:
   per: Price per
   unit: km/mi
   help:
     per:
       unit: Set the price per kilometer/mile driven.
+service: Service
 start: Start
 status: Status
 user:
@@ -167,3 +176,5 @@ remember:
 sharing:
   is:
     caring: Sharing is caring
+transport: Transport
+vacation: Vacation

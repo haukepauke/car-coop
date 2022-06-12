@@ -38,7 +38,7 @@
                     <td>{{ booking.getEndDate()|date("d.m.Y") }}</td>
                     <td>{{ booking.getUser().getName() }}</td>
                     <td>{{ booking.getTitle() }}</td>
-                    <td>{{ booking.getStatus() }}</td>
+                    <td>{{ booking.getStatus()|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

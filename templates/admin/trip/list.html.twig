@@ -29,7 +29,7 @@
                         <td class="text-center">{{ trip.startMileage|number_format(0, ',', '.') }}</td>
                         <td class="text-center">{{ trip.endMileAge|number_format(0, ',', '.') }}</td>
                         <td class="text-center">{{ trip.mileage|number_format(0, ',', '.') }}</td>
-                        <td class="text-center">{{ trip.type }}</td>
+                        <td class="text-center">{{ trip.type|trans }}</td>
                         <td class="text-center">{{ trip.costs|format_currency('EUR', locale='de')}}</td>
                         <td class="text-center">{% if trip.isCompleted() %}<i class="fas fa-square-check text-success"></i>{% else %}<i class="fa-regular fa-square text-muted"></i>{% endif %}</td>
                         <td class="text-center">

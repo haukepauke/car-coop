@@ -23,7 +23,7 @@
                         <td class="text-center">{{ payment.fromUser.name }}</td>
                         <td class="text-center">{{ payment.toUser.name }}</td>
                         <td class="text-center">{{ payment.amount|format_currency('EUR', locale=app.user.locale)}}</td>
-                        <td class="text-center">{{ payment.type}}</td>
+                        <td class="text-center">{{ payment.type|trans }}</td>
                         <td class="text-center">{{ payment.comment }}</td>
                         <td class="text-center">
                             {% if user.email == payment.fromUser.email or user.email == payment.toUser.email %}

@@ -21,7 +21,7 @@
                         <tr>
                             <td class="text-center">{{ expense.user.name }}</td>
                             <td class="text-center">{{ expense.date|date('d.m.Y') }}</td>
-                            <td class="text-center">{{ expense.type }}</td>
+                            <td class="text-center">{{ expense.type|trans }}</td>
                             <td class="text-center">{{ expense.name}}</td>
                             <td class="text-center">{{ expense.amount|format_currency('EUR', locale=app.user.locale )}}</td>
                             <td class="text-center">{{ expense.comment }}</td>
