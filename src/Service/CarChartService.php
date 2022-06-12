@@ -33,9 +33,56 @@ class CarChartService
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => '2022',
+                    'label' => 'Balance',
                     'backgroundColor' => $colors,
                     'data' => $mileAge,
+                    'hoverOffset' => 4,
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'responsive' => false,
+            'plugins' => [
+                'title' => [
+                    'display' => true,
+                    'text' => 'Mileage per User',
+                ],
+            ],
+        ]);
+
+        return $chart;
+    }
+
+    public function getUserBalanceChart(Car $car): Chart
+    {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+        $users = $car->getUsers();
+
+        $labels = [];
+        $colors = [];
+        $balance = [];
+        $moneySpent = [];
+        foreach ($users as $user) {
+            $labels[] = $user->getName();
+            $colors[] = $user->getColor();
+            $balance[] = $user->getBalance();
+            $moneySpent[] = $user->getMoneySpent();
+        }
+
+        $chart->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Balance',
+                    'backgroundColor' => '#000',
+                    'data' => $balance,
+                    'hoverOffset' => 4,
+                ],
+                [
+                    'label' => 'Money spent',
+                    'backgroundColor' => '#999',
+                    'data' => $moneySpent,
                     'hoverOffset' => 4,
                 ],
             ],
@@ -45,7 +92,7 @@ class CarChartService
             'plugins' => [
                 'title' => [
                     'display' => true,
-                    'text' => 'Mileage per User',
+                    'text' => 'Balance per User',
                 ],
             ],
         ]);

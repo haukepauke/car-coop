@@ -19,7 +19,10 @@ booking:
   update: Update Booking
 car:
   add: Add Car
+  bokkings:
+    next: Next bookings
   create: Create Car
+  data: Car data
   form:
     help:
       name: Choose a nice name for the car
@@ -37,6 +40,10 @@ car:
     mileageunit: Mileage unit
   manage: Edit car
   mileage: Mileage
+  season:
+    mileage: Distance travelled in
+    spent: Money spent in
+  statistics: Statistics
   update: Update car
 confirm:
   email: Confirm email

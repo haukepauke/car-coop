@@ -11,15 +11,60 @@
     {{ car.name }}
     </h4>
 
-    <div>
-        <table>
-            <tr>
-                <td>{{ 'car.mileage'|trans}}: </td><td>{{ car.mileage}} {{ car.milageUnit }}</td>
-            </tr>
-            <tr>
-                <td>{{ render_chart(distanceChart) }}</td>
-            </tr>
-        </table>
+    <div class="container">
+        <div class="row pt-5">
+            <div class="col"><h5>{{ 'car.data'|trans }}</h5></div>
+        </div>
+         <div class="row">
+            <div class="col">{{ 'car.form.licenseplate'|trans}}: {{ car.licensePlate}}</div>
+            <div class="col">{{ 'car.form.vendor'|trans}}: {{ car.vendor }}</div>
+            <div class="col">{{ 'car.form.make'|trans}}: {{ car.make }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ 'car.mileage'|trans}}: {{ car.mileage}} {{ car.milageUnit }}</div>
+            <div class="col">{{ 'car.season.mileage'|trans}} {{ "now"|date("Y") }}: {{ distanceTravelled }} {{ car.milageUnit }}</div>
+            <div class="col">{{ 'car.season.spent'|trans}} {{ "now"|date("Y") }}: {{ moneySpent}}€</div>
+        </div>
+        <div class="row pt-5">
+            <div class="col"><h5>{{ 'car.bookings.next'|trans }}</h5></div>
+        </div>
+        <div class="row">
+            <div class="col">
+            <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">{{ 'date.start'|trans }}</th>
+                    <th scope="col">{{ 'date.end'|trans }}</th>
+                    <th scope="col">{{ 'user.user'|trans }}</th>
+                    <th scope="col">{{ 'booking.form.title'|trans }}</th>
+                    <th scope="col">{{ 'booking.form.status'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for booking in bookings %}  
+                <tr>
+                    <td>{{ booking.getStartDate()|date("d.m.Y") }}</td>
+                    <td>{{ booking.getEndDate()|date("d.m.Y") }}</td>
+                    <td>{{ booking.getUser().getName() }}</td>
+                    <td>{{ booking.getTitle() }}</td>
+                    <td>{{ booking.getStatus() }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+            </div>
+        </div>
+        <div class="row pt-5">
+            <div class="col"><h5>{{ 'car.statistics'|trans }}</h5></div>
+        </div>
+        <div class="row">
+            <div class="col chart">
+                {{ render_chart(distanceChart) }}
+            </div>
+             <div class="col chart">
+                {{ render_chart(balanceChart) }}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\UserType;
 use App\Form\CarFormType;
+use App\Repository\BookingRepository;
 use App\Repository\CarRepository;
 use App\Repository\ExpenseRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\TripRepository;
 use App\Service\CarChartService;
 use App\Service\FileUploaderService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -110,6 +112,7 @@ class CarAdminController extends AbstractController
         TripRepository $tripRepo,
         ExpenseRepository $expenseRepo,
         PaymentRepository $paymentRepo,
+        BookingRepository $bookingRepo,
         CarChartService $charts
     ): Response {
         /** @var User $user */
@@ -124,6 +127,12 @@ class CarAdminController extends AbstractController
         $trips = $tripRepo->findbyCar($carObj);
         $expenses = $expenseRepo->findByCar($carObj);
         $payments = $paymentRepo->findByCar($carObj);
+        $bookings = $bookingRepo->findByCar($carObj, 3);
+
+        $firstDayOfYear = new DateTime('first day of January');
+        $lastDayOfYear = new DateTime('last day of December');
+        $distanceTravelled = $car->getDistanceTravelled($firstDayOfYear, $lastDayOfYear);
+        $moneySpent = $car->getMoneySpent($firstDayOfYear, $lastDayOfYear);
 
         // users are only allowed to see their cars
         if ($carObj->hasUser($this->getUser())) {
@@ -135,7 +144,11 @@ class CarAdminController extends AbstractController
                     'trips' => $trips,
                     'expenses' => $expenses,
                     'payments' => $payments,
+                    'bookings' => $bookings,
+                    'distanceTravelled' => $distanceTravelled,
+                    'moneySpent' => $moneySpent,
                     'distanceChart' => $charts->getDistanceDrivenByUserChart($car),
+                    'balanceChart' => $charts->getUserBalanceChart($car),
                 ]
             );
         }

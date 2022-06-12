@@ -19,7 +19,10 @@ booking:
   update: Buchung aktualisieren
 car:
   add: Auto hinzufügen
+  bookings:
+    next: Nächste Buchungen
   create: Auto erstellen
+  data: Daten zum Fahrzeug
   form:
     help:
       name: Wähle einen guten Namen für Dein Auto
@@ -37,6 +40,10 @@ car:
     mileageunit: Entfernungsmaß
   manage: Auto bearbeiten
   mileage: Tachostand
+  season:
+    mileage: Distanz zurückgelegt in
+    spent: Geld ausgegeben in
+  statistics: Statistiken
   update: Auto aktualisieren
 confirm:
   email: E-Mail-Adresse bestätigen

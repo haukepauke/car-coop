@@ -31,3 +31,7 @@ input[type=color]{
 .page-link{
     color: #000;
 }
+
+.chart {
+    /* width: 100px; */
+}

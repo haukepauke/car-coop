@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Booking;
+use App\Entity\Car;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -11,8 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Booking>
  *
- * @method Booking|null find($id, $lockMode = null, $lockVersion = null)
- * @method Booking|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Booking find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Booking findOneBy(array $criteria, array $orderBy = null)
  * @method Booking[]    findAll()
  * @method Booking[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -47,32 +48,21 @@ class BookingRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Booking[] Returns an array of Booking objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByCar(Car $car, int $limit)
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createFindByCarQueryBuilder($car, $limit)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Booking
+    public function createFindByCarQueryBuilder(Car $car, int $limit)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+            ->andWhere('b.car = :val')
+            ->setParameter('val', $car)
+            ->orderBy('b.startDate', 'ASC')
+            ->setMaxResults($limit)
         ;
     }
-    */
 }
