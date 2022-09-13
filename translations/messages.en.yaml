@@ -20,7 +20,7 @@ booking:
   update: Update Booking
 car:
   add: Add Car
-  bokkings:
+  bookings:
     next: Next bookings
   create: Create Car
   data: Car data
