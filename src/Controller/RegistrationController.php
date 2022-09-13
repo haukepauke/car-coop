@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\CarRepository;
 use App\Repository\InvitationRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -74,6 +75,7 @@ class RegistrationController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
         InvitationRepository $inviteRepo,
+        CarRepository $carRepo,
         $hash
     ): Response {
         $invite = $inviteRepo->findOneByHash($hash);
@@ -83,6 +85,9 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_homepage');
         }
         $userType = $invite->getUserType();
+
+        $car = $userType->getCar();
+        $carObj = $carRepo->find($car);
 
         $user = new User();
         $user->addUserType($userType);
@@ -122,6 +127,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'car' => $carObj,
         ]);
     }
 
@@ -136,7 +142,7 @@ class RegistrationController extends AbstractController
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_homepage');
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates

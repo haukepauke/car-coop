@@ -20,11 +20,11 @@
                     {%if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                      <a class="navbar-brand text-white" href="{{ path('app_car_show') }}">
                        
-                    {% if car.profilePicturePath|default %}
-                        <img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="50" height="50"/>
-                    {% else %}
-                        <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
-                    {% endif %} 
+                        {% if car.profilePicturePath|default %}
+                            <img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="50" height="50"/>
+                        {% else %}
+                            <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
+                        {% endif %} 
                         <b>{{ car.name }}</b>
                     </a>
                     {% else %}
