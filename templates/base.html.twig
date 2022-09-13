@@ -17,7 +17,7 @@
         <div class="container-fluid p-0">
             <header>
                 <nav class="navbar navbar-expand-lg bg-dark p-2">
-                    {%if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
                      <a class="navbar-brand text-white" href="{{ path('app_car_show') }}">
                        
                         {% if car.profilePicturePath|default %}
