@@ -39,6 +39,15 @@ class CarAdminController extends AbstractController
             $userType->addUser($this->getUser());
             $em->persist($userType);
 
+            // Set retired usergroup
+            $retiredUserType = new UserType();
+            $retiredUserType->setCar($car);
+            $retiredUserType->setName('Retired');
+            $retiredUserType->setPricePerUnit(0.00);
+            $retiredUserType->setActive(false);
+
+            $em->persist($retiredUserType);
+
             $em->flush();
 
             $this->addFlash('success', 'Car created, Default Usergroup created!');

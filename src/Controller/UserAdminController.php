@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Invitation;
+use App\Entity\User;
 use App\Form\InvitationFormType;
 use App\Form\UserFormType;
 use App\Repository\InvitationRepository;
@@ -138,7 +139,7 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete')]
-    public function delete(EntityManagerInterface $em, Invitation $invite)
+    public function deleteInvite(EntityManagerInterface $em, Invitation $invite): Response
     {
         if ($this->getUser() !== $invite->getCreatedBy()) {
             $this->addFlash('error', 'Invitation was created by another user. You can only delete invites created by yourself.');
@@ -148,6 +149,35 @@ class UserAdminController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'Invitation deleted.');
+
+        return $this->redirectToRoute('app_user_list');
+    }
+
+    #[Route('/admin/user/delete/{user}', name: 'app_user_delete')]
+    public function deleteUser(
+        EntityManagerInterface $em,
+        User $user
+    ): Response {
+        // Do not allow to delete users of other cars and do not allow to delete yourself
+        if ($this->getUser()->getCar() !== $user->getCar() || $this->getUser()->getId() === $user->getId()) {
+            $this->addFlash('error', 'You are not allowed to delete this user.');
+        }
+
+        // Only delete users that did not add any data (trips, payments, etc.), anonymize and deactivate
+        // everyone else
+        if ($user->hasEntries()) {
+            $user->deactivate();
+            $user->anonymize();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'User has entries. Deletion not possible. User deactivated instead.');
+        } else {
+            $em->remove($user);
+            $em->flush();
+
+            $this->addFlash('success', 'User deleted.');
+        }
 
         return $this->redirectToRoute('app_user_list');
     }

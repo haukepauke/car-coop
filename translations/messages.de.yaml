@@ -121,6 +121,7 @@ service: Werkstatt/Service
 start: Start
 status: Status
 user:
+  active: Aktiv
   user: Benutzer*in
   users: Benutzer*innen
   calendar:
@@ -133,6 +134,7 @@ user:
     help:
       name: Wähle einen einprägsamen Namen für die Gruppe!
   groups: Benutzungsgruppen
+  inactive: Inaktiv
   locale: Sprache
   logged:
     in:
@@ -147,6 +149,7 @@ user:
     update: Profil aktualisieren
     picture: Profilbild
   register: Registrieren
+  status: Status
   type: Gruppe
 update: Bearbeite
 welcome: Willkommen

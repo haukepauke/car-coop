@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -490,5 +491,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->locale = $locale;
 
         return $this;
+    }
+
+    public function hasEntries(): bool
+    {
+        if ($this->getExpenses()->count() > 0
+            || $this->getPaymentsMade()->count() > 0
+            || $this->getPaymentsReceived()->count() > 0
+            || $this->getTrips()->count() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function deactivate(): void
+    {
+        // add usertype for deactivated users
+        foreach ($this->getCar()->getUserTypes() as $type) {
+            if (!$type->isActive()) {
+                $this->addUserType($type);
+            }
+        }
+
+        // remove all other user types
+        foreach ($this->getUserTypes() as $type) {
+            if ($type->isActive()) {
+                $this->removeUserType($type);
+            }
+        }
+
+        $nUserTypes = $this->getUserTypes()->count();
+        if (1 !== $nUserTypes) {
+            throw new Exception('Usertype misconfiguration. Expected one user type after user deactivation, found '.$nUserTypes);
+        }
+    }
+
+    public function anonymize(): void
+    {
+        // anonymize email
+        list($first, $last) = explode('@', $this->email);
+        $first = str_replace(substr($first, '3'), str_repeat('x', strlen($first) - 3), $first);
+        $last = explode('.', $last);
+        $last_domain = str_replace(substr($last['0'], '1'), str_repeat('x', strlen($last['0']) - 1), $last['0']);
+        $this->email = $first.'@'.$last_domain.'.'.$last['1'];
+
+        // anonymize name
+        $this->name = str_replace(substr($this->name, '1'), str_repeat('x', strlen($this->name) - 1), $this->name);
+    }
+
+    public function isActive(): bool
+    {
+        foreach ($this->getUserTypes() as $type) {
+            if ($type->isActive()) {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

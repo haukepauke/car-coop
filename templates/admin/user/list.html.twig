@@ -15,6 +15,8 @@
                         <th class="text-center">{{ car.milageUnit }} {{ 'user.driven'|trans }}</th>
                         <th class="text-center">{{ 'money.spent'|trans }}</th>
                         <th class="text-center">{{ 'money.balance'|trans }}</th>
+                        <th class="text-center">{{ 'user.status'|trans }}</th>
+                        <th class="text-center">{{ 'actions'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +35,18 @@
                             <td class="align-middle text-center">{{ user.tripMileage|number_format(0, ',', '.') }}</td>
                             <td class="align-middle text-center">{{ user.moneySpent|format_currency('EUR', locale='de') }}
                             <td class="align-middle text-center">{{ user.balance|format_currency('EUR', locale='de') }}</td>
-                        </tr>
+                            <td class="align-middle text-center">
+                            {% if user.isActive() %}
+                                {{ 'user.active'|trans }}
+                            {% else %}
+                                {{ 'user.inactive'|trans }}
+                            {% endif%}
+                            </td>
+                            <td class="align-middle text-center">
+                            {% if user.isActive() and user.id != app.user.id %}
+                                <a href='{{ path('app_user_delete', {user: user.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                            {% endif %}
+                            </td>
                     {% endfor %}
                 </tbody>
             </table>

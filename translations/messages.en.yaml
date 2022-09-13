@@ -121,6 +121,7 @@ service: Service
 start: Start
 status: Status
 user:
+  active: Active
   user: User
   users: Users
   calendar:
@@ -133,6 +134,7 @@ user:
     help:
       name: Coose a good name for the group!
   groups: User group
+  inactive: Inactive
   locale: Language
   logged:
     in:
@@ -147,6 +149,7 @@ user:
     update: Update profile
     picture: Profile picture
   register: Register
+  status: State
   type: Group
 update: Update
 welcome: Welome

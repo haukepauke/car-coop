@@ -38,6 +38,9 @@ class UserType
     #[ORM\OneToMany(mappedBy: 'userType', targetEntity: Invitation::class, orphanRemoval: true)]
     private $invitations;
 
+    #[ORM\Column(type: 'boolean')]
+    private $active = true;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -139,6 +142,18 @@ class UserType
                 $invitation->getUserType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }
