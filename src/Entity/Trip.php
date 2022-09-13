@@ -50,6 +50,9 @@ class Trip
     #[Assert\Choice(Trip::TYPES)]
     private $type;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private $comment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -171,5 +174,17 @@ class Trip
         }
 
         return false;
+    }
+
+    public function setComment(string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
     }
 }

@@ -141,4 +141,15 @@ class TripAdminController extends AbstractController
 
         return $this->redirectToRoute('app_trip_list');
     }
+
+    #[Route('admin/trip/show/{trip}', name: 'app_trip_show')]
+    public function show(Trip $trip): Response
+    {
+        return $this->render(
+            'admin/trip/show.html.twig',
+            [
+                'trip' => $trip,
+            ]
+        );
+    }
 }

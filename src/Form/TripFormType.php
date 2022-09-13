@@ -55,6 +55,12 @@ class TripFormType extends AbstractType
                     ],
                     'label' => 'trips.type',
                 ]
+            )->add(
+                'comment',
+                null,
+                [
+                    'label' => 'comment',
+                ]
             )
         ;
     }
