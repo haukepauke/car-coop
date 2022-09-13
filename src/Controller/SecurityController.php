@@ -15,6 +15,10 @@ class SecurityController extends AbstractController
         if ($this->getUser()) {
             $this->addFlash('success', 'You are already logged in!');
 
+            if (null === $this->getUser()->getCar()) {
+                return $this->redirectToRoute('app_car_new');
+            }
+
             return $this->redirectToRoute('app_car_show');
         }
 
