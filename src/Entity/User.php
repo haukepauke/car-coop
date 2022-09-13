@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Invitation::class, orphanRemoval: true)]
     private $invitations;
 
-    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Booking::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class, orphanRemoval: true)]
     private $bookings;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
