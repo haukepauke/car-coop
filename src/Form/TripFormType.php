@@ -59,7 +59,7 @@ class TripFormType extends AbstractType
                 'comment',
                 null,
                 [
-                    'label' => 'comment',
+                    'label' => 'trips.comment',
                 ]
             )
         ;

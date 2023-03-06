@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Trip;
 use App\Form\TripFormType;
+use App\Message\Event\TripAddedEvent;
 use App\Repository\TripRepository;
 use App\Service\TripCostCalculatorService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,7 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TripAdminController extends AbstractController
@@ -41,8 +43,12 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/new', name: 'app_trip_new')]
-    public function new(TripCostCalculatorService $tc, EntityManagerInterface $em, Request $request): Response
-    {
+    public function new(
+        TripCostCalculatorService $tc,
+        EntityManagerInterface $em,
+        Request $request,
+        MessageBusInterface $messageBus
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
         $car = $user->getCar();
@@ -68,6 +74,7 @@ class TripAdminController extends AbstractController
             $em->persist($car);
             $em->flush();
 
+            $messageBus->dispatch(new TripAddedEvent($trip->getId()));
             $this->addFlash('success', 'Trip created!');
 
             return $this->redirectToRoute('app_trip_list');
@@ -140,16 +147,5 @@ class TripAdminController extends AbstractController
         }
 
         return $this->redirectToRoute('app_trip_list');
-    }
-
-    #[Route('admin/trip/show/{trip}', name: 'app_trip_show')]
-    public function show(Trip $trip): Response
-    {
-        return $this->render(
-            'admin/trip/show.html.twig',
-            [
-                'trip' => $trip,
-            ]
-        );
     }
 }

@@ -108,6 +108,7 @@ class UserAdminController extends AbstractController
     #[Route('/admin/user/edit', name: 'app_user_edit')]
     public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader): Response
     {
+        /** @var User */
         $user = $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
 

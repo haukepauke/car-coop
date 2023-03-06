@@ -185,6 +185,10 @@ class Trip
 
     public function getComment(): string
     {
+        if (null === $this->comment) {
+            return '';
+        }
+
         return $this->comment;
     }
 }

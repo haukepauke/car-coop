@@ -97,6 +97,7 @@ money:
   spent: Money spent
   user:
     balance: Balance per user
+no: No
 other: Other
 password: Password
 payments:
@@ -127,6 +128,10 @@ user:
   calendar:
     color: Calendar color
   driven: driven
+  events:
+    notify: Receive email notification on events
+    own:
+      notify: Also receive email notification for my own events
   group:
     group: User group
     new: New group
@@ -160,6 +165,7 @@ terms:
     agree: You need to agree to our usage terms.
 to: to
 trips:
+  comment: Comments
   trips: Trips
   driven: driven
   logbook: Logbook
@@ -181,3 +187,4 @@ sharing:
     caring: Sharing is caring
 transport: Transport
 vacation: Vacation
+yes: Yes

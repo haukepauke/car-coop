@@ -72,6 +72,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Choice(User::LOCALES)]
     private $locale;
 
+    #[ORM\Column]
+    private ?bool $notifiedOnEvents = null;
+
+    #[ORM\Column]
+    private ?bool $notifiedOnOwnEvents = null;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
@@ -549,5 +555,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
             return false;
         }
+    }
+
+    public function isNotifiedOnEvents(): ?bool
+    {
+        return $this->notifiedOnEvents;
+    }
+
+    public function setNotifiedOnEvents(bool $notifiedOnEvents): self
+    {
+        $this->notifiedOnEvents = $notifiedOnEvents;
+
+        return $this;
+    }
+
+    public function isNotifiedOnOwnEvents(): ?bool
+    {
+        return $this->notifiedOnOwnEvents;
+    }
+
+    public function setNotifiedOnOwnEvents(bool $notifiedOnOwnEvents): self
+    {
+        $this->notifiedOnOwnEvents = $notifiedOnOwnEvents;
+
+        return $this;
     }
 }

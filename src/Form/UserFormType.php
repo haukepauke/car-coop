@@ -72,6 +72,26 @@ class UserFormType extends AbstractType
                         'class' => 'form-control',
                     ],
                 ]
+            )->add(
+                'notifiedOnEvents',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'yes' => true,
+                        'no' => false,
+                    ],
+                    'label' => 'user.events.notify',
+                ],
+            )->add(
+                'notifiedOnOwnEvents',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'yes' => true,
+                        'no' => false,
+                    ],
+                    'label' => 'user.events.own.notify',
+                ]
             )
         ;
     }

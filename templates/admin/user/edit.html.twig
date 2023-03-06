@@ -27,6 +27,9 @@
             </div>
         </div>
 
+        {{ form_row(userForm.notifiedOnEvents) }}
+        {{ form_row(userForm.notifiedOnOwnEvents) }}
+
         <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.profile.update'|trans }}</button>
     {{ form_end(userForm) }}
 </div>

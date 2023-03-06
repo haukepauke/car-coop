@@ -1,0 +1,30 @@
+<p><b>A Trip has been added with {{ car.name }}</b></p>
+
+<p>
+{{ trip.getUser().getName() }} has added a trip with {{ car.name }}.
+</p>    
+
+<p>
+    <table>
+        <tr>
+            <th>Start date:</th>
+            <td>{{ trip.startDate }}</td>
+        </tr>
+        <tr>
+            <th>End date:</th>
+            <td>{{ trip.endDate }}</td>
+        </tr>
+        <tr>
+            <th>Comments: </th>
+            <td>{{ trip.comments }}</td>
+        </tr>
+    </table>
+</p>
+
+<p>
+   You can see the new trip in the <a href="">trip list</a> of {{ car.name}}.
+</p>
+
+<p>
+    Cheers!
+</p>

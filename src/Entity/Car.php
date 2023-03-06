@@ -357,6 +357,19 @@ class Car
         return $users;
     }
 
+    public function getActiveUsers(): ArrayCollection
+    {
+        $activeUsers = new ArrayCollection();
+        $users = $this->getUsers();
+        foreach ($users as $user) {
+            if ($user->isActive()) {
+                $activeUsers->add($user);
+            }
+        }
+
+        return $activeUsers;
+    }
+
     public function getDistanceTravelled(DateTime $start, DateTime $end): int
     {
         $distance = 0;
