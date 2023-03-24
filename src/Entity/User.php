@@ -6,7 +6,6 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -184,6 +183,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->expenses;
     }
 
+    public function getExpensesByPeriod(\DateTime $start, \DateTime $end)
+    {
+        $expenses = new ArrayCollection();
+        foreach ($this->getExpenses() as $expense) {
+            if ($expense->getDate() >= $start && $expense->getDate() <= $end) {
+                $expenses->add($expense);
+            }
+        }
+
+        return $expenses;
+    }
+
     public function addExpense(Expense $expense): self
     {
         if (!$this->expenses->contains($expense)) {
@@ -283,6 +294,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->paymentsMade;
     }
 
+    public function getPaymentsMadeByPeriod(\DateTime $start, \DateTime $end)
+    {
+        $payments = new ArrayCollection();
+        foreach ($this->getPaymentsMade() as $payment) {
+            if ($payment->getDate() >= $start && $payment->getDate() <= $end) {
+                $payments->add($payment);
+            }
+        }
+
+        return $payments;
+    }
+
     public function addPaymentsMade(Payment $paymentsMade): self
     {
         if (!$this->paymentsMade->contains($paymentsMade)) {
@@ -313,6 +336,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->paymentsReceived;
     }
 
+    public function getPaymentsReceivedByPeriod(\DateTime $start, \DateTime $end)
+    {
+        $payments = new ArrayCollection();
+        foreach ($this->getPaymentsReceived() as $payment) {
+            if ($payment->getDate() >= $start && $payment->getDate() <= $end) {
+                $payments->add($payment);
+            }
+        }
+
+        return $payments;
+    }
+
     public function addPaymentsReceived(Payment $paymentsReceived): self
     {
         if (!$this->paymentsReceived->contains($paymentsReceived)) {
@@ -335,31 +370,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getMoneySpent()
+    /**
+     * TODO implement date time filter for money spent.
+     */
+    public function getMoneySpent(\DateTime $start = null, \DateTime $end = null)
     {
         $amount = 0;
 
-        foreach ($this->getExpenses() as $expense) {
+        if (null === $start) {
+            $start = new \DateTime('2000-01-01');
+        }
+
+        if (null === $end) {
+            $end = new \DateTime();
+        }
+
+        foreach ($this->getExpensesByPeriod($start, $end) as $expense) {
             $amount += $expense->getAmount();
         }
 
-        foreach ($this->paymentsMade as $payment) {
+        foreach ($this->getPaymentsMadeByPeriod($start, $end) as $payment) {
             $amount += $payment->getAmount();
         }
 
-        foreach ($this->getPaymentsReceived() as $payment) {
+        foreach ($this->getPaymentsReceivedByPeriod($start, $end) as $payment) {
             $amount -= $payment->getAmount();
         }
 
         return $amount;
     }
 
-    public function getTripMileage()
+    public function getTripMileage(\DateTime $start = null, \DateTime $end = null): int
     {
         $mileage = 0;
 
+        if (null === $start) {
+            $start = new \DateTime('2000-01-01');
+        }
+
+        if (null === $end) {
+            $end = new \DateTime();
+        }
+
         foreach ($this->getTrips() as $trip) {
-            if ($trip->isCompleted()) {
+            if ($trip->isCompleted() && $trip->getStartDate() > $start && $trip->getEndDate() < $end) {
                 $mileage += $trip->getMileage();
             }
         }
@@ -529,7 +583,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         $nUserTypes = $this->getUserTypes()->count();
         if (1 !== $nUserTypes) {
-            throw new Exception('Usertype misconfiguration. Expected one user type after user deactivation, found '.$nUserTypes);
+            throw new \Exception('Usertype misconfiguration. Expected one user type after user deactivation, found '.$nUserTypes);
         }
     }
 

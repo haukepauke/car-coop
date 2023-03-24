@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CarRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,7 +63,6 @@ class Car
         $this->expenses = new ArrayCollection();
         $this->userTypes = new ArrayCollection();
         $this->payments = new ArrayCollection();
-        $this->invitations = new ArrayCollection();
         $this->bookings = new ArrayCollection();
     }
 
@@ -295,14 +293,6 @@ class Car
     }
 
     /**
-     * @return Collection<int, Invitation>
-     */
-    public function getInvitations(): Collection
-    {
-        return $this->invitations;
-    }
-
-    /**
      * @return Collection<int, Booking>
      */
     public function getBookings(): Collection
@@ -370,7 +360,7 @@ class Car
         return $activeUsers;
     }
 
-    public function getDistanceTravelled(DateTime $start, DateTime $end): int
+    public function getDistanceTravelled(\DateTime $start, \DateTime $end): int
     {
         $distance = 0;
         foreach ($this->trips as $trip) {
@@ -382,9 +372,18 @@ class Car
         return $distance;
     }
 
-    public function getMoneySpent(DateTime $start, DateTime $end): int
+    public function getMoneySpent(\DateTime $start = null, \DateTime $end = null): int
     {
         $moneySpent = 0;
+
+        if (null === $start) {
+            $start = new \DateTime('2000-01-01');
+        }
+
+        if (null === $end) {
+            $end = new \DateTime();
+        }
+
         foreach ($this->expenses as $expense) {
             if ($expense->getDate() > $start && $expense->getDate() < $end) {
                 $moneySpent += $expense->getAmount();

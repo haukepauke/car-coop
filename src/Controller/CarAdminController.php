@@ -11,7 +11,6 @@ use App\Repository\PaymentRepository;
 use App\Repository\TripRepository;
 use App\Service\CarChartService;
 use App\Service\FileUploaderService;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -137,9 +136,9 @@ class CarAdminController extends AbstractController
         $expenses = $expenseRepo->findByCar($carObj);
         $payments = $paymentRepo->findByCar($carObj);
 
-        $firstDayOfYear = new DateTime('first day of January');
-        $lastDayOfYear = new DateTime('last day of December');
-        $bookings = $bookingRepo->findByCar(new DateTime(), $lastDayOfYear, $carObj, 3);
+        $firstDayOfYear = new \DateTime('first day of January');
+        $lastDayOfYear = new \DateTime('last day of December');
+        $bookings = $bookingRepo->findByCar(new \DateTime(), $lastDayOfYear, $carObj, 3);
         $distanceTravelled = $car->getDistanceTravelled($firstDayOfYear, $lastDayOfYear);
         $moneySpent = $car->getMoneySpent($firstDayOfYear, $lastDayOfYear);
 
@@ -156,8 +155,8 @@ class CarAdminController extends AbstractController
                     'bookings' => $bookings,
                     'distanceTravelled' => $distanceTravelled,
                     'moneySpent' => $moneySpent,
-                    'distanceChart' => $charts->getDistanceDrivenByUserChart($car),
-                    'balanceChart' => $charts->getUserBalanceChart($car),
+                    'distanceChart' => $charts->getDistanceDrivenByUserChart($car, $firstDayOfYear, $lastDayOfYear),
+                    'balanceChart' => $charts->getUserBalanceChart($car, $firstDayOfYear, $lastDayOfYear),
                 ]
             );
         }
