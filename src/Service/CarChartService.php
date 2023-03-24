@@ -50,7 +50,7 @@ class CarChartService
             'plugins' => [
                 'title' => [
                     'display' => true,
-                    'text' => $this->translator->trans('mileage.per.user'),
+                    'text' => $this->translator->trans('mileage.per.user').' '.(new \DateTime('now'))->format('Y'),
                 ],
             ],
         ]);
@@ -84,7 +84,7 @@ class CarChartService
                     'hoverOffset' => 4,
                 ],
                 [
-                    'label' => $this->translator->trans('money.spent'),
+                    'label' => $this->translator->trans('money.spent').' '.(new \DateTime('now'))->format('Y'),
                     'backgroundColor' => '#999',
                     'data' => $moneySpent,
                     'hoverOffset' => 4,
