@@ -60,7 +60,7 @@ class TripRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->andWhere('t.car = :val')
             ->setParameter('val', $car)
-            ->orderBy('t.id', 'ASC')
+            ->orderBy('t.endDate', 'DESC')
             ->setMaxResults(100)
         ;
     }

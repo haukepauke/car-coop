@@ -60,7 +60,7 @@ class PaymentRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->andWhere('p.car = :val')
             ->setParameter('val', $car)
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.date', 'DESC')
         ;
     }
 }

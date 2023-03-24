@@ -60,7 +60,7 @@ class ExpenseRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->andWhere('e.car = :val')
             ->setParameter('val', $car)
-            ->orderBy('e.id', 'ASC')
+            ->orderBy('e.date', 'DESC')
         ;
     }
 }
