@@ -35,7 +35,7 @@
                         <td class="text-center">{{ trip.comment }}</td>
                         <td class="text-center">{% if trip.isCompleted() %}<i class="fas fa-square-check text-success"></i>{% else %}<i class="fa-regular fa-square text-muted"></i>{% endif %}</td>
                         <td class="text-center">
-                        {% if remainingItems == 1 or loop.last %}
+                        {% if loop.first %}
                             <a href='{{ path('app_trip_edit', {trip: trip.id}) }}'><i class="fas fa-edit"></i></a>
                             <a href='{{ path('app_trip_delete', {trip: trip.id}) }}'><i class="fas fa-trash text-danger"></i></a>
                         {% endif %}
