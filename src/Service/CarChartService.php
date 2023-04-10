@@ -23,7 +23,7 @@ class CarChartService
     public function getDistanceDrivenByUserChart(Car $car, \DateTime $start = null, \DateTime $end = null): Chart
     {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
-        $users = $car->getUsers();
+        $users = $car->getActiveUsers();
 
         $labels = [];
         $colors = [];
@@ -61,7 +61,7 @@ class CarChartService
     public function getUserBalanceChart(Car $car, \DateTime $start = null, \DateTime $end = null): Chart
     {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
-        $users = $car->getUsers();
+        $users = $car->getActiveUsers();
 
         $labels = [];
         $colors = [];
