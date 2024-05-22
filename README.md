@@ -7,7 +7,7 @@ APP_ENV=prod composer install --no-dev --optimize-autoloader
 
 APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
 
-nvm use v12.22.9
+nvm use v18.20.3
 
 yarn install
 
