@@ -117,6 +117,18 @@
     "pagerfanta/twig": {
         "version": "v3.6.1"
     },
+    "php-http/discovery": {
+        "version": "1.19",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "config/packages/http_discovery.yaml"
+        ]
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -427,6 +439,15 @@
     },
     "symfony/service-contracts": {
         "version": "v3.0.1"
+    },
+    "symfony/stimulus-bundle": {
+        "version": "2.17",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.8",
+            "ref": "9e33a8a3794b603fb4be6c04ee5ecab901ce549e"
+        }
     },
     "symfony/stopwatch": {
         "version": "v6.0.5"

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TripRepository;
+use App\Validator\IsValidTripDate;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,6 +27,7 @@ class Trip
 
     #[ORM\Column(type: 'date')]
     #[Assert\NotBlank()]
+    #[IsValidTripDate()]
     private $startDate;
 
     #[ORM\Column(type: 'date', nullable: true)]
@@ -52,6 +54,17 @@ class Trip
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
+
+    public function __toString()
+    {
+        return $this->getStartDate().
+            ' - '.
+            $this->getEndDate().
+            ': '.
+            $this->getStartMileage().
+            ', '.
+            $this->getEndMileage();
+    }
 
     public function getId(): ?int
     {

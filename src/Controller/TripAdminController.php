@@ -70,6 +70,9 @@ class TripAdminController extends AbstractController
                 $car->setMileage($trip->getEndMileage());
             }
 
+            // Ensure Trip-Dates are after the last trip and start Milage is greater than
+            // end Milage of last trip
+
             $em->persist($trip);
             $em->persist($car);
             $em->flush();
