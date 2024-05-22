@@ -45,6 +45,8 @@ class RegistrationController extends AbstractController
 
             // set random color to start with
             $user->setColor('#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
+            $user->setNotifiedOnEvents(true);
+            $user->setNotifiedOnOwnEvents(false);
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -138,9 +140,12 @@ class RegistrationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        /** @var App\Entity\User */
+        $user = $this->getUser();
+
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
@@ -150,6 +155,12 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
+        if ($user->getUserTypes()->isEmpty()) {
+            // A user without user types is new without car, redirect to the car creation page
+            return $this->redirectToRoute('app_car_new');
+        }
+
+        // All other users are redirected to the Car page
         return $this->redirectToRoute('app_car_show');
     }
 }

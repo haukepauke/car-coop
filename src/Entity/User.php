@@ -373,7 +373,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * TODO implement date time filter for money spent.
      */
-    public function getMoneySpent(\DateTime $start = null, \DateTime $end = null)
+    public function getMoneySpent(?\DateTime $start = null, ?\DateTime $end = null)
     {
         $amount = 0;
 
@@ -400,7 +400,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $amount;
     }
 
-    public function getTripMileage(\DateTime $start = null, \DateTime $end = null): int
+    public function getTripMileage(?\DateTime $start = null, ?\DateTime $end = null): int
     {
         $mileage = 0;
 
@@ -609,6 +609,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
             return false;
         }
+
+        return true;
     }
 
     public function isNotifiedOnEvents(): ?bool
