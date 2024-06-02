@@ -1,15 +1,28 @@
 when@prod:
     sentry:
         dsn: '%env(SENTRY_DSN)%'
+        # this hooks into critical paths of the framework (and vendors) to perform
+        # automatic instrumentation (there might be some performance penalty)
+        # https://docs.sentry.io/platforms/php/guides/symfony/performance/instrumentation/automatic-instrumentation/
+        # tracing:
+        #   enabled: false
+
+    # If you are using Monolog, you also need this additional configuration to log the errors correctly:
+    # https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
         register_error_listener: false # Disables the ErrorListener to avoid duplicated log in sentry
         register_error_handler: false # Disables the ErrorListener, ExceptionListener and FatalErrorListener integrations of the base PHP SDK
 
-#        If you are using Monolog, you also need this additional configuration to log the errors correctly:
-#        https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
+
 
     monolog:
         handlers:
             sentry:
                 type: sentry
                 level: !php/const Monolog\Logger::ERROR
-                hub_id: Sentry\State\HubInterface
+                hub_id: Sentry\State\HubInterface#    
+
+#   Uncomment these lines to register a log message processor that resolves PSR-3 placeholders
+#   https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
+#   services:
+#       Monolog\Processor\PsrLogMessageProcessor:
+#           tags: { name: monolog.processor, handler: sentry }
