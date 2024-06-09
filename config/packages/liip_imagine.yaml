@@ -2,7 +2,7 @@
 liip_imagine:
     # valid drivers options include "gd" or "gmagick" or "imagick"
     # TODO: Using imagick for development due to jpg issues with gd, check if using gd for production might be safer
-    driver: "imagick"
+    driver: "gd"
 
     # resolvers:
     #     default:
