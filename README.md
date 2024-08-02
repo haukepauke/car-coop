@@ -29,4 +29,13 @@ yarn install
 
 
 
+## Development
+Start docker container
+```
+docker compose up -d
+```
 
+Open bash for symfony console
+```
+docker exec -it car-coop-www-1 bash
+```
