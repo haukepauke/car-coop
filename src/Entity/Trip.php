@@ -21,7 +21,7 @@ class Trip
     #[Assert\Positive()]
     private $startMileage;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     #[Assert\Expression('this.getEndMileage() > this.getStartMileage()', message: 'Did you drive backwards?!')]
     private $endMileage;
 
@@ -30,8 +30,8 @@ class Trip
     #[IsValidTripDate()]
     private $startDate;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    #[Assert\Expression('this.getEndDate() === null || this.getEndDate() > this.getStartDate()', message: 'End date has to be empty or to be after the startdate')]
+    #[ORM\Column(type: 'date')]
+    #[Assert\Expression('this.getEndDate() >= this.getStartDate()', message: 'End date has to be after or the same as the startdate')]
     private $endDate;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'trips')]
