@@ -44,6 +44,7 @@ car:
   season:
     mileage: Distanz zurückgelegt in
     spent: Geld ausgegeben in
+      fuel: davon Sprit
   statistics: Statistiken
   update: Auto aktualisieren
 cash: Bar

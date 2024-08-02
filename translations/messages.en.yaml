@@ -44,6 +44,7 @@ car:
   season:
     mileage: Distance travelled in
     spent: Money spent in
+      fuel: Fuel
   statistics: Statistics
   update: Update car
 cash: Cash

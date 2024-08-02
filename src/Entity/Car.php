@@ -372,7 +372,7 @@ class Car
         return $distance;
     }
 
-    public function getMoneySpent(\DateTime $start = null, \DateTime $end = null): int
+    public function getMoneySpent(\DateTime $start = null, \DateTime $end = null, string $type = null): int
     {
         $moneySpent = 0;
 
@@ -385,7 +385,10 @@ class Car
         }
 
         foreach ($this->expenses as $expense) {
-            if ($expense->getDate() > $start && $expense->getDate() < $end) {
+            if (
+                $expense->getDate() > $start && 
+                $expense->getDate() < $end &&
+                ($type === null || $type == $expense->getType())) {
                 $moneySpent += $expense->getAmount();
             }
         }

@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col">{{ 'car.mileage'|trans}}: {{ car.mileage}} {{ car.milageUnit }}</div>
             <div class="col">{{ 'car.season.mileage'|trans}} {{ "now"|date("Y") }}: {{ distanceTravelled }} {{ car.milageUnit }}</div>
-            <div class="col">{{ 'car.season.spent'|trans}} {{ "now"|date("Y") }}: {{ moneySpent}}€</div>
+            <div class="col">{{ 'car.season.spent'|trans}} {{ "now"|date("Y") }}: {{ moneySpent }} € ({{ 'car.season.spent.fuel'|trans }} {{ moneySpentFuel }} €) </div>
         </div>
         <div class="row pt-5">
             <div class="col"><h4>{{ 'car.bookings.next'|trans }}</h4></div>
