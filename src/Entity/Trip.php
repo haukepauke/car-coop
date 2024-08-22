@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TripRepository::class)]
+#[IsValidTripDate()]
 class Trip
 {
     public const TYPES = ['vacation', 'transport', 'service'];
@@ -27,7 +28,6 @@ class Trip
 
     #[ORM\Column(type: 'date')]
     #[Assert\NotBlank()]
-    #[IsValidTripDate()]
     private $startDate;
 
     #[ORM\Column(type: 'date')]

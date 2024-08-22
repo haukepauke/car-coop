@@ -68,10 +68,12 @@ class TripRepository extends ServiceEntityRepository
     /**
      * Get the last trip entered.
      */
-    public function findLast()
+    public function findLast($car)
     {
         return $this
             ->createQueryBuilder('t')
+            ->andWhere('t.car = :val')
+            ->setParameter('val', $car)
             ->orderBy('t.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
