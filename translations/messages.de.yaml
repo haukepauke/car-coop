@@ -22,6 +22,8 @@ car:
   add: Auto hinzufügen
   bookings:
     next: Nächste Buchungen
+  costs:
+    calculated: Errechnete Kosten
   create: Auto erstellen
   data: Daten zum Fahrzeug
   form:

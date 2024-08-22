@@ -22,6 +22,8 @@ car:
   add: Add Car
   bookings:
     next: Next bookings
+  costs:
+    calculated: Calculated costs
   create: Create Car
   data: Car data
   form:

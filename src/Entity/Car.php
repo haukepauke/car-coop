@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CarRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -360,7 +361,7 @@ class Car
         return $activeUsers;
     }
 
-    public function getDistanceTravelled(\DateTime $start, \DateTime $end): int
+    public function getDistanceTravelled(DateTime $start, DateTime $end): int
     {
         $distance = 0;
         foreach ($this->trips as $trip) {
@@ -372,7 +373,7 @@ class Car
         return $distance;
     }
 
-    public function getMoneySpent(\DateTime $start = null, \DateTime $end = null, string $type = null): int
+    public function getMoneySpent(DateTime $start = null, DateTime $end = null, string $type = null): int
     {
         $moneySpent = 0;
 
@@ -394,5 +395,15 @@ class Car
         }
 
         return $moneySpent;
+    }
+
+    public function getCalculatedCosts(DateTime $start, DateTime $end): float {
+        $moneySpent = $this->getMoneySpent($start, $end);
+        $distanceTravelled = $this->getDistanceTravelled($start, $end);
+        if($distanceTravelled > 0){
+            return floatval( $moneySpent / $distanceTravelled);
+        } else {
+            return floatval(0);
+        }
     }
 }

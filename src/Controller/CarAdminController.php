@@ -142,6 +142,7 @@ class CarAdminController extends AbstractController
         $distanceTravelled = $car->getDistanceTravelled($firstDayOfYear, $lastDayOfYear);
         $moneySpent = $car->getMoneySpent($firstDayOfYear, $lastDayOfYear);
         $moneySpentFuel = $car->getMoneySpent($firstDayOfYear, $lastDayOfYear, 'fuel');
+        $calculatedCostsPerUnit = $car->getCalculatedCosts($firstDayOfYear, $lastDayOfYear);
 
         // users are only allowed to see their cars
         if ($carObj->hasUser($this->getUser())) {
@@ -158,7 +159,8 @@ class CarAdminController extends AbstractController
                     'moneySpent' => $moneySpent,
                     'moneySpentFuel' => $moneySpentFuel,
                     'distanceChart' => $charts->getDistanceDrivenByUserChart($car, $firstDayOfYear, $lastDayOfYear),
-                    'balanceChart' => $charts->getUserBalanceChart($car, $firstDayOfYear, $lastDayOfYear)
+                    'balanceChart' => $charts->getUserBalanceChart($car, $firstDayOfYear, $lastDayOfYear),
+                    'calculatedCostsPerUnit' => $calculatedCostsPerUnit
                 ]
             );
         }
