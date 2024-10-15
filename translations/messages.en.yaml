@@ -89,6 +89,7 @@ invitation:
   pending: Pending invitations
 log:
   in: Log in
+  forgot_password: Reset password 
 maut: Toll
 maybe: Maybe
 members: Members

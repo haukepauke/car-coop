@@ -89,6 +89,7 @@ invitation:
   pending: Offene Einladungen
 log:
   in: Logge Dich ein
+  forgot_password: Passwort vergessen?
 maybe: Vielleicht
 maut: Maut
 members: Mitglieder
