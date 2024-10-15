@@ -21,11 +21,9 @@ APP_ENV=prod composer install --no-dev --optimize-autoloader
 
 APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
 
-nvm use 18
+php bin/console doctrine:migrations:migrate
 
-yarn install
-
-./node_modules/.bin/encore production
+php bin/console asset-map:compile
 
 
 

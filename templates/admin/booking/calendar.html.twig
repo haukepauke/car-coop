@@ -15,12 +15,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('calendar') }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-     {{ encore_entry_script_tags('calendar') }}
+    {% block importmap %}{{ importmap(['app', 'calendar']) }}{% endblock %}
+
 
     {# <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
