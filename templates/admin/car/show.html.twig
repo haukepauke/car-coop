@@ -17,7 +17,7 @@
             <div class="col">{{ 'car.season.spent'|trans}} {{ "now"|date("Y") }}: {{ moneySpent }} € ({{ 'car.season.fuel'|trans }} {{ moneySpentFuel }} €) </div>
         </div>
         <div>
-            <div class="col">{{ 'car.costs.calculated'|trans}}: {{ calculatedCostsPerUnit }}/{{ car.milageUnit }}</div>
+            <div class="col">{{ 'car.costs.calculated'|trans}}: {{ calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ car.milageUnit }}</div>
             <div class="col"></div>
             <div class="col"></div>
         </div>
