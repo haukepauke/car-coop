@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * TODO: Refactor class name to UserGroup without breaking doctrine migrations.
@@ -90,6 +91,7 @@ class UserType
 
     public function addUser(User $user): self
     {
+        
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
         }
@@ -157,4 +159,29 @@ class UserType
 
         return $this;
     }
+
+    // #[Assert\Callback()]
+    // public function validate(ExecutionContextInterface $context, $payload) {
+    //     //check if the user is in another group already
+    //     foreach($this->users as $user){
+    //         $groupCount = 0;
+    //         $otherGroup = '';
+    //         foreach($user->getUserTypes() as $type){
+    //             if($user->getCar() === $this->getCar()){
+    //                 $groupCount++;
+    //             }
+    //             if($type != $this){
+    //                 $otherGroup = $type->getName();
+    //             }
+    //         }
+    //         if($groupCount > 1){
+    //             $context->buildViolation('User ' . 
+    //                 $user->getEmail() . 
+    //                 ' can not be in more than one group. The user is also in the group "' . 
+    //                 $otherGroup . '"')
+    //                 ->atPath('user')
+    //                 ->addViolation();
+    //         }
+    //     }
+    //}
 }
