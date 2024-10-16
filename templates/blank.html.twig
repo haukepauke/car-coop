@@ -16,13 +16,15 @@
     <body>
         <div class="container-fluid p-0">
             <main>
-                {% block body %}
-                    <div class="container-lg">
-                        <div class="row p-3">
-                                {% block content_body %}
-                                {% endblock %}
+                
+                    {% block body %}
+                        <div class="container-lg">
+                            <div class="row p-3">
+                                    {% block content_body %}
+                                    {% endblock %}
+                            </div>
                         </div>
-                    </div>
+                    {% endblock %}
                 {% endblock %}
             </main>
         </div>

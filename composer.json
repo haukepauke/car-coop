@@ -13,7 +13,6 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
         "liip/imagine-bundle": "^2.7",
-        "netgen/layouts-standard": "^1.4",
         "pagerfanta/doctrine-orm-adapter": "^3.6",
         "pagerfanta/twig": "^3.6",
         "phpdocumentor/reflection-docblock": "^5.3",
