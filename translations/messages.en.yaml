@@ -184,6 +184,10 @@ trips:
   mileage:
     start: Mileage start
     end: Mileage end
+registration:
+  form: 
+    headline: Registration
+    agreeTerms: I agree to the <a href="https\://car-coop.net/de/terms" target="_blank">Terms &amp; Services</a>.
 remember:
   me: Remember me
 sharing:

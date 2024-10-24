@@ -1,25 +1,66 @@
-{% extends 'base.html.twig' %}
+{% extends 'blank.html.twig' %}
 
 {% block title %}{{ 'user.register'|trans }}{% endblock %}
 
-{% block content_body %}
-<div class="col-xl-6 col-md-4">
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+{% block body %}
+<section class="vh-100" style="background-color: #ddd;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
 
-    <h4>Register</h4>
+            <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="100" width="100">
+            <h3 class="mb-5">Car Coop</h3>
+            <h4>{{ 'registration.form.headline'|trans }}</h4>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.locale) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'password'|trans
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_start(registrationForm) }}
+            <div class="form-group text-start">
+                <label for="email">{{ form_label(registrationForm.email) }}</label>
+                {{ form_widget(registrationForm.email) }}
+                <small id="emailHelp" class="form-text text-muted">{{ form_help(registrationForm.email) }}</small>
+                <div class="form-error">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+            </div>
+            <div class="form-group text-start">
+                <label for="name">{{ form_label(registrationForm.name) }}</label>
+                {{ form_widget(registrationForm.name) }}
+                <small id="nameHelp" class="form-text text-muted">{{ form_help(registrationForm.name) }}</small>
+                <div class="form-error">
+                    {{ form_errors(registrationForm.name) }}
+                </div>
+            </div>
+            <div class="form-group text-start">
+                <label for="locale">{{ form_label(registrationForm.locale) }}</label>
+                {{ form_widget(registrationForm.locale) }}
+                <small id="localeHelp" class="form-text text-muted">{{ form_help(registrationForm.locale) }}</small>
+                <div class="form-error">
+                    {{ form_errors(registrationForm.locale) }}
+                </div>
+            </div>
+            <div class="form-group text-start">
+                <label for="locale">{{ 'password'|trans }}</label>
+                {{ form_widget(registrationForm.plainPassword) }}
+                <small id="localeHelp" class="form-text text-muted">{{ form_help(registrationForm.plainPassword) }}</small>
+                <div class="form-error">
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+            </div>
+            <div class="form-check text-start">
+                {{ form_widget(registrationForm.agreeTerms)}}
+            </div>
 
-        <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.register'|trans }}</button>
-    {{ form_end(registrationForm) }}
-</div>
+                <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.register'|trans }}</button>
+            {{ form_end(registrationForm) }}
+          </div>
+         
+        </div>
+        </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
