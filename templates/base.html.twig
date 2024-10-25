@@ -1,118 +1,137 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-         {% block stylesheets %}
-            {{ ux_controller_link_tags() }}
-        {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        <div class="container-fluid p-0">
-            <header>
-                <nav class="navbar navbar-expand-lg bg-dark p-2">
-                    {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
-                     <a class="navbar-brand text-white" href="{{ path('app_car_show') }}">
-                       
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}
+    {{ ux_controller_link_tags() }}
+    {% endblock %}
+
+    {% block javascripts %}
+    {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+
+<body>
+    <div class="container-fluid">
+        <header>
+            <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                        {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
                         {% if car.profilePicturePath|default %}
-                            <img class="rounded-circle" src={{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }} width="50" height="50"/>
+                        <img src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
+                            class="rounded-circle d-inline-block">
                         {% else %}
-                            <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
-                        {% endif %} 
-                        <b>{{ car.name }}</b>
+                        <img src="{{ asset('/uploads/cars/' ~ car.getProfilePicturePath()) }}" alt="Logo" width="50"
+                            height="50" class="rounded-circle d-inline-block">
+                        {% endif %}
+                        {{ car.name }}
+                        {% else %}
+                        <img src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
+                            class="rounded-circle d-inline-block">
+                        Car Coop
+                        {% endif %}
                     </a>
-                    {% else %}
-                    <a class="navbar-brand text-white" href="#">
-                        <img class="rounded-circle" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
-                        <b>Car Coop</b>
-                    </a>
-                    {% endif %}
-                    <div class="container-fluid">
-                        {%if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        <nav class="navbar navbar-expand-sm">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_booking_show') }}">{{ 'calendar'|trans }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_trip_list') }}">{{ 'trips.trips'|trans }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_expense_list') }}">{{ 'expenses.expenses'|trans }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ path('app_payment_list') }}">{{ 'payments.payments'|trans }}</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">{{ 'admin'|trans }}</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{ path('app_car_edit') }}">{{ 'car.manage'|trans }}</a></li>
-                                            <li><a class="dropdown-item" href="{{ path('app_user_list') }}">{{ 'user.manage'|trans }}</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                        </nav>
-                        <nav class="navbar navbar-expand-sm mx-3">
-                            <div class="nav-item dropdown">
-                                <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown">
-                                    {% if app.user.profilePicturePath| default %}
-                                        <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="50" width="50">
-                                    {% else %}
-                                        <img class="rounded-circle" src="{{ asset('/build/static/default-user.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
-                                    {% endif %}
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            {%if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_booking_show') }}">{{ 'calendar'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_trip_list') }}">{{ 'trips.trips'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_expense_list') }}">{{ 'expenses.expenses'|trans
+                                    }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_payment_list') }}">{{ 'payments.payments'|trans
+                                    }}</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    {{ 'admin'|trans }}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ path('app_user_edit') }}">{{ 'user.profile.edit'|trans }}</a></li>
-                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'user.logout'|trans }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_car_edit') }}">{{ 'car.manage'|trans
+                                            }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_user_list') }}">{{
+                                            'user.manage'|trans }}</a></li>
                                 </ul>
-                            </div>
-                        </nav>
-                        {% else %}
-                        <nav class="navbar navbar-expand-sm">
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="{{ path('app_login') }}">{{ 'user.login'|trans }}</a>
                             </li>
-                            <li>&nbsp;</li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="{{ path('app_register') }}">{{ 'user.register'|trans }}</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    {% if app.user.profilePicturePath| default %}
+                                    <img class="rounded-circle"
+                                        src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath) }}" height="30"
+                                        width="30">
+                                    {% else %}
+                                    <img class="rounded-circle" src="{{ asset('./static/default-user.png') }}"
+                                        height="30" width="30">
+                                    {% endif %}{{ app.user.name }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ path('app_user_edit') }}">{{
+                                            'user.profile.edit'|trans
+                                            }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{
+                                            'user.logout'|trans }}</a></li>
+                                </ul>
                             </li>
-                        </nav>
-                        {% endif %}
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_login') }}">{{ 'user.login'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_register') }}">{{ 'user.register'|trans }}</a>
+                            </li>
+                            {% endif %}
+                        </ul>
                     </div>
-                </nav>
-            </header>
-            <main>
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success border">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+                </div>
+            </nav>
+        </header>
 
-                {% for message in app.flashes('error') %}
-                    <div class="alert alert-danger border">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                
+        <main>
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success border">
+                {{ message }}
+            </div>
+            {% endfor %}
 
-                {% block body %}
-                    <div class="container-lg">
-                        <div class="row p-3">
-                                {% block content_body %}
-                                {% endblock %}
-                        </div>
-                    </div>
-                {% endblock %}
-            </main>
+            {% for message in app.flashes('error') %}
+            <div class="alert alert-danger border">
+                {{ message }}
+            </div>
+            {% endfor %}
 
-            <footer class="p-2">
-                <p>{{ 'sharing.is.caring'|trans }}!</p>
-            </footer>
-        </div>
-    </body>
+
+            {% block body %}
+            <div class="container-lg mt-5">
+                <div class="row">
+                    {% block content_body %}
+                    {% endblock %}
+                </div>
+            </div>
+            {% endblock %}
+        </main>
+
+        <footer class="p-2">
+            <p>{{ 'sharing.is.caring'|trans }}!</p>
+        </footer>
+    </div>
+</body>
+
 </html>

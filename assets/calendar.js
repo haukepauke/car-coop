@@ -4,7 +4,7 @@ import dayGridPlugin from "https://cdn.skypack.dev/@fullcalendar/daygrid@6.1.15"
 import timeGridPlugin from "https://cdn.skypack.dev/@fullcalendar/timegrid@6.1.15";
 import listPlugin from "https://cdn.skypack.dev/@fullcalendar/list@6.1.15";
 
-import "./styles/calendar.css"; // this will create a calendar.css file reachable to 'encore_entry_link_tags'
+import "./styles/calendar.css"; // this will create a calendar.css file
 document.addEventListener("DOMContentLoaded", () => {
     let calendarEl = document.getElementById("calendar-holder");
   

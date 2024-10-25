@@ -26,6 +26,7 @@ class BookingAdminController extends AbstractController
             [
                 'controller_name' => 'BookingAdminController',
                 'car' => $car,
+                'user' => $user,
             ]
         );
     }
@@ -60,6 +61,7 @@ class BookingAdminController extends AbstractController
                 'controller_name' => 'BookingAdminController',
                 'bookingForm' => $form->createView(),
                 'car' => $car,
+                'user' => $user,
             ]
         );
     }
