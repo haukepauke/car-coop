@@ -164,7 +164,7 @@ update: Bearbeite
 welcome: Willkommen
 calendar: Kalender
 terms:
-  agree: Nutzungsbedigungen zustimmen
+  agree: Ich bin mit den <a href="https://car-coop.net/de/terms" target="_blank">Nutzungsbedingungen</a> einverstanden
   must:
     agree: Du musst unseren Nutzungsbedingungen zustimmen.
 to: an
@@ -187,7 +187,6 @@ trips:
 registration:
   form:
     headline: Registrierung
-    agreeTerms: Ich bin mit den <a href="https\://car-coop.net/de/terms" target="_blank">Nutzungsbedingungen</a> einverstanden.
 remember:
   me: Erinnere Dich an mich
 sharing:

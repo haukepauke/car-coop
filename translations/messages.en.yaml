@@ -164,7 +164,7 @@ update: Update
 welcome: Welome
 calendar: Calendar
 terms:
-  agree: Agree with terms
+  agree: I agree to the <a href="https://car-coop.net/en/terms" target="_blank">Terms &amp; Services</a>
   must:
     agree: You need to agree to our usage terms.
 to: to
@@ -187,7 +187,6 @@ trips:
 registration:
   form: 
     headline: Registration
-    agreeTerms: I agree to the <a href="https\://car-coop.net/de/terms" target="_blank">Terms &amp; Services</a>.
 remember:
   me: Remember me
 sharing:

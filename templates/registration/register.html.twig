@@ -51,7 +51,12 @@
                 </div>
             </div>
             <div class="form-check text-start">
-                {{ form_widget(registrationForm.agreeTerms)}}
+                {{ form_widget(
+                    registrationForm.agreeTerms, 
+                    { 
+                        'label_html': true
+                    }
+                )}}
             </div>
 
                 <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.register'|trans }}</button>
