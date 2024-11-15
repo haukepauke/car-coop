@@ -41,6 +41,11 @@ class Booking
     #[Assert\Choice(Booking::STATUS)]
     private $status;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotBlank()]
+    private $editor;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,6 +119,18 @@ class Booking
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getEditor(): ?User
+    {
+        return $this->editor;
+    }
+
+    public function setEditor(?User $editor): self
+    {
+        $this->editor = $editor;
 
         return $this;
     }

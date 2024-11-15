@@ -40,9 +40,17 @@ class BookingAdminController extends AbstractController
 
         $booking = new Booking();
         $booking->setCar($car);
+        $booking->setEditor($user);
         $booking->setUser($user);
 
-        $form = $this->createForm(BookingFormType::class, $booking);
+        $form = $this->createForm(
+            BookingFormType::class, 
+            $booking,
+            [
+                'car' => $car,
+                'user' => $user
+            ]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,11 +80,16 @@ class BookingAdminController extends AbstractController
         $booking = $bookingRepo->find($booking);
         $car = $booking->getCar();
 
-        $form = $this->createForm(BookingFormType::class, $booking);
+        $form = $this->createForm(
+            BookingFormType::class, 
+            $booking,
+            ['car' => $car]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $booking = $form->getData();
+            $booking->setEditor($this->getUser());
             $em->persist($booking);
             $em->flush();
 

@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Trip;
+use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -63,6 +66,22 @@ class TripFormType extends AbstractType
                     'empty_data' => '',
                 ]
             )
+            ->add(
+                'user',
+                EntityType::class,
+                [
+                    'class' => User::class,
+                    'query_builder' => function (EntityRepository $er) use ($options) {
+                        return $er->createQueryBuilder('u')
+                            ->join('u.userTypes', 'ut')
+                            ->andWhere('ut.car = :car')
+                            ->setParameter('car', $options['car'])
+                            ->orderBy('u.email', 'ASC')
+                            ;
+                    },
+                    'label' => 'user.user',
+                ]
+            )
         ;
     }
 
@@ -70,6 +89,7 @@ class TripFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trip::class,
+            'car' => null,
         ]);
     }
 }

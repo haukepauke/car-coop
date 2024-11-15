@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Expense;
+use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -57,6 +60,23 @@ class ExpenseFormType extends AbstractType
                     'label' => 'amount',
                 ]
             )
+
+            ->add(
+                'user',
+                EntityType::class,
+                [
+                    'class' => User::class,
+                    'query_builder' => function (EntityRepository $er) use ($options) {
+                        return $er->createQueryBuilder('u')
+                            ->join('u.userTypes', 'ut')
+                            ->andWhere('ut.car = :car')
+                            ->setParameter('car', $options['car'])
+                            ->orderBy('u.email', 'ASC')
+                            ;
+                    },
+                    'label' => 'user.user',
+                ]
+            )
         ;
     }
 
@@ -64,6 +84,7 @@ class ExpenseFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Expense::class,
+            'car' => null,
         ]);
     }
 }

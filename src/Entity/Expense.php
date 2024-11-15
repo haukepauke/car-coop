@@ -44,6 +44,11 @@ class Expense
     #[Assert\NotBlank()]
     private $user;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
+    private $editor;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +134,18 @@ class Expense
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEditor(): ?User
+    {
+        return $this->editor;
+    }
+
+    public function setEditor(?User $editor): self
+    {
+        $this->editor = $editor;
 
         return $this;
     }

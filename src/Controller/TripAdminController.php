@@ -55,10 +55,16 @@ class TripAdminController extends AbstractController
 
         $trip = new Trip();
         $trip->setStartMileage($car->getMileage());
-        $trip->setUser($this->getUser());
+        $trip->setEditor($user);
+        $trip->setUser($user);
+
         $trip->setCar($car);
 
-        $form = $this->createForm(TripFormType::class, $trip);
+        $form = $this->createForm(
+            TripFormType::class, 
+            $trip,
+            ['car' => $car]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -96,12 +102,14 @@ class TripAdminController extends AbstractController
     public function edit(TripCostCalculatorService $tc, EntityManagerInterface $em, Request $request, Trip $trip): Response
     {
         $car = $trip->getCar();
-        $form = $this->createForm(TripFormType::class, $trip);
+        $form = $this->createForm(
+            TripFormType::class, 
+            $trip,
+            ['car' => $car]
+        );
 
         if ($car->getMileage() !== $trip->getEndMileage() && $trip->isCompleted() && !($form->isSubmitted() && $form->isValid())) {
             $this->addFlash('error', 'Trip editing aborted. Newer trips for this vehicle exist. Only the last trip can be edited.');
-        } elseif ($this->getUser() !== $trip->getUser()) {
-            $this->addFlash('error', 'You can only edit your own trips.');
         } else {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -110,7 +118,7 @@ class TripAdminController extends AbstractController
                 $trip->setCosts($tc->calculateTripCosts($trip));
 
                 $car->setMileage($trip->getEndMileage());
-
+                $trip->setEditor($this->getUser());
                 $em->persist($trip);
                 $em->persist($car);
                 $em->flush();

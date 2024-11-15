@@ -24,7 +24,12 @@
                 {% for trip in pager %}
                 {% set remainingItems = (pager.getNbResults() - ((pager.currentPage - 1) * pager.maxPerPage)) %}
                     <tr>
-                        <td class="text-center">{{ trip.user.name }}</td>
+                        <td class="text-center">
+                            {{ trip.user.name }}
+                            {% if trip.user != trip.editor %}
+                                <br/></br7><span class="small">({{ 'author'|trans }}: {{ trip.editor.name }})</span>
+                            {% endif %}
+                        </td>
                         <td class="text-center">{{ trip.startDate|date('d.m.Y') }}</td>
                         <td class="text-center">{{ trip.endDate|date('d.m.Y') }}</td>
                         <td class="text-center">{{ trip.startMileage|number_format(0, ',', '.') }}</td>

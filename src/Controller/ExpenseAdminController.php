@@ -46,10 +46,15 @@ class ExpenseAdminController extends AbstractController
         $car = $user->getCar();
 
         $expense = new Expense();
-        $expense->setUser($this->getUser());
+        $expense->setEditor($user);
+        $expense->setUser($user);
         $expense->setCar($car);
 
-        $form = $this->createForm(ExpenseFormType::class, $expense);
+        $form = $this->createForm(
+            ExpenseFormType::class, 
+            $expense,
+            ['car' => $car]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,40 +80,38 @@ class ExpenseAdminController extends AbstractController
     public function edit(EntityManagerInterface $em, Request $request, Expense $expense): Response
     {
         $car = $expense->getCar();
-        $form = $this->createForm(ExpenseFormType::class, $expense);
+        $form = $this->createForm(
+            ExpenseFormType::class, 
+            $expense,
+            ['car' => $car]
+        );
 
-        if ($this->getUser() !== $expense->getUser()) {
-            $this->addFlash('error', 'You can only edit your own expenses.');
-        } else {
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $trip = $form->getData();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trip = $form->getData();
+            $trip->setEditor($this->getUser());
+            $em->persist($trip);
+            $em->flush();
 
-                $em->persist($trip);
-                $em->flush();
+            $this->addFlash('success', 'Expense updated!');
 
-                $this->addFlash('success', 'Expense updated!');
-
-                return $this->redirectToRoute('app_expense_list');
-            }
-
-            return $this->render(
-                'admin/expense/edit.html.twig',
-                [
-                    'expenseForm' => $form->createView(),
-                    'car' => $car,
-                ]
-            );
+            return $this->redirectToRoute('app_expense_list');
         }
 
-        return $this->redirectToRoute('app_trip_list', ['car' => $car->getId()]);
+        return $this->render(
+            'admin/expense/edit.html.twig',
+            [
+                'expenseForm' => $form->createView(),
+                'car' => $car,
+            ]
+        );
     }
 
     #[Route('/admin/expense/delete/{expense}', name: 'app_expense_delete')]
     public function delete(EntityManagerInterface $em, Expense $expense)
     {
-        if ($this->getUser() !== $expense->getUser()) {
-            $this->addFlash('error', 'You can only delete your own expenses.');
+        if ($this->getUser() !== $expense->getEditor()) {
+            $this->addFlash('error', 'You can only delete expenses you created or edited.');
 
             return $this->redirectToRoute('app_expense_list');
         }

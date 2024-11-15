@@ -11,7 +11,7 @@
                         <th class="text-center">{{ 'date.date'|trans }}</th>
                         <th class="text-center">{{ 'expenses.type'|trans }}</th>
                         <th class="text-center">{{ 'expenses.name'|trans }}</th>
-                        <th class="text-center">{{ 'amount'| trans }}</th>
+                        <th class="text-center">{{ 'amount'|trans }}</th>
                         <th class="text-center">{{ 'comment'|trans }}</th>
                         <th class="text-center">{{ 'actions'|trans }}</th>
                     </tr>
@@ -19,7 +19,12 @@
                 <tbody>
                     {% for expense in pager %}
                         <tr>
-                            <td class="text-center">{{ expense.user.name }}</td>
+                            <td class="text-center">
+                                {{ expense.user.name }}
+                                {% if expense.user != expense.editor %}
+                                    <br/></br7><span class="small">({{ 'author'|trans }}: {{ expense.editor.name }})</span>
+                                {% endif %}
+                            </td>
                             <td class="text-center">{{ expense.date|date('d.m.Y') }}</td>
                             <td class="text-center">{{ expense.type|trans }}</td>
                             <td class="text-center">{{ expense.name}}</td>

@@ -2,6 +2,7 @@
 actions: Actions
 admin: Administration
 amount: Amount
+author: Author
 banktransfer: Bank transfer
 booking:
   new: New Booking
@@ -60,6 +61,8 @@ date:
   end: End date
 email: Email 
 end: End
+entry:
+  created_by: Created/Last edited by
 expenses:
   expenses: Expenses
   for: Expenses for

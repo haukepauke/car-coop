@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TripRepository::class)]
-#[IsValidTripDate()]
+#[IsValidTripDate(groups: ['create'])]
 class Trip
 {
     public const TYPES = ['vacation', 'transport', 'service'];
@@ -54,6 +54,11 @@ class Trip
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotBlank()]
+    private $editor;
 
     public function __toString()
     {
@@ -203,5 +208,17 @@ class Trip
         }
 
         return $this->comment;
+    }
+
+    public function getEditor(): ?User
+    {
+        return $this->editor;
+    }
+
+    public function setEditor(?User $editor): self
+    {
+        $this->editor = $editor;
+
+        return $this;
     }
 }
