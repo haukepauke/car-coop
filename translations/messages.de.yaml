@@ -64,6 +64,7 @@ end: Ende
 entry:
   created_by: Erstellt/Zuletzt bearbeitet von
 expenses:
+  delete: Ausgabe löschen
   expenses: Ausgaben
   for: Ausgaben für
   form:
@@ -114,6 +115,7 @@ payments:
     for: Neue Zahlung für
     add: Zahlung hinzufügen
   for: Zahlungen für
+  delete: Zahlung löschen
   edit:
     update: Zahlung aktualisieren
     for: Zahlung bearbeiten für
@@ -130,6 +132,8 @@ start: Start
 status: Status
 user:
   active: Aktiv
+  retire:
+    short: Deaktivieren
   user: Benutzer*in
   users: Benutzer*innen
   calendar:
@@ -143,8 +147,11 @@ user:
     group: Benutzungsgruppe
     new: Neue Gruppe
     name: Gruppenname
+    admin: Administrator*in
+    delete: Gruppe löschen
     help:
       name: Wähle einen einprägsamen Namen für die Gruppe!
+      admin: Sind User dieser Gruppe Administrato*innen?
   groups: Benutzungsgruppen
   inactive: Inaktiv
   locale: Sprache
@@ -174,6 +181,7 @@ to: an
 trips:
   trips: Fahrten
   comment: Anmerkungen
+  delete: Fahrt löschen
   driven: zurückgelegt
   logbook: Fahrtenbuch
   edit:

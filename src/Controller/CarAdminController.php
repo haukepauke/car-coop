@@ -36,6 +36,8 @@ class CarAdminController extends AbstractController
             $userType->setName('Crew');
             $userType->setPricePerUnit(0.30);
             $userType->addUser($this->getUser());
+            $userType->setAdmin(true);
+            $userType->setFixed(true);
             $em->persist($userType);
 
             // Set retired usergroup
@@ -44,6 +46,7 @@ class CarAdminController extends AbstractController
             $retiredUserType->setName('Retired');
             $retiredUserType->setPricePerUnit(0.00);
             $retiredUserType->setActive(false);
+            $retiredUserType->setFixed(true);
 
             $em->persist($retiredUserType);
 
@@ -165,4 +168,18 @@ class CarAdminController extends AbstractController
             );
         }
     }
+
+    // #[Route('/admin/car/delete', name: 'app_car_delete')]
+    // public function delete(EntityManagerInterface $em, Request $request): Response
+    // {
+    //     //$car = $this->getUser()->getCar();
+
+    //     //Show user message that this action will delete the car and all related data
+    //     //Show message that all associated accounts will be deleted
+    //     //Optional Feature: Checkbox: Send data export via email (Format?) 
+    //     //Checkbox: Really delete user account?  
+
+    //     // $em->remove($car);
+    //     // $em->flush();
+    // }
 }

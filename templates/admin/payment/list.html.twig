@@ -26,10 +26,7 @@
                         <td class="text-center">{{ payment.type|trans }}</td>
                         <td class="text-center">{{ payment.comment }}</td>
                         <td class="text-center">
-                            {% if user.email == payment.fromUser.email or user.email == payment.toUser.email %}
-                                <a href='{{ path('app_payment_edit', {payment: payment.id}) }}'><i class="fas fa-edit"></i></a>
-                                <a href='{{ path('app_payment_delete', {payment: payment.id}) }}'><i class="fas fa-trash text-danger"></i></a>
-                            {% endif %}
+                            <a href='{{ path('app_payment_edit', {payment: payment.id}) }}' class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

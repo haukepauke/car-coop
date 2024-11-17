@@ -133,6 +133,7 @@ class TripAdminController extends AbstractController
                 [
                     'tripForm' => $form->createView(),
                     'car' => $car,
+                    'trip' => $trip,
                 ]
             );
         }

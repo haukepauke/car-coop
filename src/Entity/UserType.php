@@ -42,6 +42,12 @@ class UserType
     #[ORM\Column(type: 'boolean')]
     private $active = true;
 
+    #[ORM\Column(type: 'boolean')]
+    private $admin = true;
+
+    #[ORM\Column(type: 'boolean')]
+    private $fixed = false;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -156,6 +162,30 @@ class UserType
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(bool $admin): self
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    public function isFixed(): bool
+    {
+        return $this->fixed;
+    }
+
+    public function setFixed(bool $fixed): self
+    {
+        $this->fixed = $fixed;
 
         return $this;
     }

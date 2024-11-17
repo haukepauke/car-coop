@@ -8,6 +8,7 @@
         {{ form_widget(expenseForm) }}
 
         <button type="submit" class="btn btn-outline-dark my-3">{{ 'expenses.edit.update'|trans }}</button>
+        <a href="{{ path('app_expense_delete', {expense: expense.id}) }}" class="btn btn-outline-danger my-3">{{ 'expenses.delete'|trans }} <i class="fas fa-trash text-danger"></i></a>
     {{ form_end(expenseForm) }}
 </div>
 {% endblock %}

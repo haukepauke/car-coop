@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,6 +37,15 @@ class UserTypeFormType extends AbstractType
                 [
                     'help' => 'price.help.per.unit',
                     'label' => 'price.per'.' '.'price.unit',
+                ]
+            )
+            ->add(
+                'admin',
+                CheckboxType::class,
+                [
+                    'help' => 'user.group.help.admin',
+                    'label' => 'user.group.admin',
+                    'required' => false
                 ]
             )
             //TODO Prohibit deletion of users from group, use move form instead

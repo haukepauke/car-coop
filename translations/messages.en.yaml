@@ -64,6 +64,7 @@ end: End
 entry:
   created_by: Created/Last edited by
 expenses:
+  delete: Delete Expense
   expenses: Expenses
   for: Expenses for
   form:
@@ -114,6 +115,7 @@ payments:
     for: New payment for
     add: Add payment
   for: Payment for
+  delete: Delete Payment
   edit:
     update: Update payment
     for: Edit payment for
@@ -130,6 +132,8 @@ start: Start
 status: Status
 user:
   active: Active
+  retire:
+    short: Deactivate
   user: User
   users: Users
   calendar:
@@ -143,8 +147,11 @@ user:
     group: User group
     new: New group
     name: Group name
+    admin: Admin
+    delete: Delete group
     help:
-      name: Coose a good name for the group!
+      name: Choose a good name for the group!
+      admin: Are users of this group admins?
   groups: User group
   inactive: Inactive
   locale: Language
@@ -174,6 +181,7 @@ to: to
 trips:
   comment: Comments
   trips: Trips
+  delete: Delete trip
   driven: driven
   logbook: Logbook
   edit:

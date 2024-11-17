@@ -88,11 +88,6 @@ class PaymentAdminController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        if ($payment->getFromUser() !== $user && $payment->getToUser() !== $user) {
-            $this->addFlash('error', 'You can only edit payments, you are involved in.');
-
-            return $this->redirectToRoute('app_payment_list');
-        }
         $car = $payment->getCar();
         $form = $this->createForm(
             PaymentFormType::class,
@@ -119,6 +114,7 @@ class PaymentAdminController extends AbstractController
             [
                 'paymentForm' => $form->createView(),
                 'car' => $car,
+                'payment' => $payment,
             ]
         );
 

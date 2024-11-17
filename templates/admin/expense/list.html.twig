@@ -31,8 +31,7 @@
                             <td class="text-center">{{ expense.amount|format_currency('EUR', locale=app.user.locale )}}</td>
                             <td class="text-center">{{ expense.comment }}</td>
                             <td class="text-center">
-                                <a href='{{ path('app_expense_edit', {expense: expense.id}) }}'><i class="fas fa-edit"></i></a>
-                                <a href='{{ path('app_expense_delete', {expense: expense.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                                <a href='{{ path('app_expense_edit', {expense: expense.id}) }}' class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

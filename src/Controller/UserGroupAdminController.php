@@ -73,6 +73,7 @@ class UserGroupAdminController extends AbstractController
             [
                 'usergroupForm' => $form->createView(),
                 'car' => $carObj,
+                'usergroup' => $usergroup,
             ]
         );
 
@@ -85,7 +86,7 @@ class UserGroupAdminController extends AbstractController
         $car = $usergroup->getCar();
 
         // only allow to delete groups without users
-        if (0 === count($usergroup->getUsers())) {
+        if (0 === count($usergroup->getUsers()) && !$usergroup->isFixed()) {
             $em->remove($usergroup);
             $em->flush();
 

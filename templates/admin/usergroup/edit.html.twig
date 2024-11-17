@@ -8,6 +8,9 @@
         {{ form_widget(usergroupForm) }}
 
         <button type="submit" class="btn btn-outline-dark my-3">Edit Usergroup</button>
+        {% if (usergroup.users|length == 0 and not usergroup.isFixed()) %}
+            <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}' class="btn btn-outline-danger my-3">{{ 'user.group.delete'|trans }} <i class="fas fa-trash text-danger"></i></a>
+        {% endif %}
     {{ form_end(usergroupForm) }}
 </div>
 {% endblock %}

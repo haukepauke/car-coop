@@ -103,6 +103,7 @@ class ExpenseAdminController extends AbstractController
             [
                 'expenseForm' => $form->createView(),
                 'car' => $car,
+                'expense' => $expense,
             ]
         );
     }
