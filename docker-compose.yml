@@ -1,14 +1,16 @@
 services:
     www:
         build: .
-        networks:
-            - default
         ports:
             - 8080:80
         environment:
             APACHE_DOCUMENT_ROOT: /var/www/html/public/
         volumes:
             - .:/var/www/html
+        networks:
+            - backend
+        depends_on:
+            - db 
     db:
         image: mariadb:10.4
         ports: 
@@ -21,7 +23,7 @@ services:
         volumes:
             - persistent:/var/lib/mysql
         networks:
-            - default
+            - backend
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         links: 
@@ -34,6 +36,10 @@ services:
             MYSQL_ROOT_PASSWORD: carcoop
         logging:
             driver: none
+        networks:
+            - backend
+        depends_on:
+            - db 
     mailhog:
         image: mailhog/mailhog
         ports:
@@ -41,6 +47,10 @@ services:
             - 8025:8025
         logging:
             driver: none
+        networks:
+            - backend
 
 volumes:
     persistent:
+networks:
+    backend:

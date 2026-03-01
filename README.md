@@ -50,4 +50,4 @@ composer install
 php bin/console doctrine:migrations:migrate
 ```
 
-You can access the dev website via https://localhost:8080/
+You can access the dev website via http://localhost:8080/en/register
