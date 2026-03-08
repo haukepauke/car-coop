@@ -17,7 +17,7 @@ The software is used on the website [car-coop.net](https://car-coop.net). You ca
 
 ## Production Deployment
 
-To run and update the app in a production environment, set up a VM with a webserver of your choice, with PHP8.1 or later (see the Dockerfile and docker-compose.yml file for a working configuration).
+To run and update the app in a production environment, set up a VM with a webserver of your choice, with PHP8.3 or later (see the Dockerfile and docker-compose.yml file for a working configuration).
 
 After cloning this repository to the VMs working directory that you will serve via the webserver, change to that directory and run the following commands from the command line:
 
