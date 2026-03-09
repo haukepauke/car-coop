@@ -36,6 +36,12 @@ input[type=color]{
     left: 0px;
 }
 
+.alert {
+    margin-top: 60px;
+    position: relative;
+    z-index: 1000;
+}
+
 
 #head {
   background-color: #000;

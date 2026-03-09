@@ -36,6 +36,11 @@ class RegistrationController extends AbstractController
     )]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // user is already authenticated: redirect them to their target page instead
+            $this->addFlash('error', 'User already logged in!');
+            return $this->redirectToRoute('app_car_show');
+        }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
