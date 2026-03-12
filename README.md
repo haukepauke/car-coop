@@ -31,6 +31,25 @@ php bin/console doctrine:migrations:migrate
 php bin/console asset-map:compile
 ```
 
+These commands need to be run after pulling updated code as well. 
+
+### Running the worker process via supervisor
+For using the messenger component for async processing of tasks, a worker process needs to be run. This can be done using supervisor. You will find an example configuration file for supervisor in the deploy/supervisor-folder in this project. After installing supervisor copy the file to the supervisor configuration folder of your server (f.e. /etc/supervisor/conf.d/). Change the path configuration so that it points to the root folder of this project on your server.
+
+Then run the following commands:
+```
+supervisorctl reread
+supervisorctl update
+supervisorctl start car-coop-messenger
+```
+
+
+In case you updated the code base you will also need to restart the supervisor process, so the worker runs on the most recent version of the code:
+
+```
+supervisorctl restart car-coop-messenger
+```
+
 
 ## Development
 In the working directory start the docker containers
