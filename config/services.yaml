@@ -6,6 +6,8 @@
 parameters:
     car_picture_directory: '%kernel.project_dir%/public/uploads'
     app.supported_locales: ['en', 'de']
+    app.mailer_from_email: 'webmaster@car-coop.net'
+    app.mailer_from_name: 'Car Coop Mail Bot'
 
 services:
     # default configuration for services in *this* file
@@ -29,6 +31,11 @@ services:
     App\Service\FileUploaderService:
         arguments:
             $targetDirectory: '%car_picture_directory%'
+
+    App\MessageHandler\Event\InformUserWhenTripAdded:
+        arguments:
+            $mailerFromEmail: '%app.mailer_from_email%'
+            $mailerFromName: '%app.mailer_from_name%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
