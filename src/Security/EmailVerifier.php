@@ -2,12 +2,16 @@
 
 namespace App\Security;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\InvalidSignatureException;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\WrongEmailVerifyException;
+
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class EmailVerifier
@@ -28,7 +32,8 @@ class EmailVerifier
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
             $user->getId(),
-            $user->getEmail()
+            $user->getEmail(),
+            ['id' => $user->getId()]
         );
 
         $context = $email->getContext();
@@ -44,13 +49,31 @@ class EmailVerifier
     /**
      * @throws VerifyEmailExceptionInterface
      */
-    public function handleEmailConfirmation(Request $request, UserInterface $user): void
-    {
-        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+    public function handleEmailConfirmation(Request $request, UserRepository $userRepository): UserInterface
+    {   
+        $id = $request->query->get('id');
 
+        if (null === $id) {
+            throw new InvalidSignatureException("User ID not known");
+        }
+
+        $user = $userRepository->find($id);
+
+        if (null === $user) {
+            throw new InvalidSignatureException("User not known");
+        }
+
+        try{
+            $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request,$user->getId(), $user->getEmail());
+        } catch (VerifyEmailExceptionInterface $e) {
+            throw new WrongEmailVerifyException("Verification failed!");
+        }
+        
         $user->setIsVerified(true);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        return $user;
     }
 }

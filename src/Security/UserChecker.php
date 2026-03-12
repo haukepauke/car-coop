@@ -15,6 +15,11 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
+        if(!$user->isVerified()) {
+            // the message passed to this exception is meant to be displayed to the user
+            throw new CustomUserMessageAccountStatusException('Please verify your email address.');
+        }
+
         if (!$user->isActive()) {
             // the message passed to this exception is meant to be displayed to the user
             throw new CustomUserMessageAccountStatusException('Your user account has been deactivated.');
