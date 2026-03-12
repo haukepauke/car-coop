@@ -59,8 +59,15 @@ date:
   date: Date
   start: Start date
   end: End date
-email: Email 
+email: Email
 end: End
+event_email:
+  trip:
+    added: Trip log entry added
+    added_with: A trip has been added with %car%
+    added_by: "%user% has added a trip with %car%."
+    see_in_logbook: "You can see the new trip in the %link% of %car%."
+  cheers: Cheers!
 entry:
   created_by: Created/Last edited by
 expenses:

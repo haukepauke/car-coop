@@ -59,10 +59,17 @@ date:
   date: Datum
   start: Start Datum
   end: End Datum
-email: E-Mail 
+email: E-Mail
 end: Ende
 entry:
   created_by: Erstellt/Zuletzt bearbeitet von
+event_email:
+  trip:
+    added: Fahrtenbucheintrag hinzugefügt
+    added_with: Eine Fahrt wurde hinzugefügt mit %car%
+    added_by: "%user% hat eine Fahrt mit %car% hinzugefügt."
+    see_in_logbook: "Die neue Fahrt ist im %link% von %car% zu sehen."
+  cheers: Viele Grüße!
 expenses:
   delete: Ausgabe löschen
   expenses: Ausgaben

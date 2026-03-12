@@ -6,6 +6,7 @@ use App\Message\Event\TripAddedEvent;
 use App\Repository\TripRepository;
 use App\Service\EventMailerService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
 
@@ -16,23 +17,26 @@ class InformUserWhenTripAdded
     private TripRepository $tr;
     private string $mailerFromEmail;
     private string $mailerFromName;
+    private LoggerInterface $logger;
 
-    public function __construct(EventMailerService $mailer, TripRepository $tr, string $mailerFromEmail, string $mailerFromName)
+    public function __construct(EventMailerService $mailer, TripRepository $tr, string $mailerFromEmail, string $mailerFromName, LoggerInterface $logger)
     {
         $this->mailer = $mailer;
         $this->tr = $tr;
         $this->mailerFromEmail = $mailerFromEmail;
         $this->mailerFromName = $mailerFromName;
+        $this->logger = $logger;
     }
 
     public function __invoke(TripAddedEvent $event)
     {
+        $this->logger->info('Processing TripAddedEvent', ['tripId' => $event->getTripId()]);
         $trip = $this->tr->find($event->getTripId());
         $car = $trip->getCar();
         $users = $car->getActiveUsers();
 
         $email = (new TemplatedEmail())
-            ->subject('email.trip.added')
+            ->subject('event_email.trip.added')
             ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
             ->htmlTemplate('event/email/trip.added.html.twig')
             ->context([

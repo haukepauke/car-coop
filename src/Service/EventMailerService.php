@@ -2,22 +2,54 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Translation\LocaleSwitcher;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EventMailerService
 {
     private MailerInterface $mailer;
+    private LoggerInterface $logger;
+    private LocaleSwitcher $localeSwitcher;
+    private TranslatorInterface $translator;
 
-    public function __construct(MailerInterface $mailer)
+    public function __construct(MailerInterface $mailer, LoggerInterface $logger, LocaleSwitcher $localeSwitcher, TranslatorInterface $translator)
     {
         $this->mailer = $mailer;
+        $this->logger = $logger;
+        $this->localeSwitcher = $localeSwitcher;
+        $this->translator = $translator;
     }
 
-    public function sendMails(ArrayCollection $users, TemplatedEmail $email)
+    public function sendMails(ArrayCollection $users, TemplatedEmail $email): void
     {
-        // get all Users that have subscribed to events
-        // send mails
+        $this->logger->info('sendMails called', ['users' => $users->toArray()]);
+
+        /** @var User $user */
+        foreach ($users as $user) {
+            if (!$user->isNotifiedOnEvents()) {
+                $this->logger->info('Skipping user, isNotifiedOnEvents is false', ['user' => $user->getEmail()]);
+                continue;
+            }
+
+            $address = new Address($user->getEmail(), $user->getName());
+            $this->logger->info('Sending mail', ['address' => $user->getEmail() . " " . $user->getName()]);
+
+            $translatedSubject = $this->translator->trans($email->getSubject(), [], null, $user->getLocale());
+
+            $userEmail = (clone $email)
+                ->to($address)
+                ->subject($translatedSubject)
+                ->context(array_merge($email->getContext(), ['locale' => $user->getLocale()]));
+
+            $this->localeSwitcher->runWithLocale($user->getLocale(), function () use ($userEmail): void {
+                $this->mailer->send($userEmail);
+            });
+        }
     }
 }
