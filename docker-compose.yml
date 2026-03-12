@@ -40,6 +40,18 @@ services:
             - backend
         depends_on:
             - db 
+    messenger:
+        build: .
+        command: php bin/console messenger:consume async --time-limit=10
+        restart: always
+        environment:
+            APACHE_DOCUMENT_ROOT: /var/www/html/public/
+        volumes:
+            - .:/var/www/html
+        networks:
+            - backend
+        depends_on:
+            - db
     mailhog:
         image: mailhog/mailhog
         ports:
