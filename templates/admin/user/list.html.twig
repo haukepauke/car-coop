@@ -16,6 +16,8 @@
                         <th class="text-center">{{ 'money.spent'|trans }}</th>
                         <th class="text-center">{{ 'money.balance'|trans }}</th>
                         <th class="text-center">{{ 'user.status'|trans }}</th>
+                        <th class="text-center">{{ 'user.first_login'|trans }}</th>
+                        <th class="text-center">{{ 'user.last_login'|trans }}</th>
                         <th class="text-center">{{ 'actions'|trans }}</th>
                     </tr>
                 </thead>
@@ -42,6 +44,8 @@
                                 {{ 'user.inactive'|trans }}
                             {% endif%}
                             </td>
+                            <td class="align-middle text-center">{{ user.firstLogin ? user.firstLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
+                            <td class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
                             <td class="align-middle text-center">
                             {% if user.isActive() and user.id != app.user.id %}
                                 <a href='{{ path('app_user_delete', {user: user.id}) }}' class="btn btn-outline-danger">{{ 'user.retire.short'|trans }} <i class="fas fa-trash text-danger"></i></a>

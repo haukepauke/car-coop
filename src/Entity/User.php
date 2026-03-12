@@ -77,6 +77,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $notifiedOnOwnEvents = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $firstLogin = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $lastLogin = null;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
@@ -633,6 +639,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNotifiedOnOwnEvents(bool $notifiedOnOwnEvents): self
     {
         $this->notifiedOnOwnEvents = $notifiedOnOwnEvents;
+
+        return $this;
+    }
+
+    public function getFirstLogin(): ?\DateTimeInterface
+    {
+        return $this->firstLogin;
+    }
+
+    public function setFirstLogin(\DateTimeInterface $firstLogin): self
+    {
+        $this->firstLogin = $firstLogin;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }

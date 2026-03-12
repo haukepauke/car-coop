@@ -166,6 +166,8 @@ user:
     in:
       as: Logged in as
   login: Login
+  first_login: First login
+  last_login: Last login
   logout: Logout
   manage: Manage user
   name: Name

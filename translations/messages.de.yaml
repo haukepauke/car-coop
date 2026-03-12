@@ -166,6 +166,8 @@ user:
     in:
       as: Du bist eingeloggt als
   login: Einloggen
+  first_login: Erste Anmeldung
+  last_login: Letzte Anmeldung
   logout: Ausloggen
   manage: User verwalten
   name: Name
