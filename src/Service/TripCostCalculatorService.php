@@ -8,7 +8,8 @@ class TripCostCalculatorService
 {
     public function calculateTripCosts(Trip $trip): float
     {
-        $user = $trip->getUser();
+        $user = $trip->getUsers()->first();
+
         $userTypes = $user->getUserTypes();
         $userType = $userTypes->get(0);
 

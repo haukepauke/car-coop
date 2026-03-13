@@ -1,7 +1,8 @@
 <p><b>{{ 'event_email.trip.added_with'|trans({'%car%': car.name}) }}</b></p>
 
 <p>
-{{ 'event_email.trip.added_by'|trans({'%user%': trip.user.name, '%car%': car.name}) }}
+{% set userNames %}{% for user in trip.users %}{{ user.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% endset %}
+{{ 'event_email.trip.added_by'|trans({'%user%': userNames, '%car%': car.name}) }}
 </p>
 
 <p>

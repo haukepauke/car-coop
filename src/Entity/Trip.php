@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TripRepository;
 use App\Validator\IsValidTripDate;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,10 +41,9 @@ class Trip
     #[Assert\NotBlank()]
     private $car;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'trips')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank()]
-    private $user;
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'trips')]
+    #[Assert\Count(min: 1)]
+    private Collection $users;
 
     #[ORM\Column(type: 'float', nullable: true)]
     #[Assert\PositiveOrZero()]
@@ -59,6 +60,11 @@ class Trip
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotBlank()]
     private $editor;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -136,14 +142,23 @@ class Trip
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
-    public function setUser(?User $user): self
+    public function addUser(User $user): self
     {
-        $this->user = $user;
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }

@@ -56,7 +56,7 @@ class TripAdminController extends AbstractController
         $trip = new Trip();
         $trip->setStartMileage($car->getMileage());
         $trip->setEditor($user);
-        $trip->setUser($user);
+        $trip->addUser($user);
 
         $trip->setCar($car);
 

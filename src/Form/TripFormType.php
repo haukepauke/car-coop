@@ -67,7 +67,7 @@ class TripFormType extends AbstractType
                 ]
             )
             ->add(
-                'user',
+                'users',
                 EntityType::class,
                 [
                     'class' => User::class,
@@ -79,7 +79,8 @@ class TripFormType extends AbstractType
                             ->orderBy('u.email', 'ASC')
                             ;
                     },
-                    'label' => 'user.user',
+                    'multiple' => true,
+                    'label' => 'user.users',
                 ]
             )
         ;

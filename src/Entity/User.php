@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Expense::class, orphanRemoval: true)]
     private $expenses;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trip::class, orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Trip::class, mappedBy: 'users')]
     private $trips;
 
     #[ORM\ManyToMany(targetEntity: UserType::class, mappedBy: 'users')]
@@ -235,7 +235,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->trips->contains($trip)) {
             $this->trips[] = $trip;
-            $trip->setUser($this);
+            $trip->addUser($this);
         }
 
         return $this;
@@ -244,10 +244,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeTrip(Trip $trip): self
     {
         if ($this->trips->removeElement($trip)) {
-            // set the owning side to null (unless already changed)
-            if ($trip->getUser() === $this) {
-                $trip->setUser(null);
-            }
+            $trip->removeUser($this);
         }
 
         return $this;
@@ -420,7 +417,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         foreach ($this->getTrips() as $trip) {
             if ($trip->isCompleted() && $trip->getStartDate() > $start && $trip->getEndDate() < $end) {
-                $mileage += $trip->getMileage();
+                $numUsers = max(1, $trip->getUsers()->count());
+                $mileage += intdiv($trip->getMileage(), $numUsers);
             }
         }
 
@@ -433,7 +431,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         foreach ($this->getTrips() as $trip) {
             if ($trip->isCompleted()) {
-                $balance -= $trip->getCosts();
+                $numUsers = max(1, $trip->getUsers()->count());
+                $balance -= $trip->getCosts() / $numUsers;
             }
         }
 
