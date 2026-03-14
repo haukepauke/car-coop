@@ -2,13 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Car;
 use App\Entity\UserType;
 use App\Form\CarFormType;
 use App\Repository\BookingRepository;
 use App\Repository\CarRepository;
-use App\Repository\ExpenseRepository;
-use App\Repository\PaymentRepository;
-use App\Repository\TripRepository;
+use App\Service\ActiveCarService;
 use App\Service\CarChartService;
 use App\Service\CarPdfExportService;
 use App\Service\FileUploaderService;
@@ -66,12 +65,20 @@ class CarAdminController extends AbstractController
         );
     }
 
-    #[Route('/admin/car/edit', name: 'app_car_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader): Response
+    #[Route('/admin/car/activate/{id}', name: 'app_car_activate', methods: ['POST'])]
+    public function activate(Car $car, ActiveCarService $activeCarService): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $car = $user->getCar();
+        if (!$car->hasUser($this->getUser())) {
+            throw $this->createAccessDeniedException();
+        }
+        $activeCarService->setActiveCar($car);
+        return new Response('', Response::HTTP_NO_CONTENT);
+    }
+
+    #[Route('/admin/car/edit', name: 'app_car_edit')]
+    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader, ActiveCarService $activeCarService): Response
+    {
+        $car = $activeCarService->getActiveCar();
 
         // TODO: Disable mileage field when trips exist
 
@@ -121,61 +128,51 @@ class CarAdminController extends AbstractController
     #[Route('/admin/car/show', name: 'app_car_show')]
     public function show(
         CarRepository $carRepo,
-        TripRepository $tripRepo,
-        ExpenseRepository $expenseRepo,
-        PaymentRepository $paymentRepo,
         BookingRepository $bookingRepo,
-        CarChartService $charts
+        CarChartService $charts,
+        ActiveCarService $activeCarService
     ): Response {
-        /** @var User $user */
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
-        $car = $user->getCar();
+        $cars = $carRepo->findAllForUser($user);
 
-        if (null === $car) {
+        if (empty($cars)) {
             return $this->redirectToRoute('app_car_new');
         }
 
-        $carObj = $carRepo->find($car);
-        $trips = $tripRepo->findbyCar($carObj);
-        $expenses = $expenseRepo->findByCar($carObj);
-        $payments = $paymentRepo->findByCar($carObj);
+        $activeCar = $activeCarService->getActiveCar();
 
         $firstDayOfYear = new \DateTime('first day of January');
-        $lastDayOfYear = new \DateTime('last day of December');
-        $bookings = $bookingRepo->findByCar(new \DateTime(), $lastDayOfYear, $carObj, 3);
-        $distanceTravelled = $car->getDistanceTravelled($firstDayOfYear, $lastDayOfYear);
-        $moneySpent = $car->getMoneySpent($firstDayOfYear, $lastDayOfYear);
-        $moneySpentFuel = $car->getMoneySpent($firstDayOfYear, $lastDayOfYear, 'fuel');
-        $calculatedCostsPerUnit = $car->getCalculatedCosts($firstDayOfYear, $lastDayOfYear);
+        $lastDayOfYear  = new \DateTime('last day of December');
 
-        // users are only allowed to see their cars
-        if ($carObj->hasUser($this->getUser())) {
-            return $this->render(
-                'admin/car/show.html.twig',
-                [
-                    'user' => $this->getUser(),
-                    'car' => $carObj,
-                    'trips' => $trips,
-                    'expenses' => $expenses,
-                    'payments' => $payments,
-                    'bookings' => $bookings,
-                    'distanceTravelled' => $distanceTravelled,
-                    'moneySpent' => $moneySpent,
-                    'moneySpentFuel' => $moneySpentFuel,
-                    'distanceChart' => $charts->getDistanceDrivenByUserChart($car, $firstDayOfYear, $lastDayOfYear),
-                    'balanceChart' => $charts->getUserBalanceChart($car, $firstDayOfYear, $lastDayOfYear),
-                    'calculatedCostsPerUnit' => $calculatedCostsPerUnit
-                ]
-            );
+        $carPanels = [];
+        foreach ($cars as $carObj) {
+            $carPanels[] = [
+                'car'                    => $carObj,
+                'bookings'               => $bookingRepo->findByCar(new \DateTime(), $lastDayOfYear, $carObj, 3),
+                'distanceTravelled'      => $carObj->getDistanceTravelled($firstDayOfYear, $lastDayOfYear),
+                'moneySpent'             => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear),
+                'moneySpentFuel'         => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear, 'fuel'),
+                'calculatedCostsPerUnit' => $carObj->getCalculatedCosts($firstDayOfYear, $lastDayOfYear),
+                'distanceChart'          => $charts->getDistanceDrivenByUserChart($carObj, $firstDayOfYear, $lastDayOfYear),
+                'balanceChart'           => $charts->getUserBalanceChart($carObj, $firstDayOfYear, $lastDayOfYear),
+            ];
         }
+
+        return $this->render('admin/car/show.html.twig', [
+            'user'        => $user,
+            'car'         => $activeCar,
+            'activeCarId' => $activeCar?->getId(),
+            'carPanels'   => $carPanels,
+        ]);
     }
 
     #[Route('/admin/car/export/pdf', name: 'app_car_export_pdf')]
-    public function exportPdf(CarPdfExportService $pdfExport): Response
+    public function exportPdf(CarPdfExportService $pdfExport, ActiveCarService $activeCarService): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
-        $car  = $user->getCar();
+        $car  = $activeCarService->getActiveCar();
 
         if (!$car->hasUser($user)) {
             throw $this->createAccessDeniedException();

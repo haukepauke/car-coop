@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Payment;
 use App\Form\PaymentFormType;
 use App\Repository\PaymentRepository;
+use App\Service\ActiveCarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -17,11 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaymentAdminController extends AbstractController
 {
     #[Route('/admin/payment/list/{page<\d+>}', name: 'app_payment_list')]
-    public function list(PaymentRepository $payRepo, int $page = 1)
+    public function list(PaymentRepository $payRepo, ActiveCarService $activeCarService, int $page = 1)
     {
-        /** @var User $user */
         $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $queryBuilder = $payRepo->createFindByCarQueryBuilder($car);
         $pagination = new Pagerfanta(
@@ -41,11 +41,9 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/new', name: 'app_payment_new')]
-    public function new(EntityManagerInterface $em, Request $request): Response
+    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $payment = new Payment();
         $payment->setCar($car);
@@ -86,8 +84,6 @@ class PaymentAdminController extends AbstractController
     #[Route('/admin/payment/edit/{payment}', name: 'app_payment_edit')]
     public function edit(EntityManagerInterface $em, Request $request, Payment $payment): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
         $car = $payment->getCar();
         $form = $this->createForm(
             PaymentFormType::class,

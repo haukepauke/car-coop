@@ -493,6 +493,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return Car[]
+     */
+    public function getCars(): array
+    {
+        $cars = [];
+        foreach ($this->getUserTypes() as $userType) {
+            $car = $userType->getCar();
+            if ($car !== null && !in_array($car, $cars, true)) {
+                $cars[] = $car;
+            }
+        }
+        return $cars;
+    }
+
+    /**
      * @return Collection<int, Booking>
      */
     public function getBookings(): Collection

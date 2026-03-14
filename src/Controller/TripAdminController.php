@@ -6,6 +6,7 @@ use App\Entity\Trip;
 use App\Form\TripFormType;
 use App\Message\Event\TripAddedEvent;
 use App\Repository\TripRepository;
+use App\Service\ActiveCarService;
 use App\Service\TripCostCalculatorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -19,11 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class TripAdminController extends AbstractController
 {
     #[Route('/admin/trip/list/{page<\d+>}', name: 'app_trip_list')]
-    public function list(TripRepository $tripsRepo, int $page = 1)
+    public function list(TripRepository $tripsRepo, ActiveCarService $activeCarService, int $page = 1)
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $queryBuilder = $tripsRepo->createFindByCarQueryBuilder($car);
 
@@ -47,11 +46,12 @@ class TripAdminController extends AbstractController
         TripCostCalculatorService $tc,
         EntityManagerInterface $em,
         Request $request,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        ActiveCarService $activeCarService
     ): Response {
-        /** @var User $user */
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $trip = new Trip();
         $trip->setStartMileage($car->getMileage());

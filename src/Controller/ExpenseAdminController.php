@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Expense;
 use App\Form\ExpenseFormType;
 use App\Repository\ExpenseRepository;
+use App\Service\ActiveCarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -16,11 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExpenseAdminController extends AbstractController
 {
     #[Route('/admin/expense/list/{page<\d+>}', name: 'app_expense_list')]
-    public function list(ExpenseRepository $expRepo, int $page = 1)
+    public function list(ExpenseRepository $expRepo, ActiveCarService $activeCarService, int $page = 1)
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $queryBuilder = $expRepo->createFindByCarQueryBuilder($car);
         $pagination = new Pagerfanta(
@@ -39,11 +38,11 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/new', name: 'app_expense_new')]
-    public function new(EntityManagerInterface $em, Request $request): Response
+    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService): Response
     {
-        /** @var User $user */
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $expense = new Expense();
         $expense->setEditor($user);

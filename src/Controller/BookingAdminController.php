@@ -6,6 +6,7 @@ use App\Entity\Booking;
 use App\Entity\User;
 use App\Form\BookingFormType;
 use App\Repository\BookingRepository;
+use App\Service\ActiveCarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookingAdminController extends AbstractController
 {
     #[Route('/admin/booking', name: 'app_booking_show')]
-    public function index(): Response
+    public function index(ActiveCarService $activeCarService): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         return $this->render(
             'admin/booking/calendar.html.twig',
@@ -32,11 +33,11 @@ class BookingAdminController extends AbstractController
     }
 
     #[Route('/admin/booking/new', name: 'app_booking_new')]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $booking = new Booking();
         $booking->setCar($car);

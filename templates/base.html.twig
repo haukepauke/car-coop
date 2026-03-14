@@ -23,17 +23,17 @@
                     <a class="navbar-brand" href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_car_show') : '#' }}">
                         {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
                         {% if car.profilePicturePath|default %}
-                        <img src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
+                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
                             class="rounded-circle d-inline-block">
                         {% else %}
-                        <img src="{{ asset('/uploads/cars/' ~ car.getProfilePicturePath()) }}" alt="Logo" width="50"
+                        <img id="navbar-brand-img" src="{{ asset('/uploads/cars/' ~ car.getProfilePicturePath()) }}" alt="Logo" width="50"
                             height="50" class="rounded-circle d-inline-block">
                         {% endif %}
-                        {{ car.name }}
+                        <span id="navbar-brand-name">{{ car.name }}</span>
                         {% else %}
-                        <img src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
+                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
                             class="rounded-circle d-inline-block">
-                        Car Coop
+                        <span id="navbar-brand-name">Car Coop</span>
                         {% endif %}
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -64,10 +64,9 @@
                                     {{ 'admin'|trans }}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ path('app_car_edit') }}">{{ 'car.manage'|trans
-                                            }}</a></li>
-                                    <li><a class="dropdown-item" href="{{ path('app_user_list') }}">{{
-                                            'user.manage'|trans }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_car_new') }}">{{ 'car.add'|trans }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_car_edit') }}">{{ 'car.manage'|trans }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_user_list') }}">{{ 'user.manage'|trans }}</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">

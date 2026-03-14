@@ -8,6 +8,7 @@ use App\Form\InvitationFormType;
 use App\Form\UserFormType;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
+use App\Service\ActiveCarService;
 use App\Service\FileUploaderService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,11 +24,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserAdminController extends AbstractController
 {
     #[Route('/admin/user/list', name: 'app_user_list')]
-    public function list(UserRepository $userRepo, InvitationRepository $invitationRepo): Response
+    public function list(UserRepository $userRepo, InvitationRepository $invitationRepo, ActiveCarService $activeCarService): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $users = $userRepo->findByCar($car);
         $invites = $invitationRepo->findByCar($car);
@@ -47,11 +46,9 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/invite', name: 'app_user_invite')]
-    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer): Response
+    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $activeCarService->getActiveCar();
 
         $invitation = new Invitation();
         $invitation->setCreatedBy($this->getUser());
@@ -157,10 +154,12 @@ class UserAdminController extends AbstractController
     #[Route('/admin/user/delete/{user}', name: 'app_user_delete')]
     public function deleteUser(
         EntityManagerInterface $em,
-        User $user
+        User $user,
+        ActiveCarService $activeCarService
     ): Response {
+        $activeCar = $activeCarService->getActiveCar();
         // Do not allow to delete users of other cars and do not allow to delete yourself
-        if ($this->getUser()->getCar() !== $user->getCar() || $this->getUser()->getId() === $user->getId()) {
+        if ($activeCar !== $user->getCar() || $this->getUser()->getId() === $user->getId()) {
             $this->addFlash('error', 'You are not allowed to delete this user.');
         }
 

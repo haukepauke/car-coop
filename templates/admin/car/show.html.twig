@@ -3,71 +3,112 @@
 {% block content_body %}
 <div class="mt-5">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col"><h4>{{ 'car.data'|trans }}</h4></div>
-            <div class="col-auto">
-                <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary btn-sm">
-                    &#8659; {{ 'car.exportpdf.button' | trans }}
-                </a>
-            </div>
-        </div>
-         <div class="row">
-            <div class="col">{{ 'car.form.licenseplate'|trans}}: {{ car.licensePlate}}</div>
-            <div class="col">{{ 'car.form.vendor'|trans}}: {{ car.vendor }}</div>
-            <div class="col">{{ 'car.form.make'|trans}}: {{ car.make }}</div>
-        </div>
-        <div class="row">
-            <div class="col">{{ 'car.mileage'|trans}}: {{ car.mileage}} {{ car.milageUnit }}</div>
-            <div class="col">{{ 'car.season.mileage'|trans}} {{ "now"|date("Y") }}: {{ distanceTravelled }} {{ car.milageUnit }}</div>
-            <div class="col">{{ 'car.season.spent'|trans}} {{ "now"|date("Y") }}: {{ moneySpent }} € ({{ 'car.season.fuel'|trans }} {{ moneySpentFuel }} €) </div>
-        </div>
-        <div>
-            <div class="col">{{ 'car.costs.calculated'|trans}}: {{ calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ car.milageUnit }}</div>
-            <div class="col"></div>
-            <div class="col"></div>
-        </div>
-        {% if bookings|length > 0 %}
-        <div class="row pt-5">
-            <div class="col"><h4>{{ 'car.bookings.next'|trans }}</h4></div>
-        </div>
-        <div class="row">
-            <div class="col">
-            <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">{{ 'date.start'|trans }}</th>
-                    <th scope="col">{{ 'date.end'|trans }}</th>
-                    <th scope="col">{{ 'user.user'|trans }}</th>
-                    <th scope="col">{{ 'booking.form.title'|trans }}</th>
-                    <th scope="col">{{ 'booking.form.status'|trans }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for booking in bookings %}
-                <tr>
-                    <td>{{ booking.getStartDate()|date("d.m.Y") }}</td>
-                    <td>{{ booking.getEndDate()|date("d.m.Y") }}</td>
-                    <td>{{ booking.getUser().getName() }}</td>
-                    <td>{{ booking.getTitle() }}</td>
-                    <td>{{ booking.getStatus()|trans }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            </table>
-            </div>
-        </div>
-        {% endif %}
-        <div class="row pt-5">
-            <div class="col"><h4>{{ 'car.statistics'|trans }}</h4></div>
-        </div>
-        <div class="row">
-            <div class="col chart">
-                {{ render_chart(distanceChart) }}
-            </div>
-             <div class="col chart">
-                {{ render_chart(balanceChart) }}
-            </div>
-        </div>
+
+        <div class="accordion" id="carsAccordion">
+        {% for carData in carPanels %}
+            {% set carId = 'car-' ~ carData.car.id %}
+            {% set isActive = carData.car.id == activeCarId %}
+            {% set logoUrl = carData.car.profilePicturePath
+                ? asset('/uploads/cars/' ~ carData.car.profilePicturePath)
+                : asset('./static/default-car.png') %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-{{ carId }}">
+                    <button class="accordion-button {% if not isActive %}collapsed{% endif %}"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse-{{ carId }}"
+                            aria-expanded="{{ isActive ? 'true' : 'false' }}"
+                            aria-controls="collapse-{{ carId }}"
+                            data-car-id="{{ carData.car.id }}"
+                            data-car-name="{{ carData.car.name }}"
+                            data-car-logo="{{ logoUrl }}"
+                            data-activate-url="{{ path('app_car_activate', {id: carData.car.id}) }}">
+                        <img src="{{ logoUrl }}" alt="" width="30" height="30" class="rounded-circle me-2">
+                        <strong>{{ carData.car.name }}</strong>
+                        {% if carData.car.licensePlate %}&nbsp;&middot;&nbsp;{{ carData.car.licensePlate }}{% endif %}
+                    </button>
+                </h2>
+                <div id="collapse-{{ carId }}"
+                     class="accordion-collapse collapse {% if isActive %}show{% endif %}"
+                     aria-labelledby="heading-{{ carId }}"
+                     data-bs-parent="#carsAccordion">
+                    <div class="accordion-body">
+
+                        {# ── Car data ── #}
+                        <div class="row mb-2">
+                            <div class="col"><h5>{{ 'car.data'|trans }}</h5></div>
+                            <div class="col-auto">
+                                <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary btn-sm">
+                                    &#8659; {{ 'car.exportpdf.button'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">{{ 'car.form.licenseplate'|trans }}: {{ carData.car.licensePlate }}</div>
+                            <div class="col">{{ 'car.form.vendor'|trans }}: {{ carData.car.vendor }}</div>
+                            <div class="col">{{ 'car.form.make'|trans }}: {{ carData.car.make }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">{{ 'car.mileage'|trans }}: {{ carData.car.mileage }} {{ carData.car.milageUnit }}</div>
+                            <div class="col">{{ 'car.season.mileage'|trans }} {{ "now"|date("Y") }}: {{ carData.distanceTravelled }} {{ carData.car.milageUnit }}</div>
+                            <div class="col">{{ 'car.season.spent'|trans }} {{ "now"|date("Y") }}: {{ carData.moneySpent }} € ({{ 'car.season.fuel'|trans }} {{ carData.moneySpentFuel }} €)</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">{{ 'car.costs.calculated'|trans }}: {{ carData.calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</div>
+                        </div>
+
+                        {# ── Next bookings ── #}
+                        {% if carData.bookings|length > 0 %}
+                        <div class="row pt-4">
+                            <div class="col"><h5>{{ 'car.bookings.next'|trans }}</h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">{{ 'date.start'|trans }}</th>
+                                            <th scope="col">{{ 'date.end'|trans }}</th>
+                                            <th scope="col">{{ 'user.user'|trans }}</th>
+                                            <th scope="col">{{ 'booking.form.title'|trans }}</th>
+                                            <th scope="col">{{ 'booking.form.status'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for booking in carData.bookings %}
+                                        <tr>
+                                            <td>{{ booking.getStartDate()|date("d.m.Y") }}</td>
+                                            <td>{{ booking.getEndDate()|date("d.m.Y") }}</td>
+                                            <td>{{ booking.getUser().getName() }}</td>
+                                            <td>{{ booking.getTitle() }}</td>
+                                            <td>{{ booking.getStatus()|trans }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {# ── Statistics ── #}
+                        <div class="row pt-4">
+                            <div class="col"><h5>{{ 'car.statistics'|trans }}</h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col chart">
+                                {{ render_chart(carData.distanceChart) }}
+                            </div>
+                            <div class="col chart">
+                                {{ render_chart(carData.balanceChart) }}
+                            </div>
+                        </div>
+
+                    </div>{# /accordion-body #}
+                </div>{# /accordion-collapse #}
+            </div>{# /accordion-item #}
+        {% endfor %}
+        </div>{# /accordion #}
+
     </div>
 </div>
 {% endblock %}
@@ -78,4 +119,37 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const accordion = document.getElementById('carsAccordion');
+        if (!accordion) return;
+
+        const brandImg  = document.getElementById('navbar-brand-img');
+        const brandName = document.getElementById('navbar-brand-name');
+
+        function activateCar(button) {
+            const carId   = button.dataset.carId;
+            const carName = button.dataset.carName;
+            const carLogo = button.dataset.carLogo;
+            const url     = button.dataset.activateUrl;
+
+            fetch(url, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+
+            if (brandImg)  brandImg.src = carLogo;
+            if (brandName) brandName.textContent = carName;
+        }
+
+        // Activate on expand
+        accordion.addEventListener('show.bs.collapse', function (e) {
+            const collapseEl = e.target;
+            const headingId  = collapseEl.getAttribute('aria-labelledby');
+            const heading    = document.getElementById(headingId);
+            if (heading) activateCar(heading.querySelector('button'));
+        });
+
+        // Activate the initially open panel on page load
+        const openButton = accordion.querySelector('.accordion-button:not(.collapsed)');
+        if (openButton) activateCar(openButton);
+    });
+    </script>
 {% endblock %}
