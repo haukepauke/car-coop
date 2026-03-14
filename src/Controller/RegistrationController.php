@@ -11,6 +11,7 @@ use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -23,13 +24,32 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailVerifier $emailVerifier, private readonly LoggerInterface $logger)
     {
         $this->emailVerifier = $emailVerifier;
     }
 
+    private function isBotSubmission(Request $request, \Symfony\Component\Form\FormInterface $form): bool
+    {
+        // Honeypot: the website field must be empty
+        if ('' !== (string) $form->get('website')->getData()) {
+            $this->logger->info('Bot registration blocked (honeypot)', ['ip' => $request->getClientIp()]);
+            return true;
+        }
+
+        // Timing: form rendered time stored in session; reject if submitted under 3 seconds
+        $session = $request->getSession();
+        $renderedAt = $session->get('registration_form_at');
+        if ($renderedAt !== null && (time() - $renderedAt) < 3) {
+            $this->logger->info('Bot registration blocked (too fast)', ['ip' => $request->getClientIp()]);
+            return true;
+        }
+
+        return false;
+    }
+
     #[Route(
-        path: '/{_locale}/register', 
+        path: '/{_locale}/register',
         name: 'app_register',
         requirements: [
             '_locale' => 'en|de',
@@ -47,6 +67,10 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->isBotSubmission($request, $form)) {
+                return $this->redirectToRoute('app_login');
+            }
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -73,10 +97,11 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_car_new');
         }
+
+        $request->getSession()->set('registration_form_at', time());
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
@@ -110,6 +135,10 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->isBotSubmission($request, $form)) {
+                return $this->redirectToRoute('app_login');
+            }
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -140,6 +169,8 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_homepage');
         }
+
+        $request->getSession()->set('registration_form_at', time());
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
