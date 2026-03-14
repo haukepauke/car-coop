@@ -26,6 +26,7 @@
             <div class="col"></div>
             <div class="col"></div>
         </div>
+        {% if bookings|length > 0 %}
         <div class="row pt-5">
             <div class="col"><h4>{{ 'car.bookings.next'|trans }}</h4></div>
         </div>
@@ -42,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for booking in bookings %}  
+            {% for booking in bookings %}
                 <tr>
                     <td>{{ booking.getStartDate()|date("d.m.Y") }}</td>
                     <td>{{ booking.getEndDate()|date("d.m.Y") }}</td>
@@ -55,6 +56,7 @@
             </table>
             </div>
         </div>
+        {% endif %}
         <div class="row pt-5">
             <div class="col"><h4>{{ 'car.statistics'|trans }}</h4></div>
         </div>
