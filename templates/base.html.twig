@@ -20,7 +20,7 @@
         <header>
             <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" data-bs-theme="dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_car_show') : '#' }}">
                         {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
                         {% if car.profilePicturePath|default %}
                         <img src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
