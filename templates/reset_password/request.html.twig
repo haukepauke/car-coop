@@ -14,6 +14,10 @@
                     <div class="card-body p-5 text-center">
                         <h4>Reset your password</h4>
                             {{ form_start(requestForm) }}
+                                {# Honeypot field: hidden from real users, bots fill it in #}
+                                <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;">
+                                    {{ form_row(requestForm.website) }}
+                                </div>
                                 {{ form_row(requestForm.email) }}
                                 <div>
                                     <small>

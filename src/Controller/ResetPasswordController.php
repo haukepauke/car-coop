@@ -16,6 +16,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
@@ -27,7 +28,8 @@ class ResetPasswordController extends AbstractController
 
     public function __construct(
         private ResetPasswordHelperInterface $resetPasswordHelper,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -41,12 +43,17 @@ class ResetPasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->isBotSubmission($request, $form)) {
+                return $this->redirectToRoute('app_login');
+            }
+
             /** @var string $email */
             $email = $form->get('email')->getData();
 
-            return $this->processSendingPasswordResetEmail($email, $mailer, $translator
-            );
+            return $this->processSendingPasswordResetEmail($email, $mailer, $translator);
         }
+
+        $request->getSession()->set('reset_password_form_at', time());
 
         return $this->render('reset_password/request.html.twig', [
             'requestForm' => $form,
@@ -127,6 +134,20 @@ class ResetPasswordController extends AbstractController
         return $this->render('reset_password/reset.html.twig', [
             'resetForm' => $form,
         ]);
+    }
+
+    private function isBotSubmission(Request $request, \Symfony\Component\Form\FormInterface $form): bool
+    {
+        if ('' !== (string) $form->get('website')->getData()) {
+            $this->logger->info('Bot password reset blocked (honeypot)', ['ip' => $request->getClientIp()]);
+            return true;
+        }
+        $renderedAt = $request->getSession()->get('reset_password_form_at');
+        if ($renderedAt !== null && (time() - $renderedAt) < 3) {
+            $this->logger->info('Bot password reset blocked (too fast)', ['ip' => $request->getClientIp()]);
+            return true;
+        }
+        return false;
     }
 
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer, TranslatorInterface $translator): RedirectResponse
