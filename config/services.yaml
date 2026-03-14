@@ -8,12 +8,15 @@ parameters:
     app.supported_locales: ['en', 'de']
     app.mailer_from_email: 'webmaster@car-coop.net'
     app.mailer_from_name: 'Car Coop Mail Bot'
+    app.homepage_url: 'https://car-coop.net'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            string $homepageUrl: '%app.homepage_url%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

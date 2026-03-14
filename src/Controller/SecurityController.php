@@ -4,12 +4,17 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    public function __construct(private readonly string $homepageUrl)
+    {
+    }
+
     #[Route(
         path: '/{_locale}/login', 
         name: 'app_login',
@@ -43,7 +48,17 @@ class SecurityController extends AbstractController
     )]
     public function logout(Security $security): Response
     {
-        $security->logout(false);
-        return $this->redirect('https://car-coop.net');
+        // Use the response from logout() so that cookie-clearing headers
+        // (e.g. remember-me) are sent to the browser, then redirect externally.
+        $logoutResponse = $security->logout(false);
+
+        $redirect = new RedirectResponse($this->homepageUrl);
+        if ($logoutResponse !== null) {
+            foreach ($logoutResponse->headers->getCookies() as $cookie) {
+                $redirect->headers->setCookie($cookie);
+            }
+        }
+
+        return $redirect;
     }
 }

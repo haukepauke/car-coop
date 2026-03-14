@@ -12,9 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CarCoopController extends AbstractController
 {
+    public function __construct(private readonly string $homepageUrl)
+    {
+    }
+
     #[Route('/', name: 'app_homepage')]
     public function homepage(): Response
     {
-        return $this->redirect('https://car-coop.net');
+        return $this->redirect($this->homepageUrl);
     }
 }
