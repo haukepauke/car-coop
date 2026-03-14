@@ -10,6 +10,7 @@ use App\Repository\ExpenseRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\TripRepository;
 use App\Service\CarChartService;
+use App\Service\CarPdfExportService;
 use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -167,6 +168,30 @@ class CarAdminController extends AbstractController
                 ]
             );
         }
+    }
+
+    #[Route('/admin/car/export/pdf', name: 'app_car_export_pdf')]
+    public function exportPdf(CarPdfExportService $pdfExport): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $car  = $user->getCar();
+
+        if (!$car->hasUser($user)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $pdf      = $pdfExport->generate($car, $user->getLocale());
+        $filename = sprintf(
+            'car-export-%s-%s.pdf',
+            preg_replace('/[^a-z0-9]/i', '-', $car->getLicensePlate() ?? $car->getName()),
+            (new \DateTime())->format('Y-m-d')
+        );
+
+        return new Response($pdf, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
 
     // #[Route('/admin/car/delete', name: 'app_car_delete')]

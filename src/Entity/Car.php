@@ -52,7 +52,7 @@ class Car
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Payment::class, orphanRemoval: true)]
     private $payments;
 
-    #[ORM\OneToMany(mappedBy: 'Car', targetEntity: Booking::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'car', targetEntity: Booking::class, orphanRemoval: true)]
     private $bookings;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

@@ -5,6 +5,7 @@ amount: Betrag
 author: Autor*in
 banktransfer: Überweisung
 booking:
+  bookings: Buchungen
   new: Neue Buchung
   add: 
     for: Buchung hinzufügen für
@@ -27,6 +28,8 @@ car:
     calculated: Errechnete Kosten
   create: Auto erstellen
   data: Daten zum Fahrzeug
+  exportpdf:
+    button: Fahrzeugdaten exportieren (PDF)
   form:
     help:
       name: Wähle einen guten Namen für Dein Auto
@@ -60,6 +63,21 @@ date:
   start: Start Datum
   end: End Datum
 email: E-Mail
+export:
+  data_export: Datenexport
+  distance: Distanz
+  generated: Erstellt
+  all_time_summary: Gesamtübersicht
+  total_trips: Fahrten gesamt
+  total_distance: Gesamte Fahrdistanz
+  total_expenses: Ausgaben gesamt
+  total_payments: Erfasste Zahlungen gesamt
+  total: Gesamt
+  ongoing: laufend
+  no_trips: Keine Fahrten erfasst.
+  no_expenses: Keine Ausgaben erfasst.
+  no_payments: Keine Zahlungen erfasst.
+  no_bookings: Keine Buchungen erfasst.
 end: Ende
 entry:
   created_by: Erstellt/Zuletzt bearbeitet von

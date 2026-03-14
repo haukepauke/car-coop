@@ -5,6 +5,7 @@ amount: Amount
 author: Author
 banktransfer: Bank transfer
 booking:
+  bookings: Bookings
   new: New Booking
   add: 
     for: Add booking for
@@ -27,6 +28,8 @@ car:
     calculated: Calculated costs
   create: Create Car
   data: Car data
+  exportpdf:
+    button: Export car data (PDF)
   form:
     help:
       name: Choose a nice name for the car
@@ -60,6 +63,21 @@ date:
   start: Start date
   end: End date
 email: Email
+export:
+  data_export: Data export
+  distance: Distance
+  generated: Generated
+  all_time_summary: All-time Summary
+  total_trips: Total trips
+  total_distance: Total distance driven
+  total_expenses: Total expenses
+  total_payments: Total payments recorded
+  total: Total
+  ongoing: ongoing
+  no_trips: No trips recorded.
+  no_expenses: No expenses recorded.
+  no_payments: No payments recorded.
+  no_bookings: No bookings recorded.
 end: End
 event_email:
   trip:

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: DejaVu Sans, sans-serif; font-size: 9pt; color: #222; }
+
+    /* ── Layout ── */
+    .page-header { margin-bottom: 16pt; border-bottom: 2pt solid #2c5f8a; padding-bottom: 8pt; }
+    .page-header h1 { font-size: 16pt; color: #2c5f8a; }
+    .page-header .meta { font-size: 8pt; color: #666; margin-top: 3pt; }
+
+    .section { margin-bottom: 18pt; }
+    .section-title {
+        font-size: 11pt; font-weight: bold; color: #fff;
+        background-color: #2c5f8a; padding: 4pt 6pt; margin-bottom: 6pt;
+    }
+
+    /* ── Car summary grid ── */
+    .car-grid { width: 100%; border-collapse: collapse; }
+    .car-grid td { padding: 3pt 6pt; width: 33%; vertical-align: top; }
+    .car-grid .label { font-weight: bold; color: #555; font-size: 8pt; }
+    .car-grid .value { font-size: 10pt; }
+
+    /* ── Data tables ── */
+    table.data { width: 100%; border-collapse: collapse; }
+    table.data thead th {
+        background-color: #dce8f3; font-weight: bold; font-size: 8pt;
+        padding: 3pt 5pt; border: 0.5pt solid #b0c8e0; text-align: left;
+    }
+    table.data tbody tr td {
+        padding: 3pt 5pt; border: 0.5pt solid #d0d0d0;
+        font-size: 8pt; vertical-align: top;
+    }
+    table.data tbody tr:nth-child(even) td { background-color: #f5f8fb; }
+    table.data .num { text-align: right; }
+    table.data tfoot td {
+        padding: 3pt 5pt; border: 0.5pt solid #b0c8e0;
+        font-weight: bold; font-size: 8pt; background-color: #dce8f3;
+    }
+    table.data tfoot .num { text-align: right; }
+
+    /* ── Summary box ── */
+    .summary-table { width: 100%; border-collapse: collapse; }
+    .summary-table td { padding: 4pt 8pt; border: 0.5pt solid #d0d0d0; font-size: 9pt; }
+    .summary-table td.label { background-color: #f0f4f8; font-weight: bold; width: 50%; }
+    .summary-table td.value { text-align: right; }
+
+    .page-break { page-break-before: always; }
+    .text-muted { color: #888; }
+    .badge-fixed   { color: #155724; }
+    .badge-maybe   { color: #856404; }
+</style>
+</head>
+<body>
+
+{# ══════════════════════════════════════════════════════ #}
+{# PAGE 1 – Car details + Members + Summary              #}
+{# ══════════════════════════════════════════════════════ #}
+
+<div class="page-header">
+    <h1>{{ car.name }}</h1>
+    <div class="meta">
+        {{ 'export.data_export'|trans }} &bull; {{ 'export.generated'|trans }}: {{ exportDate }} &bull; {{ 'car.form.licenseplate'|trans }}: {{ car.licensePlate }}
+    </div>
+</div>
+
+{# ── Car details ── #}
+<div class="section">
+    <div class="section-title">{{ 'car.data'|trans }}</div>
+    <table class="car-grid">
+        <tr>
+            <td><div class="label">{{ 'user.name'|trans }}</div><div class="value">{{ car.name }}</div></td>
+            <td><div class="label">{{ 'car.form.licenseplate'|trans }}</div><div class="value">{{ car.licensePlate }}</div></td>
+            <td><div class="label">{{ 'car.form.vendor'|trans }} / {{ 'car.form.make'|trans }}</div><div class="value">{{ car.vendor }} {{ car.make }}</div></td>
+        </tr>
+        <tr>
+            <td><div class="label">{{ 'car.mileage'|trans }}</div><div class="value">{{ car.mileage }} {{ car.milageUnit }}</div></td>
+            <td><div class="label">{{ 'car.season.mileage'|trans }} {{ "now"|date("Y") }}</div><div class="value">{{ distanceTravelled }} {{ car.milageUnit }}</div></td>
+            <td><div class="label">{{ 'car.season.spent'|trans }} {{ "now"|date("Y") }}</div><div class="value">{{ moneySpent }} € ({{ 'car.season.fuel'|trans }} {{ moneySpentFuel }} €)</div></td>
+        </tr>
+        <tr>
+            <td><div class="label">{{ 'car.costs.calculated'|trans }} / {{ car.milageUnit }}</div><div class="value">{{ calculatedCostsPerUnit|number_format(3, '.', ',') }} €</div></td>
+            <td></td><td></td>
+        </tr>
+    </table>
+</div>
+
+{# ── Members ── #}
+<div class="section">
+    <div class="section-title">{{ 'members'|trans }}</div>
+    <table class="data">
+        <thead>
+            <tr>
+                <th>{{ 'user.name'|trans }}</th>
+                <th>{{ 'email'|trans }}</th>
+                <th>{{ 'user.type'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userType in car.userTypes %}
+            {% for member in userType.users %}
+            <tr>
+                <td>{{ member.name }}</td>
+                <td>{{ member.email }}</td>
+                <td>{{ userType.name }}{% if not userType.active %} ({{ 'user.inactive'|trans }}){% endif %}</td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{# ── All-time summary ── #}
+<div class="section">
+    <div class="section-title">{{ 'export.all_time_summary'|trans }}</div>
+    <table class="summary-table">
+        <tr>
+            <td class="label">{{ 'export.total_trips'|trans }}</td>
+            <td class="value">{{ trips|length }}</td>
+        </tr>
+        <tr>
+            <td class="label">{{ 'export.total_distance'|trans }}</td>
+            <td class="value">{{ totalDistance }} {{ car.milageUnit }}</td>
+        </tr>
+        <tr>
+            <td class="label">{{ 'export.total_expenses'|trans }}</td>
+            <td class="value">{{ totalExpenses|number_format(2, '.', ',') }} €</td>
+        </tr>
+        <tr>
+            <td class="label">{{ 'export.total_payments'|trans }}</td>
+            <td class="value">{{ totalPayments|number_format(2, '.', ',') }} €</td>
+        </tr>
+    </table>
+</div>
+
+{# ══════════════════════════════════════════════════════ #}
+{# PAGE 2 – Trips                                        #}
+{# ══════════════════════════════════════════════════════ #}
+<div class="page-break"></div>
+
+<div class="page-header">
+    <h1>{{ car.name }} – {{ 'trips.trips'|trans }}</h1>
+    <div class="meta">{{ 'export.data_export'|trans }} &bull; {{ exportDate }}</div>
+</div>
+
+<div class="section">
+    <div class="section-title">{{ 'trips.trips'|trans }} ({{ trips|length }})</div>
+    <table class="data">
+        <thead>
+            <tr>
+                <th>{{ 'start'|trans }}</th>
+                <th>{{ 'end'|trans }}</th>
+                <th>{{ 'trips.type'|trans }}</th>
+                <th class="num">{{ 'trips.mileage.start'|trans }}</th>
+                <th class="num">{{ 'trips.mileage.end'|trans }}</th>
+                <th class="num">{{ 'export.distance'|trans }}</th>
+                <th class="num">{{ 'costs'|trans }}</th>
+                <th>{{ 'user.users'|trans }}</th>
+                <th>{{ 'comment'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set tripDistanceSum = 0 %}
+        {% set tripCostsSum = 0 %}
+        {% for trip in trips %}
+            {% if trip.isCompleted %}
+                {% set tripDistanceSum = tripDistanceSum + trip.mileage %}
+            {% endif %}
+            {% set tripCostsSum = tripCostsSum + trip.costs %}
+            <tr>
+                <td>{{ trip.startDate|date('d.m.Y') }}</td>
+                <td>{% if trip.endDate %}{{ trip.endDate|date('d.m.Y') }}{% else %}<span class="text-muted">{{ 'export.ongoing'|trans }}</span>{% endif %}</td>
+                <td>{{ trip.type|trans }}</td>
+                <td class="num">{{ trip.startMileage }}</td>
+                <td class="num">{{ trip.endMileage ?? '–' }}</td>
+                <td class="num">{% if trip.isCompleted %}{{ trip.mileage }}{% else %}–{% endif %}</td>
+                <td class="num">{{ trip.costs|number_format(2, '.', ',') }}</td>
+                <td>{{ trip.users|map(u => u.name)|join(', ') }}</td>
+                <td>{{ trip.comment }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="9" class="text-muted">{{ 'export.no_trips'|trans }}</td></tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5"><strong>{{ 'export.total'|trans }}</strong></td>
+                <td class="num">{{ tripDistanceSum }}</td>
+                <td class="num">{{ tripCostsSum|number_format(2, '.', ',') }}</td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{# ══════════════════════════════════════════════════════ #}
+{# PAGE 3 – Expenses                                     #}
+{# ══════════════════════════════════════════════════════ #}
+<div class="page-break"></div>
+
+<div class="page-header">
+    <h1>{{ car.name }} – {{ 'expenses.expenses'|trans }}</h1>
+    <div class="meta">{{ 'export.data_export'|trans }} &bull; {{ exportDate }}</div>
+</div>
+
+<div class="section">
+    <div class="section-title">{{ 'expenses.expenses'|trans }} ({{ expenses|length }})</div>
+    <table class="data">
+        <thead>
+            <tr>
+                <th>{{ 'date.date'|trans }}</th>
+                <th>{{ 'expenses.type'|trans }}</th>
+                <th>{{ 'expenses.name'|trans }}</th>
+                <th>{{ 'user.user'|trans }}</th>
+                <th>{{ 'comment'|trans }}</th>
+                <th class="num">{{ 'amount'|trans }} (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set expenseSum = 0 %}
+        {% for expense in expenses %}
+            {% set expenseSum = expenseSum + expense.amount %}
+            <tr>
+                <td>{{ expense.date|date('d.m.Y') }}</td>
+                <td>{{ expense.type|trans }}</td>
+                <td>{{ expense.name }}</td>
+                <td>{{ expense.user.name }}</td>
+                <td>{{ expense.comment }}</td>
+                <td class="num">{{ expense.amount|number_format(2, '.', ',') }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6" class="text-muted">{{ 'export.no_expenses'|trans }}</td></tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5"><strong>{{ 'export.total'|trans }}</strong></td>
+                <td class="num">{{ expenseSum|number_format(2, '.', ',') }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{# ══════════════════════════════════════════════════════ #}
+{# PAGE 4 – Payments & Bookings                          #}
+{# ══════════════════════════════════════════════════════ #}
+<div class="page-break"></div>
+
+<div class="page-header">
+    <h1>{{ car.name }} – {{ 'payments.payments'|trans }} &amp; {{ 'booking.bookings'|trans }}</h1>
+    <div class="meta">{{ 'export.data_export'|trans }} &bull; {{ exportDate }}</div>
+</div>
+
+<div class="section">
+    <div class="section-title">{{ 'payments.payments'|trans }} ({{ payments|length }})</div>
+    <table class="data">
+        <thead>
+            <tr>
+                <th>{{ 'date.date'|trans }}</th>
+                <th>{{ 'from'|trans }}</th>
+                <th>{{ 'to'|trans }}</th>
+                <th>{{ 'payments.type'|trans }}</th>
+                <th>{{ 'comment'|trans }}</th>
+                <th class="num">{{ 'amount'|trans }} (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set paymentSum = 0 %}
+        {% for payment in payments %}
+            {% set paymentSum = paymentSum + payment.amount %}
+            <tr>
+                <td>{{ payment.date|date('d.m.Y') }}</td>
+                <td>{{ payment.fromUser.name }}</td>
+                <td>{{ payment.toUser.name }}</td>
+                <td>{{ payment.type|trans }}</td>
+                <td>{{ payment.comment }}</td>
+                <td class="num">{{ payment.amount|number_format(2, '.', ',') }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6" class="text-muted">{{ 'export.no_payments'|trans }}</td></tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5"><strong>{{ 'export.total'|trans }}</strong></td>
+                <td class="num">{{ paymentSum|number_format(2, '.', ',') }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">{{ 'booking.bookings'|trans }} ({{ bookings|length }})</div>
+    <table class="data">
+        <thead>
+            <tr>
+                <th>{{ 'date.start'|trans }}</th>
+                <th>{{ 'date.end'|trans }}</th>
+                <th>{{ 'user.user'|trans }}</th>
+                <th>{{ 'booking.form.title'|trans }}</th>
+                <th>{{ 'booking.form.status'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.startDate|date('d.m.Y') }}</td>
+                <td>{{ booking.endDate|date('d.m.Y') }}</td>
+                <td>{{ booking.user.name }}</td>
+                <td>{{ booking.title }}</td>
+                <td class="{% if booking.status == 'fixed' %}badge-fixed{% else %}badge-maybe{% endif %}">{{ booking.status|trans }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5" class="text-muted">{{ 'export.no_bookings'|trans }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

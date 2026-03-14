@@ -3,8 +3,13 @@
 {% block content_body %}
 <div class="mt-5">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row mb-2">
             <div class="col"><h4>{{ 'car.data'|trans }}</h4></div>
+            <div class="col-auto">
+                <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary btn-sm">
+                    &#8659; {{ 'car.exportpdf.button' | trans }}
+                </a>
+            </div>
         </div>
          <div class="row">
             <div class="col">{{ 'car.form.licenseplate'|trans}}: {{ car.licensePlate}}</div>
