@@ -21,20 +21,20 @@ booking:
   delete: Delete Booking
   update: Update Booking
 car:
-  add: Add Vehcile
+  add: Add vehicle
   delete:
-    button: Delete Vehicle
+    button: Deletev vehicle
     confirm:
-      title: Delete Vehicle
+      title: Delete vehicle
       warning: "This action is irreversible. All trips, expenses, payments and bookings for this car will be permanently deleted."
       name_label: "Enter the vehicle name to confirm deletion:"
-      confirm_button: Delete Vehicle
+      confirm_button: Delete vehicle
       cancel: Cancel
   bookings:
     next: Next bookings
   costs:
     calculated: Calculated costs
-  create: Create Vehicle
+  create: Create vehicle
   data: Vehicle data
   exportpdf:
     button: Export vehicle data (PDF)
