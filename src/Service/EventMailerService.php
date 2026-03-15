@@ -26,7 +26,7 @@ class EventMailerService
         $this->translator = $translator;
     }
 
-    public function sendMails(ArrayCollection $users, TemplatedEmail $email): void
+    public function sendMails(ArrayCollection $users, TemplatedEmail $email, array $subjectParams = []): void
     {
         $this->logger->info('sendMails called', ['users' => $users->toArray()]);
 
@@ -40,7 +40,7 @@ class EventMailerService
             $address = new Address($user->getEmail(), $user->getName());
             $this->logger->info('Sending mail', ['address' => $user->getEmail() . " " . $user->getName()]);
 
-            $translatedSubject = $this->translator->trans($email->getSubject(), [], null, $user->getLocale());
+            $translatedSubject = $this->translator->trans($email->getSubject(), $subjectParams, null, $user->getLocale());
 
             $userEmail = (clone $email)
                 ->to($address)

@@ -1,0 +1,22 @@
+<p><b>{{ 'event_email.booking.deleted_for'|trans({'%car%': car.name}) }}</b></p>
+
+<p>{{ 'event_email.booking.deleted_by'|trans({'%user%': bookerName, '%car%': car.name}) }}</p>
+
+<p>
+    <table>
+        <tr>
+            <th>{{ 'booking.form.title'|trans }}:</th>
+            <td>{{ title }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'date.start'|trans }}:</th>
+            <td>{{ startDate }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'date.end'|trans }}:</th>
+            <td>{{ endDate }}</td>
+        </tr>
+    </table>
+</p>
+
+<p>{{ 'event_email.cheers'|trans }}</p>

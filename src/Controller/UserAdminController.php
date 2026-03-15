@@ -6,6 +6,8 @@ use App\Entity\Invitation;
 use App\Entity\User;
 use App\Form\InvitationFormType;
 use App\Form\UserFormType;
+use App\Message\Event\InvitationCreatedEvent;
+use App\Message\Event\UserRemovedEvent;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
 use App\Service\ActiveCarService;
@@ -18,6 +20,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -46,7 +49,7 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/invite', name: 'app_user_invite')]
-    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService): Response
+    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus): Response
     {
         $car = $activeCarService->getActiveCar();
 
@@ -88,6 +91,7 @@ class UserAdminController extends AbstractController
                     )
             );
 
+            $messageBus->dispatch(new InvitationCreatedEvent($invitation->getId()));
             $this->addFlash('success', 'Invitation created!');
 
             return $this->redirectToRoute('app_user_list', ['car' => $car->getId()]);
@@ -143,13 +147,19 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/delete-account', name: 'app_user_delete_account', methods: ['POST'])]
-    public function deleteAccount(EntityManagerInterface $em, Request $request): Response
+    public function deleteAccount(EntityManagerInterface $em, Request $request, MessageBusInterface $messageBus): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         if (!$this->isCsrfTokenValid('account_delete_' . $user->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        // Capture data before deactivation/deletion changes or removes it
+        $events = [];
+        foreach ($user->getCars() as $car) {
+            $events[] = new UserRemovedEvent($car->getId(), $user->getName());
         }
 
         if ($user->hasEntries()) {
@@ -160,6 +170,10 @@ class UserAdminController extends AbstractController
         } else {
             $em->remove($user);
             $em->flush();
+        }
+
+        foreach ($events as $event) {
+            $messageBus->dispatch($event);
         }
 
         return $this->redirectToRoute('app_logout');
@@ -184,13 +198,17 @@ class UserAdminController extends AbstractController
     public function deleteUser(
         EntityManagerInterface $em,
         User $user,
-        ActiveCarService $activeCarService
+        ActiveCarService $activeCarService,
+        MessageBusInterface $messageBus,
     ): Response {
         $activeCar = $activeCarService->getActiveCar();
         // Do not allow to delete users of other cars and do not allow to delete yourself
         if ($activeCar !== $user->getCar() || $this->getUser()->getId() === $user->getId()) {
             $this->addFlash('error', 'You are not allowed to delete this user.');
         }
+
+        // Capture data before deactivation/deletion changes or removes it
+        $event = new UserRemovedEvent($activeCar->getId(), $user->getName());
 
         // Only delete users that did not add any data (trips, payments, etc.), anonymize and deactivate
         // everyone else
@@ -200,11 +218,13 @@ class UserAdminController extends AbstractController
             $em->persist($user);
             $em->flush();
 
+            $messageBus->dispatch($event);
             $this->addFlash('success', 'User has entries. Deletion not possible. User deactivated instead.');
         } else {
             $em->remove($user);
             $em->flush();
 
+            $messageBus->dispatch($event);
             $this->addFlash('success', 'User deleted.');
         }
 

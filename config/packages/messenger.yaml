@@ -22,3 +22,10 @@ framework:
 
             # Route your messages to the transports
             App\Message\Event\TripAddedEvent: async
+            App\Message\Event\BookingAddedEvent: async
+            App\Message\Event\BookingUpdatedEvent: async
+            App\Message\Event\BookingDeletedEvent: async
+            App\Message\Event\PaymentAddedEvent: async
+            App\Message\Event\InvitationCreatedEvent: async
+            App\Message\Event\InvitationAcceptedEvent: async
+            App\Message\Event\UserRemovedEvent: async

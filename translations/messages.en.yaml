@@ -105,6 +105,31 @@ event_email:
     added_with: A trip has been added with %car%
     added_by: "%user% has added a trip with %car%."
     see_in_logbook: "You can see the new trip in the %link% of %car%."
+  booking:
+    added: New booking for %car%
+    added_for: A new booking has been created for %car%
+    added_by: "%user% has created a booking for %car%."
+    updated: Booking updated for %car%
+    updated_for: A booking has been updated for %car%
+    updated_by: "%user% has updated a booking for %car%."
+    deleted: Booking deleted for %car%
+    deleted_for: A booking has been deleted for %car%
+    deleted_by: "%user% has deleted a booking for %car%."
+  payment:
+    added: New payment recorded for %car%
+    added_for: A new payment has been recorded for %car%
+    added_by: "%from% sent a payment to %to% for %car%."
+  invitation:
+    created: New invitation sent for %car%
+    created_for: A new invitation has been sent for %car%
+    created_by: "%user% has invited %email% to join %car%."
+    accepted: New member joined %car%
+    accepted_for: A new member has joined %car%
+    accepted_by: "%user% has joined %car%."
+  user:
+    removed: A member has left %car%
+    removed_from: A member has left %car%
+    removed_message: "%user% has left or been removed from %car%."
   cheers: Cheers!
 entry:
   created_by: Created/Last edited by

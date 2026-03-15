@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Payment;
 use App\Form\PaymentFormType;
+use App\Message\Event\PaymentAddedEvent;
 use App\Repository\PaymentRepository;
 use App\Service\ActiveCarService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PaymentAdminController extends AbstractController
@@ -41,7 +43,7 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/new', name: 'app_payment_new')]
-    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService): Response
+    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService, MessageBusInterface $messageBus): Response
     {
         $car = $activeCarService->getActiveCar();
 
@@ -65,8 +67,7 @@ class PaymentAdminController extends AbstractController
             $em->persist($payment);
             $em->flush();
 
-            // TODO: inform other user
-
+            $messageBus->dispatch(new PaymentAddedEvent($payment->getId()));
             $this->addFlash('success', 'Payment created!');
 
             return $this->redirectToRoute('app_payment_list');

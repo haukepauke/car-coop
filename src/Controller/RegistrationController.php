@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Message\Event\InvitationAcceptedEvent;
 use App\Repository\CarRepository;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -115,6 +117,7 @@ class RegistrationController extends AbstractController
         EntityManagerInterface $entityManager,
         InvitationRepository $inviteRepo,
         CarRepository $carRepo,
+        MessageBusInterface $messageBus,
         $hash
     ): Response {
         $invite = $inviteRepo->findOneByHash($hash);
@@ -152,9 +155,13 @@ class RegistrationController extends AbstractController
             $user->setNotifiedOnEvents(true);
             $user->setNotifiedOnOwnEvents(false);
 
+            $carId = $car->getId();
+
             $entityManager->persist($user);
             $entityManager->remove($invite);
             $entityManager->flush();
+
+            $messageBus->dispatch(new InvitationAcceptedEvent($user->getId(), $carId));
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation(

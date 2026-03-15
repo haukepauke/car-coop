@@ -107,6 +107,31 @@ event_email:
     added_with: Eine Fahrt wurde hinzugefügt mit %car%
     added_by: "%user% hat eine Fahrt mit %car% hinzugefügt."
     see_in_logbook: "Die neue Fahrt ist im %link% von %car% zu sehen."
+  booking:
+    added: Neue Buchung für %car%
+    added_for: Eine neue Buchung wurde für %car% erstellt
+    added_by: "%user% hat eine Buchung für %car% erstellt."
+    updated: Buchung aktualisiert für %car%
+    updated_for: Eine Buchung wurde für %car% aktualisiert
+    updated_by: "%user% hat eine Buchung für %car% aktualisiert."
+    deleted: Buchung gelöscht für %car%
+    deleted_for: Eine Buchung wurde für %car% gelöscht
+    deleted_by: "%user% hat eine Buchung für %car% gelöscht."
+  payment:
+    added: Neue Zahlung erfasst für %car%
+    added_for: Eine neue Zahlung wurde für %car% erfasst
+    added_by: "%from% hat eine Zahlung an %to% für %car% gesendet."
+  invitation:
+    created: Neue Einladung für %car%
+    created_for: Eine neue Einladung wurde für %car% verschickt
+    created_by: "%user% hat %email% eingeladen, %car% beizutreten."
+    accepted: Neues Mitglied bei %car%
+    accepted_for: Ein neues Mitglied ist %car% beigetreten
+    accepted_by: "%user% ist %car% beigetreten."
+  user:
+    removed: Ein Mitglied hat %car% verlassen
+    removed_from: Ein Mitglied hat %car% verlassen
+    removed_message: "%user% hat %car% verlassen oder wurde entfernt."
   cheers: Viele Grüße!
 expenses:
   delete: Ausgabe löschen
