@@ -7,7 +7,67 @@
     {{ form_start(tripForm)}}
         {{ form_widget(tripForm) }}
 
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="add-parking-location">
+                <label class="form-check-label" for="add-parking-location">
+                    {{ 'parking.add_current_location'|trans }}
+                </label>
+            </div>
+            <input type="hidden" name="parking_lat" id="parking-lat">
+            <input type="hidden" name="parking_lng" id="parking-lng">
+            <div id="parking-location-status" class="form-text text-muted"></div>
+        </div>
+
         <button type="submit" class="btn btn-outline-dark my-3">{{ 'trips.add.add'|trans }}</button>
     {{ form_end(tripForm) }}
 </div>
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+(function () {
+    const checkbox = document.getElementById('add-parking-location');
+    const latInput = document.getElementById('parking-lat');
+    const lngInput = document.getElementById('parking-lng');
+    const status = document.getElementById('parking-location-status');
+
+    checkbox.addEventListener('change', function () {
+        if (!checkbox.checked) {
+            latInput.value = '';
+            lngInput.value = '';
+            status.textContent = '';
+            return;
+        }
+
+        if (!navigator.geolocation) {
+            status.textContent = {{ 'parking.geolocation_unavailable'|trans|json_encode|raw }};
+            checkbox.checked = false;
+            return;
+        }
+
+        status.textContent = {{ 'parking.locating'|trans|json_encode|raw }};
+
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                latInput.value = pos.coords.latitude;
+                lngInput.value = pos.coords.longitude;
+                status.textContent = {{ 'parking.location_captured'|trans|json_encode|raw }};
+                status.classList.remove('text-muted', 'text-danger');
+                status.classList.add('text-success');
+            },
+            function () {
+                status.textContent = {{ 'parking.location_error'|trans|json_encode|raw }};
+                status.classList.remove('text-muted', 'text-success');
+                status.classList.add('text-danger');
+                checkbox.checked = false;
+                latInput.value = '';
+                lngInput.value = '';
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    });
+})();
+</script>
+{% endblock %}
 {% endblock %}

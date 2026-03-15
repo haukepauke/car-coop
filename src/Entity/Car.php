@@ -55,6 +55,9 @@ class Car
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Booking::class, orphanRemoval: true)]
     private $bookings;
 
+    #[ORM\OneToMany(mappedBy: 'car', targetEntity: ParkingLocation::class, orphanRemoval: true)]
+    private $parkingLocations;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $profilePicturePath;
 
@@ -62,6 +65,7 @@ class Car
     {
         $this->trips = new ArrayCollection();
         $this->expenses = new ArrayCollection();
+        $this->parkingLocations = new ArrayCollection();
         $this->userTypes = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->bookings = new ArrayCollection();
@@ -409,6 +413,11 @@ class Car
         }
 
         return $moneySpent;
+    }
+
+    public function getParkingLocations(): Collection
+    {
+        return $this->parkingLocations;
     }
 
     public function getCalculatedCosts(DateTime $start, DateTime $end): float {

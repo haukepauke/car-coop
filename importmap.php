@@ -20,6 +20,10 @@ return [
         'path' => './assets/calendar.js',
         'entrypoint' => true,
     ],
+    'parking' => [
+        'path' => './assets/parking.js',
+        'entrypoint' => true,
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
@@ -41,6 +45,13 @@ return [
     ],
     '@fortawesome/fontawesome-free/css/all.css' => [
         'version' => '6.6.0',
+        'type' => 'css',
+    ],
+    'leaflet' => [
+        'version' => '1.9.4',
+    ],
+    'leaflet/dist/leaflet.min.css' => [
+        'version' => '1.9.4',
         'type' => 'css',
     ],
 ];

@@ -1,4 +1,16 @@
 
+parking:
+  title: Parkposition
+  add_current_location: Aktuelle Position als Parkposition speichern
+  geolocation_unavailable: Dein Browser unterstützt keine Standortbestimmung.
+  locating: Standort wird bestimmt...
+  location_captured: Standort erfasst.
+  location_error: Standort konnte nicht bestimmt werden. Bitte überprüfe die Browser-Berechtigungen.
+  no_location: Noch keine Parkposition erfasst.
+  recorded_at: Erfasst am
+  recorded_by: von
+  click_to_set: Klicke auf die Karte, um eine neue Parkposition festzulegen. Der Marker kann zur Feinabstimmung verschoben werden.
+  save_location: Parkposition speichern
 actions: Aktionen
 admin: Administration
 amount: Betrag

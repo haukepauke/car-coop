@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ParkingLocation;
 use App\Entity\Trip;
 use App\Form\TripFormType;
 use App\Message\Event\TripAddedEvent;
@@ -81,6 +82,18 @@ class TripAdminController extends AbstractController
 
             $em->persist($trip);
             $em->persist($car);
+
+            $lat = $request->request->get('parking_lat');
+            $lng = $request->request->get('parking_lng');
+            if ($lat !== null && $lng !== null && $lat !== '' && $lng !== '') {
+                $parking = new ParkingLocation();
+                $parking->setCar($car);
+                $parking->setUser($user);
+                $parking->setLatitude((float) $lat);
+                $parking->setLongitude((float) $lng);
+                $em->persist($parking);
+            }
+
             $em->flush();
 
             $messageBus->dispatch(new TripAddedEvent($trip->getId()));
