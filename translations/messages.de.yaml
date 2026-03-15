@@ -21,46 +21,46 @@ booking:
   delete: Buchung löschen
   update: Buchung aktualisieren
 car:
-  add: Auto hinzufügen
+  add: Fahrzeug hinzufügen
   delete:
-    button: Auto löschen
+    button: Fahrzeug löschen
     confirm:
-      title: Auto löschen
-      warning: "Diese Aktion ist unwiderruflich. Alle Fahrten, Ausgaben, Zahlungen und Buchungen für dieses Auto werden dauerhaft gelöscht."
+      title: Fahrzeug löschen
+      warning: "Diese Aktion ist unwiderruflich. Alle Fahrten, Ausgaben, Zahlungen und Buchungen für dieses Fahrzeug werden dauerhaft gelöscht."
       name_label: "Fahrzeugnamen zur Bestätigung eingeben:"
-      confirm_button: Auto löschen
+      confirm_button: Fahrzeug löschen
       cancel: Abbrechen
   bookings:
     next: Nächste Buchungen
   costs:
     calculated: Errechnete Kosten
-  create: Auto erstellen
+  create: Fahrzeug erstellen
   data: Daten zum Fahrzeug
   exportpdf:
     button: Fahrzeugdaten exportieren (PDF)
   form:
     help:
-      name: Wähle einen guten Namen für Dein Auto
-      licenseplate: Was steht auf dem Nummernschild des Autos (optional)
-      make: Die Modellbezeichnung des Autos (optional)
+      name: Wähle einen guten Namen für Dein Fahrzeug
+      licenseplate: Was steht auf dem Nummernschild des Fahrzeugs (optional)
+      make: Die Modellbezeichnung des Fahrzeugs (optional)
       profile:
         picture: Bitte lade ein Bild im Jpeg, PNG oder GIF Format hoch (optional)
-      vendor: Der Hersteller des Autos (optional)
+      vendor: Der Hersteller des Fahrzeugs (optional)
     licenseplate: Nummernschild
     name: Name
     make: Modellbezeichnung
     profile:
       picture: Profilbild
-    vendor: Autohersteller
+    vendor: Fahrzeughersteller
     mileageunit: Entfernungsmaß
-  manage: Auto bearbeiten
+  manage: Fahrzeug bearbeiten
   mileage: Tachostand
   season:
     mileage: Distanz zurückgelegt in
     spent: Geld ausgegeben in
     fuel: davon Sprit
   statistics: Statistiken
-  update: Auto aktualisieren
+  update: Fahrzeug aktualisieren
 cash: Bar
 confirm:
   email: E-Mail-Adresse bestätigen
