@@ -24,27 +24,27 @@ return [
         'path' => './assets/parking.js',
         'entrypoint' => true,
     ],
-    '@hotwired/stimulus' => [
-        'version' => '3.2.2',
-    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    '@hotwired/stimulus' => [
+        'version' => '3.2.2',
+    ],
     'chart.js' => [
-        'version' => '3.9.1',
+        'version' => '4.5.1',
     ],
     'bootstrap' => [
-        'version' => '5.3.3',
+        'version' => '5.3.8',
     ],
     '@popperjs/core' => [
         'version' => '2.11.8',
     ],
     'bootstrap/dist/css/bootstrap.min.css' => [
-        'version' => '5.3.3',
+        'version' => '5.3.8',
         'type' => 'css',
     ],
     '@fortawesome/fontawesome-free/css/all.css' => [
-        'version' => '6.6.0',
+        'version' => '7.2.0',
         'type' => 'css',
     ],
     'leaflet' => [
@@ -53,5 +53,8 @@ return [
     'leaflet/dist/leaflet.min.css' => [
         'version' => '1.9.4',
         'type' => 'css',
+    ],
+    '@kurkle/color' => [
+        'version' => '0.3.4',
     ],
 ];
