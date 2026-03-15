@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('vendor/leaflet/dist/leaflet.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+{% block importmap %}{{ importmap(['app', 'parking']) }}{% endblock %}
+{% endblock %}
+
+{% block content_body %}
+<div class="col-xl-8 mt-5">
+    <h4>{{ 'parking.title'|trans }} {{ car.name }}</h4>
+
+    {% if location %}
+    <p class="text-muted">
+        {{ 'parking.recorded_at'|trans }} {{ location.createdAt|format_datetime('medium', 'short', locale=app.user.locale) }} {{ 'parking.recorded_by'|trans }} {{ location.user.name }}
+    </p>
+    {% endif %}
+
+    <p class="text-muted">{{ 'parking.click_to_set'|trans }}</p>
+
+    <div id="parking-map"
+         data-lat="{{ location.latitude ?? '' }}"
+         data-lng="{{ location.longitude ?? '' }}"
+         data-label="{{ car.name }}"
+         data-save-url="{{ path('app_parking_save') }}"
+         data-csrf-token="{{ csrf_token('parking_save') }}"
+         style="height: 400px; border-radius: 8px;"></div>
+
+    <form id="parking-save-form" method="post" action="{{ path('app_parking_save') }}" class="mt-3">
+        <input type="hidden" name="_token" value="{{ csrf_token('parking_save') }}">
+        <input type="hidden" name="lat" id="parking-save-lat">
+        <input type="hidden" name="lng" id="parking-save-lng">
+        <button type="submit" id="parking-save-btn" class="btn btn-outline-dark d-none">
+            {{ 'parking.save_location'|trans }}
+        </button>
+    </form>
+</div>
+{% endblock %}
