@@ -3,6 +3,17 @@ import L from 'leaflet';
 const mapEl = document.getElementById('parking-map');
 if (mapEl) {
 
+// Fix marker icon broken by ES module bundling
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconUrl: mapEl.dataset.markerIcon,
+    iconRetinaUrl: mapEl.dataset.markerIcon,
+    shadowUrl: '',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+});
+
 const label    = mapEl.dataset.label;
 const hasLocation = mapEl.dataset.lat !== '' && mapEl.dataset.lng !== '';
 const defaultLat  = hasLocation ? parseFloat(mapEl.dataset.lat) : 51.505;
