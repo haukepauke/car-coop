@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+<div class="col-xl-6 mt-5">
+    <h4>{{ 'car.delete.confirm.title'|trans }}: {{ car.name }}</h4>
+
+    <div class="alert alert-danger mt-3">
+        {{ 'car.delete.confirm.warning'|trans }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">{{ 'car.delete.confirm.name_label'|trans }}</label>
+        <input type="text" id="car-name-input" class="form-control" autocomplete="off">
+    </div>
+
+    <div class="d-flex gap-2">
+        <form method="post" action="{{ path('app_car_delete') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('car_delete_' ~ car.id) }}">
+            <input type="hidden" name="car_name" id="car-name-hidden">
+            <button type="submit" id="delete-btn" class="btn btn-danger" disabled>
+                {{ 'car.delete.confirm.confirm_button'|trans }}
+            </button>
+        </form>
+
+        <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary">
+            {{ 'car.exportpdf.button'|trans }}
+        </a>
+
+        <a href="{{ path('app_car_edit') }}" class="btn btn-outline-dark">
+            {{ 'car.delete.confirm.cancel'|trans }}
+        </a>
+    </div>
+</div>
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+(function () {
+    const carName = {{ car.name | json_encode | raw }};
+    const input = document.getElementById('car-name-input');
+    const btn = document.getElementById('delete-btn');
+    const hidden = document.getElementById('car-name-hidden');
+
+    input.addEventListener('input', function () {
+        const matches = input.value === carName;
+        btn.disabled = !matches;
+        hidden.value = input.value;
+    });
+})();
+</script>
+{% endblock %}
+{% endblock %}

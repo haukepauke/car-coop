@@ -22,6 +22,14 @@ booking:
   update: Buchung aktualisieren
 car:
   add: Auto hinzufügen
+  delete:
+    button: Auto löschen
+    confirm:
+      title: Auto löschen
+      warning: "Diese Aktion ist unwiderruflich. Alle Fahrten, Ausgaben, Zahlungen und Buchungen für dieses Auto werden dauerhaft gelöscht."
+      name_label: "Fahrzeugnamen zur Bestätigung eingeben:"
+      confirm_button: Auto löschen
+      cancel: Abbrechen
   bookings:
     next: Nächste Buchungen
   costs:

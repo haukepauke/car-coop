@@ -107,7 +107,8 @@ class CarAdminController extends AbstractController
             'admin/car/edit.html.twig',
             [
                 'carForm' => $form->createView(),
-                'car' => $car,
+                'car'     => $car,
+                'isAdmin' => $car->isAdminUser($this->getUser()),
             ]
         );
     }
@@ -191,17 +192,46 @@ class CarAdminController extends AbstractController
         ]);
     }
 
-    // #[Route('/admin/car/delete', name: 'app_car_delete')]
-    // public function delete(EntityManagerInterface $em, Request $request): Response
-    // {
-    //     //$car = $this->getUser()->getCar();
+    #[Route('/admin/car/delete', name: 'app_car_delete_confirm', methods: ['GET'])]
+    public function deleteConfirm(ActiveCarService $activeCarService): Response
+    {
+        $car = $activeCarService->getActiveCar();
 
-    //     //Show user message that this action will delete the car and all related data
-    //     //Show message that all associated accounts will be deleted
-    //     //Optional Feature: Checkbox: Send data export via email (Format?) 
-    //     //Checkbox: Really delete user account?  
+        if (!$car->isAdminUser($this->getUser())) {
+            throw $this->createAccessDeniedException();
+        }
 
-    //     // $em->remove($car);
-    //     // $em->flush();
-    // }
+        return $this->render('admin/car/delete.html.twig', [
+            'car' => $car,
+        ]);
+    }
+
+    #[Route('/admin/car/delete', name: 'app_car_delete', methods: ['POST'])]
+    public function delete(
+        EntityManagerInterface $em,
+        Request $request,
+        ActiveCarService $activeCarService
+    ): Response {
+        $car = $activeCarService->getActiveCar();
+
+        if (!$car->isAdminUser($this->getUser())) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if (!$this->isCsrfTokenValid('car_delete_' . $car->getId(), $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        if ($request->request->get('car_name') !== $car->getName()) {
+            $this->addFlash('error', 'Car name did not match. Deletion cancelled.');
+            return $this->redirectToRoute('app_car_delete_confirm');
+        }
+
+        $em->remove($car);
+        $em->flush();
+
+        $this->addFlash('success', 'Car deleted.');
+
+        return $this->redirectToRoute('app_car_show');
+    }
 }

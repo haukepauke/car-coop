@@ -22,7 +22,12 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-outline-dark my-3">{{ 'car.update'|trans }}</button>
+        <div class="d-flex gap-2 my-3">
+            <button type="submit" class="btn btn-outline-dark">{{ 'car.update'|trans }}</button>
+            {% if isAdmin %}
+            <a href="{{ path('app_car_delete_confirm') }}" class="btn btn-outline-danger">{{ 'car.delete.button'|trans }}</a>
+            {% endif %}
+        </div>
     {{ form_end(carForm) }}
 </div>
 {% endblock %}

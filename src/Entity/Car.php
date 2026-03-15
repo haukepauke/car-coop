@@ -264,6 +264,20 @@ class Car
     }
 
     /**
+     * Returns true if the user is in an admin-flagged user group of this car.
+     */
+    public function isAdminUser(User $user): bool
+    {
+        foreach ($this->userTypes as $userType) {
+            if ($userType->isAdmin() && $userType->getUsers()->contains($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
