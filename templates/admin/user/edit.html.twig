@@ -30,7 +30,10 @@
         {{ form_row(userForm.notifiedOnEvents) }}
         {{ form_row(userForm.notifiedOnOwnEvents) }}
 
-        <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.profile.update'|trans }}</button>
+        <div class="d-flex gap-2 my-3">
+            <button type="submit" class="btn btn-outline-dark">{{ 'user.profile.update'|trans }}</button>
+            <a href="{{ path('app_user_delete_account_confirm') }}" class="btn btn-outline-danger">{{ 'user.delete.button'|trans }}</a>
+        </div>
     {{ form_end(userForm) }}
 </div>
 {% endblock %}

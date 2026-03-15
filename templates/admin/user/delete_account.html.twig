@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+<div class="col-xl-6 mt-5">
+    <h4>{{ 'user.delete.confirm.title'|trans }}</h4>
+
+    <div class="alert alert-warning mt-3">
+        {{ 'user.delete.confirm.warning'|trans }}
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+        <form method="post" action="{{ path('app_user_delete_account') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('account_delete_' ~ app.user.id) }}">
+            <button type="submit" class="btn btn-danger">
+                {{ 'user.delete.confirm.confirm_button'|trans }}
+            </button>
+        </form>
+
+        <a href="{{ path('app_user_edit') }}" class="btn btn-outline-dark">
+            {{ 'user.delete.confirm.cancel'|trans }}
+        </a>
+    </div>
+</div>
+{% endblock %}

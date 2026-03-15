@@ -202,6 +202,13 @@ user:
     edit: Edit profile
     update: Update profile
     picture: Profile picture
+  delete:
+    button: Delete account
+    confirm:
+      title: Delete account
+      warning: "Do you really want to delete your account? If you have trips, expenses or payments recorded, your account will be deactivated and anonymized instead of deleted."
+      confirm_button: Delete account
+      cancel: Cancel
   register: Register
   status: State
   type: Group

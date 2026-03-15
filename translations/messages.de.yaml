@@ -202,6 +202,13 @@ user:
     edit: Profil bearbeiten
     update: Profil aktualisieren
     picture: Profilbild
+  delete:
+    button: Konto löschen
+    confirm:
+      title: Konto löschen
+      warning: "Möchtest Du Dein Konto wirklich löschen? Falls Du Fahrten, Ausgaben oder Zahlungen erfasst hast, wird Dein Konto stattdessen deaktiviert und anonymisiert."
+      confirm_button: Konto löschen
+      cancel: Abbrechen
   register: Registrieren
   status: Status
   type: Gruppe

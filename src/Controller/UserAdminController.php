@@ -136,6 +136,35 @@ class UserAdminController extends AbstractController
         );
     }
 
+    #[Route('/admin/user/delete-account', name: 'app_user_delete_account_confirm', methods: ['GET'])]
+    public function deleteAccountConfirm(): Response
+    {
+        return $this->render('admin/user/delete_account.html.twig');
+    }
+
+    #[Route('/admin/user/delete-account', name: 'app_user_delete_account', methods: ['POST'])]
+    public function deleteAccount(EntityManagerInterface $em, Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$this->isCsrfTokenValid('account_delete_' . $user->getId(), $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        if ($user->hasEntries()) {
+            $user->deactivate();
+            $user->anonymize();
+            $em->persist($user);
+            $em->flush();
+        } else {
+            $em->remove($user);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_logout');
+    }
+
     #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete')]
     public function deleteInvite(EntityManagerInterface $em, Invitation $invite): Response
     {
