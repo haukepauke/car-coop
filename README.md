@@ -34,7 +34,7 @@ php bin/console asset-map:compile
 These commands need to be run after pulling updated code as well. 
 
 ### Running the worker process via supervisor
-For using the messenger component for async processing of tasks, a worker process needs to be run. This can be done using supervisor. You will find an example configuration file for supervisor in the deploy/supervisor-folder in this project. After installing supervisor copy the file to the supervisor configuration folder of your server (f.e. /etc/supervisor/conf.d/). Change the path configuration so that it points to the root folder of this project on your server.
+For using the messenger component for async processing of tasks, a worker process needs to be run. This can be done using [supervisor](http://supervisord.org). You will find an example configuration file for supervisor in the deploy/supervisor-folder in this project. After [installing supervisor](http://supervisord.org/installing.html) copy the file to the supervisor configuration folder of your server (f.e. /etc/supervisor/conf.d/). Change the path configuration so that it points to the root folder of this project on your server.
 
 Then run the following commands:
 ```
