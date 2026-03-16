@@ -7,6 +7,8 @@ use App\Repository\MessageRepository;
 use App\Service\ActiveCarService;
 use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,15 +20,18 @@ class MessageController extends AbstractController
     private const MAX_PHOTO_SIZE = 4 * 1024 * 1024; // 4 MB
     private const PHOTO_FOLDER = 'messages';
 
-    #[Route('/admin/messages', name: 'app_message_board')]
-    public function index(MessageRepository $repo, ActiveCarService $activeCarService): Response
+    #[Route('/admin/messages/{page<\d+>}', name: 'app_message_board')]
+    public function index(MessageRepository $repo, ActiveCarService $activeCarService, int $page = 1): Response
     {
         $car = $activeCarService->getActiveCar();
-        $messages = $repo->findForCar($car);
+
+        $pagination = new Pagerfanta(new QueryAdapter($repo->createFindByCarQueryBuilder($car)));
+        $pagination->setMaxPerPage(10);
+        $pagination->setCurrentPage($page);
 
         return $this->render('admin/message/index.html.twig', [
-            'car'      => $car,
-            'messages' => $messages,
+            'car'   => $car,
+            'pager' => $pagination,
         ]);
     }
 

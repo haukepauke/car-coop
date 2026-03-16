@@ -24,27 +24,8 @@
         {% endfor %}
     {% endfor %}
 
-    {# New message form #}
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">{{ 'messageboard.new_message'|trans }}</h5>
-            <div id="quill-editor" style="min-height: 120px;"></div>
-            <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2" enctype="multipart/form-data">
-                <input type="hidden" name="_token" value="{{ csrf_token('message_new') }}">
-                <input type="hidden" name="content" id="message-content">
-                <input type="file" name="photos[]" id="message-photos" accept="image/*" multiple class="d-none">
-                <div id="photo-preview-area" class="photo-upload-area" title="{{ 'messageboard.photo_hint'|trans }}">
-                    <button type="button" id="photo-add-btn" class="photo-add-btn" title="{{ 'messageboard.attach_photos'|trans }}">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                </div>
-                <button type="submit" class="btn btn-outline-dark mt-2">{{ 'messageboard.post'|trans }}</button>
-            </form>
-        </div>
-    </div>
-
     {# Messages list #}
-    {% for message in messages %}
+    {% for message in pager %}
     <div class="card mb-3 {% if message.isSticky %}border-warning{% endif %}">
         <div class="card-header d-flex justify-content-between align-items-center {% if message.isSticky %}bg-warning bg-opacity-10{% endif %}">
             <div class="d-flex align-items-center gap-2">
@@ -105,6 +86,31 @@
     {% else %}
     <p class="text-muted">{{ 'messageboard.no_messages'|trans }}</p>
     {% endfor %}
+
+    {% if pager.haveToPaginate %}
+    <div class="d-flex justify-content-center mb-4">
+        {{ pagerfanta(pager, 'twitter_bootstrap5', {routeName: 'app_message_board'}) }}
+    </div>
+    {% endif %}
+
+    {# New message form #}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ 'messageboard.new_message'|trans }}</h5>
+            <div id="quill-editor" style="min-height: 120px;"></div>
+            <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="{{ csrf_token('message_new') }}">
+                <input type="hidden" name="content" id="message-content">
+                <input type="file" name="photos[]" id="message-photos" accept="image/*" multiple class="d-none">
+                <div id="photo-preview-area" class="photo-upload-area" title="{{ 'messageboard.photo_hint'|trans }}">
+                    <button type="button" id="photo-add-btn" class="photo-add-btn" title="{{ 'messageboard.attach_photos'|trans }}">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <button type="submit" class="btn btn-outline-dark mt-2">{{ 'messageboard.post'|trans }}</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 {# Fullscreen photo modal #}
