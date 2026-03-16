@@ -5,11 +5,11 @@ body {
 footer {
     background-color: #000;
     color: white;
-  }
+}
 
-input[type=color]{
+input[type=color] {
     width: 50px;
-    height:40px;
+    height: 40px;
 }
 
 /* Pagination buttons */
@@ -25,10 +25,9 @@ input[type=color]{
     box-shadow: 0 0 0 0.25rem rgba(112, 113, 114, 0.25);
 }
 
-.page-link{
+.page-link {
     color: #000;
 }
-
 
 .navbar {
     position: absolute;
@@ -42,11 +41,73 @@ input[type=color]{
     z-index: 1000;
 }
 
-
 #head {
-  background-color: #000;
-  color: #f2f2f2;
-  height: 4em;
-  width: 100%;
+    background-color: #000;
+    color: #f2f2f2;
+    height: 4em;
+    width: 100%;
 }
 
+/* ── Mobile bottom navigation ───────────────────────────────── */
+#mobile-bottom-nav {
+    z-index: 1030;
+    padding-bottom: env(safe-area-inset-bottom); /* iPhone notch support */
+}
+
+.mobile-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 2px;
+    min-height: 56px;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    font-size: 0.6rem;
+    line-height: 1.2;
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-item i {
+    font-size: 1.25rem;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.mobile-nav-item.active,
+.mobile-nav-item:hover {
+    color: #ffffff;
+}
+
+/* ── Mobile layout adjustments ──────────────────────────────── */
+@media (max-width: 991.98px) {
+    /* Extra bottom padding so content isn't hidden behind bottom nav */
+    body {
+        padding-bottom: calc(64px + env(safe-area-inset-bottom));
+    }
+
+    /* Larger touch targets for buttons */
+    .btn {
+        min-height: 44px;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .btn-sm {
+        min-height: 38px;
+    }
+
+    /* Prevent iOS Safari from zooming in on focused inputs */
+    input:not([type=color]),
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    /* Larger dropdown items for easier tapping */
+    .dropdown-item {
+        padding: 0.6rem 1rem;
+    }
+}
