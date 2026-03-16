@@ -59,7 +59,7 @@ return [
         'type' => 'css',
     ],
     '@kurkle/color' => [
-        'version' => '0.3.4',
+        'version' => '0.4.0',
     ],
     'quill' => [
         'version' => '2.0.3',
@@ -69,7 +69,7 @@ return [
         'type' => 'css',
     ],
     'lodash-es' => [
-        'version' => '4.17.21',
+        'version' => '4.17.23',
     ],
     'parchment' => [
         'version' => '3.0.0',
@@ -78,7 +78,7 @@ return [
         'version' => '5.1.0',
     ],
     'eventemitter3' => [
-        'version' => '5.0.1',
+        'version' => '5.0.4',
     ],
     'fast-diff' => [
         'version' => '1.3.0',

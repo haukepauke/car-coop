@@ -31,6 +31,9 @@ class Message
     #[ORM\Column(type: 'boolean')]
     private bool $isSticky = false;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $photos = null;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
@@ -87,6 +90,17 @@ class Message
     public function setIsSticky(bool $isSticky): self
     {
         $this->isSticky = $isSticky;
+        return $this;
+    }
+
+    public function getPhotos(): array
+    {
+        return $this->photos ?? [];
+    }
+
+    public function setPhotos(array $photos): self
+    {
+        $this->photos = $photos ?: null;
         return $this;
     }
 

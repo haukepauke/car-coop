@@ -17,6 +17,14 @@ messageboard:
   toggle_sticky: Pin/unpin message
   delete: Delete message
   delete_confirm: Really delete this message?
+  attach_photos: Attach photos (optional)
+  photo_hint: You can select multiple images. Maximum 4 MB per photo.
+  photo: Photo
+  photo_too_large: One or more photos exceed the maximum allowed size of 4 MB and were not uploaded.
+  photo_invalid_type: One or more files are not valid image files and were not uploaded.
+  photo_upload_failed: One or more photos could not be saved on the server.
+  download_photo: Download
+  close: Close
 parking:
   title: Parking location
   add_current_location: Add current location as parking location

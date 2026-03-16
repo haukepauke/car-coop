@@ -7,21 +7,38 @@
 {% block stylesheets %}
 {{ parent() }}
 <link rel="stylesheet" href="{{ asset('vendor/quill/dist/quill.snow.css') }}">
+<link rel="stylesheet" href="{{ asset('styles/messageboard.css') }}">
 {% endblock %}
 
 {% block content_body %}
 <div class="col-12 mt-5">
     <h2>{{ 'messageboard.title'|trans }} – {{ car.name }}</h2>
 
+    {# Flash messages #}
+    {% for label, flashes in app.flashes(['warning', 'danger']) %}
+        {% for msg in flashes %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                {{ msg|trans }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     {# New message form #}
     <div class="card mb-4">
         <div class="card-body">
             <h5 class="card-title">{{ 'messageboard.new_message'|trans }}</h5>
             <div id="quill-editor" style="min-height: 120px;"></div>
-            <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2">
+            <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token('message_new') }}">
                 <input type="hidden" name="content" id="message-content">
-                <button type="submit" class="btn btn-outline-dark">{{ 'messageboard.post'|trans }}</button>
+                <input type="file" name="photos[]" id="message-photos" accept="image/*" multiple class="d-none">
+                <div id="photo-preview-area" class="photo-upload-area" title="{{ 'messageboard.photo_hint'|trans }}">
+                    <button type="button" id="photo-add-btn" class="photo-add-btn" title="{{ 'messageboard.attach_photos'|trans }}">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <button type="submit" class="btn btn-outline-dark mt-2">{{ 'messageboard.post'|trans }}</button>
             </form>
         </div>
     </div>
@@ -67,12 +84,47 @@
             {% if message.systemData %}
                 {{ message.systemData.key|trans(message.systemData.params)|raw }}
             {% else %}
-                {{ message.content|sanitize_html }}
+                {% if message.content %}
+                    {{ message.content|sanitize_html }}
+                {% endif %}
+                {% if message.photos %}
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    {% for photo in message.photos %}
+                    <img src="{{ asset('uploads/messages/' ~ photo) }}"
+                         alt="{{ 'messageboard.photo'|trans }}"
+                         class="message-photo-thumb"
+                         data-photo-url="{{ asset('uploads/messages/' ~ photo) }}"
+                         data-photo-name="{{ photo }}"
+                         onclick="openPhotoModal(this)">
+                    {% endfor %}
+                </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>
     {% else %}
     <p class="text-muted">{{ 'messageboard.no_messages'|trans }}</p>
     {% endfor %}
+</div>
+
+{# Fullscreen photo modal #}
+<div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0 pb-1">
+                <div class="d-flex gap-2 ms-auto">
+                    <a id="photoDownloadBtn" href="#" download class="btn btn-sm btn-outline-light">
+                        <i class="fa-solid fa-download"></i> {{ 'messageboard.download_photo'|trans }}
+                    </a>
+                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark"></i> {{ 'messageboard.close'|trans }}
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body pt-0 text-center">
+                <img id="photoModalImg" src="" alt="">
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

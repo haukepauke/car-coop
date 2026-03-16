@@ -17,6 +17,14 @@ messageboard:
   toggle_sticky: Nachricht anpinnen/lösen
   delete: Nachricht löschen
   delete_confirm: Diese Nachricht wirklich löschen?
+  attach_photos: Fotos anhängen (optional)
+  photo_hint: Mehrere Bilder können ausgewählt werden. Maximale Dateigröße 4 MB pro Foto.
+  photo: Foto
+  photo_too_large: Ein oder mehrere Fotos überschreiten die maximale Dateigröße von 4 MB und wurden nicht hochgeladen.
+  photo_invalid_type: Eine oder mehrere Dateien sind keine gültigen Bilddateien und wurden nicht hochgeladen.
+  photo_upload_failed: Ein oder mehrere Fotos konnten nicht auf dem Server gespeichert werden.
+  download_photo: Herunterladen
+  close: Schließen
 parking:
   title: Parkposition
   add_current_location: Aktuelle Position als Parkposition speichern

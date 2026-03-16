@@ -5,14 +5,19 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Repository\MessageRepository;
 use App\Service\ActiveCarService;
+use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MessageController extends AbstractController
 {
+    private const MAX_PHOTO_SIZE = 4 * 1024 * 1024; // 4 MB
+    private const PHOTO_FOLDER = 'messages';
+
     #[Route('/admin/messages', name: 'app_message_board')]
     public function index(MessageRepository $repo, ActiveCarService $activeCarService): Response
     {
@@ -26,14 +31,25 @@ class MessageController extends AbstractController
     }
 
     #[Route('/admin/messages/new', name: 'app_message_new', methods: ['POST'])]
-    public function new(Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        ActiveCarService $activeCarService,
+        FileUploaderService $uploader,
+    ): Response {
         if (!$this->isCsrfTokenValid('message_new', $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
         $content = trim($request->request->get('content', ''));
-        if ($content === '' || $content === '<p><br></p>') {
+        /** @var UploadedFile[] $uploadedFiles */
+        $uploadedFiles = $request->files->get('photos') ?? [];
+        if (!is_array($uploadedFiles)) {
+            $uploadedFiles = [$uploadedFiles];
+        }
+        $uploadedFiles = array_filter($uploadedFiles);
+
+        if (($content === '' || $content === '<p><br></p>') && empty($uploadedFiles)) {
             return $this->redirectToRoute('app_message_board');
         }
 
@@ -41,10 +57,41 @@ class MessageController extends AbstractController
         $user = $this->getUser();
         $car  = $activeCarService->getActiveCar();
 
+        $uploadDir = $uploader->getTargetDirectory() . '/' . self::PHOTO_FOLDER;
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $photoFilenames = [];
+        foreach ($uploadedFiles as $file) {
+            if (!$file->isValid()) {
+                $this->addFlash('warning', 'messageboard.photo_upload_failed');
+                continue;
+            }
+            if ($file->getSize() > self::MAX_PHOTO_SIZE) {
+                $this->addFlash('warning', 'messageboard.photo_too_large');
+                continue;
+            }
+            $mimeType = $file->getMimeType() ?? $file->getClientMimeType();
+            if (!str_starts_with((string) $mimeType, 'image/')) {
+                $this->addFlash('warning', 'messageboard.photo_invalid_type');
+                continue;
+            }
+            $filename = $uploader->upload($file, self::PHOTO_FOLDER);
+            if (file_exists($uploadDir . '/' . $filename)) {
+                $photoFilenames[] = $filename;
+            } else {
+                $this->addFlash('warning', 'messageboard.photo_upload_failed');
+            }
+        }
+
         $message = new Message();
         $message->setCar($car);
         $message->setAuthor($user);
-        $message->setContent($content);
+        $message->setContent($content !== '' && $content !== '<p><br></p>' ? $content : '');
+        if ($photoFilenames) {
+            $message->setPhotos($photoFilenames);
+        }
 
         $em->persist($message);
         $em->flush();
@@ -53,7 +100,7 @@ class MessageController extends AbstractController
     }
 
     #[Route('/admin/messages/{id}/sticky', name: 'app_message_toggle_sticky', methods: ['POST'])]
-    public function toggleSticky(Message $message, Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService): Response
+    public function toggleSticky(Message $message, Request $request, EntityManagerInterface $em): Response
     {
         if (!$this->isCsrfTokenValid('message_sticky_' . $message->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
@@ -66,8 +113,13 @@ class MessageController extends AbstractController
     }
 
     #[Route('/admin/messages/{id}/delete', name: 'app_message_delete', methods: ['POST'])]
-    public function delete(Message $message, Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService): Response
-    {
+    public function delete(
+        Message $message,
+        Request $request,
+        EntityManagerInterface $em,
+        ActiveCarService $activeCarService,
+        FileUploaderService $uploader,
+    ): Response {
         if (!$this->isCsrfTokenValid('message_delete_' . $message->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
@@ -78,6 +130,13 @@ class MessageController extends AbstractController
 
         if ($message->getAuthor() !== $user && !$car->isAdminUser($user)) {
             throw $this->createAccessDeniedException('You are not allowed to delete this message.');
+        }
+
+        foreach ($message->getPhotos() as $filename) {
+            $path = $uploader->getTargetDirectory() . '/' . self::PHOTO_FOLDER . '/' . $filename;
+            if (file_exists($path)) {
+                unlink($path);
+            }
         }
 
         $em->remove($message);
