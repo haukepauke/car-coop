@@ -4,6 +4,7 @@ namespace App\MessageHandler\Event;
 
 use App\Message\Event\TripAddedEvent;
 use App\Repository\TripRepository;
+use App\Service\BoardMessageService;
 use App\Service\EventMailerService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Psr\Log\LoggerInterface;
@@ -18,14 +19,16 @@ class InformUserWhenTripAdded
     private string $mailerFromEmail;
     private string $mailerFromName;
     private LoggerInterface $logger;
+    private BoardMessageService $boardMessageService;
 
-    public function __construct(EventMailerService $mailer, TripRepository $tr, string $mailerFromEmail, string $mailerFromName, LoggerInterface $logger)
+    public function __construct(EventMailerService $mailer, TripRepository $tr, string $mailerFromEmail, string $mailerFromName, LoggerInterface $logger, BoardMessageService $boardMessageService)
     {
         $this->mailer = $mailer;
         $this->tr = $tr;
         $this->mailerFromEmail = $mailerFromEmail;
         $this->mailerFromName = $mailerFromName;
         $this->logger = $logger;
+        $this->boardMessageService = $boardMessageService;
     }
 
     public function __invoke(TripAddedEvent $event)
@@ -45,5 +48,11 @@ class InformUserWhenTripAdded
             ])
         ;
         $this->mailer->sendMails($users, $email);
+
+        $editorName = $trip->getEditor() ? $trip->getEditor()->getName() : 'Unknown';
+        $this->boardMessageService->createSystemMessage($car, 'board_system.trip_added', [
+            '%user%' => htmlspecialchars($editorName),
+            '%car%'  => htmlspecialchars($car->getName()),
+        ]);
     }
 }

@@ -1,4 +1,22 @@
 
+board_system:
+  trip_added: "<strong>%user%</strong> added a new trip with <strong>%car%</strong>."
+  booking_added: "<strong>%user%</strong> added a new booking for <strong>%car%</strong> (<em>%start%</em> – <em>%end%</em>)."
+  booking_updated: "<strong>%user%</strong> updated a booking for <strong>%car%</strong>."
+  booking_deleted: "<strong>%user%</strong> deleted a booking for <strong>%car%</strong>: <em>%title%</em> (%start% – %end%)."
+  payment_added: "<strong>%from%</strong> sent a payment to <strong>%to%</strong> for <strong>%car%</strong>."
+  invitation_created: "<strong>%user%</strong> invited <em>%email%</em> to join <strong>%car%</strong>."
+  invitation_accepted: "<strong>%user%</strong> joined <strong>%car%</strong>."
+  user_removed: "<strong>%user%</strong> left or was removed from <strong>%car%</strong>."
+messageboard:
+  title: Message board
+  new_message: New message
+  post: Post message
+  no_messages: No messages yet.
+  system: System
+  toggle_sticky: Pin/unpin message
+  delete: Delete message
+  delete_confirm: Really delete this message?
 parking:
   title: Parking location
   add_current_location: Add current location as parking location

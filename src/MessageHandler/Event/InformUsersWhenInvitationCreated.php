@@ -4,6 +4,7 @@ namespace App\MessageHandler\Event;
 
 use App\Message\Event\InvitationCreatedEvent;
 use App\Repository\InvitationRepository;
+use App\Service\BoardMessageService;
 use App\Service\EventMailerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -19,6 +20,7 @@ class InformUsersWhenInvitationCreated
         private readonly string $mailerFromEmail,
         private readonly string $mailerFromName,
         private readonly LoggerInterface $logger,
+        private readonly BoardMessageService $boardMessageService,
     ) {
     }
 
@@ -41,5 +43,12 @@ class InformUsersWhenInvitationCreated
             ->context(['invitation' => $invitation, 'car' => $car]);
 
         $this->mailer->sendMails($users, $email, ['%car%' => $car->getName()]);
+
+        $inviterName = $invitation->getCreatedBy() ? $invitation->getCreatedBy()->getName() : 'Unknown';
+        $this->boardMessageService->createSystemMessage($car, 'board_system.invitation_created', [
+            '%user%'  => htmlspecialchars($inviterName),
+            '%email%' => htmlspecialchars($invitation->getEmail()),
+            '%car%'   => htmlspecialchars($car->getName()),
+        ]);
     }
 }

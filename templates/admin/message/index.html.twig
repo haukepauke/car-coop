@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'messageboard.title'|trans }} – {{ car.name }}{% endblock %}
+
+{% block importmap %}{{ importmap(['app', 'messageboard']) }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('vendor/quill/dist/quill.snow.css') }}">
+{% endblock %}
+
+{% block content_body %}
+<div class="col-12 mt-5">
+    <h2>{{ 'messageboard.title'|trans }} – {{ car.name }}</h2>
+
+    {# New message form #}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ 'messageboard.new_message'|trans }}</h5>
+            <div id="quill-editor" style="min-height: 120px;"></div>
+            <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2">
+                <input type="hidden" name="_token" value="{{ csrf_token('message_new') }}">
+                <input type="hidden" name="content" id="message-content">
+                <button type="submit" class="btn btn-outline-dark">{{ 'messageboard.post'|trans }}</button>
+            </form>
+        </div>
+    </div>
+
+    {# Messages list #}
+    {% for message in messages %}
+    <div class="card mb-3 {% if message.isSticky %}border-warning{% endif %}">
+        <div class="card-header d-flex justify-content-between align-items-center {% if message.isSticky %}bg-warning bg-opacity-10{% endif %}">
+            <div class="d-flex align-items-center gap-2">
+                {% if message.isSticky %}
+                <i class="fa-solid fa-thumbtack text-warning"></i>
+                {% endif %}
+                <strong>
+                    {% if message.author %}
+                        {{ message.author.name }}
+                    {% else %}
+                        <i class="fa-solid fa-robot"></i> {{ 'messageboard.system'|trans }}
+                    {% endif %}
+                </strong>
+                <small class="text-muted">{{ message.createdAt|format_datetime('medium', 'short', locale=app.user.locale) }}</small>
+            </div>
+            <div class="d-flex gap-2">
+                {# Sticky toggle — any user #}
+                <form method="post" action="{{ path('app_message_toggle_sticky', {id: message.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('message_sticky_' ~ message.id) }}">
+                    <button type="submit" class="btn btn-sm {% if message.isSticky %}btn-warning{% else %}btn-outline-secondary{% endif %}" title="{{ 'messageboard.toggle_sticky'|trans }}">
+                        <i class="fa-solid fa-thumbtack"></i>
+                    </button>
+                </form>
+                {# Delete — author or admin only #}
+                {% if message.author == app.user or car.isAdminUser(app.user) %}
+                <form method="post" action="{{ path('app_message_delete', {id: message.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('message_delete_' ~ message.id) }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ 'messageboard.delete'|trans }}"
+                        onclick="return confirm('{{ 'messageboard.delete_confirm'|trans }}')">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            {% if message.systemData %}
+                {{ message.systemData.key|trans(message.systemData.params)|raw }}
+            {% else %}
+                {{ message.content|sanitize_html }}
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted">{{ 'messageboard.no_messages'|trans }}</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\MessageHandler\Event;
 
 use App\Message\Event\BookingDeletedEvent;
 use App\Repository\CarRepository;
+use App\Service\BoardMessageService;
 use App\Service\EventMailerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -19,6 +20,7 @@ class InformUsersWhenBookingDeleted
         private readonly string $mailerFromEmail,
         private readonly string $mailerFromName,
         private readonly LoggerInterface $logger,
+        private readonly BoardMessageService $boardMessageService,
     ) {
     }
 
@@ -46,5 +48,13 @@ class InformUsersWhenBookingDeleted
             ]);
 
         $this->mailer->sendMails($users, $email, ['%car%' => $car->getName()]);
+
+        $this->boardMessageService->createSystemMessage($car, 'board_system.booking_deleted', [
+            '%user%'  => htmlspecialchars($event->getBookerName()),
+            '%car%'   => htmlspecialchars($car->getName()),
+            '%title%' => htmlspecialchars($event->getTitle()),
+            '%start%' => htmlspecialchars($event->getStartDate()),
+            '%end%'   => htmlspecialchars($event->getEndDate()),
+        ]);
     }
 }

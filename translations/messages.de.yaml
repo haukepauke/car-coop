@@ -1,4 +1,22 @@
 
+board_system:
+  trip_added: "<strong>%user%</strong> hat eine neue Fahrt mit <strong>%car%</strong> hinzugefügt."
+  booking_added: "<strong>%user%</strong> hat eine neue Buchung für <strong>%car%</strong> erstellt (<em>%start%</em> – <em>%end%</em>)."
+  booking_updated: "<strong>%user%</strong> hat eine Buchung für <strong>%car%</strong> aktualisiert."
+  booking_deleted: "<strong>%user%</strong> hat eine Buchung für <strong>%car%</strong> gelöscht: <em>%title%</em> (%start% – %end%)."
+  payment_added: "<strong>%from%</strong> hat eine Zahlung an <strong>%to%</strong> für <strong>%car%</strong> gesendet."
+  invitation_created: "<strong>%user%</strong> hat <em>%email%</em> eingeladen, <strong>%car%</strong> beizutreten."
+  invitation_accepted: "<strong>%user%</strong> ist <strong>%car%</strong> beigetreten."
+  user_removed: "<strong>%user%</strong> hat <strong>%car%</strong> verlassen oder wurde entfernt."
+messageboard:
+  title: Pinnwand
+  new_message: Neue Nachricht
+  post: Nachricht posten
+  no_messages: Noch keine Nachrichten.
+  system: System
+  toggle_sticky: Nachricht anpinnen/lösen
+  delete: Nachricht löschen
+  delete_confirm: Diese Nachricht wirklich löschen?
 parking:
   title: Parkposition
   add_current_location: Aktuelle Position als Parkposition speichern

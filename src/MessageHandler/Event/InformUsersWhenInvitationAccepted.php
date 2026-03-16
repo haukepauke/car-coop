@@ -5,6 +5,7 @@ namespace App\MessageHandler\Event;
 use App\Message\Event\InvitationAcceptedEvent;
 use App\Repository\CarRepository;
 use App\Repository\UserRepository;
+use App\Service\BoardMessageService;
 use App\Service\EventMailerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -21,6 +22,7 @@ class InformUsersWhenInvitationAccepted
         private readonly string $mailerFromEmail,
         private readonly string $mailerFromName,
         private readonly LoggerInterface $logger,
+        private readonly BoardMessageService $boardMessageService,
     ) {
     }
 
@@ -43,5 +45,10 @@ class InformUsersWhenInvitationAccepted
             ->context(['newUser' => $newUser, 'car' => $car]);
 
         $this->mailer->sendMails($users, $email, ['%car%' => $car->getName()]);
+
+        $this->boardMessageService->createSystemMessage($car, 'board_system.invitation_accepted', [
+            '%user%' => htmlspecialchars($newUser->getName()),
+            '%car%'  => htmlspecialchars($car->getName()),
+        ]);
     }
 }
