@@ -11,6 +11,8 @@ amount a user has to pay for the distance driven.
 * Users can track expenses, trips and cash flows between users
 * Users can be put into groups with different prices per kilometer/mile (f.e. "Crew" for core members and "Guests")
 * Users can see general statistics for the vehicle
+* Users can inform other users where the car is parked (including a map)
+* Users can use a message board to share information about the car
 
 ## Example Website
 The software is used on the website [car-coop.net](https://car-coop.net). You can test the current state of the app by [registering an account there](https://car-coop.net/register). Note that the app is in alpha stage. Bug reports are very welcome.
