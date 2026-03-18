@@ -46,25 +46,25 @@
                         <ul class="navbar-nav">
                             {%if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             {# Main nav links — hidden on mobile (shown in bottom nav instead) #}
-                            <li class="nav-item d-none d-lg-block">
+                            <li id="nav-messages" class="nav-item d-none d-lg-block">
                                 <a class="nav-link" href="{{ path('app_message_board') }}">{{ 'messageboard.title'|trans }}</a>
                             </li>
-                            <li class="nav-item d-none d-lg-block">
+                            <li id="nav-calendar" class="nav-item d-none d-lg-block">
                                 <a class="nav-link" href="{{ path('app_booking_show') }}">{{ 'calendar'|trans }}</a>
                             </li>
-                            <li class="nav-item d-none d-lg-block">
+                            <li id="nav-trips" class="nav-item d-none d-lg-block">
                                 <a class="nav-link" href="{{ path('app_trip_list') }}">{{ 'trips.trips'|trans }}</a>
                             </li>
-                            <li class="nav-item d-none d-lg-block">
+                            <li id="nav-expenses" class="nav-item d-none d-lg-block">
                                 <a class="nav-link" href="{{ path('app_expense_list') }}">{{ 'expenses.expenses'|trans }}</a>
                             </li>
-                            <li class="nav-item d-none d-lg-block">
+                            <li id="nav-payments" class="nav-item d-none d-lg-block">
                                 <a class="nav-link" href="{{ path('app_payment_list') }}">{{ 'payments.payments'|trans }}</a>
                             </li>
-                            <li class="nav-item d-none d-lg-block">
+                            <li id="nav-parking" class="nav-item d-none d-lg-block">
                                 <a class="nav-link" href="{{ path('app_parking_show') }}">{{ 'parking.title'|trans }}</a>
                             </li>
-                            <li class="nav-item dropdown">
+                            <li id="nav-admin" class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     {{ 'admin'|trans }}
@@ -75,7 +75,7 @@
                                     <li><a class="dropdown-item" href="{{ path('app_user_list') }}">{{ 'user.manage'|trans }}</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item dropdown">
+                            <li id="nav-user" class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     {% if app.user.profilePicturePath| default %}
@@ -143,32 +143,32 @@
     {% set route = app.request.attributes.get('_route') %}
     <nav id="mobile-bottom-nav" class="d-lg-none fixed-bottom">
         <div class="d-flex">
-            <a href="{{ path('app_message_board') }}"
+            <a id="mobile-nav-messages" href="{{ path('app_message_board') }}"
                class="mobile-nav-item{% if route starts with 'app_message' %} active{% endif %}">
                 <i class="fa-solid fa-comments"></i>
                 <span>{{ 'messageboard.title'|trans }}</span>
             </a>
-            <a href="{{ path('app_booking_show') }}"
+            <a id="mobile-nav-calendar" href="{{ path('app_booking_show') }}"
                class="mobile-nav-item{% if route == 'app_booking_show' %} active{% endif %}">
                 <i class="fa-solid fa-calendar-days"></i>
                 <span>{{ 'calendar'|trans }}</span>
             </a>
-            <a href="{{ path('app_trip_list') }}"
+            <a id="mobile-nav-trips" href="{{ path('app_trip_list') }}"
                class="mobile-nav-item{% if route starts with 'app_trip' %} active{% endif %}">
                 <i class="fa-solid fa-route"></i>
                 <span>{{ 'trips.trips'|trans }}</span>
             </a>
-            <a href="{{ path('app_expense_list') }}"
+            <a id="mobile-nav-expenses" href="{{ path('app_expense_list') }}"
                class="mobile-nav-item{% if route starts with 'app_expense' %} active{% endif %}">
                 <i class="fa-solid fa-receipt"></i>
                 <span>{{ 'expenses.expenses'|trans }}</span>
             </a>
-            <a href="{{ path('app_payment_list') }}"
+            <a id="mobile-nav-payments" href="{{ path('app_payment_list') }}"
                class="mobile-nav-item{% if route starts with 'app_payment' %} active{% endif %}">
                 <i class="fa-solid fa-credit-card"></i>
                 <span>{{ 'payments.payments'|trans }}</span>
             </a>
-            <a href="{{ path('app_parking_show') }}"
+            <a id="mobile-nav-parking" href="{{ path('app_parking_show') }}"
                class="mobile-nav-item{% if route == 'app_parking_show' %} active{% endif %}">
                 <i class="fa-solid fa-square-parking"></i>
                 <span>{{ 'parking.title'|trans }}</span>

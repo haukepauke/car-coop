@@ -61,6 +61,13 @@ class Car
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $profilePicturePath;
 
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private ?string $fuelType = null;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    #[Assert\PositiveOrZero(message: 'Please enter a positive value')]
+    private ?float $fuelConsumption100 = null;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
@@ -418,6 +425,30 @@ class Car
     public function getParkingLocations(): Collection
     {
         return $this->parkingLocations;
+    }
+
+    public function getFuelType(): ?string
+    {
+        return $this->fuelType;
+    }
+
+    public function setFuelType(?string $fuelType): self
+    {
+        $this->fuelType = $fuelType;
+
+        return $this;
+    }
+
+    public function getFuelConsumption100(): ?float
+    {
+        return $this->fuelConsumption100;
+    }
+
+    public function setFuelConsumption100(?float $fuelConsumption100): self
+    {
+        $this->fuelConsumption100 = $fuelConsumption100;
+
+        return $this;
     }
 
     public function getCalculatedCosts(DateTime $start, DateTime $end): float {

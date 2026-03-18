@@ -1,4 +1,56 @@
 
+tour:
+  banner:
+    title: "New here? Take a quick tour!"
+    desc: "We'll walk you through the key features of Car Coop."
+    start: Start tour
+    dismiss: Not interested
+  welcome:
+    title: "Welcome to Car Coop!"
+    desc: "This short tour will introduce you to the most important features. You can skip it at any time."
+  car:
+    title: Your vehicle
+    desc: "Each panel shows one vehicle. Click the header to expand it and see all details."
+  stats:
+    title: Vehicle data
+    desc: "Key facts about the vehicle — license plate, mileage, annual distance, costs, fuel type and consumption — are shown as cards here."
+  bookings:
+    title: Upcoming bookings
+    desc: "The next scheduled bookings are listed here so you always know when the car is available."
+  charts:
+    title: Statistics
+    desc: "These charts show the distance driven and the balance between members over time."
+  nav:
+    messages:
+      title: Message board
+      desc: "Share news, questions or updates with all members of your car cooperative."
+    calendar:
+      title: Booking calendar
+      desc: "See when the vehicle is booked and reserve it for your own trips."
+    trips:
+      title: Trips
+      desc: "Log every trip you take — distance, date and purpose. This is the basis for cost calculation."
+    expenses:
+      title: Expenses
+      desc: "Record fuel, repairs and other costs. These are subtracted from the calculated costs of your trips."
+    payments:
+      title: Payments
+      desc: "Track money transfers between members to settle outstanding balances."
+    parking:
+      title: Parking location
+      desc: "See where the car is currently parked on a map, and update the location when you park it."
+    admin:
+      title: Administration
+      desc: "Add or manage vehicles and control who has access to the cooperative."
+    user:
+      title: Your profile
+      desc: "Edit your personal details or log out from here."
+  progress: "{{current}} of {{total}}"
+  btn:
+    next: Next
+    prev: Back
+    done: Done
+
 board_system:
   trip_added: "<strong>%user%</strong> added a new trip with <strong>%car%</strong>."
   booking_added: "<strong>%user%</strong> added a new booking for <strong>%car%</strong> (<em>%start%</em> – <em>%end%</em>)."
@@ -84,6 +136,7 @@ car:
       profile:
         picture: Upload a picture in Jpeg, PNG oder GIF format (optional)
       vendor: The vendor of the vehicle (optional)
+      fuelconsumption100: Average fuel consumption per 100 km/mi (optional)
     licenseplate: License plate
     name: Name
     make: Make
@@ -91,6 +144,15 @@ car:
       picture: Profile pictre
     vendor: Vendor
     mileageunit: Mileage unit
+    fueltype: Fuel type
+    fueltype.placeholder: "— select —"
+    fueltype.petrol: Petrol
+    fueltype.diesel: Diesel
+    fueltype.electric: Electric
+    fueltype.hybrid: Hybrid
+    fueltype.lpg: LPG
+    fueltype.other: Other
+    fuelconsumption100: "Consumption (l/100)"
   manage: Edit vehicle
   mileage: Mileage
   season:

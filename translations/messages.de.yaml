@@ -1,4 +1,56 @@
 
+tour:
+  banner:
+    title: "Zum ersten Mal hier? Mach eine kurze Tour!"
+    desc: "Wir zeigen dir die wichtigsten Funktionen von Car Coop."
+    start: Tour starten
+    dismiss: Nicht interessiert
+  welcome:
+    title: "Willkommen bei Car Coop!"
+    desc: "Diese kurze Tour stellt dir die wichtigsten Funktionen vor. Du kannst sie jederzeit überspringen."
+  car:
+    title: Dein Fahrzeug
+    desc: "Jede Karte zeigt ein Fahrzeug. Klicke auf die Kopfzeile, um sie aufzuklappen und alle Details zu sehen."
+  stats:
+    title: Fahrzeugdaten
+    desc: "Wichtige Daten zum Fahrzeug – Kennzeichen, Kilometerstand, Jahreskilometer, Kosten, Kraftstoffart und -verbrauch – sind hier als Karten dargestellt."
+  bookings:
+    title: Nächste Buchungen
+    desc: "Die nächsten geplanten Buchungen sind hier aufgelistet, damit du immer weißt, wann das Auto verfügbar ist."
+  charts:
+    title: Statistiken
+    desc: "Diese Diagramme zeigen die zurückgelegte Strecke und den Saldo zwischen den Mitgliedern über die Zeit."
+  nav:
+    messages:
+      title: Pinnwand
+      desc: "Teile Neuigkeiten, Fragen oder Informationen mit allen Mitgliedern der Fahrgemeinschaft."
+    calendar:
+      title: Buchungskalender
+      desc: "Sieh, wann das Fahrzeug gebucht ist, und reserviere es für deine eigenen Fahrten."
+    trips:
+      title: Fahrten
+      desc: "Erfasse jede Fahrt mit Distanz, Datum und Zweck. Das ist die Grundlage für die Kostenberechnung."
+    expenses:
+      title: Ausgaben
+      desc: "Trage Kraftstoff, Reparaturen und andere Kosten ein. Diese werden von den errechneten Kosten für Deine Fahrten abgezogen."
+    payments:
+      title: Zahlungen
+      desc: "Verfolge Geldtransfers zwischen den Mitgliedern, um offene Salden auszugleichen."
+    parking:
+      title: Parkposition
+      desc: "Sieh auf einer Karte, wo das Auto gerade steht, und aktualisiere den Standort nach dem Parken."
+    admin:
+      title: Administration
+      desc: "Fahrzeuge hinzufügen oder verwalten und den Zugang zur Fahrgemeinschaft steuern."
+    user:
+      title: Dein Profil
+      desc: "Persönliche Daten bearbeiten oder hier abmelden."
+  progress: "{{current}} von {{total}}"
+  btn:
+    next: Weiter
+    prev: Zurück
+    done: Fertig
+
 board_system:
   trip_added: "<strong>%user%</strong> hat eine neue Fahrt mit <strong>%car%</strong> hinzugefügt."
   booking_added: "<strong>%user%</strong> hat eine neue Buchung für <strong>%car%</strong> erstellt (<em>%start%</em> – <em>%end%</em>)."
@@ -84,6 +136,7 @@ car:
       profile:
         picture: Bitte lade ein Bild im Jpeg, PNG oder GIF Format hoch (optional)
       vendor: Der Hersteller des Fahrzeugs (optional)
+      fuelconsumption100: Durchschnittlicher Kraftstoffverbrauch pro 100 km/mi (optional)
     licenseplate: Nummernschild
     name: Name
     make: Modellbezeichnung
@@ -91,6 +144,15 @@ car:
       picture: Profilbild
     vendor: Fahrzeughersteller
     mileageunit: Entfernungsmaß
+    fueltype: Kraftstoffart
+    fueltype.placeholder: "— auswählen —"
+    fueltype.petrol: Benzin
+    fueltype.diesel: Diesel
+    fueltype.electric: Elektro
+    fueltype.hybrid: Hybrid
+    fueltype.lpg: Autogas (LPG)
+    fueltype.other: Sonstige
+    fuelconsumption100: "Verbrauch (l/100)"
   manage: Fahrzeug bearbeiten
   mileage: Tachostand
   season:

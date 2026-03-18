@@ -9,13 +9,15 @@
     <table class="table">
           <thead class="table-secondary">
             <tr>
-                <th>Name</th>
-                <th>License Plate</th>
-                <th>Mileage</th>
-                <th>Mileage Unit</th>
-                <th>Make</th>
-                <th>Vendor</th>
-                <th>Actions</th>
+                <th>{{ 'car.form.name'|trans }}</th>
+                <th>{{ 'car.form.licenseplate'|trans }}</th>
+                <th>{{ 'car.mileage'|trans }}</th>
+                <th>{{ 'car.form.mileageunit'|trans }}</th>
+                <th>{{ 'car.form.make'|trans }}</th>
+                <th>{{ 'car.form.vendor'|trans }}</th>
+                <th>{{ 'car.form.fueltype'|trans }}</th>
+                <th>{{ 'car.form.fuelconsumption100'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +29,8 @@
                     <td>{{ car.milageUnit }}</td>
                     <td>{{ car.make }}</td>
                     <td>{{ car.vendor }}</td>
+                    <td>{{ car.fuelType ? ('car.form.fueltype.' ~ car.fuelType)|trans : '—' }}</td>
+                    <td>{{ car.fuelConsumption100 ? car.fuelConsumption100|number_format(1, '.', ',') ~ ' l/100' ~ car.milageUnit : '—' }}</td>
                     <td>
                         <button type="link" class="btn btn-outline-dark" onclick="location.href='{{ path('app_car_show',  {car: car.id}) }}';">Show car <span class="fa-solid fa-car"></span></button>
                         <button type="link" class="btn btn-outline-dark" onclick="location.href='{{ path('app_car_edit',  {car: car.id}) }}';">Edit car <span class="fas fa-edit"></span></button>

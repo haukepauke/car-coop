@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -62,6 +63,33 @@ class CarFormType extends AbstractType
                     'help' => 'car.form.help.vendor',
                     'required' => false,
                     'label' => 'car.form.vendor',
+                ]
+            )
+            ->add(
+                'fuelType',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'car.form.fueltype.petrol'   => 'petrol',
+                        'car.form.fueltype.diesel'   => 'diesel',
+                        'car.form.fueltype.electric' => 'electric',
+                        'car.form.fueltype.hybrid'   => 'hybrid',
+                        'car.form.fueltype.lpg'      => 'lpg',
+                        'car.form.fueltype.other'    => 'other',
+                    ],
+                    'required' => false,
+                    'placeholder' => 'car.form.fueltype.placeholder',
+                    'label' => 'car.form.fueltype',
+                ]
+            )
+            ->add(
+                'fuelConsumption100',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'scale' => 1,
+                    'label' => 'car.form.fuelconsumption100',
+                    'help' => 'car.form.help.fuelconsumption100',
                 ]
             )
             ->add(

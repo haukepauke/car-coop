@@ -53,3 +53,141 @@
 .chart-grid .chart canvas {
     max-width: 100%;
 }
+
+/* ── Tour banner ────────────────────────────────────────────────── */
+.tour-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--cc-surface);
+    border: 1.5px solid var(--cc-accent);
+    border-radius: var(--cc-radius-lg);
+    padding: 0.85rem 1.1rem;
+    box-shadow: var(--cc-shadow-sm);
+    flex-wrap: wrap;
+}
+
+.tour-banner__icon {
+    font-size: 1.5rem;
+    color: var(--cc-accent);
+    flex-shrink: 0;
+}
+
+.tour-banner__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.tour-banner__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* ── Driver.js popover overrides ────────────────────────────────── */
+.driver-popover {
+    background: var(--cc-surface) !important;
+    border: 1.5px solid var(--cc-border) !important;
+    border-radius: var(--cc-radius-lg) !important;
+    box-shadow: var(--cc-shadow-md) !important;
+    padding: 1.2rem 1.4rem 1rem !important;
+    min-width: 260px;
+    max-width: 340px;
+}
+
+.driver-popover-title {
+    color: var(--cc-accent-dark) !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.4rem !important;
+}
+
+.driver-popover-description {
+    color: var(--cc-text) !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+}
+
+/* Arrow pointing toward the highlighted element */
+.driver-popover-arrow-side-top.driver-popover-arrow    { border-bottom-color: var(--cc-surface) !important; }
+.driver-popover-arrow-side-bottom.driver-popover-arrow { border-top-color:    var(--cc-surface) !important; }
+.driver-popover-arrow-side-left.driver-popover-arrow   { border-right-color:  var(--cc-surface) !important; }
+.driver-popover-arrow-side-right.driver-popover-arrow  { border-left-color:   var(--cc-surface) !important; }
+
+/* Footer — progress + buttons on one line */
+.driver-popover-footer,
+.driver-popover-navigation-btns {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    margin-top: 1rem !important;
+    padding: 0 !important;
+}
+
+.driver-popover-progress-text {
+    color: var(--cc-text-muted) !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap !important;
+    order: -1 !important;
+}
+
+.driver-popover-btn-disabled {
+    opacity: 0.35 !important;
+    pointer-events: none !important;
+}
+
+.driver-popover-next-btn,
+.driver-popover-prev-btn,
+.driver-popover-done-btn {
+    background: transparent !important;
+    border: 1.5px solid var(--cc-accent) !important;
+    color: var(--cc-accent-dark) !important;
+    border-radius: var(--cc-radius) !important;
+    padding: 0.3rem 0.85rem !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    transition: background 0.15s, color 0.15s !important;
+}
+
+.driver-popover-next-btn:hover,
+.driver-popover-done-btn:hover {
+    background: var(--cc-accent) !important;
+    color: #fff !important;
+}
+
+.driver-popover-prev-btn:hover {
+    background: var(--cc-bg) !important;
+}
+
+.driver-popover-close-btn {
+    color: var(--cc-text-muted) !important;
+    font-size: 1.1rem !important;
+}
+
+.driver-popover-close-btn:hover {
+    color: var(--cc-text) !important;
+}
+
+/* Highlight border around focused element */
+.driver-active .driver-overlay {
+    --driver-overlay-color: rgba(15, 23, 42, 0.6) !important;
+}
+
+#driver-highlighted-element-stage {
+    outline: 2px solid var(--cc-accent) !important;
+    outline-offset: 3px;
+    border-radius: var(--cc-radius) !important;
+}

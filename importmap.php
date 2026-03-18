@@ -28,8 +28,19 @@ return [
         'path' => './assets/messageboard.js',
         'entrypoint' => true,
     ],
+    'tour' => [
+        'path' => './assets/tour.js',
+        'entrypoint' => true,
+    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
+    ],
+    'driver.js' => [
+        'version' => '1.4.0',
+    ],
+    'driver.js/dist/driver.css' => [
+        'version' => '1.4.0',
+        'type' => 'css',
     ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',

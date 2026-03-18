@@ -4,6 +4,53 @@
 <div class="mt-5">
     <div class="container-fluid">
 
+        {# ── Guided tour banner ── #}
+        <div id="tour-banner" class="d-none tour-banner mb-4"
+             data-step-welcome-title="{{ 'tour.welcome.title'|trans }}"
+             data-step-welcome-desc="{{ 'tour.welcome.desc'|trans }}"
+             data-step-car-title="{{ 'tour.car.title'|trans }}"
+             data-step-car-desc="{{ 'tour.car.desc'|trans }}"
+             data-step-stats-title="{{ 'tour.stats.title'|trans }}"
+             data-step-stats-desc="{{ 'tour.stats.desc'|trans }}"
+             data-step-bookings-title="{{ 'tour.bookings.title'|trans }}"
+             data-step-bookings-desc="{{ 'tour.bookings.desc'|trans }}"
+             data-step-charts-title="{{ 'tour.charts.title'|trans }}"
+             data-step-charts-desc="{{ 'tour.charts.desc'|trans }}"
+             data-step-messages-title="{{ 'tour.nav.messages.title'|trans }}"
+             data-step-messages-desc="{{ 'tour.nav.messages.desc'|trans }}"
+             data-step-calendar-title="{{ 'tour.nav.calendar.title'|trans }}"
+             data-step-calendar-desc="{{ 'tour.nav.calendar.desc'|trans }}"
+             data-step-trips-title="{{ 'tour.nav.trips.title'|trans }}"
+             data-step-trips-desc="{{ 'tour.nav.trips.desc'|trans }}"
+             data-step-expenses-title="{{ 'tour.nav.expenses.title'|trans }}"
+             data-step-expenses-desc="{{ 'tour.nav.expenses.desc'|trans }}"
+             data-step-payments-title="{{ 'tour.nav.payments.title'|trans }}"
+             data-step-payments-desc="{{ 'tour.nav.payments.desc'|trans }}"
+             data-step-parking-title="{{ 'tour.nav.parking.title'|trans }}"
+             data-step-parking-desc="{{ 'tour.nav.parking.desc'|trans }}"
+             data-step-admin-title="{{ 'tour.nav.admin.title'|trans }}"
+             data-step-admin-desc="{{ 'tour.nav.admin.desc'|trans }}"
+             data-step-user-title="{{ 'tour.nav.user.title'|trans }}"
+             data-step-user-desc="{{ 'tour.nav.user.desc'|trans }}"
+             data-progress-text="{{ 'tour.progress'|trans }}"
+             data-btn-next="{{ 'tour.btn.next'|trans }}"
+             data-btn-prev="{{ 'tour.btn.prev'|trans }}"
+             data-btn-done="{{ 'tour.btn.done'|trans }}">
+            <div class="tour-banner__icon"><i class="fa-solid fa-map"></i></div>
+            <div class="tour-banner__body">
+                <strong>{{ 'tour.banner.title'|trans }}</strong>
+                <span class="text-muted">{{ 'tour.banner.desc'|trans }}</span>
+            </div>
+            <div class="tour-banner__actions">
+                <button id="tour-start-btn" class="btn btn-sm btn-outline-dark">
+                    <i class="fa-solid fa-play"></i> {{ 'tour.banner.start'|trans }}
+                </button>
+                <button id="tour-dismiss-btn" class="btn btn-sm btn-link text-muted">
+                    {{ 'tour.banner.dismiss'|trans }}
+                </button>
+            </div>
+        </div>
+
         <div class="accordion" id="carsAccordion">
         {% for carData in carPanels %}
             {% set carId = 'car-' ~ carData.car.id %}
@@ -72,11 +119,23 @@
                                 <span class="stat-card__label">{{ 'car.costs.calculated'|trans }}</span>
                                 <span class="stat-card__value">{{ carData.calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</span>
                             </div>
+                            {% if carData.car.fuelType %}
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.form.fueltype'|trans }}</span>
+                                <span class="stat-card__value">{{ ('car.form.fueltype.' ~ carData.car.fuelType)|trans }}</span>
+                            </div>
+                            {% endif %}
+                            {% if carData.car.fuelConsumption100 %}
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.form.fuelconsumption100'|trans }}</span>
+                                <span class="stat-card__value">{{ carData.car.fuelConsumption100|number_format(1, '.', ',') }} l/100{{ carData.car.milageUnit }}</span>
+                            </div>
+                            {% endif %}
                         </div>
 
                         {# ── Next bookings ── #}
                         {% if carData.bookings|length > 0 %}
-                        <div class="row pt-4">
+                        <div class="row pt-4" id="tour-bookings">
                             <div class="col"><h5>{{ 'car.bookings.next'|trans }}</h5></div>
                         </div>
                         <div class="table-responsive">
@@ -132,6 +191,8 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/car-show.css') }}">
 {% endblock %}
+
+{% block importmap %}{{ importmap(['app', 'tour']) }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
