@@ -19,7 +19,7 @@
 <body>
     <div class="container-fluid">
         <header>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" data-bs-theme="dark">
+            <nav class="navbar navbar-expand-lg fixed-top" data-bs-theme="dark">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_car_show') : '#' }}">
                         {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
@@ -111,13 +111,13 @@
 
         <main>
             {% for message in app.flashes('success') %}
-            <div class="alert alert-success border">
+            <div class="alert alert-success">
                 {{ message }}
             </div>
             {% endfor %}
 
             {% for message in app.flashes('error') %}
-            <div class="alert alert-danger border">
+            <div class="alert alert-danger">
                 {{ message }}
             </div>
             {% endfor %}
@@ -141,7 +141,7 @@
     {# Mobile bottom navigation — hidden on lg and above #}
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     {% set route = app.request.attributes.get('_route') %}
-    <nav id="mobile-bottom-nav" class="d-lg-none fixed-bottom bg-dark border-top border-secondary">
+    <nav id="mobile-bottom-nav" class="d-lg-none fixed-bottom">
         <div class="d-flex">
             <a href="{{ path('app_message_board') }}"
                class="mobile-nav-item{% if route starts with 'app_message' %} active{% endif %}">
