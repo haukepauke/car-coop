@@ -1,0 +1,55 @@
+/* ── Stat cards ────────────────────────────────────────────────── */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+    .stat-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 992px) {
+    .stat-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.stat-card {
+    background: var(--cc-bg);
+    border-radius: var(--cc-radius);
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.stat-card__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cc-text-muted);
+}
+
+.stat-card__value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--cc-text);
+    word-break: break-word;
+}
+
+/* ── Charts ────────────────────────────────────────────────────── */
+.chart-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .chart-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.chart-grid .chart canvas {
+    max-width: 100%;
+}

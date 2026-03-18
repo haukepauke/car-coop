@@ -35,26 +35,43 @@
                     <div class="accordion-body">
 
                         {# ── Car data ── #}
-                        <div class="row mb-2">
-                            <div class="col"><h5>{{ 'car.data'|trans }}</h5></div>
-                            <div class="col-auto">
-                                <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary btn-sm">
-                                    &#8659; {{ 'car.exportpdf.button'|trans }}
-                                </a>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">{{ 'car.data'|trans }}</h5>
+                            <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary btn-sm">
+                                &#8659; {{ 'car.exportpdf.button'|trans }}
+                            </a>
+                        </div>
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.form.licenseplate'|trans }}</span>
+                                <span class="stat-card__value">{{ carData.car.licensePlate ?: '—' }}</span>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">{{ 'car.form.licenseplate'|trans }}: {{ carData.car.licensePlate }}</div>
-                            <div class="col">{{ 'car.form.vendor'|trans }}: {{ carData.car.vendor }}</div>
-                            <div class="col">{{ 'car.form.make'|trans }}: {{ carData.car.make }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">{{ 'car.mileage'|trans }}: {{ carData.car.mileage }} {{ carData.car.milageUnit }}</div>
-                            <div class="col">{{ 'car.season.mileage'|trans }} {{ "now"|date("Y") }}: {{ carData.distanceTravelled }} {{ carData.car.milageUnit }}</div>
-                            <div class="col">{{ 'car.season.spent'|trans }} {{ "now"|date("Y") }}: {{ carData.moneySpent }} € ({{ 'car.season.fuel'|trans }} {{ carData.moneySpentFuel }} €)</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">{{ 'car.costs.calculated'|trans }}: {{ carData.calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</div>
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.form.vendor'|trans }}</span>
+                                <span class="stat-card__value">{{ carData.car.vendor ?: '—' }}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.form.make'|trans }}</span>
+                                <span class="stat-card__value">{{ carData.car.make ?: '—' }}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.mileage'|trans }}</span>
+                                <span class="stat-card__value">{{ carData.car.mileage }} {{ carData.car.milageUnit }}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.season.mileage'|trans }} {{ "now"|date("Y") }}</span>
+                                <span class="stat-card__value">{{ carData.distanceTravelled }} {{ carData.car.milageUnit }}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.season.spent'|trans }} {{ "now"|date("Y") }}</span>
+                                <span class="stat-card__value">{{ carData.moneySpent }} €
+                                    <small class="fw-normal text-muted">({{ 'car.season.fuel'|trans }} {{ carData.moneySpentFuel }} €)</small>
+                                </span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.costs.calculated'|trans }}</span>
+                                <span class="stat-card__value">{{ carData.calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</span>
+                            </div>
                         </div>
 
                         {# ── Next bookings ── #}
@@ -62,9 +79,8 @@
                         <div class="row pt-4">
                             <div class="col"><h5>{{ 'car.bookings.next'|trans }}</h5></div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <table class="table">
+                        <div class="table-responsive">
+                            <table class="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">{{ 'date.start'|trans }}</th>
@@ -86,7 +102,6 @@
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                            </div>
                         </div>
                         {% endif %}
 
@@ -94,11 +109,11 @@
                         <div class="row pt-4">
                             <div class="col"><h5>{{ 'car.statistics'|trans }}</h5></div>
                         </div>
-                        <div class="row">
-                            <div class="col chart">
+                        <div class="chart-grid">
+                            <div class="chart">
                                 {{ render_chart(carData.distanceChart) }}
                             </div>
-                            <div class="col chart">
+                            <div class="chart">
                                 {{ render_chart(carData.balanceChart) }}
                             </div>
                         </div>
@@ -115,6 +130,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/car-show.css') }}">
 {% endblock %}
 
 {% block javascripts %}

@@ -3,6 +3,7 @@
 {% block stylesheets %}
 {{ parent() }}
 <link rel="stylesheet" href="{{ asset('vendor/leaflet/dist/leaflet.min.css') }}">
+<link rel="stylesheet" href="{{ asset('styles/parking.css') }}">
 {% endblock %}
 
 {% block javascripts %}
@@ -28,7 +29,7 @@
          data-save-url="{{ path('app_parking_save') }}"
          data-csrf-token="{{ csrf_token('parking_save') }}"
          data-marker-icon="{{ asset('vendor/leaflet/dist/images/marker-icon.png') }}"
-         style="height: 400px; border-radius: 8px;"></div>
+         ></div>
 
     <form id="parking-save-form" method="post" action="{{ path('app_parking_save') }}" class="mt-3">
         <input type="hidden" name="_token" value="{{ csrf_token('parking_save') }}">
