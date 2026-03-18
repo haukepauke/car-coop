@@ -6,9 +6,9 @@
 parameters:
     car_picture_directory: '%kernel.project_dir%/public/uploads'
     app.supported_locales: ['en', 'de']
-    app.mailer_from_email: 'webmaster@car-coop.net'
-    app.mailer_from_name: 'Car Coop Mail Bot'
-    app.homepage_url: 'https://car-coop.net'
+    app.mailer_from_email: '%env(MAILER_FROM_EMAIL)%'
+    app.mailer_from_name: '%env(MAILER_FROM_NAME)%'
+    app.homepage_url: '%env(APP_HOMEPAGE_URL)%'
 
 services:
     # default configuration for services in *this* file
