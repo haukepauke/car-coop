@@ -1,0 +1,39 @@
+# Version control
+.git
+.gitignore
+
+# Dev environment files
+.env.local
+.env.*.local
+docker-compose.yml
+docker-compose.override.yml
+
+# Symfony cache and logs (regenerated at build time)
+var/cache/
+var/log/
+var/coverage/
+
+# User uploads (mounted as a volume in production)
+public/uploads/
+
+# Node / frontend tooling (not needed — app uses AssetMapper)
+node_modules/
+
+# PHP dev dependencies (installed without --dev in Dockerfile.prod)
+# vendor/ is intentionally NOT excluded — composer install runs inside the image
+
+# Test and CI artefacts
+tests/
+.phpunit.result.cache
+phpunit.xml
+phpunit.xml.dist
+
+# IDE and OS files
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+docs/

@@ -1,0 +1,68 @@
+FROM php:8.3-apache
+
+# ── Apache document root ─────────────────────────────────────
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+        /etc/apache2/sites-available/*.conf \
+ && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
+        /etc/apache2/apache2.conf \
+        /etc/apache2/conf-available/*.conf \
+ && a2enmod rewrite
+
+# ── System dependencies ──────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl unzip netcat-openbsd \
+    zlib1g-dev libicu-dev g++ \
+    libpng-dev libjpeg-dev libfreetype6-dev \
+    libmagickwand-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+# ── PHP extensions ───────────────────────────────────────────
+RUN pecl install imagick \
+ && docker-php-ext-configure intl \
+ && docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-install mysqli intl pdo pdo_mysql gd \
+ && docker-php-ext-enable imagick
+
+# ── PHP production settings ──────────────────────────────────
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+ && echo "upload_max_filesize = 20M" >> "$PHP_INI_DIR/conf.d/app.ini" \
+ && echo "post_max_size = 25M"       >> "$PHP_INI_DIR/conf.d/app.ini" \
+ && echo "memory_limit = 256M"       >> "$PHP_INI_DIR/conf.d/app.ini"
+
+# ── Composer ─────────────────────────────────────────────────
+COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
+
+# ── Application source ───────────────────────────────────────
+WORKDIR /var/www/html
+COPY . .
+
+# ── PHP dependencies (no dev, optimized autoloader) ──────────
+RUN APP_ENV=prod composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --no-progress
+
+# ── Compile AssetMapper assets ───────────────────────────────
+# A dummy APP_SECRET is used only for the DI container compile;
+# it is not embedded in the compiled assets.
+RUN APP_ENV=prod APP_SECRET=buildsecret \
+    php bin/console asset-map:compile --no-interaction
+
+# ── Warm Symfony DI container cache ──────────────────────────
+RUN APP_ENV=prod APP_SECRET=buildsecret \
+    DATABASE_URL="mysql://x:x@localhost/x" \
+    php bin/console cache:warmup --no-interaction || true
+
+# ── Persistent directories & permissions ─────────────────────
+RUN mkdir -p public/uploads var/cache var/log \
+ && chown -R www-data:www-data var/ public/uploads/ \
+ && chmod -R 775 var/ public/uploads/
+
+# ── Entrypoint ───────────────────────────────────────────────
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
