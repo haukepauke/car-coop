@@ -165,7 +165,7 @@ expenses:
   for: Ausgaben für
   form:
     fuel: Sprit
-    maut: Maut
+    charging: Laden
     service: Werkstatt/Service
     other: Anderes
   name: Bezeichnung
@@ -191,7 +191,7 @@ log:
   in: Logge Dich ein
   forgot_password: Passwort vergessen?
 maybe: Vielleicht
-maut: Maut
+charging: Laden
 members: Mitglieder
 mileage:
   per:

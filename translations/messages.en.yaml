@@ -165,7 +165,7 @@ expenses:
   for: Expenses for
   form:
     fuel: Fuel
-    maut: Maut
+    charging: Charging
     service: Workshop/Service
     other: Other
   name: Name
@@ -190,7 +190,7 @@ invitation:
 log:
   in: Log in
   forgot_password: Reset password 
-maut: Toll
+charging: Charging
 maybe: Maybe
 members: Members
 mileage:

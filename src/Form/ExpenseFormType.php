@@ -31,7 +31,7 @@ class ExpenseFormType extends AbstractType
                 [
                     'choices' => [
                         'expenses.form.fuel' => 'fuel',
-                        'expenses.form.maut' => 'maut',
+                        'expenses.form.charging' => 'charging',
                         'expenses.form.service' => 'service',
                         'expenses.form.other' => 'other',
                     ],

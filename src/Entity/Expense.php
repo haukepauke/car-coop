@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ExpenseRepository::class)]
 class Expense
 {
-    public const TYPES = ['fuel', 'maut', 'service', 'other'];
+    public const TYPES = ['fuel', 'charging', 'service', 'other'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
