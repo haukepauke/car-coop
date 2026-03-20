@@ -1,4 +1,4 @@
-name: API Tests
+name: Tests
 
 on:
   push:
@@ -30,5 +30,8 @@ jobs:
         env:
           APP_ENV: test
 
-      - name: Run PHPUnit
-        run: php bin/phpunit
+      - name: Run unit tests
+        run: php bin/phpunit --testsuite Unit
+
+      - name: Run API tests
+        run: php bin/phpunit --testsuite Api
