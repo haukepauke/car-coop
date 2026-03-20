@@ -65,6 +65,7 @@
                     <th class="text-center">{{ 'user.last_login'|trans }}</th>
                     <th class="text-center">{{ 'superadmin.cars'|trans }}</th>
                     <th class="text-center">{{ 'user.status'|trans }}</th>
+                    <th class="text-center">{{ 'superadmin.roles'|trans }}</th>
                     <th class="text-center">{{ 'actions'|trans }}</th>
                 </tr>
             </thead>
@@ -102,6 +103,11 @@
                         {% else %}
                             <span class="badge bg-secondary">{{ 'user.inactive'|trans }}</span>
                         {% endif %}
+                    </td>
+                    <td class="align-middle text-center">
+                        {% for role in user.roles %}
+                            <span class="badge bg-dark">{{ role }}</span>
+                        {% endfor %}
                     </td>
                     <td class="align-middle text-center">
                         {% if user.id != app.user.id %}

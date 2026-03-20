@@ -390,6 +390,7 @@ superadmin:
   cars: Fahrzeuge
   users: Benutzer
   members: Mitglieder
+  roles: Rollen
   no_cars: Keine Fahrzeuge registriert.
   no_users: Keine Benutzer gefunden.
   user_deleted: Benutzer gelöscht.

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Entity\User;
 use App\Repository\CarRepository;
+use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,7 @@ class SuperAdminController extends AbstractController
     }
 
     #[Route('/superadmin/user/{id}/delete', name: 'app_superadmin_user_delete', methods: ['POST'])]
-    public function deleteUser(User $user, Request $request, EntityManagerInterface $em): Response
+    public function deleteUser(User $user, Request $request, EntityManagerInterface $em, ResetPasswordRequestRepository $resetPasswordRepo): Response
     {
         if (!$this->isCsrfTokenValid('superadmin_user_delete_' . $user->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
@@ -44,6 +45,7 @@ class SuperAdminController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'User has entries. Deletion not possible. User deactivated and anonymized instead.');
         } else {
+            $resetPasswordRepo->removeRequests($user);
             $em->remove($user);
             $em->flush();
             $this->addFlash('success', 'User deleted.');
