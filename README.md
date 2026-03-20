@@ -13,6 +13,7 @@ amount a user has to pay for the distance driven.
 * Users can see general statistics for the vehicle
 * Users can inform other users where the vehicle is parked (including a map)
 * Users can use a message board to share information about the car
+* A REST API can be used to control the application (f.e. to use it with a smartphone app)
 
 ## Example Website
 The software is used on the website [car-coop.net](https://car-coop.net). You can test the current state of the app by [registering an account there](https://car-coop.net/register). Note that the app is in alpha stage. Bug reports are very welcome.
@@ -44,6 +45,7 @@ Open `.env` and set at minimum:
 | Variable | Description |
 |---|---|
 | `APP_SECRET` | Random 32-char string — run `openssl rand -hex 16` |
+| `JWT_PASSPHRASE` | Passphrase for the JWT keypair — run `openssl rand -hex 32` |
 | `DB_PASSWORD` | Strong password for the application database user |
 | `DB_ROOT_PASSWORD` | Strong password for the MariaDB root account |
 | `HTTP_PORT` | Host port to expose (default: `80`) |
