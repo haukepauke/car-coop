@@ -8,5 +8,11 @@ RUN  pecl install imagick
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
 RUN a2enmod rewrite
-RUN docker-php-ext-configure intl && docker-php-ext-install mysqli intl pdo pdo_mysql gd &&  docker-php-ext-enable imagick
+RUN docker-php-ext-configure intl \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install mysqli intl pdo pdo_mysql gd \
+    && docker-php-ext-enable imagick
+
+RUN mkdir -p /var/www/html/public/media/cache \
+    && chown -R www-data:www-data /var/www/html/public/media/cache
 

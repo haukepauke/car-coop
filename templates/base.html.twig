@@ -24,11 +24,11 @@
                     <a class="navbar-brand" href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_car_show') : '#' }}">
                         {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
                         {% if car.profilePicturePath|default %}
-                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
-                            class="rounded-circle d-inline-block">
-                        {% else %}
                         <img id="navbar-brand-img" src="{{ asset('/uploads/cars/' ~ car.getProfilePicturePath()) }}" alt="Logo" width="50"
                             height="50" class="rounded-circle d-inline-block">
+                        {% else %}
+                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
+                            class="rounded-circle d-inline-block">
                         {% endif %}
                         <span id="navbar-brand-name">{{ car.name }}</span>
                         {% else %}
