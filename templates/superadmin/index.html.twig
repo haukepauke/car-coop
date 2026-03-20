@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'superadmin.title'|trans }}{% endblock %}
+
+{% block content_body %}
+<div class="col-xl-12 mt-5">
+    <h3>{{ 'superadmin.title'|trans }}</h3>
+
+    {# ── Cars ─────────────────────────────────────────────────────────────── #}
+    <h5 class="mt-4">{{ 'superadmin.cars'|trans }}</h5>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-secondary">
+                <tr>
+                    <th class="text-center">{{ 'name'|trans }}</th>
+                    <th class="text-center">{{ 'superadmin.members'|trans }}</th>
+                    <th class="text-center">{{ 'actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in cars %}
+                <tr>
+                    <td class="align-middle text-center">
+                        {% if car.profilePicturePath|default %}
+                            <img class="rounded-circle me-2" src="{{ asset('/uploads/cars/' ~ car.profilePicturePath) }}" height="30" width="30">
+                        {% endif %}
+                        {{ car.name }}
+                    </td>
+
+                    <td class="align-middle text-center">
+                        {% for user in car.users %}
+                            {{ user.name }}{% if not loop.last %}, {% endif %}
+                        {% else %}
+                            -
+                        {% endfor %}
+                    </td>
+                    <td class="align-middle text-center">
+                        <form method="post" action="{{ path('app_superadmin_car_delete', {id: car.id}) }}"
+                              onsubmit="return confirm('{{ 'superadmin.confirm_delete_car'|trans({'%name%': car.name})|e('js') }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('superadmin_car_delete_' ~ car.id) }}">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash"></i> {{ 'delete'|trans }}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3" class="text-center text-muted">{{ 'superadmin.no_cars'|trans }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# ── Users ────────────────────────────────────────────────────────────── #}
+    <h5 class="mt-4">{{ 'superadmin.users'|trans }}</h5>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-secondary">
+                <tr>
+                    <th></th>
+                    <th class="text-center">{{ 'user.user'|trans }}</th>
+                    <th class="text-center">{{ 'email'|trans }}</th>
+                    <th class="text-center">{{ 'user.verified'|trans }}</th>
+                    <th class="text-center">{{ 'user.first_login'|trans }}</th>
+                    <th class="text-center">{{ 'user.last_login'|trans }}</th>
+                    <th class="text-center">{{ 'superadmin.cars'|trans }}</th>
+                    <th class="text-center">{{ 'user.status'|trans }}</th>
+                    <th class="text-center">{{ 'actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td class="align-middle">
+                        {% if user.profilePicturePath|default %}
+                            <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="40" width="40">
+                        {% else %}
+                            <img class="rounded-circle" src="{{ asset('./static/default-user.png') }}" height="40" width="40">
+                        {% endif %}
+                    </td>
+                    <td class="align-middle text-center">{{ user.name }}</td>
+                    <td class="align-middle text-center">{{ user.email }}</td>
+                    <td class="align-middle text-center">
+                        {% if user.isVerified %}
+                            <i class="fas fa-check text-success"></i>
+                        {% else %}
+                            <i class="fas fa-times text-danger"></i>
+                        {% endif %}
+                    </td>
+                    <td class="align-middle text-center">{{ user.firstLogin ? user.firstLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
+                    <td class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
+                    <td class="align-middle text-center">
+                        {% for car in user.cars %}
+                            {{ car.name }}{% if not loop.last %}, {% endif %}
+                        {% else %}
+                            -
+                        {% endfor %}
+                    </td>
+                    <td class="align-middle text-center">
+                        {% if user.isActive() %}
+                            <span class="badge bg-success">{{ 'user.active'|trans }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ 'user.inactive'|trans }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="align-middle text-center">
+                        {% if user.id != app.user.id %}
+                        <form method="post" action="{{ path('app_superadmin_user_delete', {id: user.id}) }}"
+                              onsubmit="return confirm('{{ 'superadmin.confirm_delete_user'|trans({'%name%': user.name})|e('js') }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('superadmin_user_delete_' ~ user.id) }}">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash"></i> {{ 'delete'|trans }}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="9" class="text-center text-muted">{{ 'superadmin.no_users'|trans }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -73,6 +73,10 @@
                                     <li><a class="dropdown-item" href="{{ path('app_car_new') }}">{{ 'car.add'|trans }}</a></li>
                                     <li><a class="dropdown-item" href="{{ path('app_car_edit') }}">{{ 'car.manage'|trans }}</a></li>
                                     <li><a class="dropdown-item" href="{{ path('app_user_list') }}">{{ 'user.manage'|trans }}</a></li>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_superadmin') }}">{{ 'superadmin.title'|trans }}</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                             <li id="nav-user" class="nav-item dropdown">

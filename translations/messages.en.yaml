@@ -347,6 +347,7 @@ user:
       cancel: Cancel
   register: Register
   status: State
+  verified: Verified
   type: Group
 update: Update
 welcome: Welome
@@ -381,6 +382,20 @@ remember:
 sharing:
   is:
     caring: Sharing is caring
+delete: Delete
 transport: Transport
 vacation: Vacation
+superadmin:
+  title: Super Admin
+  cars: Cars
+  users: Users
+  members: Members
+  no_cars: No cars registered.
+  no_users: No users found.
+  user_deleted: User deleted.
+  user_deactivated: User has entries and was deactivated instead of deleted.
+  car_deleted: Car deleted.
+  cannot_delete_self: You cannot delete your own account.
+  confirm_delete_car: "Delete car \"%name%\"? This will delete all associated trips, expenses and bookings."
+  confirm_delete_user: "Delete user \"%name%\"?"
 yes: Yes

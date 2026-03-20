@@ -348,6 +348,7 @@ user:
   register: Registrieren
   status: Status
   type: Gruppe
+  verified: Verifiziert
 update: Bearbeite
 welcome: Willkommen
 calendar: Kalender
@@ -381,6 +382,20 @@ remember:
 sharing:
   is:
     caring: Sharing is caring
+delete: Löschen
 transport: Transport
 vacation: Urlaub
+superadmin:
+  title: Super Admin
+  cars: Fahrzeuge
+  users: Benutzer
+  members: Mitglieder
+  no_cars: Keine Fahrzeuge registriert.
+  no_users: Keine Benutzer gefunden.
+  user_deleted: Benutzer gelöscht.
+  user_deactivated: Benutzer hat Einträge und wurde statt gelöscht deaktiviert.
+  car_deleted: Fahrzeug gelöscht.
+  cannot_delete_self: Du kannst deinen eigenen Account nicht löschen.
+  confirm_delete_car: "Fahrzeug \"%name%\" löschen? Alle zugehörigen Fahrten, Ausgaben und Buchungen werden ebenfalls gelöscht."
+  confirm_delete_user: "Benutzer \"%name%\" löschen?"
 yes: Ja
