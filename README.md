@@ -147,14 +147,14 @@ In the working directory start the docker containers
 docker compose up -d
 ```
 
-Open a bash shell for symfony console for command line tasks 
+Open a bash shell for symfony console for command line tasks
 ```
 docker exec -it car-coop-www-1 bash
 ```
 
 Then run the following commands:
 ```
-composer install    
+composer install
 
 php bin/console doctrine:migrations:migrate
 
@@ -162,3 +162,17 @@ php bin/console lexik:jwt:generate-keypair --skip-if-exists
 ```
 
 You can access the dev website via http://localhost:8080/en/register
+
+### Local configuration
+
+The `.env` file is committed to the repository and contains only placeholder values for secrets. **Never put real secrets in `.env`.**
+
+Override any value locally by creating a `.env.local` file in the project root — it is ignored by Git and takes precedence over `.env`. At minimum you should set:
+
+```dotenv
+# .env.local
+JWT_PASSPHRASE=<your-jwt-passphrase>   # must match the passphrase used when generating the JWT keypair
+APP_SECRET=<random-32-char-string>     # generate with: openssl rand -hex 16
+```
+
+Any other variable from `.env` can be overridden the same way (e.g. `DATABASE_URL`, `MAILER_DSN`, `SENTRY_DSN`).
