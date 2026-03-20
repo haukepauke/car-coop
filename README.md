@@ -121,6 +121,7 @@ To run the app on a VM with a webserver of your choice (PHP 8.3+ required), clon
 ```bash
 APP_ENV=prod composer install --no-dev --optimize-autoloader
 APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+php bin/console lexik:jwt:generate-keypair --skip-if-exists
 php bin/console doctrine:migrations:migrate
 php bin/console asset-map:compile
 ```
@@ -167,7 +168,7 @@ You can access the dev website via http://localhost:8080/en/register
 
 ### Local configuration
 
-The `.env` file is committed to the repository and contains only placeholder values for secrets. **Never put real secrets in `.env`.**
+The `.env` file is committed to the repository and contains only placeholder values for secrets.
 
 Override any value locally by creating a `.env.local` file in the project root — it is ignored by Git and takes precedence over `.env`. At minimum you should set:
 
