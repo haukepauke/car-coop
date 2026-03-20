@@ -23,10 +23,11 @@ class TripAdminController extends AbstractController
     #[Route('/admin/trip/list/{page<\d+>}', name: 'app_trip_list')]
     public function list(TripRepository $tripsRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
-        $car  = $activeCarService->getActiveCar();
-        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
+        $car    = $activeCarService->getActiveCar();
+        $year   = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
+        $userId = ($u = $request->query->get('user')) !== null && $u !== '' ? (int) $u : null;
 
-        $queryBuilder = $tripsRepo->createFindByCarQueryBuilder($car, $year);
+        $queryBuilder = $tripsRepo->createFindByCarQueryBuilder($car, $year, $userId);
 
         $pagination = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pagination->setMaxPerPage(20);
@@ -38,8 +39,10 @@ class TripAdminController extends AbstractController
                 'car'            => $car,
                 'pager'          => $pagination,
                 'selectedYear'   => $year,
+                'selectedUserId' => $userId,
                 'availableYears' => $tripsRepo->getAvailableYears($car),
-                'totals'         => $tripsRepo->getTotals($car, $year),
+                'carUsers'       => $car->getUsers(),
+                'totals'         => $tripsRepo->getTotals($car, $year, $userId),
             ]
         );
     }

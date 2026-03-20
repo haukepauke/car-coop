@@ -19,10 +19,11 @@ class ExpenseAdminController extends AbstractController
     #[Route('/admin/expense/list/{page<\d+>}', name: 'app_expense_list')]
     public function list(ExpenseRepository $expRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
-        $car  = $activeCarService->getActiveCar();
-        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
+        $car    = $activeCarService->getActiveCar();
+        $year   = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
+        $userId = ($u = $request->query->get('user')) !== null && $u !== '' ? (int) $u : null;
 
-        $queryBuilder = $expRepo->createFindByCarQueryBuilder($car, $year);
+        $queryBuilder = $expRepo->createFindByCarQueryBuilder($car, $year, $userId);
         $pagination = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pagination->setMaxPerPage(20);
         $pagination->setCurrentPage($page);
@@ -33,8 +34,10 @@ class ExpenseAdminController extends AbstractController
                 'car'            => $car,
                 'pager'          => $pagination,
                 'selectedYear'   => $year,
+                'selectedUserId' => $userId,
                 'availableYears' => $expRepo->getAvailableYears($car),
-                'total'          => $expRepo->getTotal($car, $year),
+                'carUsers'       => $car->getUsers(),
+                'total'          => $expRepo->getTotal($car, $year, $userId),
             ]
         );
     }

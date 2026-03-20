@@ -55,7 +55,7 @@ class TripRepository extends ServiceEntityRepository
         ;
     }
 
-    public function createFindByCarQueryBuilder($car, ?int $year = null)
+    public function createFindByCarQueryBuilder($car, ?int $year = null, ?int $userId = null)
     {
         $qb = $this->createQueryBuilder('t')
             ->andWhere('t.car = :val')
@@ -69,6 +69,12 @@ class TripRepository extends ServiceEntityRepository
                ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
         } else {
             $qb->setMaxResults(100);
+        }
+
+        if ($userId !== null) {
+            $qb->join('t.users', 'u')
+               ->andWhere('u.id = :userId')
+               ->setParameter('userId', $userId);
         }
 
         return $qb;
@@ -93,8 +99,8 @@ class TripRepository extends ServiceEntityRepository
         return $years;
     }
 
-    /** Total mileage and costs for completed trips, optionally filtered by year. */
-    public function getTotals($car, ?int $year = null): array
+    /** Total mileage and costs for completed trips, optionally filtered by year and/or user. */
+    public function getTotals($car, ?int $year = null, ?int $userId = null): array
     {
         $qb = $this->createQueryBuilder('t')
             ->andWhere('t.car = :car')
@@ -106,6 +112,12 @@ class TripRepository extends ServiceEntityRepository
                ->andWhere('t.startDate < :yearEnd')
                ->setParameter('yearStart', new \DateTime("$year-01-01"))
                ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
+        }
+
+        if ($userId !== null) {
+            $qb->join('t.users', 'u')
+               ->andWhere('u.id = :userId')
+               ->setParameter('userId', $userId);
         }
 
         /** @var \App\Entity\Trip[] $trips */

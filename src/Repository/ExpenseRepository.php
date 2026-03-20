@@ -55,7 +55,7 @@ class ExpenseRepository extends ServiceEntityRepository
         ;
     }
 
-    public function createFindByCarQueryBuilder($car, ?int $year = null)
+    public function createFindByCarQueryBuilder($car, ?int $year = null, ?int $userId = null)
     {
         $qb = $this->createQueryBuilder('e')
             ->andWhere('e.car = :val')
@@ -67,6 +67,11 @@ class ExpenseRepository extends ServiceEntityRepository
                ->andWhere('e.date < :yearEnd')
                ->setParameter('yearStart', new \DateTime("$year-01-01"))
                ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
+        }
+
+        if ($userId !== null) {
+            $qb->andWhere('e.user = :userId')
+               ->setParameter('userId', $userId);
         }
 
         return $qb;
@@ -90,7 +95,7 @@ class ExpenseRepository extends ServiceEntityRepository
         return $years;
     }
 
-    public function getTotal($car, ?int $year = null): float
+    public function getTotal($car, ?int $year = null, ?int $userId = null): float
     {
         $qb = $this->createQueryBuilder('e')
             ->select('SUM(e.amount)')
@@ -102,6 +107,11 @@ class ExpenseRepository extends ServiceEntityRepository
                ->andWhere('e.date < :yearEnd')
                ->setParameter('yearStart', new \DateTime("$year-01-01"))
                ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
+        }
+
+        if ($userId !== null) {
+            $qb->andWhere('e.user = :userId')
+               ->setParameter('userId', $userId);
         }
 
         return (float) ($qb->getQuery()->getSingleScalarResult() ?? 0);

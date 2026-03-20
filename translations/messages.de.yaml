@@ -62,7 +62,9 @@ board_system:
   user_removed: "<strong>%user%</strong> hat <strong>%car%</strong> verlassen oder wurde entfernt."
 filter:
   year: Jahr
-  all_years: Alle Jahre 
+  all_years: Alle Jahre
+  user: Benutzer
+  all_users: Alle Benutzer
   total: Gesamt
 
 messageboard:

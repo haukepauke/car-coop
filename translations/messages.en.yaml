@@ -63,6 +63,8 @@ board_system:
 filter:
   year: Year
   all_years: All years
+  user: User
+  all_users: All users
   total: Total
 
 messageboard:
