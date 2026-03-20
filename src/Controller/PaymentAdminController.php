@@ -22,9 +22,12 @@ class PaymentAdminController extends AbstractController
     #[Route('/admin/payment/list/{page<\d+>}', name: 'app_payment_list')]
     public function list(PaymentRepository $payRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
-        $user = $this->getUser();
-        $car  = $activeCarService->getActiveCar();
-        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
+        $user           = $this->getUser();
+        $car            = $activeCarService->getActiveCar();
+        $availableYears = $payRepo->getAvailableYears($car);
+        $currentYear    = (int) date('Y');
+        $defaultYear    = in_array($currentYear, $availableYears, true) ? $currentYear : null;
+        $year           = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : $defaultYear;
 
         $queryBuilder = $payRepo->createFindByCarQueryBuilder($car, $year);
         $pagination = new Pagerfanta(new QueryAdapter($queryBuilder));
@@ -38,7 +41,7 @@ class PaymentAdminController extends AbstractController
                 'pager'          => $pagination,
                 'user'           => $user,
                 'selectedYear'   => $year,
-                'availableYears' => $payRepo->getAvailableYears($car),
+                'availableYears' => $availableYears,
                 'total'          => $payRepo->getTotal($car, $year),
             ]
         );

@@ -23,8 +23,11 @@ class MessageController extends AbstractController
     #[Route('/admin/messages/{page<\d+>}', name: 'app_message_board')]
     public function index(MessageRepository $repo, ActiveCarService $activeCarService, Request $request, int $page = 1): Response
     {
-        $car  = $activeCarService->getActiveCar();
-        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
+        $car            = $activeCarService->getActiveCar();
+        $availableYears = $repo->getAvailableYears($car);
+        $currentYear    = (int) date('Y');
+        $defaultYear    = in_array($currentYear, $availableYears, true) ? $currentYear : null;
+        $year           = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : $defaultYear;
 
         $pagination = new Pagerfanta(new QueryAdapter($repo->createFindByCarQueryBuilder($car, $year)));
         $pagination->setMaxPerPage(10);
@@ -34,7 +37,7 @@ class MessageController extends AbstractController
             'car'            => $car,
             'pager'          => $pagination,
             'selectedYear'   => $year,
-            'availableYears' => $repo->getAvailableYears($car),
+            'availableYears' => $availableYears,
             'totalMessages'  => $repo->getCount($car, $year),
         ]);
     }
