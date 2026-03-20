@@ -127,6 +127,11 @@ class UserAdminController extends AbstractController
             $em->persist($user);
             $em->flush();
 
+            // Update session locale immediately so the UI switches language without requiring re-login
+            if ($user->getLocale()) {
+                $request->getSession()->set('_locale', $user->getLocale());
+            }
+
             $this->addFlash('success', 'User updated!');
 
             return $this->redirectToRoute('app_user_list');
