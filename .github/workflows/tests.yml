@@ -1,0 +1,32 @@
+name: API Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: intl, pdo_sqlite, gd
+          coverage: none
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Generate JWT keypair
+        run: php bin/console lexik:jwt:generate-keypair --no-interaction
+        env:
+          APP_ENV: test
+
+      - name: Run PHPUnit
+        run: php bin/phpunit

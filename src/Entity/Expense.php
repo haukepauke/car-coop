@@ -2,11 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ExpenseRepository;
+use App\State\EditorStateProcessor;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ExpenseRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            securityPostDenormalize: 'object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+        new Put(
+            security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+        new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+    ],
+    normalizationContext: ['groups' => ['expense:read']],
+    denormalizationContext: ['groups' => ['expense:write']],
+    order: ['date' => 'DESC'],
+)]
 class Expense
 {
     public const TYPES = ['fuel', 'charging', 'service', 'other'];
@@ -14,39 +41,47 @@ class Expense
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['expense:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Choice(Expense::TYPES)]
+    #[Groups(['expense:read', 'expense:write'])]
     private $type;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank()]
+    #[Groups(['expense:read', 'expense:write'])]
     private $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['expense:read', 'expense:write'])]
     private $comment;
 
     #[ORM\Column(type: 'float')]
     #[Assert\Positive(message: 'Please provide the amount you have spent')]
+    #[Groups(['expense:read', 'expense:write'])]
     private $amount;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(['expense:read', 'expense:write'])]
     private $date;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'expenses')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank()]
+    #[Groups(['expense:read', 'expense:write'])]
     private $car;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'expenses')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank()]
+    #[Groups(['expense:read', 'expense:write'])]
     private $user;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank()]
+    #[Groups(['expense:read'])]
     private $editor;
 
     public function getId(): ?int

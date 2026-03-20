@@ -2,11 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\BookingRepository;
+use App\State\EditorStateProcessor;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            securityPostDenormalize: 'object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+        new Put(
+            security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+        new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+    ],
+    normalizationContext: ['groups' => ['booking:read']],
+    denormalizationContext: ['groups' => ['booking:write']],
+    order: ['startDate' => 'ASC'],
+)]
 class Booking
 {
     public const STATUS = ['fixed', 'maybe'];
@@ -14,36 +41,43 @@ class Booking
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['booking:read'])]
     private $id;
 
     #[ORM\Column(type: 'datetime')]
     #[Assert\GreaterThan(value: 'today', message: 'Bookings can not be made for the past')]
+    #[Groups(['booking:read', 'booking:write'])]
     private $startDate;
 
     #[ORM\Column(type: 'datetime')]
     #[Assert\Expression('this.getEndDate() > this.getStartDate()', message: 'End date must be after start date of booking')]
+    #[Groups(['booking:read', 'booking:write'])]
     private $endDate;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['booking:read', 'booking:write'])]
     private $title;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank()]
+    #[Groups(['booking:read', 'booking:write'])]
     private $user;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank()]
+    #[Groups(['booking:read', 'booking:write'])]
     private $car;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\Choice(Booking::STATUS)]
+    #[Groups(['booking:read', 'booking:write'])]
     private $status;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
-    #[Assert\NotBlank()]
+    #[Groups(['booking:read'])]
     private $editor;
 
     public function getId(): ?int

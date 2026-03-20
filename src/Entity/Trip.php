@@ -2,15 +2,42 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\TripRepository;
+use App\State\EditorStateProcessor;
 use App\Validator\IsValidTripDate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TripRepository::class)]
 #[IsValidTripDate(groups: ['create'])]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            securityPostDenormalize: 'object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+        new Put(
+            security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+        new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+    ],
+    normalizationContext: ['groups' => ['trip:read']],
+    denormalizationContext: ['groups' => ['trip:write']],
+    order: ['startDate' => 'DESC'],
+)]
 class Trip
 {
     public const TYPES = ['vacation', 'transport', 'service'];
@@ -18,47 +45,57 @@ class Trip
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['trip:read'])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\Positive()]
+    #[Groups(['trip:read', 'trip:write'])]
     private $startMileage;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\Expression('this.getEndMileage() > this.getStartMileage()', message: 'Did you drive backwards?!')]
+    #[Groups(['trip:read', 'trip:write'])]
     private $endMileage;
 
     #[ORM\Column(type: 'date')]
     #[Assert\NotBlank()]
+    #[Groups(['trip:read', 'trip:write'])]
     private $startDate;
 
     #[ORM\Column(type: 'date')]
     #[Assert\Expression('this.getEndDate() >= this.getStartDate()', message: 'End date has to be after or the same as the startdate')]
+    #[Groups(['trip:read', 'trip:write'])]
     private $endDate;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'trips')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank()]
+    #[Groups(['trip:read', 'trip:write'])]
     private $car;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'trips')]
     #[Assert\Count(min: 1)]
+    #[Groups(['trip:read', 'trip:write'])]
     private Collection $users;
 
     #[ORM\Column(type: 'float', nullable: true)]
     #[Assert\PositiveOrZero()]
+    #[Groups(['trip:read', 'trip:write'])]
     private $costs;
 
     #[ORM\Column(type: 'string', length: 30)]
     #[Assert\Choice(Trip::TYPES)]
+    #[Groups(['trip:read', 'trip:write'])]
     private $type;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['trip:read', 'trip:write'])]
     private $comment;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
-    #[Assert\NotBlank()]
+    #[Groups(['trip:read'])]
     private $editor;
 
     public function __construct()

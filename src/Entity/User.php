@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,10 +12,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER")'),
+    ],
+    normalizationContext: ['groups' => ['user:read']],
+    order: ['name' => 'ASC'],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const LOCALES = ['en', 'de'];
@@ -20,14 +32,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['user:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\Email()]
+    #[Groups(['user:read'])]
     private $email;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank()]
+    #[Groups(['user:read'])]
     private $name;
 
     #[ORM\Column(type: 'json')]
@@ -62,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $bookings;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    #[Groups(['user:read'])]
     private $color;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

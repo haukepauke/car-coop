@@ -11,6 +11,12 @@ until nc -z "${DB_HOST}" "${DB_PORT}"; do
 done
 echo "Database is up."
 
+# ── Generate JWT keypair if not present ───────────────────────────────────────
+if [ ! -f config/jwt/private.pem ]; then
+    echo "Generating JWT keypair..."
+    php bin/console lexik:jwt:generate-keypair --no-interaction
+fi
+
 # ── Run migrations ────────────────────────────────────────────────────────────
 php bin/console doctrine:migrations:migrate \
     --no-interaction \

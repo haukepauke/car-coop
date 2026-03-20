@@ -2,36 +2,85 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use App\Controller\Api\MessageApiCreateController;
 use App\Repository\MessageRepository;
+use App\State\MessageDeleteProcessor;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+        new Post(
+            controller: MessageApiCreateController::class,
+            inputFormats: ['multipart' => ['multipart/form-data']],
+            security: 'is_granted("ROLE_USER")',
+            deserialize: false,
+            openapi: new \ApiPlatform\OpenApi\Model\Operation(
+                requestBody: new \ApiPlatform\OpenApi\Model\RequestBody(
+                    content: new \ArrayObject([
+                        'multipart/form-data' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'car'     => ['type' => 'integer', 'description' => 'Car ID'],
+                                    'content' => ['type' => 'string'],
+                                    'photos'  => ['type' => 'array', 'items' => ['type' => 'string', 'format' => 'binary']],
+                                ],
+                            ],
+                        ],
+                    ]),
+                ),
+            ),
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_USER") and (object.getAuthor() === user or object.getCar().isAdminUser(user))',
+            processor: MessageDeleteProcessor::class,
+        ),
+    ],
+    normalizationContext: ['groups' => ['message:read']],
+    order: ['createdAt' => 'DESC'],
+)]
 class Message
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['message:read'])]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Car::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups(['message:read'])]
     private Car $car;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['message:read'])]
     private ?User $author = null;
 
     #[ORM\Column(type: 'text')]
+    #[Groups(['message:read'])]
     private string $content;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['message:read'])]
     private DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(['message:read'])]
     private bool $isSticky = false;
 
     #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['message:read'])]
     private ?array $photos = null;
 
     public function __construct()
@@ -83,6 +132,12 @@ class Message
     }
 
     public function isSticky(): bool
+    {
+        return $this->isSticky;
+    }
+
+    /** Alias so the Symfony serializer exposes this as "isSticky" in JSON. */
+    public function getIsSticky(): bool
     {
         return $this->isSticky;
     }

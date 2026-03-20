@@ -157,6 +157,8 @@ Then run the following commands:
 composer install    
 
 php bin/console doctrine:migrations:migrate
+
+php bin/console lexik:jwt:generate-keypair --skip-if-exists
 ```
 
 You can access the dev website via http://localhost:8080/en/register

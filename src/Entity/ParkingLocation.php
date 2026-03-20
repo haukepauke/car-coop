@@ -2,33 +2,64 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ParkingLocationRepository;
+use App\State\EditorStateProcessor;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ParkingLocationRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            securityPostDenormalize: 'object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+        new Put(
+            security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
+            processor: EditorStateProcessor::class,
+        ),
+    ],
+    normalizationContext: ['groups' => ['parking:read']],
+    denormalizationContext: ['groups' => ['parking:write']],
+    order: ['createdAt' => 'DESC'],
+)]
 class ParkingLocation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['parking:read'])]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'parkingLocations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['parking:read', 'parking:write'])]
     private Car $car;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['parking:read'])]
     private User $user;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(['parking:read', 'parking:write'])]
     private float $latitude;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(['parking:read', 'parking:write'])]
     private float $longitude;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['parking:read'])]
     private DateTimeImmutable $createdAt;
 
     public function __construct()

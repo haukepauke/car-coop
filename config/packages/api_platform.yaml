@@ -1,0 +1,21 @@
+api_platform:
+    title: 'Car Coop API'
+    version: '1.0.0'
+    formats:
+        jsonld: ['application/ld+json']
+        json:   ['application/json']
+    docs_formats:
+        jsonld: ['application/ld+json']
+        json:   ['application/json']
+        html:   ['text/html']
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+        pagination_enabled: true
+        pagination_items_per_page: 50
+    swagger:
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header

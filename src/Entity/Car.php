@@ -2,14 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CarRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER") and object.hasUser(user)'),
+    ],
+    normalizationContext: ['groups' => ['car:read']],
+    order: ['name' => 'ASC'],
+)]
 class Car
 {
     public const MILEAGE_UNITS = ['km', 'mi'];
@@ -17,23 +29,29 @@ class Car
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['car:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 30)]
     #[Assert\NotBlank()]
+    #[Groups(['car:read'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 15, nullable: true)]
+    #[Groups(['car:read'])]
     private $licensePlate;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\PositiveOrZero(message: 'Please enter a positive value')]
+    #[Groups(['car:read'])]
     private $mileage;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['car:read'])]
     private $make;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['car:read'])]
     private $vendor;
 
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Trip::class, orphanRemoval: true)]
@@ -47,6 +65,7 @@ class Car
 
     #[ORM\Column(type: 'string', length: 10)]
     #[Assert\Choice(Car::MILEAGE_UNITS)]
+    #[Groups(['car:read'])]
     private $milageUnit;
 
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Payment::class, orphanRemoval: true)]
@@ -62,10 +81,12 @@ class Car
     private $profilePicturePath;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['car:read'])]
     private ?string $fuelType = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
     #[Assert\PositiveOrZero(message: 'Please enter a positive value')]
+    #[Groups(['car:read'])]
     private ?float $fuelConsumption100 = null;
 
     public function __construct()
