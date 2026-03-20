@@ -132,6 +132,8 @@ car:
     next: Nächste Buchungen
   costs:
     calculated: Errechnete Kosten
+    calculated_for_year: "Errechnete Kosten für %year%"
+    calculated_all_years: Errechnete Kosten (alle Jahre)
   create: Fahrzeug erstellen
   data: Daten zum Fahrzeug
   exportpdf:

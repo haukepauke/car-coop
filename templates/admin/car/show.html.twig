@@ -116,8 +116,12 @@
                                 </span>
                             </div>
                             <div class="stat-card">
-                                <span class="stat-card__label">{{ 'car.costs.calculated'|trans }}</span>
+                                <span class="stat-card__label">{{ 'car.costs.calculated_for_year'|trans({'%year%': 'now'|date('Y')}) }}</span>
                                 <span class="stat-card__value">{{ carData.calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-card__label">{{ 'car.costs.calculated_all_years'|trans }}</span>
+                                <span class="stat-card__value">{{ carData.calculatedCostsPerUnitAllYears|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</span>
                             </div>
                             {% if carData.car.fuelType %}
                             <div class="stat-card">

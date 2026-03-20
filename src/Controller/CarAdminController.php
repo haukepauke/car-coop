@@ -143,18 +143,21 @@ class CarAdminController extends AbstractController
 
         $activeCar = $activeCarService->getActiveCar();
 
-        $firstDayOfYear = new \DateTime('first day of January');
-        $lastDayOfYear  = new \DateTime('last day of December');
+        $firstDayOfYear    = new \DateTime('first day of January');
+        $lastDayOfYear     = new \DateTime('last day of December');
+        $allTimeStart      = new \DateTime('2000-01-01');
+        $allTimeEnd        = new \DateTime('2099-12-31');
 
         $carPanels = [];
         foreach ($cars as $carObj) {
             $carPanels[] = [
-                'car'                    => $carObj,
-                'bookings'               => $bookingRepo->findByCar(new \DateTime(), $lastDayOfYear, $carObj, 3),
-                'distanceTravelled'      => $carObj->getDistanceTravelled($firstDayOfYear, $lastDayOfYear),
-                'moneySpent'             => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear),
-                'moneySpentFuel'         => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear, 'fuel'),
-                'calculatedCostsPerUnit' => $carObj->getCalculatedCosts($firstDayOfYear, $lastDayOfYear),
+                'car'                           => $carObj,
+                'bookings'                      => $bookingRepo->findByCar(new \DateTime(), $lastDayOfYear, $carObj, 3),
+                'distanceTravelled'             => $carObj->getDistanceTravelled($firstDayOfYear, $lastDayOfYear),
+                'moneySpent'                    => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear),
+                'moneySpentFuel'                => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear, 'fuel'),
+                'calculatedCostsPerUnit'        => $carObj->getCalculatedCosts($firstDayOfYear, $lastDayOfYear),
+                'calculatedCostsPerUnitAllYears' => $carObj->getCalculatedCosts($allTimeStart, $allTimeEnd),
                 'distanceChart'          => $charts->getDistanceDrivenByUserChart($carObj, $firstDayOfYear, $lastDayOfYear),
                 'balanceChart'           => $charts->getUserBalanceChart($carObj, $firstDayOfYear, $lastDayOfYear),
             ];

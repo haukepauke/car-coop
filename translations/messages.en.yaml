@@ -132,6 +132,8 @@ car:
     next: Next bookings
   costs:
     calculated: Calculated costs
+    calculated_for_year: "Calculated costs for %year%"
+    calculated_all_years: Calculated costs (all years)
   create: Create vehicle
   data: Vehicle data
   exportpdf:
