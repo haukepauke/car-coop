@@ -78,9 +78,9 @@
                             <li id="nav-user" class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
-                                    {% if app.user.profilePicturePath| default %}
+                                    {% if app.user.profilePicturePath|default %}
                                     <img class="rounded-circle"
-                                        src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath) }}" height="30"
+                                        src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="30"
                                         width="30">
                                     {% else %}
                                     <img class="rounded-circle" src="{{ asset('./static/default-user.png') }}"
