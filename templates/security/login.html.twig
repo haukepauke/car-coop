@@ -29,6 +29,11 @@
                 value="{{ csrf_token('authenticate') }}"
                 >
 
+            <div class="form-check mb-4 text-start">
+              <input class="form-check-input" type="checkbox" name="_remember_me" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">{{ 'log.remember_me'|trans }}</label>
+            </div>
+
             <button class="btn btn-dark btn-lg btn-block" type="submit">{{ 'log.in'|trans }}</button>
             </form>
           </div>

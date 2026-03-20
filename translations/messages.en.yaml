@@ -251,7 +251,8 @@ invitation:
   pending: Pending invitations
 log:
   in: Log in
-  forgot_password: Reset password 
+  forgot_password: Reset password
+  remember_me: Remember me
 charging: Charging
 maybe: Maybe
 members: Members

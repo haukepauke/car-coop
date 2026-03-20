@@ -23,7 +23,7 @@
 </p>
 
 <p>
-    {{ 'event_email.trip.see_in_logbook'|trans({'%link%': '<a href="">' ~ 'trips.logbook'|trans ~ '</a>', '%car%': car.name})|raw }}
+    {{ 'event_email.trip.see_in_logbook'|trans({'%link%': '<a href="">' ~ 'trips.logbook'|trans ~ '</a>', '%car%': car.name|e('html')})|raw }}
 </p>
 
 <p>

@@ -252,6 +252,7 @@ invitation:
 log:
   in: Logge Dich ein
   forgot_password: Passwort vergessen?
+  remember_me: Angemeldet bleiben
 maybe: Vielleicht
 charging: Laden
 members: Mitglieder

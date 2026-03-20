@@ -36,7 +36,6 @@ security:
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
-                always_remember_me: true
             pattern: ^/
             user_checker: App\Security\UserChecker
             
