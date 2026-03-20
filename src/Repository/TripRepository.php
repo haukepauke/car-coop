@@ -55,14 +55,66 @@ class TripRepository extends ServiceEntityRepository
         ;
     }
 
-    public function createFindByCarQueryBuilder($car)
+    public function createFindByCarQueryBuilder($car, ?int $year = null)
     {
-        return $this->createQueryBuilder('t')
+        $qb = $this->createQueryBuilder('t')
             ->andWhere('t.car = :val')
             ->setParameter('val', $car)
-            ->orderBy('t.endDate', 'DESC')
-            ->setMaxResults(100)
-        ;
+            ->orderBy('t.endDate', 'DESC');
+
+        if ($year !== null) {
+            $qb->andWhere('t.startDate >= :yearStart')
+               ->andWhere('t.startDate < :yearEnd')
+               ->setParameter('yearStart', new \DateTime("$year-01-01"))
+               ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
+        } else {
+            $qb->setMaxResults(100);
+        }
+
+        return $qb;
+    }
+
+    /** @return int[] list of years that have at least one trip, descending */
+    public function getAvailableYears($car): array
+    {
+        $rows = $this->createQueryBuilder('t')
+            ->select('t.startDate')
+            ->andWhere('t.car = :car')
+            ->andWhere('t.startDate IS NOT NULL')
+            ->setParameter('car', $car)
+            ->getQuery()
+            ->getArrayResult();
+
+        $years = array_unique(array_map(
+            fn($row) => (int)$row['startDate']->format('Y'),
+            $rows
+        ));
+        rsort($years);
+        return $years;
+    }
+
+    /** Total mileage and costs for completed trips, optionally filtered by year. */
+    public function getTotals($car, ?int $year = null): array
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->andWhere('t.car = :car')
+            ->andWhere('t.endMileage IS NOT NULL')
+            ->setParameter('car', $car);
+
+        if ($year !== null) {
+            $qb->andWhere('t.startDate >= :yearStart')
+               ->andWhere('t.startDate < :yearEnd')
+               ->setParameter('yearStart', new \DateTime("$year-01-01"))
+               ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
+        }
+
+        /** @var \App\Entity\Trip[] $trips */
+        $trips = $qb->getQuery()->getResult();
+
+        $mileage = array_sum(array_map(fn($t) => $t->getMileage(), $trips));
+        $costs   = array_sum(array_map(fn($t) => $t->getCosts(), $trips));
+
+        return ['mileage' => $mileage, 'costs' => $costs];
     }
 
     /**

@@ -60,8 +60,14 @@ board_system:
   invitation_created: "<strong>%user%</strong> hat <em>%email%</em> eingeladen, <strong>%car%</strong> beizutreten."
   invitation_accepted: "<strong>%user%</strong> ist <strong>%car%</strong> beigetreten."
   user_removed: "<strong>%user%</strong> hat <strong>%car%</strong> verlassen oder wurde entfernt."
+filter:
+  year: Jahr
+  all_years: Alle Jahre 
+  total: Gesamt
+
 messageboard:
   title: Pinnwand
+  total_messages: "%count% Nachrichten"
   new_message: Neue Nachricht
   post: Nachricht posten
   no_messages: Noch keine Nachrichten.

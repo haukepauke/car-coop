@@ -21,17 +21,21 @@ class MessageController extends AbstractController
     private const PHOTO_FOLDER = 'messages';
 
     #[Route('/admin/messages/{page<\d+>}', name: 'app_message_board')]
-    public function index(MessageRepository $repo, ActiveCarService $activeCarService, int $page = 1): Response
+    public function index(MessageRepository $repo, ActiveCarService $activeCarService, Request $request, int $page = 1): Response
     {
-        $car = $activeCarService->getActiveCar();
+        $car  = $activeCarService->getActiveCar();
+        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
 
-        $pagination = new Pagerfanta(new QueryAdapter($repo->createFindByCarQueryBuilder($car)));
+        $pagination = new Pagerfanta(new QueryAdapter($repo->createFindByCarQueryBuilder($car, $year)));
         $pagination->setMaxPerPage(10);
         $pagination->setCurrentPage($page);
 
         return $this->render('admin/message/index.html.twig', [
-            'car'   => $car,
-            'pager' => $pagination,
+            'car'            => $car,
+            'pager'          => $pagination,
+            'selectedYear'   => $year,
+            'availableYears' => $repo->getAvailableYears($car),
+            'totalMessages'  => $repo->getCount($car, $year),
         ]);
     }
 

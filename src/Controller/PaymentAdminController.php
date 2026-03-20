@@ -20,24 +20,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaymentAdminController extends AbstractController
 {
     #[Route('/admin/payment/list/{page<\d+>}', name: 'app_payment_list')]
-    public function list(PaymentRepository $payRepo, ActiveCarService $activeCarService, int $page = 1)
+    public function list(PaymentRepository $payRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
         $user = $this->getUser();
-        $car = $activeCarService->getActiveCar();
+        $car  = $activeCarService->getActiveCar();
+        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
 
-        $queryBuilder = $payRepo->createFindByCarQueryBuilder($car);
-        $pagination = new Pagerfanta(
-            new QueryAdapter($queryBuilder)
-        );
+        $queryBuilder = $payRepo->createFindByCarQueryBuilder($car, $year);
+        $pagination = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pagination->setMaxPerPage(20);
         $pagination->setCurrentPage($page);
 
         return $this->render(
             'admin/payment/list.html.twig',
             [
-                'car' => $car,
-                'pager' => $pagination,
-                'user' => $user,
+                'car'            => $car,
+                'pager'          => $pagination,
+                'user'           => $user,
+                'selectedYear'   => $year,
+                'availableYears' => $payRepo->getAvailableYears($car),
+                'total'          => $payRepo->getTotal($car, $year),
             ]
         );
     }

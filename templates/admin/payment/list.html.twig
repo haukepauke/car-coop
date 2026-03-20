@@ -2,7 +2,21 @@
 
 {% block content_body %}
 <div class="col-xl-12 mt-5">
-    <h4>{{ 'payments.for'|trans }} {{ car.name }}</h4>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="mb-0">{{ 'payments.for'|trans }} {{ car.name }}</h4>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-dark" onclick="location.href='{{ path('app_payment_new') }}';">{{ 'payments.add.new'|trans }} <span class="fa fa-plus-circle"></span></button>
+            <form method="get" class="d-flex align-items-center gap-2">
+                <label for="yearFilter" class="mb-0 text-nowrap">{{ 'filter.year'|trans }}</label>
+                <select name="year" id="yearFilter" class="form-select form-select-sm" style="min-width: 9rem" onchange="this.form.submit()">
+                    <option value="">{{ 'filter.all_years'|trans }}</option>
+                    {% for y in availableYears %}
+                        <option value="{{ y }}" {% if y == selectedYear %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table">
             <thead class="table-secondary">
@@ -30,12 +44,21 @@
                         </td>
                     </tr>
                 {% endfor %}
-                {{ pagerfanta(pager) }}
             </tbody>
+            <tfoot>
+                <tr class="table-secondary fw-bold">
+                    <td colspan="3" class="text-end">{{ 'filter.total'|trans }}</td>
+                    <td class="text-center">{{ total|format_currency('EUR', locale=app.user.locale) }}</td>
+                    <td colspan="3"></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
-    <div class="clearfix">
-        <button type="link" class="btn btn-outline-dark my-3 float-end" onclick="location.href='{{ path('app_payment_new') }}';">{{ 'payments.add.new'|trans }} <span class="fa fa-plus-circle"></span></button>
+    {% if pager.haveToPaginate %}
+    <div class="d-flex justify-content-center mb-3">
+        {% set pagerParams = selectedYear ? {year: selectedYear} : {} %}
+        {{ pagerfanta(pager, 'twitter_bootstrap5', {routeName: 'app_payment_list', routeParams: pagerParams}) }}
     </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -60,8 +60,14 @@ board_system:
   invitation_created: "<strong>%user%</strong> invited <em>%email%</em> to join <strong>%car%</strong>."
   invitation_accepted: "<strong>%user%</strong> joined <strong>%car%</strong>."
   user_removed: "<strong>%user%</strong> left or was removed from <strong>%car%</strong>."
+filter:
+  year: Year
+  all_years: All years
+  total: Total
+
 messageboard:
   title: Message board
+  total_messages: "%count% messages"
   new_message: New message
   post: Post message
   no_messages: No messages yet.

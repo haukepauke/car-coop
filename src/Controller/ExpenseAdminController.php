@@ -17,22 +17,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExpenseAdminController extends AbstractController
 {
     #[Route('/admin/expense/list/{page<\d+>}', name: 'app_expense_list')]
-    public function list(ExpenseRepository $expRepo, ActiveCarService $activeCarService, int $page = 1)
+    public function list(ExpenseRepository $expRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
-        $car = $activeCarService->getActiveCar();
+        $car  = $activeCarService->getActiveCar();
+        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
 
-        $queryBuilder = $expRepo->createFindByCarQueryBuilder($car);
-        $pagination = new Pagerfanta(
-            new QueryAdapter($queryBuilder)
-        );
+        $queryBuilder = $expRepo->createFindByCarQueryBuilder($car, $year);
+        $pagination = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pagination->setMaxPerPage(20);
         $pagination->setCurrentPage($page);
 
         return $this->render(
             'admin/expense/list.html.twig',
             [
-                'car' => $car,
-                'pager' => $pagination,
+                'car'            => $car,
+                'pager'          => $pagination,
+                'selectedYear'   => $year,
+                'availableYears' => $expRepo->getAvailableYears($car),
+                'total'          => $expRepo->getTotal($car, $year),
             ]
         );
     }

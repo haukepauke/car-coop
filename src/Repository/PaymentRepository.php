@@ -55,12 +55,55 @@ class PaymentRepository extends ServiceEntityRepository
         ;
     }
 
-    public function createFindByCarQueryBuilder($car)
+    public function createFindByCarQueryBuilder($car, ?int $year = null)
     {
-        return $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
             ->andWhere('p.car = :val')
             ->setParameter('val', $car)
-            ->orderBy('p.date', 'DESC')
-        ;
+            ->orderBy('p.date', 'DESC');
+
+        if ($year !== null) {
+            $qb->andWhere('p.date >= :yearStart')
+               ->andWhere('p.date < :yearEnd')
+               ->setParameter('yearStart', new \DateTime("$year-01-01"))
+               ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
+        }
+
+        return $qb;
+    }
+
+    /** @return int[] list of years that have at least one payment, descending */
+    public function getAvailableYears($car): array
+    {
+        $rows = $this->createQueryBuilder('p')
+            ->select('p.date')
+            ->andWhere('p.car = :car')
+            ->setParameter('car', $car)
+            ->getQuery()
+            ->getArrayResult();
+
+        $years = array_unique(array_map(
+            fn($row) => (int)$row['date']->format('Y'),
+            $rows
+        ));
+        rsort($years);
+        return $years;
+    }
+
+    public function getTotal($car, ?int $year = null): float
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('SUM(p.amount)')
+            ->andWhere('p.car = :car')
+            ->setParameter('car', $car);
+
+        if ($year !== null) {
+            $qb->andWhere('p.date >= :yearStart')
+               ->andWhere('p.date < :yearEnd')
+               ->setParameter('yearStart', new \DateTime("$year-01-01"))
+               ->setParameter('yearEnd', new \DateTime(($year + 1) . '-01-01'));
+        }
+
+        return (float) ($qb->getQuery()->getSingleScalarResult() ?? 0);
     }
 }

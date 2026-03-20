@@ -12,7 +12,20 @@
 
 {% block content_body %}
 <div class="col-12 mt-5">
-    <h2>{{ 'messageboard.title'|trans }} – {{ car.name }}</h2>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0">{{ 'messageboard.title'|trans }} – {{ car.name }}</h2>
+        <form method="get" class="d-flex align-items-center gap-2">
+            <label for="yearFilter" class="mb-0 text-nowrap">{{ 'filter.year'|trans }}</label>
+            <select name="year" id="yearFilter" class="form-select form-select-sm" style="min-width: 9rem" onchange="this.form.submit()">
+                <option value="">{{ 'filter.all_years'|trans }}</option>
+                {% for y in availableYears %}
+                    <option value="{{ y }}" {% if y == selectedYear %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    <p class="text-muted small">{{ 'messageboard.total_messages'|trans({'%count%': totalMessages}) }}</p>
 
     {# Flash messages #}
     {% for label, flashes in app.flashes(['warning', 'danger']) %}
@@ -89,7 +102,8 @@
 
     {% if pager.haveToPaginate %}
     <div class="d-flex justify-content-center mb-4">
-        {{ pagerfanta(pager, 'twitter_bootstrap5', {routeName: 'app_message_board'}) }}
+        {% set pagerParams = selectedYear ? {year: selectedYear} : {} %}
+        {{ pagerfanta(pager, 'twitter_bootstrap5', {routeName: 'app_message_board', routeParams: pagerParams}) }}
     </div>
     {% endif %}
 

@@ -21,23 +21,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class TripAdminController extends AbstractController
 {
     #[Route('/admin/trip/list/{page<\d+>}', name: 'app_trip_list')]
-    public function list(TripRepository $tripsRepo, ActiveCarService $activeCarService, int $page = 1)
+    public function list(TripRepository $tripsRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
-        $car = $activeCarService->getActiveCar();
+        $car  = $activeCarService->getActiveCar();
+        $year = $request->query->has('year') ? ($request->query->get('year') !== '' ? (int) $request->query->get('year') : null) : (int) date('Y');
 
-        $queryBuilder = $tripsRepo->createFindByCarQueryBuilder($car);
+        $queryBuilder = $tripsRepo->createFindByCarQueryBuilder($car, $year);
 
-        $pagination = new Pagerfanta(
-            new QueryAdapter($queryBuilder)
-        );
+        $pagination = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pagination->setMaxPerPage(20);
         $pagination->setCurrentPage($page);
 
         return $this->render(
             'admin/trip/list.html.twig',
             [
-                'car' => $car,
-                'pager' => $pagination,
+                'car'            => $car,
+                'pager'          => $pagination,
+                'selectedYear'   => $year,
+                'availableYears' => $tripsRepo->getAvailableYears($car),
+                'totals'         => $tripsRepo->getTotals($car, $year),
             ]
         );
     }
