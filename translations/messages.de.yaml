@@ -435,3 +435,5 @@ superadmin:
   confirm_delete_car: "Fahrzeug \"%name%\" löschen? Alle zugehörigen Fahrten, Ausgaben und Buchungen werden ebenfalls gelöscht."
   confirm_delete_user: "Benutzer \"%name%\" löschen?"
 yes: Ja
+cancel: Abbrechen
+confirm_delete_title: Löschen bestätigen

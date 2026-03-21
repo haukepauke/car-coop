@@ -35,13 +35,12 @@
                         {% endfor %}
                     </td>
                     <td class="align-middle text-center">
-                        <form method="post" action="{{ path('app_superadmin_car_delete', {id: car.id}) }}"
-                              onsubmit="return confirm('{{ 'superadmin.confirm_delete_car'|trans({'%name%': car.name})|e('js') }}');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('superadmin_car_delete_' ~ car.id) }}">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash"></i> {{ 'delete'|trans }}
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-outline-danger btn-sm js-confirm-delete"
+                                data-action="{{ path('app_superadmin_car_delete', {id: car.id}) }}"
+                                data-token="{{ csrf_token('superadmin_car_delete_' ~ car.id) }}"
+                                data-message="{{ 'superadmin.confirm_delete_car'|trans({'%name%': car.name}) }}">
+                            <i class="fas fa-trash"></i> {{ 'delete'|trans }}
+                        </button>
                     </td>
                 </tr>
                 {% else %}
@@ -111,13 +110,12 @@
                     </td>
                     <td class="align-middle text-center">
                         {% if user.id != app.user.id %}
-                        <form method="post" action="{{ path('app_superadmin_user_delete', {id: user.id}) }}"
-                              onsubmit="return confirm('{{ 'superadmin.confirm_delete_user'|trans({'%name%': user.name})|e('js') }}');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('superadmin_user_delete_' ~ user.id) }}">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash"></i> {{ 'delete'|trans }}
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-outline-danger btn-sm js-confirm-delete"
+                                data-action="{{ path('app_superadmin_user_delete', {id: user.id}) }}"
+                                data-token="{{ csrf_token('superadmin_user_delete_' ~ user.id) }}"
+                                data-message="{{ 'superadmin.confirm_delete_user'|trans({'%name%': user.name}) }}">
+                            <i class="fas fa-trash"></i> {{ 'delete'|trans }}
+                        </button>
                         {% endif %}
                     </td>
                 </tr>
@@ -128,4 +126,41 @@
         </table>
     </div>
 </div>
+
+{# ── Shared confirm modal ──────────────────────────────────────────────────── #}
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ 'confirm_delete_title'|trans }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="confirmModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'cancel'|trans }}</button>
+                <form id="confirmModalForm" method="post">
+                    <input type="hidden" name="_token" id="confirmModalToken">
+                    <button type="submit" class="btn btn-danger">{{ 'delete'|trans }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const modal = document.getElementById('confirmModal');
+    modal.addEventListener('show.bs.modal', function (e) {
+        const btn = e.relatedTarget;
+        document.getElementById('confirmModalBody').textContent  = btn.dataset.message;
+        document.getElementById('confirmModalForm').action       = btn.dataset.action;
+        document.getElementById('confirmModalToken').value       = btn.dataset.token;
+    });
+
+    document.querySelectorAll('.js-confirm-delete').forEach(function (btn) {
+        btn.dataset.bsToggle  = 'modal';
+        btn.dataset.bsTarget  = '#confirmModal';
+    });
+}());
+</script>
 {% endblock %}

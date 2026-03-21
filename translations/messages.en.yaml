@@ -435,3 +435,5 @@ superadmin:
   confirm_delete_car: "Delete car \"%name%\"? This will delete all associated trips, expenses and bookings."
   confirm_delete_user: "Delete user \"%name%\"?"
 yes: Yes
+cancel: Cancel
+confirm_delete_title: Confirm deletion
