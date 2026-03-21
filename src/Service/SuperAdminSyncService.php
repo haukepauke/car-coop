@@ -12,17 +12,17 @@ class SuperAdminSyncService
         private readonly UserRepository $userRepo,
         private readonly EntityManagerInterface $em,
         private readonly LoggerInterface $logger,
-        private readonly string $superAdminEmails,
+        private readonly ?string $superAdminEmails,
     ) {}
 
     public function getCurrentHash(): string
     {
-        return md5($this->superAdminEmails);
+        return md5($this->superAdminEmails ?? '');
     }
 
     public function sync(): void
     {
-        $emails  = $this->parseEmails($this->superAdminEmails);
+        $emails  = $this->parseEmails($this->superAdminEmails ?? '');
         $users   = $this->userRepo->findAll();
         $changed = false;
 
