@@ -338,6 +338,7 @@ user:
     edit: Edit profile
     update: Update profile
     picture: Profile picture
+    email_admin_warning: "You have super admin privileges. If you change your email address, your admin access will be removed on the next request unless the new address is also listed in the SUPERADMIN configuration."
   delete:
     button: Delete account
     confirm:

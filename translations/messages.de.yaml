@@ -338,6 +338,7 @@ user:
     edit: Profil bearbeiten
     update: Profil aktualisieren
     picture: Profilbild
+    email_admin_warning: "Du hast Super-Admin-Rechte. Wenn du deine E-Mail-Adresse änderst, werden deine Admin-Rechte beim nächsten Aufruf entfernt – es sei denn, die neue Adresse ist ebenfalls in der SUPERADMIN-Konfiguration eingetragen."
   delete:
     button: Konto löschen
     confirm:

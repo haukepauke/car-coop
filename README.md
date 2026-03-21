@@ -50,6 +50,18 @@ Open `.env` and set at minimum:
 | `DB_ROOT_PASSWORD` | Strong password for the MariaDB root account |
 | `HTTP_PORT` | Host port to expose (default: `80`) |
 | `MAILER_DSN` | SMTP connection string, or leave `null://null` to disable email |
+|`MAILER_FROM_EMAIL`| Sender email address for emails send by the application |
+| `APP_HOMEPAGE_URL`| URL of the homepage |
+
+Optional variables:
+
+| Variable | Description |
+|---|---|
+|`DB_NAME`| For a custom database name |
+|`DB_USER`| For a custom database user name |
+|`MAILER_FROM_NAME`| Sender name for emails send by the application |
+|`SENTRY_DSN`| In case you want to use sentry for error monitoring |
+|`SUPERADMIN`| One or more user email addresses (seperated by comma) of super admins that can delete inactive users and cars (mainly for maintenance of spam accounts). Users get the super admin role when they create an account with that email. Existing accounts become super admins when email addresses match. |
 
 ### 3. Build and start
 

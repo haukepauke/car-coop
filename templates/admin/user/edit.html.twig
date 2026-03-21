@@ -6,6 +6,12 @@
 
     {{ form_start(userForm)}}
         {{ form_row(userForm.email) }}
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="alert alert-warning" role="alert">
+            <i class="fas fa-triangle-exclamation"></i>
+            {{ 'user.profile.email_admin_warning'|trans }}
+        </div>
+        {% endif %}
         {{ form_row(userForm.name) }}
         {{ form_row(userForm.locale) }}
         <div class="row">
