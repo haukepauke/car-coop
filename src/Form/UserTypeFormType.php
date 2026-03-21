@@ -36,7 +36,8 @@ class UserTypeFormType extends AbstractType
                 MoneyType::class,
                 [
                     'help' => 'price.help.per.unit',
-                    'label' => 'price.per'.' '.'price.unit',
+                    'label' => 'price.per_unit',
+                    'label_translation_parameters' => ['%unit%' => $car->getMilageUnit()],
                 ]
             )
             ->add(

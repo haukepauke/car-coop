@@ -325,6 +325,7 @@ paypal: Paypal
 price:
   per: Preis pro
   unit: km/mi
+  per_unit: "Preis pro %unit%"
   help:
     per:
       unit: Lege den Preis einer Fahrt pro Kilometer/Meile fest.
