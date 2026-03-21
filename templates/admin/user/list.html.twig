@@ -103,6 +103,7 @@
                         <th class="text-center">{{ 'name'|trans }}</th>
                         <th class="text-center">{{ 'price.per'|trans }} {{ car.milageUnit }}</th>
                         <th class="text-center">{{ 'user.group.admin'|trans }}</th>
+                        <th class="text-center">{{ 'user.group.occasional_use'|trans }}</th>
                         <th class="align-middle text-center">{{ 'members'|trans }}</th>
                         <th class="text-center">{{ 'actions'|trans }}</th>
                     </tr>
@@ -114,6 +115,13 @@
                             <td class="align-middle text-center">{{ usergroup.pricePerUnit|format_currency('EUR', locale='de') }}</td>
                             <td class="align-middle text-center">
                                 {% if usergroup.admin %}
+                                    {{ 'yes'|trans }}
+                                {% else %}
+                                    {{ 'no'|trans }}
+                                {% endif %}
+                            </td>
+                            <td class="align-middle text-center">
+                                {% if usergroup.occasionalUse %}
                                     {{ 'yes'|trans }}
                                 {% else %}
                                     {{ 'no'|trans }}

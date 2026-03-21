@@ -60,6 +60,7 @@ board_system:
   invitation_created: "<strong>%user%</strong> invited <em>%email%</em> to join <strong>%car%</strong>."
   invitation_accepted: "<strong>%user%</strong> joined <strong>%car%</strong>."
   user_removed: "<strong>%user%</strong> left or was removed from <strong>%car%</strong>."
+  price_per_unit_changed: "The price per unit for group <strong>%group%</strong> in <strong>%car%</strong> has been changed from %old_price% € to <strong>%new_price% €</strong>."
 filter:
   year: Year
   all_years: All years
@@ -138,6 +139,31 @@ car:
   data: Vehicle data
   exportpdf:
     button: Export vehicle data (PDF)
+  review:
+    button: Review costs & balances
+    confirm: "Have you entered all trips and expenses? The proposals are based on current data. Proceed?"
+    title: Review costs & balances
+    back: Back
+    intro: "The following analysis is based on all data recorded so far. Make sure all trips and expenses have been entered before acting on these proposals."
+    balances:
+      title: Current balances
+      info: "Positive balance = user has paid in more than their share (is owed money). Negative balance = user has used more than they have paid (owes money)."
+      total: Total
+    payments:
+      title: Proposed payments to settle balances
+      balanced: All balances are equal (or within 5% of each other) — no payments needed.
+      info: "The following payments will bring all balances to the same level with the minimum number of transactions."
+      hint: "After these payments are made, record them under Payments so the balances are updated."
+    price:
+      title: "Price per %unit% adjustment"
+      actual: "Actual cost per %unit% based on all recorded expenses and trips: %actual% €/%unit%"
+      balanced: "The price per %unit% appears well calibrated — no adjustment needed (imbalance < 5% of total expenses)."
+      increase: "The total balance is positive, meaning recorded expenses exceed what has been collected through trip costs. Consider raising all prices by %percent%%% to better cover running costs."
+      decrease: "The total balance is negative, meaning more has been collected through trip costs than was spent on expenses. Consider lowering all prices by %percent%%%."
+      current_rates: Current rates per user group (suggested new rate in bold)
+      accept: Accept proposal
+      accepted: Price per unit updated successfully.
+      edit_hint: "To apply the change, go to Admin → Manage users → edit the user groups."
   form:
     help:
       name: Choose a nice name for the vehicle
@@ -228,6 +254,12 @@ event_email:
     removed: A member has left %car%
     removed_from: A member has left %car%
     removed_message: "%user% has left or been removed from %car%."
+  price_per_unit:
+    changed: Price per unit updated for %car%
+    changed_for: The price per unit has been updated for %car%
+    changed_detail: "The price per unit for group %group% in %car% has been adjusted."
+    old_price: Previous price
+    new_price: New price
   cheers: Cheers!
 entry:
   created_by: Created/Last edited by
@@ -317,10 +349,12 @@ user:
     new: New group
     name: Group name
     admin: Admin
+    occasional_use: Occasional use
     delete: Delete group
     help:
       name: Choose a good name for the group!
       admin: Are users of this group admins?
+      occasional_use: Members of this group use the vehicle only occasionally (e.g. guests).
   groups: User group
   inactive: Inactive
   locale: Language

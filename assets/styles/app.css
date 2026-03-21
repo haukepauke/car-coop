@@ -33,6 +33,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+.flash-container {
+    margin-top: 4.5rem;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     letter-spacing: -0.01em;
@@ -106,13 +110,6 @@ footer {
 
 .navbar-toggler:focus {
     box-shadow: none;
-}
-
-.alert {
-    margin-top: 60px;
-    position: relative;
-    z-index: 1000;
-    border-radius: var(--cc-radius);
 }
 
 /* ═══════════════════════════════════════════════════════════

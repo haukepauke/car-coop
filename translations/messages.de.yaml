@@ -60,6 +60,7 @@ board_system:
   invitation_created: "<strong>%user%</strong> hat <em>%email%</em> eingeladen, <strong>%car%</strong> beizutreten."
   invitation_accepted: "<strong>%user%</strong> ist <strong>%car%</strong> beigetreten."
   user_removed: "<strong>%user%</strong> hat <strong>%car%</strong> verlassen oder wurde entfernt."
+  price_per_unit_changed: "Der Preis pro Einheit für die Gruppe <strong>%group%</strong> bei <strong>%car%</strong> wurde von %old_price% € auf <strong>%new_price% €</strong> geändert."
 filter:
   year: Jahr
   all_years: Alle Jahre
@@ -138,6 +139,31 @@ car:
   data: Daten zum Fahrzeug
   exportpdf:
     button: Fahrzeugdaten exportieren (PDF)
+  review:
+    button: Kosten & Salden prüfen
+    confirm: "Hast du alle Fahrten und Ausgaben erfasst? Die Vorschläge basieren auf den aktuellen Daten. Weiter?"
+    title: Kosten & Salden prüfen
+    back: Zurück
+    intro: "Die folgende Analyse basiert auf allen bisher erfassten Daten. Stelle sicher, dass alle Fahrten und Ausgaben eingetragen sind, bevor du diese Vorschläge umsetzt."
+    balances:
+      title: Aktuelle Salden
+      info: "Positiver Saldo = Benutzer*in hat mehr eingezahlt als ihren Anteil (bekommt Geld). Negativer Saldo = Benutzer*in hat mehr genutzt als bezahlt (schuldet Geld)."
+      total: Gesamt
+    payments:
+      title: Vorgeschlagene Zahlungen zum Ausgleich der Salden
+      balanced: Alle Salden sind gleich (oder innerhalb von 5% voneinander) – keine Zahlungen erforderlich.
+      info: "Die folgenden Zahlungen bringen alle Salden auf das gleiche Niveau mit möglichst wenigen Transaktionen."
+      hint: "Nachdem diese Zahlungen geleistet wurden, bitte unter Zahlungen eintragen, damit die Salden aktualisiert werden."
+    price:
+      title: "Preisanpassung pro %unit%"
+      actual: "Tatsächliche Kosten pro %unit% auf Basis aller erfassten Ausgaben und Fahrten: %actual% €/%unit%"
+      balanced: "Der Preis pro %unit% scheint gut kalibriert – keine Anpassung nötig (Ungleichgewicht < 5% der Gesamtausgaben)."
+      increase: "Der Gesamtsaldo ist positiv: Die erfassten Ausgaben übersteigen die eingenommenen Fahrtkosten. Erwäge, alle Preise um %percent%%% zu erhöhen, um die laufenden Kosten besser zu decken."
+      decrease: "Der Gesamtsaldo ist negativ: Durch Fahrtkosten wurden mehr Einnahmen erzielt als Ausgaben angefallen sind. Erwäge, alle Preise um %percent%%% zu senken."
+      current_rates: Aktuelle Preise pro Benutzergruppe (empfohlener neuer Preis fett)
+      accept: Vorschlag übernehmen
+      accepted: Preis pro Einheit erfolgreich aktualisiert.
+      edit_hint: "Um die Änderung zu übernehmen, gehe zu Admin → Benutzer verwalten → Benutzergruppen bearbeiten."
   form:
     help:
       name: Wähle einen guten Namen für Dein Fahrzeug
@@ -230,6 +256,12 @@ event_email:
     removed: Ein Mitglied hat %car% verlassen
     removed_from: Ein Mitglied hat %car% verlassen
     removed_message: "%user% hat %car% verlassen oder wurde entfernt."
+  price_per_unit:
+    changed: Preis pro Einheit aktualisiert für %car%
+    changed_for: Der Preis pro Einheit wurde für %car% aktualisiert
+    changed_detail: "Der Preis pro Einheit für die Gruppe %group% bei %car% wurde angepasst."
+    old_price: Bisheriger Preis
+    new_price: Neuer Preis
   cheers: Viele Grüße!
 expenses:
   delete: Ausgabe löschen
@@ -317,10 +349,12 @@ user:
     new: Neue Gruppe
     name: Gruppenname
     admin: Administrator*in
+    occasional_use: Gelegentliche Nutzung
     delete: Gruppe löschen
     help:
       name: Wähle einen einprägsamen Namen für die Gruppe!
       admin: Sind User dieser Gruppe Administrato*innen?
+      occasional_use: Mitglieder dieser Gruppe nutzen das Fahrzeug nur gelegentlich (z. B. Gäste).
   groups: Benutzungsgruppen
   inactive: Inaktiv
   locale: Sprache

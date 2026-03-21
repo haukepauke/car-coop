@@ -48,6 +48,15 @@ class UserTypeFormType extends AbstractType
                     'required' => false
                 ]
             )
+            ->add(
+                'occasionalUse',
+                CheckboxType::class,
+                [
+                    'help' => 'user.group.help.occasional_use',
+                    'label' => 'user.group.occasional_use',
+                    'required' => false
+                ]
+            )
             //TODO Prohibit deletion of users from group, use move form instead
             //Use Form event listener to create an error message when a user tries to remove a user from group 
             //https://symfonycasts.com/screencast/symfony-forms/dynamic-form-events

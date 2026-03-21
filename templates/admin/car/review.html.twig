@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'car.review.title'|trans }} — {{ car.name }}{% endblock %}
+
+{% block content_body %}
+<div class="col-xl-8 mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>{{ 'car.review.title'|trans }}: {{ car.name }}</h4>
+        <a href="{{ path('app_car_show') }}" class="btn btn-outline-secondary btn-sm">
+            &larr; {{ 'car.review.back'|trans }}
+        </a>
+    </div>
+
+    <div class="alert alert-info">
+        {{ 'car.review.intro'|trans }}
+    </div>
+
+    {# ── Current balances ── #}
+    <h5 class="mt-4">{{ 'car.review.balances.title'|trans }}</h5>
+    <p class="text-muted small">{{ 'car.review.balances.info'|trans }}</p>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-secondary">
+                <tr>
+                    <th>{{ 'user.user'|trans }}</th>
+                    <th class="text-end">{{ 'money.balance'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in userBalances %}
+                <tr>
+                    <td>{{ entry.user.name }}</td>
+                    <td class="text-end fw-semibold {% if entry.balance > 0 %}text-success{% elseif entry.balance < 0 %}text-danger{% endif %}">
+                        {{ entry.balance|format_currency('EUR', locale='de') }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="table-secondary">
+                    <td><strong>{{ 'car.review.balances.total'|trans }}</strong></td>
+                    <td class="text-end fw-semibold {% if totalBalance > 0 %}text-success{% elseif totalBalance < 0 %}text-danger{% endif %}">
+                        {{ totalBalance|format_currency('EUR', locale='de') }}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    {# ── Payment proposals ── #}
+    <h5 class="mt-4">{{ 'car.review.payments.title'|trans }}</h5>
+    {% if paymentProposals is empty %}
+        <p class="text-muted">{{ 'car.review.payments.balanced'|trans }}</p>
+    {% else %}
+        <p class="text-muted small">{{ 'car.review.payments.info'|trans }}</p>
+        <ul class="list-group mb-3">
+            {% for proposal in paymentProposals %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>
+                    <strong>{{ proposal.from.name }}</strong>
+                    &rarr;
+                    <strong>{{ proposal.to.name }}</strong>
+                </span>
+                <span class="badge bg-primary rounded-pill fs-6">
+                    {{ proposal.amount|format_currency('EUR', locale='de') }}
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+        <p class="text-muted small">{{ 'car.review.payments.hint'|trans }}</p>
+    {% endif %}
+
+    {# ── Price per unit adjustment ── #}
+    <h5 class="mt-4">{{ 'car.review.price.title'|trans({'%unit%': car.milageUnit}) }}</h5>
+    <p class="text-muted small">
+        {{ 'car.review.price.actual'|trans({'%actual%': actualCostPerUnit|number_format(3, '.', ','), '%unit%': car.milageUnit}) }}
+    </p>
+    {% if priceAdjustment is not null %}
+        {% if priceAdjustment.direction == 'increase' %}
+        <div class="alert alert-warning">
+            {{ 'car.review.price.increase'|trans({'%percent%': priceAdjustment.adjustmentPercent|number_format(1, '.', ',')}) }}
+        </div>
+        {% else %}
+        <div class="alert alert-warning">
+            {{ 'car.review.price.decrease'|trans({'%percent%': priceAdjustment.adjustmentPercent|abs|number_format(1, '.', ',')}) }}
+        </div>
+        {% endif %}
+    {% else %}
+        <p class="text-muted">{{ 'car.review.price.balanced'|trans({'%unit%': car.milageUnit}) }}</p>
+    {% endif %}
+
+    {% if activeUserTypes is not empty %}
+        <p class="text-muted small">{{ 'car.review.price.current_rates'|trans }}</p>
+        <ul class="list-group">
+            {% for ut in activeUserTypes %}
+            {% set entry = priceAdjustment is not null ? priceAdjustment.userTypes|filter(e => e.userType.id == ut.id)|first : null %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ ut.name }}</span>
+                <span class="d-flex align-items-center gap-3">
+                    <span>
+                        {{ ut.pricePerUnit|number_format(2, '.', ',') }} €/{{ car.milageUnit }}
+                        {% if entry is not null %}
+                            &rarr;
+                            <strong>{{ entry.suggested|number_format(2, '.', ',') }} €/{{ car.milageUnit }}</strong>
+                        {% endif %}
+                    </span>
+                    {% if entry is not null %}
+                    <form method="post" action="{{ path('app_car_review_accept_price', {userType: ut.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('accept_price_' ~ ut.id) }}">
+                        <input type="hidden" name="suggested" value="{{ entry.suggested }}">
+                        <button type="submit" class="btn btn-outline-success btn-sm">{{ 'car.review.price.accept'|trans }}</button>
+                    </form>
+                    {% endif %}
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% if priceAdjustment is not null %}
+        <p class="mt-2 text-muted small">{{ 'car.review.price.edit_hint'|trans }}</p>
+        {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}

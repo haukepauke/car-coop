@@ -48,6 +48,9 @@ class UserType
     #[ORM\Column(type: 'boolean')]
     private $fixed = false;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $occasionalUse = false;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -186,6 +189,18 @@ class UserType
     public function setFixed(bool $fixed): self
     {
         $this->fixed = $fixed;
+
+        return $this;
+    }
+
+    public function isOccasionalUse(): bool
+    {
+        return $this->occasionalUse;
+    }
+
+    public function setOccasionalUse(bool $occasionalUse): self
+    {
+        $this->occasionalUse = $occasionalUse;
 
         return $this;
     }

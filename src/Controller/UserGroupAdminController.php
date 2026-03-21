@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\UserType;
 use App\Form\UserTypeFormType;
+use App\Message\Event\PricePerUnitChangedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserGroupAdminController extends AbstractController
@@ -46,9 +48,11 @@ class UserGroupAdminController extends AbstractController
     }
 
     #[Route('/admin/usergroup/edit/{usergroup}', name: 'app_usergroup_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, UserType $usergroup): Response
+    public function edit(EntityManagerInterface $em, Request $request, UserType $usergroup, MessageBusInterface $bus): Response
     {
-        $carObj = $usergroup->getCar();
+        $carObj   = $usergroup->getCar();
+        $oldPrice = $usergroup->getPricePerUnit();
+
         $form = $this->createForm(UserTypeFormType::class, $usergroup);
 
         $form->handleRequest($request);
@@ -62,6 +66,10 @@ class UserGroupAdminController extends AbstractController
             $em->persist($usergroup);
             $em->persist($carObj);
             $em->flush();
+
+            if ($usergroup->getPricePerUnit() !== $oldPrice) {
+                $bus->dispatch(new PricePerUnitChangedEvent($usergroup->getId(), $oldPrice, $usergroup->getPricePerUnit()));
+            }
 
             $this->addFlash('success', 'Usergroup updated!');
 

@@ -5,17 +5,20 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Entity\UserType;
 use App\Form\CarFormType;
+use App\Message\Event\PricePerUnitChangedEvent;
 use App\Repository\BookingRepository;
 use App\Repository\CarRepository;
 use App\Service\ActiveCarService;
 use App\Service\CarChartService;
 use App\Service\CarPdfExportService;
+use App\Service\CarReviewService;
 use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CarAdminController extends AbstractController
@@ -193,6 +196,36 @@ class CarAdminController extends AbstractController
             'Content-Type'        => 'application/pdf',
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
+    }
+
+    #[Route('/admin/car/review', name: 'app_car_review')]
+    public function review(ActiveCarService $activeCarService, CarReviewService $reviewService): Response
+    {
+        $car = $activeCarService->getActiveCar();
+
+        return $this->render('admin/car/review.html.twig', array_merge(
+            ['car' => $car],
+            $reviewService->buildReviewData($car),
+        ));
+    }
+
+    #[Route('/admin/car/review/accept-price/{userType}', name: 'app_car_review_accept_price', methods: ['POST'])]
+    public function acceptPrice(UserType $userType, Request $request, EntityManagerInterface $em, MessageBusInterface $bus): Response
+    {
+        if (!$this->isCsrfTokenValid('accept_price_' . $userType->getId(), $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        $suggested = (float) $request->request->get('suggested');
+        if ($suggested > 0) {
+            $oldPrice = $userType->getPricePerUnit();
+            $userType->setPricePerUnit($suggested);
+            $em->flush();
+            $bus->dispatch(new PricePerUnitChangedEvent($userType->getId(), $oldPrice, $suggested));
+            $this->addFlash('success', 'car.review.price.accepted');
+        }
+
+        return $this->redirectToRoute('app_car_review');
     }
 
     #[Route('/admin/car/delete', name: 'app_car_delete_confirm', methods: ['GET'])]

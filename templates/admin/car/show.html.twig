@@ -84,9 +84,14 @@
                         {# ── Car data ── #}
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0">{{ 'car.data'|trans }}</h5>
-                            <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary btn-sm">
-                                &#8659; {{ 'car.exportpdf.button'|trans }}
-                            </a>
+                            <div class="d-flex gap-2">
+                                <a href="{{ path('app_car_review') }}" class="btn btn-outline-primary btn-sm">
+                                    &#9881; {{ 'car.review.button'|trans }}
+                                </a>
+                                <a href="{{ path('app_car_export_pdf') }}" class="btn btn-outline-secondary btn-sm">
+                                    &#8659; {{ 'car.exportpdf.button'|trans }}
+                                </a>
+                            </div>
                         </div>
                         <div class="stat-grid">
                             <div class="stat-card">
