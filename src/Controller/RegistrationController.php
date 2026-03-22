@@ -19,6 +19,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -124,6 +125,8 @@ class RegistrationController extends AbstractController
         InvitationRepository $inviteRepo,
         CarRepository $carRepo,
         MessageBusInterface $messageBus,
+        UserAuthenticatorInterface $userAuthenticator,
+        \App\Security\LoginFormAuthenticator $authenticator,
         $hash
     ): Response {
         $invite = $inviteRepo->findOneByHash($hash);
@@ -140,7 +143,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $user->addUserType($userType);
         $user->setEmail($invite->getEmail());
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user, ['email_locked' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -160,6 +163,8 @@ class RegistrationController extends AbstractController
             $user->setColor('#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
             $user->setNotifiedOnEvents(true);
             $user->setNotifiedOnOwnEvents(false);
+            // invited users are trusted — mark as verified immediately
+            $user->setIsVerified(true);
 
             $carId = $car->getId();
 
@@ -169,20 +174,9 @@ class RegistrationController extends AbstractController
 
             $messageBus->dispatch(new InvitationAcceptedEvent($user->getId(), $carId));
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation(
-                'app_verify_email',
-                $user,
-                (new TemplatedEmail())
-                    ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-
-            $request->getSession()->set('check_email_address', $user->getEmail());
-
-            return $this->redirectToRoute('app_register_check_email');
+            // log the user in directly
+            return $userAuthenticator->authenticateUser($user, $authenticator, $request)
+                ?? $this->redirectToRoute('app_car_show');
         }
 
         $request->getSession()->set('registration_form_at', time());

@@ -24,6 +24,7 @@ class RegistrationFormType extends AbstractType
                 null,
                 [
                     'label' => 'email',
+                    'disabled' => $options['email_locked'],
                 ]
             )
             ->add(
@@ -88,6 +89,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'email_locked' => false,
         ]);
     }
 }
