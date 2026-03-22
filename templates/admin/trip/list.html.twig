@@ -2,19 +2,19 @@
 
 {% block content_body %}
 <div class="col-xl-12 mt-5">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h5 class="mb-0">{{ 'trips.logbook'|trans }}</h5>
+    <div class="d-flex align-items-center justify-content-between mb-3 page-header">
+        <h4 class="mb-0">{{ 'trips.logbook'|trans }}</h4>
         <div class="d-flex align-items-center gap-2">
             <button type="button" class="btn btn-outline-dark" onclick="location.href='{{ path('app_trip_new') }}';">{{ 'trips.add.new'|trans }} <span class="fa fa-plus-circle"></span></button>
             <form method="get" class="d-flex align-items-center gap-2">
-                <label for="userFilter" class="mb-0 text-nowrap">{{ 'filter.user'|trans }}</label>
+                <label for="userFilter" class="mb-0 text-nowrap d-none d-lg-inline">{{ 'filter.user'|trans }}</label>
                 <select name="user" id="userFilter" class="form-select form-select-sm" style="min-width: 10rem" onchange="this.form.submit()">
                     <option value="">{{ 'filter.all_users'|trans }}</option>
                     {% for u in carUsers %}
                         <option value="{{ u.id }}" {% if u.id == selectedUserId %}selected{% endif %}>{{ u.name }}</option>
                     {% endfor %}
                 </select>
-                <label for="yearFilter" class="mb-0 text-nowrap">{{ 'filter.year'|trans }}</label>
+                <label for="yearFilter" class="mb-0 text-nowrap d-none d-lg-inline">{{ 'filter.year'|trans }}</label>
                 <select name="year" id="yearFilter" class="form-select form-select-sm" style="min-width: 9rem" onchange="this.form.submit()">
                     <option value="">{{ 'filter.all_years'|trans }}</option>
                     {% for y in availableYears %}

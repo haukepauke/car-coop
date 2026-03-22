@@ -5,3 +5,22 @@ a {
 a:hover {
     color: #333;
 }
+
+@media (max-width: 991.98px) {
+    /* Toolbar title (month name) */
+    .fc .fc-toolbar-title {
+        font-size: 1rem;
+    }
+
+    /* Prev/next/today buttons */
+    .fc .fc-button {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* View-switch buttons (month/week/day) */
+    .fc .fc-button-group .fc-button {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.4rem;
+    }
+}

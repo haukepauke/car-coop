@@ -508,4 +508,30 @@ footer {
     .card-body {
         padding: 14px 16px;
     }
+
+    /* Page header rows: stack heading above controls on mobile */
+    .page-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.6rem;
+    }
+
+    /* Consistent heading sizes on mobile — applies everywhere, not just in page-header rows */
+    h4 { font-size: 1rem; }
+    h5 { font-size: 0.9rem; }
+
+    .page-header h4 { margin-bottom: 0; }
+    .page-header h5 { margin-bottom: 0; }
+
+    /* Allow inner control rows to wrap on mobile */
+    .page-header > div {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .page-header > div > form {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
 }

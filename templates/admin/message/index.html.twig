@@ -12,10 +12,10 @@
 
 {% block content_body %}
 <div class="col-12 mt-5">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h2 class="mb-0">{{ 'messageboard.title'|trans }} – {{ car.name }}</h2>
+    <div class="d-flex align-items-center justify-content-between mb-3 page-header">
+        <h4 class="mb-0">{{ 'messageboard.title'|trans }}</h4>
         <form method="get" class="d-flex align-items-center gap-2">
-            <label for="yearFilter" class="mb-0 text-nowrap">{{ 'filter.year'|trans }}</label>
+            <label for="yearFilter" class="mb-0 text-nowrap d-none d-lg-inline">{{ 'filter.year'|trans }}</label>
             <select name="year" id="yearFilter" class="form-select form-select-sm" style="min-width: 9rem" onchange="this.form.submit()">
                 <option value="">{{ 'filter.all_years'|trans }}</option>
                 {% for y in availableYears %}

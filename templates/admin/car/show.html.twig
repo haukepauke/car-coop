@@ -71,8 +71,8 @@
                             data-car-logo="{{ logoUrl }}"
                             data-activate-url="{{ path('app_car_activate', {id: carData.car.id}) }}">
                         <img src="{{ logoUrl }}" alt="" width="30" height="30" class="rounded-circle me-2">
-                        <strong>{{ carData.car.name }}</strong>
-                        {% if carData.car.licensePlate %}&nbsp;&middot;&nbsp;{{ carData.car.licensePlate }}{% endif %}
+                        <strong class="text-truncate" style="max-width: 45vw;">{{ carData.car.name }}</strong>
+                        {% if carData.car.licensePlate %}<span class="d-none d-sm-inline">&nbsp;&middot;&nbsp;{{ carData.car.licensePlate }}</span>{% endif %}
                     </button>
                 </h2>
                 <div id="collapse-{{ carId }}"
@@ -82,7 +82,7 @@
                     <div class="accordion-body">
 
                         {# ── Car data ── #}
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3 page-header">
                             <h5 class="mb-0">{{ 'car.data'|trans }}</h5>
                             <div class="d-flex gap-2">
                                 <a href="{{ path('app_car_review') }}" class="btn btn-outline-primary btn-sm">
@@ -179,16 +179,18 @@
                         </div>
                         {% endif %}
 
-                        {# ── Statistics ── #}
-                        <div class="row pt-4">
-                            <div class="col"><h5>{{ 'car.statistics'|trans }}</h5></div>
-                        </div>
-                        <div class="chart-grid">
-                            <div class="chart">
-                                {{ render_chart(carData.distanceChart) }}
+                        {# ── Statistics (hidden on mobile) ── #}
+                        <div class="statistics-section">
+                            <div class="row pt-4">
+                                <div class="col"><h5>{{ 'car.statistics'|trans }}</h5></div>
                             </div>
-                            <div class="chart">
-                                {{ render_chart(carData.balanceChart) }}
+                            <div class="chart-grid">
+                                <div class="chart">
+                                    {{ render_chart(carData.distanceChart) }}
+                                </div>
+                                <div class="chart">
+                                    {{ render_chart(carData.balanceChart) }}
+                                </div>
                             </div>
                         </div>
 

@@ -54,6 +54,10 @@
     max-width: 100%;
 }
 
+@media (max-width: 991.98px) {
+    .statistics-section { display: none; }
+}
+
 /* ── Tour banner ────────────────────────────────────────────────── */
 .tour-banner {
     display: flex;
