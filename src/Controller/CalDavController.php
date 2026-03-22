@@ -68,9 +68,18 @@ class CalDavController extends AbstractController
             $headers[$name] = implode(', ', $values);
         }
 
+        // Apache + PHP-FPM strips the Authorization header before PHP sees it.
+        // The .htaccess workaround stores it in $_SERVER as REDIRECT_HTTP_AUTHORIZATION.
+        if (!isset($headers['authorization'])) {
+            $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? null;
+            if ($auth) {
+                $headers['authorization'] = $auth;
+            }
+        }
+
         $sabreRequest = new SabreRequest(
             $request->getMethod(),
-            (string) $request->getUri(),
+            $request->getRequestUri(),  // path only — Sabre expects REQUEST_URI, not the full URL
             $headers,
             $body,
         );
