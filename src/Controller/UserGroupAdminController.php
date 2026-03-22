@@ -2,15 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\UserType;
 use App\Form\UserTypeFormType;
 use App\Message\Event\PricePerUnitChangedEvent;
+use App\Repository\UserRepository;
+use App\Repository\UserTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserGroupAdminController extends AbstractController
 {
@@ -28,9 +32,7 @@ class UserGroupAdminController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $usergroup = $form->getData();
-
-            $em->persist($usergroup);
+            $em->persist($form->getData());
             $em->flush();
 
             $this->addFlash('success', 'Usergroup created!');
@@ -50,6 +52,10 @@ class UserGroupAdminController extends AbstractController
     #[Route('/admin/usergroup/edit/{usergroup}', name: 'app_usergroup_edit')]
     public function edit(EntityManagerInterface $em, Request $request, UserType $usergroup, MessageBusInterface $bus): Response
     {
+        if (!$usergroup->isActive()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $carObj   = $usergroup->getCar();
         $oldPrice = $usergroup->getPricePerUnit();
 
@@ -57,14 +63,7 @@ class UserGroupAdminController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $usergroup = $form->getData();
-
-            // TODO:
-            // - if user is in another group for the same car, remove user from that group
-            // - if user has no group after update, abort with error message
-
-            $em->persist($usergroup);
-            $em->persist($carObj);
+            $em->persist($form->getData());
             $em->flush();
 
             if ($usergroup->getPricePerUnit() !== $oldPrice) {
@@ -76,16 +75,55 @@ class UserGroupAdminController extends AbstractController
             return $this->redirectToRoute('app_user_list', ['car' => $carObj->getId()]);
         }
 
+        $otherGroups = $carObj->getUserTypes()->filter(
+            fn(UserType $g) => $g->getId() !== $usergroup->getId() && $g->isActive()
+        );
+
         return $this->render(
             'admin/usergroup/edit.html.twig',
             [
                 'usergroupForm' => $form->createView(),
-                'car' => $carObj,
-                'usergroup' => $usergroup,
+                'car'           => $carObj,
+                'usergroup'     => $usergroup,
+                'otherGroups'   => $otherGroups,
             ]
         );
+    }
 
-        return $this->redirectToRoute('app_user_list', ['car' => $carObj->getId()]);
+    #[Route('/admin/usergroup/{usergroup}/move-user', name: 'app_usergroup_move_user', methods: ['POST'])]
+    public function moveUser(
+        Request $request,
+        UserType $usergroup,
+        UserRepository $userRepository,
+        UserTypeRepository $userTypeRepository,
+        EntityManagerInterface $em,
+        TranslatorInterface $translator,
+    ): Response {
+        $car = $usergroup->getCar();
+
+        if (!$this->isCsrfTokenValid('move_user_' . $usergroup->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', 'Invalid CSRF token.');
+
+            return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
+        }
+
+        $user        = $userRepository->find($request->request->get('user_id'));
+        $targetGroup = $userTypeRepository->find($request->request->get('target_group_id'));
+
+        if (!$user || !$targetGroup || $targetGroup->getCar() !== $car) {
+            $this->addFlash('error', 'Invalid request.');
+
+            return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
+        }
+
+        $user->removeUserType($usergroup);
+        $user->addUserType($targetGroup);
+
+        $em->flush();
+
+        $this->addFlash('success', $translator->trans('user.group.user_moved'));
+
+        return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
     }
 
     #[Route('/admin/usergroup/delete/{usergroup}', name: 'app_usergroup_delete')]

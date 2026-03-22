@@ -78,7 +78,7 @@ messageboard:
   toggle_sticky: Pin/unpin message
   delete: Delete message
   delete_confirm: Really delete this message?
-  attach_photos: Attach photos (optional)
+  attach_photos: Attach photos
   photo_hint: You can select multiple images. Maximum 4 MB per photo.
   photo: Photo
   photo_too_large: One or more photos exceed the maximum allowed size of 4 MB and were not uploaded.
@@ -167,12 +167,12 @@ car:
   form:
     help:
       name: Choose a nice name for the vehicle
-      licenseplate: What's on the license palte(optional)
-      make: The make of the vehicle (optional)
+      licenseplate: What's on the license plate
+      make: The make of the vehicle
       profile:
-        picture: Upload a picture in Jpeg, PNG oder GIF format (optional)
-      vendor: The vendor of the vehicle (optional)
-      fuelconsumption100: Average fuel consumption per 100 km/mi (optional)
+        picture: Upload a picture in JPEG, PNG or GIF format
+      vendor: The manufacturer of the vehicle
+      fuelconsumption100: Average fuel consumption per 100 km/mi
     licenseplate: License plate
     name: Name
     make: Make
@@ -352,10 +352,17 @@ user:
     admin: Admin
     occasional_use: Occasional use
     delete: Delete group
+    edit: Edit user group
+    save: Save user group
+    no_members: No members in this group.
+    move: Move to group
+    user_moved: Member moved to new group.
     help:
       name: Choose a good name for the group!
       admin: Are users of this group admins?
       occasional_use: Members of this group use the vehicle only occasionally (e.g. guests).
+    error:
+      orphaned_users: Cannot save — one or more members would be left without a group. Please assign them to another group first.
   groups: User group
   inactive: Inactive
   locale: Language
@@ -439,3 +446,5 @@ superadmin:
 yes: Yes
 cancel: Cancel
 confirm_delete_title: Confirm deletion
+form:
+  optional: optional

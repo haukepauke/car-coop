@@ -78,7 +78,7 @@ messageboard:
   toggle_sticky: Nachricht anpinnen/lösen
   delete: Nachricht löschen
   delete_confirm: Diese Nachricht wirklich löschen?
-  attach_photos: Fotos anhängen (optional)
+  attach_photos: Fotos anhängen
   photo_hint: Mehrere Bilder können ausgewählt werden. Maximale Dateigröße 4 MB pro Foto.
   photo: Foto
   photo_too_large: Ein oder mehrere Fotos überschreiten die maximale Dateigröße von 4 MB und wurden nicht hochgeladen.
@@ -167,12 +167,12 @@ car:
   form:
     help:
       name: Wähle einen guten Namen für Dein Fahrzeug
-      licenseplate: Was steht auf dem Nummernschild des Fahrzeugs (optional)
-      make: Die Modellbezeichnung des Fahrzeugs (optional)
+      licenseplate: Was steht auf dem Nummernschild des Fahrzeugs
+      make: Die Modellbezeichnung des Fahrzeugs
       profile:
-        picture: Bitte lade ein Bild im Jpeg, PNG oder GIF Format hoch (optional)
-      vendor: Der Hersteller des Fahrzeugs (optional)
-      fuelconsumption100: Durchschnittlicher Kraftstoffverbrauch pro 100 km/mi (optional)
+        picture: Bitte lade ein Bild im JPEG, PNG oder GIF Format hoch
+      vendor: Der Hersteller des Fahrzeugs
+      fuelconsumption100: Durchschnittlicher Kraftstoffverbrauch pro 100 km/mi
     licenseplate: Nummernschild
     name: Name
     make: Modellbezeichnung
@@ -352,10 +352,17 @@ user:
     admin: Administrator*in
     occasional_use: Gelegentliche Nutzung
     delete: Gruppe löschen
+    edit: Benutzergruppe bearbeiten
+    save: Benutzergruppe speichern
+    no_members: Keine Mitglieder in dieser Gruppe.
+    move: In Gruppe verschieben
+    user_moved: Mitglied in neue Gruppe verschoben.
     help:
       name: Wähle einen einprägsamen Namen für die Gruppe!
       admin: Sind User dieser Gruppe Administrato*innen?
       occasional_use: Mitglieder dieser Gruppe nutzen das Fahrzeug nur gelegentlich (z. B. Gäste).
+    error:
+      orphaned_users: Speichern nicht möglich — ein oder mehrere Mitglieder wären danach in keiner Gruppe mehr. Bitte weise sie zuerst einer anderen Gruppe zu.
   groups: Benutzungsgruppen
   inactive: Inaktiv
   locale: Sprache
@@ -439,3 +446,5 @@ superadmin:
 yes: Ja
 cancel: Abbrechen
 confirm_delete_title: Löschen bestätigen
+form:
+  optional: optional

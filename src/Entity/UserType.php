@@ -100,9 +100,9 @@ class UserType
 
     public function addUser(User $user): self
     {
-        
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
+            $user->addUserType($this);
         }
 
         return $this;
@@ -110,7 +110,9 @@ class UserType
 
     public function removeUser(User $user): self
     {
-        $this->users->removeElement($user);
+        if ($this->users->removeElement($user)) {
+            $user->removeUserType($this);
+        }
 
         return $this;
     }
@@ -204,29 +206,4 @@ class UserType
 
         return $this;
     }
-
-    // #[Assert\Callback()]
-    // public function validate(ExecutionContextInterface $context, $payload) {
-    //     //check if the user is in another group already
-    //     foreach($this->users as $user){
-    //         $groupCount = 0;
-    //         $otherGroup = '';
-    //         foreach($user->getUserTypes() as $type){
-    //             if($user->getCar() === $this->getCar()){
-    //                 $groupCount++;
-    //             }
-    //             if($type != $this){
-    //                 $otherGroup = $type->getName();
-    //             }
-    //         }
-    //         if($groupCount > 1){
-    //             $context->buildViolation('User ' . 
-    //                 $user->getEmail() . 
-    //                 ' can not be in more than one group. The user is also in the group "' . 
-    //                 $otherGroup . '"')
-    //                 ->atPath('user')
-    //                 ->addViolation();
-    //         }
-    //     }
-    //}
 }

@@ -33,7 +33,8 @@ class UserAdminController extends AbstractController
 
         $users = $userRepo->findByCar($car);
         $invites = $invitationRepo->findByCar($car);
-        $usergroups = $car->getUserTypes();
+        $usergroups = $car->getUserTypes()->toArray();
+        usort($usergroups, fn($a, $b) => $b->isActive() <=> $a->isActive());
 
         return $this->render(
             'admin/user/list.html.twig',

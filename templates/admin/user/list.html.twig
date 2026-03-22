@@ -132,7 +132,9 @@
                                 {% endfor %}
                             </td>
                             <td class="align-middle text-center">
-                            <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}' class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
+                            {% if usergroup.isActive() %}
+                                <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}' class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
+                            {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

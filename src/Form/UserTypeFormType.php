@@ -2,11 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use App\Entity\UserType;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -55,20 +51,6 @@ class UserTypeFormType extends AbstractType
                 [
                     'help' => 'user.group.help.occasional_use',
                     'label' => 'user.group.occasional_use',
-                    'required' => false
-                ]
-            )
-            //TODO Prohibit deletion of users from group, use move form instead
-            //Use Form event listener to create an error message when a user tries to remove a user from group 
-            //https://symfonycasts.com/screencast/symfony-forms/dynamic-form-events
-            ->add(
-                'users',
-                EntityType::class,
-                [
-                    'class' => User::class,
-                    'choices' => $car->getUsers(),
-                    'label' => 'user.users',
-                    'multiple' => true,
                     'required' => false
                 ]
             )

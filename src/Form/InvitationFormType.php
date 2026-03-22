@@ -30,6 +30,7 @@ class InvitationFormType extends AbstractType
                     'query_builder' => function (EntityRepository $er) use ($options) {
                         return $er->createQueryBuilder('ut')
                             ->andWhere('ut.car = :car')
+                            ->andWhere('ut.active = true')
                             ->setParameter('car', $options['car'])
                             ->orderBy('ut.id', 'ASC')
                             ->setMaxResults(10)

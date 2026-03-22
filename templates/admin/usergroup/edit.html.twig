@@ -2,15 +2,48 @@
 
 {% block content_body %}
 <div class="col-xl-6 mt-5">
-    <h4>Edit usergroup of {{ car.name }}</h4>
+    <h4>{{ 'user.group.edit'|trans }} – {{ car.name }}</h4>
 
-    {{ form_start(usergroupForm)}}
+    {{ form_start(usergroupForm) }}
         {{ form_widget(usergroupForm) }}
-
-        <button type="submit" class="btn btn-outline-dark my-3">Edit Usergroup</button>
-        {% if (usergroup.users|length == 0 and not usergroup.isFixed()) %}
-            <a href='{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}' class="btn btn-outline-danger my-3">{{ 'user.group.delete'|trans }} <i class="fas fa-trash text-danger"></i></a>
+        <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.group.save'|trans }}</button>
+        {% if usergroup.users|length == 0 and not usergroup.isFixed() %}
+            <a href="{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}" class="btn btn-outline-danger my-3">
+                {{ 'user.group.delete'|trans }} <i class="fas fa-trash text-danger"></i>
+            </a>
         {% endif %}
     {{ form_end(usergroupForm) }}
+
+    {# ── Members ─────────────────────────────────────────────────────────── #}
+    <h5 class="mt-4">{{ 'user.users'|trans }}</h5>
+    {% if usergroup.users|length == 0 %}
+        <p class="text-muted">{{ 'user.group.no_members'|trans }}</p>
+    {% else %}
+        <table class="table table-sm align-middle">
+            <tbody>
+            {% for member in usergroup.users %}
+            <tr>
+                <td>{{ member.name }}</td>
+                {% if otherGroups|length > 0 %}
+                <td>
+                    <form method="post" action="{{ path('app_usergroup_move_user', {usergroup: usergroup.id}) }}" class="d-flex gap-2 align-items-center justify-content-end">
+                        <input type="hidden" name="_token" value="{{ csrf_token('move_user_' ~ usergroup.id) }}">
+                        <input type="hidden" name="user_id" value="{{ member.id }}">
+                        <select name="target_group_id" class="form-select form-select-sm" style="max-width: 14rem;">
+                            {% for group in otherGroups %}
+                                <option value="{{ group.id }}">{{ group.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm text-nowrap">
+                            {{ 'user.group.move'|trans }}
+                        </button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 </div>
 {% endblock %}

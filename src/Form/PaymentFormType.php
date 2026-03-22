@@ -77,7 +77,7 @@ class PaymentFormType extends AbstractType
                     'label' => 'to',
                 ]
             )
-            ->add('comment')
+            ->add('comment', null, ['label' => 'comment'])
         ;
     }
 

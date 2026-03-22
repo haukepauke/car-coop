@@ -1,0 +1,13 @@
+{% use 'bootstrap_4_layout.html.twig' %}
+
+{% block form_label -%}
+    {% if label is not same as(false) %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) %}
+        {% if not required %}
+            {% set label = (label|default(name|humanize)|trans(label_translation_parameters, translation_domain)) ~ ' <span class="text-muted fw-normal small">(' ~ 'form.optional'|trans ~ ')</span>' %}
+            <label{% with {attr: label_attr} %}{{ block('attributes') }}{% endwith %}>{{ label|raw }}</label>
+        {% else %}
+            {{ parent() }}
+        {% endif %}
+    {% endif %}
+{%- endblock %}
