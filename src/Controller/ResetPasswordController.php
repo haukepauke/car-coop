@@ -30,6 +30,8 @@ class ResetPasswordController extends AbstractController
         private ResetPasswordHelperInterface $resetPasswordHelper,
         private EntityManagerInterface $entityManager,
         private LoggerInterface $logger,
+        private readonly string $mailerFromEmail,
+        private readonly string $mailerFromName,
     ) {
     }
 
@@ -178,7 +180,7 @@ class ResetPasswordController extends AbstractController
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address('webmaster@car-coop.net', 'Car Coop Mail Bot'))
+            ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
             ->to((string) $user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('reset_password/email.html.twig')

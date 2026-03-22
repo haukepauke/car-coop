@@ -177,7 +177,7 @@ car:
     name: Name
     make: Make
     profile:
-      picture: Profile pictre
+      picture: Profile picture
     vendor: Vendor
     mileageunit: Mileage unit
     fueltype: Fuel type
@@ -421,6 +421,13 @@ registration:
   form:
     headline: Registration
     no_account: Don't have an account yet?
+  check_email:
+    title: Check your inbox
+    message: "We've sent a verification link to %email%. Please click the link in the email to activate your account."
+    message_generic: "Please check your inbox and click the verification link to activate your account."
+    spam_hint: "Didn't receive anything? Check your spam folder."
+    resend: Resend verification email
+    login_link: Back to login
 remember:
   me: Remember me
 sharing:

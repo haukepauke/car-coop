@@ -26,8 +26,12 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier, private readonly LoggerInterface $logger)
-    {
+    public function __construct(
+        EmailVerifier $emailVerifier,
+        private readonly LoggerInterface $logger,
+        private readonly string $mailerFromEmail,
+        private readonly string $mailerFromName,
+    ) {
         $this->emailVerifier = $emailVerifier;
     }
 
@@ -94,13 +98,15 @@ class RegistrationController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('webmaster@car-coop.net', 'Car Coop Mail Bot'))
+                    ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            return $this->redirectToRoute('app_car_new');
+            $request->getSession()->set('check_email_address', $user->getEmail());
+
+            return $this->redirectToRoute('app_register_check_email');
         }
 
         $request->getSession()->set('registration_form_at', time());
@@ -168,13 +174,15 @@ class RegistrationController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('webmaster@car-coop.net', 'Car Coop Mail Bot'))
+                    ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            return $this->redirectToRoute('app_homepage');
+            $request->getSession()->set('check_email_address', $user->getEmail());
+
+            return $this->redirectToRoute('app_register_check_email');
         }
 
         $request->getSession()->set('registration_form_at', time());
@@ -183,6 +191,44 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
             'car' => $carObj,
         ]);
+    }
+
+    #[Route('/register/check-email', name: 'app_register_check_email')]
+    public function checkEmail(Request $request): Response
+    {
+        $email = $request->getSession()->get('check_email_address');
+
+        return $this->render('registration/check_email.html.twig', [
+            'email' => $email,
+        ]);
+    }
+
+    #[Route('/register/resend-verification', name: 'app_resend_verification', methods: ['POST'])]
+    public function resendVerification(Request $request, UserRepository $userRepository): Response
+    {
+        if (!$this->isCsrfTokenValid('resend_verification', $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $email = $request->request->get('email', '');
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if ($user && !$user->isVerified()) {
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
+                (new TemplatedEmail())
+                    ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+        }
+
+        // Always store email and redirect (don't reveal whether account exists)
+        $request->getSession()->set('check_email_address', $email);
+
+        return $this->redirectToRoute('app_register_check_email');
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]

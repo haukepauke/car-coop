@@ -1,36 +1,41 @@
-{% extends 'base.html.twig' %}
+{% extends 'blank.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}{{ 'log.forgot_password'|trans }}{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <p>&nbsp;</p>
-    <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                    <div class="card-body p-5 text-center">
-                        <h4>Reset your password</h4>
-                            {{ form_start(requestForm) }}
-                                {# Honeypot field: hidden from real users, bots fill it in #}
-                                <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;">
-                                    {{ form_row(requestForm.website) }}
-                                </div>
-                                {{ form_row(requestForm.email) }}
-                                <div>
-                                    <small>
-                                        Enter your email address, and we will send you a
-                                        link to reset your password.
-                                    </small>
-                                </div>
-                                <button class="btn btn-primary">Send password reset email</button>
-                            {{ form_end(requestForm) }}
-                    </div>
-                </div>
-            </div>
+<section class="vh-100" style="background-color: #ddd;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+
+            {% for flash_error in app.flashes('reset_password_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+
+            <img class="rounded-circle mb-3" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="100" width="100">
+            <h3 class="mb-4">Car Coop</h3>
+            <h4 class="mb-3">{{ 'log.forgot_password'|trans }}</h4>
+
+            {{ form_start(requestForm) }}
+              {# Honeypot field: hidden from real users, bots fill it in #}
+              <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;">
+                  {{ form_row(requestForm.website) }}
+              </div>
+              <div class="form-outline mb-2 text-start">
+                  {{ form_row(requestForm.email) }}
+              </div>
+              <p class="text-muted small mb-4">Enter your email address and we will send you a link to reset your password.</p>
+              <button class="btn btn-dark btn-lg btn-block w-100">Send password reset email</button>
+            {{ form_end(requestForm) }}
+
+            <a href="{{ path('app_login') }}" class="text-muted small mt-3 d-block">{{ 'registration.check_email.login_link'|trans }}</a>
+
+          </div>
         </div>
+      </div>
     </div>
-    <p>&nbsp;</p>
+  </div>
+</section>
 {% endblock %}

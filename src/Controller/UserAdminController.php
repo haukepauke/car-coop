@@ -26,6 +26,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserAdminController extends AbstractController
 {
+    public function __construct(
+        private readonly string $mailerFromEmail,
+        private readonly string $mailerFromName,
+    ) {
+    }
+
     #[Route('/admin/user/list', name: 'app_user_list')]
     public function list(UserRepository $userRepo, InvitationRepository $invitationRepo, ActiveCarService $activeCarService): Response
     {
@@ -78,7 +84,7 @@ class UserAdminController extends AbstractController
 
             $mailer->send(
                 (new TemplatedEmail())
-                    ->from(new Address('webmaster@car-coop.net', 'Car Coop Mail Bot'))
+                    ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
                     ->to($invitation->getEmail())
                     ->subject('You have been invited to join car sharing with Car Coop!')
                     ->htmlTemplate(
