@@ -20,6 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CalDavController extends AbstractController
 {
+    #[Route('/.well-known/caldav', name: 'app_caldav_wellknown')]
+    public function wellKnown(): Response
+    {
+        return $this->redirect('/caldav/', 301);
+    }
+
     #[Route(
         '/caldav/{path}',
         name: 'app_caldav',

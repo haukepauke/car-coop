@@ -19,7 +19,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         caldav:
-            pattern: ^/caldav
+            pattern: ^/(caldav|\.well-known/caldav)
             security: false
         api:
             pattern: ^/api
