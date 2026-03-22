@@ -94,18 +94,24 @@
                             </div>
                         </div>
                         <div class="stat-grid">
+                            {% if carData.car.licensePlate %}
                             <div class="stat-card">
                                 <span class="stat-card__label">{{ 'car.form.licenseplate'|trans }}</span>
-                                <span class="stat-card__value">{{ carData.car.licensePlate ?: '—' }}</span>
+                                <span class="stat-card__value">{{ carData.car.licensePlate }}</span>
                             </div>
+                            {% endif %}
+                            {% if carData.car.vendor %}
                             <div class="stat-card">
                                 <span class="stat-card__label">{{ 'car.form.vendor'|trans }}</span>
-                                <span class="stat-card__value">{{ carData.car.vendor ?: '—' }}</span>
+                                <span class="stat-card__value">{{ carData.car.vendor }}</span>
                             </div>
+                            {% endif %}
+                            {% if carData.car.make %}
                             <div class="stat-card">
                                 <span class="stat-card__label">{{ 'car.form.make'|trans }}</span>
-                                <span class="stat-card__value">{{ carData.car.make ?: '—' }}</span>
+                                <span class="stat-card__value">{{ carData.car.make }}</span>
                             </div>
+                            {% endif %}
                             <div class="stat-card">
                                 <span class="stat-card__label">{{ 'car.mileage'|trans }}</span>
                                 <span class="stat-card__value">{{ carData.car.mileage }} {{ carData.car.milageUnit }}</span>

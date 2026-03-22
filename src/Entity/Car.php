@@ -114,7 +114,7 @@ class Car
         return $this->licensePlate;
     }
 
-    public function setLicensePlate(string $licensePlate): self
+    public function setLicensePlate(?string $licensePlate): self
     {
         $this->licensePlate = $licensePlate;
 
@@ -138,7 +138,7 @@ class Car
         return $this->make;
     }
 
-    public function setMake(string $make): self
+    public function setMake(?string $make): self
     {
         $this->make = $make;
 
@@ -150,7 +150,7 @@ class Car
         return $this->vendor;
     }
 
-    public function setVendor(string $vendor): self
+    public function setVendor(?string $vendor): self
     {
         $this->vendor = $vendor;
 
