@@ -3,7 +3,7 @@
 {% block content_body %}
 <div class="col-xl-8 mt-5">
     <div class="d-flex align-items-center justify-content-between mb-3 page-header">
-        <h4 class="mb-0">{{ 'booking.calendar'| trans }}</h4>
+        <h4 class="mb-0">{{ 'booking.calendar'|trans }}</h4>
         <button type="button" class="btn btn-outline-dark"
             onclick="location.href='{{ path('app_booking_new') }}';">{{ 'booking.new'|trans }} <span
                 class="fa fa-plus-circle"></span></button>
@@ -11,7 +11,34 @@
     <div>
         <div id="calendar-holder" data-events-url="{{ path('fc_load_events') }}"></div>
     </div>
+
+    {# CalDAV subscription info #}
+    {% set caldavUrl = app.request.schemeAndHttpHost ~ '/caldav/calendars/' ~ (user.email|url_encode) ~ '/car-' ~ car.id ~ '/' %}
+    <div class="card mt-4">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <span><i class="fa-solid fa-calendar-plus me-2"></i>{{ 'booking.caldav.title'|trans }}</span>
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary js-copy-caldav"
+                    data-url="{{ caldavUrl }}"
+                    title="{{ 'booking.caldav.copy'|trans }}">
+                <i class="fa-regular fa-copy me-1"></i>{{ 'booking.caldav.copy'|trans }}
+            </button>
+        </div>
+        <div class="card-body">
+            <p class="text-muted small mb-2">{{ 'booking.caldav.description'|trans }}</p>
+            <label class="form-label small fw-semibold mb-1">{{ 'booking.caldav.url_label'|trans }}</label>
+            <div class="input-group">
+                <input type="text" class="form-control form-control-sm font-monospace" id="caldav-url"
+                       value="{{ caldavUrl }}" readonly>
+                <button class="btn btn-outline-secondary btn-sm js-copy-caldav" type="button"
+                        data-url="{{ caldavUrl }}">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+<div id="caldav-i18n" data-copied="{{ 'booking.caldav.copied'|trans }}" hidden></div>
 {% endblock %}
 
 
@@ -21,4 +48,24 @@
 
 {% block javascripts %}
 {% block importmap %}{{ importmap(['app', 'calendar']) }}{% endblock %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var copiedLabel = document.getElementById('caldav-i18n').dataset.copied;
+    document.querySelectorAll('.js-copy-caldav').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = document.getElementById('caldav-url');
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value);
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check me-1"></i>' + copiedLabel;
+            btn.classList.replace('btn-outline-secondary', 'btn-success');
+            setTimeout(function () {
+                btn.innerHTML = original;
+                btn.classList.replace('btn-success', 'btn-outline-secondary');
+            }, 2000);
+        });
+    });
+});
+</script>
 {% endblock %}

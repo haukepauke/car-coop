@@ -106,6 +106,12 @@ banktransfer: Überweisung
 booking:
   bookings: Buchungen
   new: Neue Buchung
+  caldav:
+    title: Kalender abonnieren
+    description: "Füge diesen Kalender in deiner Kalender-App (Apple Calendar, Thunderbird, etc.) hinzu, um Buchungen zu sehen und direkt von deinem Gerät neue zu erstellen."
+    url_label: Deine persönliche Kalender-URL
+    copy: Link kopieren
+    copied: Kopiert!
   add: 
     for: Buchung hinzufügen für
   create: Buchung erstellen

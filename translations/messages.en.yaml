@@ -106,6 +106,12 @@ banktransfer: Bank transfer
 booking:
   bookings: Bookings
   new: New Booking
+  caldav:
+    title: Subscribe to calendar
+    description: "Add this calendar to your calendar app (Apple Calendar, Thunderbird, etc.) to see bookings and create new ones directly from your device."
+    url_label: Your personal calendar URL
+    copy: Copy link
+    copied: Copied!
   add: 
     for: Add booking for
   create: Create Booking
