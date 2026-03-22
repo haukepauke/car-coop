@@ -60,12 +60,11 @@ class CarAdminController extends AbstractController
             return $this->redirectToRoute('app_car_show');
         }
 
+        $isFirstCar = $this->getUser()->getUserTypes()->isEmpty();
+
         return $this->render(
-            'admin/car/new.html.twig',
-            [
-                'carForm' => $form->createView(),
-                'isFirstCar' => $this->getUser()->getUserTypes()->isEmpty(),
-            ]
+            $isFirstCar ? 'admin/car/new_first.html.twig' : 'admin/car/new.html.twig',
+            ['carForm' => $form->createView()],
         );
     }
 

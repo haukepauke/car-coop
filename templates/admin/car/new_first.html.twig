@@ -1,0 +1,31 @@
+{% extends 'blank.html.twig' %}
+
+{% block title %}{{ 'car.add'|trans }}{% endblock %}
+
+{% block body %}
+<section style="background-color: #ddd; min-height: 100vh; padding: 1.5rem 0;">
+  <div class="container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-4 text-center">
+
+            {% include 'auth/_header.html.twig' %}
+            <h4 class="mb-3">{{ 'car.add'|trans }}</h4>
+
+            <div class="alert alert-info text-start mb-3">
+                {{ 'car.new.intro'|trans }}
+            </div>
+
+            {{ form_start(carForm) }}
+            {{ form_widget(carForm) }}
+            <button type="submit" class="btn btn-dark btn-lg btn-block w-100 mt-2">{{ 'car.create'|trans }}</button>
+            {{ form_end(carForm) }}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
