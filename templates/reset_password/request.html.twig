@@ -8,14 +8,13 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
-          <div class="card-body p-5 text-center">
+          <div class="card-body p-4 text-center">
 
             {% for flash_error in app.flashes('reset_password_error') %}
                 <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
             {% endfor %}
 
-            <img class="rounded-circle mb-3" src="{{ asset('/build/static/default-car.png')|imagine_filter('profile_thumb') }}" height="100" width="100">
-            <h3 class="mb-4">Car Coop</h3>
+            {% include 'auth/_header.html.twig' %}
             <h4 class="mb-3">{{ 'log.forgot_password'|trans }}</h4>
 
             {{ form_start(requestForm) }}
@@ -26,7 +25,7 @@
               <div class="form-outline mb-2 text-start">
                   {{ form_row(requestForm.email) }}
               </div>
-              <p class="text-muted small mb-4">Enter your email address and we will send you a link to reset your password.</p>
+              <p class="text-muted small mb-3">Enter your email address and we will send you a link to reset your password.</p>
               <button class="btn btn-dark btn-lg btn-block w-100">Send password reset email</button>
             {{ form_end(requestForm) }}
 

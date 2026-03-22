@@ -421,6 +421,7 @@ registration:
   form:
     headline: Registrierung
     no_account: Noch kein Konto?
+    have_account: Bereits ein Konto?
   check_email:
     title: Posteingang überprüfen
     message: "Wir haben einen Bestätigungslink an %email% gesendet. Bitte klicke auf den Link in der E-Mail, um dein Konto zu aktivieren."

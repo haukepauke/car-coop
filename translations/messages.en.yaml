@@ -421,6 +421,7 @@ registration:
   form:
     headline: Registration
     no_account: Don't have an account yet?
+    have_account: Already have an account?
   check_email:
     title: Check your inbox
     message: "We've sent a verification link to %email%. Please click the link in the email to activate your account."
