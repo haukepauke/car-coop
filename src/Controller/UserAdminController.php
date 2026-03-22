@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Invitation;
 use App\Entity\User;
+use App\Form\InvitationEntryType;
 use App\Form\InvitationFormType;
 use App\Form\UserFormType;
 use App\Message\Event\InvitationCreatedEvent;
@@ -22,7 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserAdminController extends AbstractController
 {
@@ -55,62 +58,98 @@ class UserAdminController extends AbstractController
         return $this->redirectToRoute('app_car_list');
     }
 
+    #[Route('/admin/user/invite/onboarding', name: 'app_user_invite_onboarding')]
+    public function inviteOnboarding(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo): Response
+    {
+        return $this->handleInviteRequest($em, $request, $mailer, $activeCarService, $messageBus, $translator, $invitationRepo, 'admin/user/invite_onboarding.html.twig', 'app_car_show');
+    }
+
     #[Route('/admin/user/invite', name: 'app_user_invite')]
-    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus): Response
+    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo): Response
+    {
+        return $this->handleInviteRequest($em, $request, $mailer, $activeCarService, $messageBus, $translator, $invitationRepo, 'admin/user/invite.html.twig', 'app_user_list');
+    }
+
+    private function handleInviteRequest(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo, string $template, string $successRoute): Response
     {
         $car = $activeCarService->getActiveCar();
-
-        $invitation = new Invitation();
-        $invitation->setCreatedBy($this->getUser());
-        $invitation->setStatus('new');
-        $invitation->setHash(bin2hex(random_bytes(80)));
-        $invitation->setCreatedAt(new DateTimeImmutable());
-
-        $form = $this->createForm(
-            InvitationFormType::class,
-            $invitation,
-            ['car' => $car]
-        );
-
+        /** @var \App\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+        $form = $this->buildInviteForm($car, $currentUser);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $invitation = $form->getData();
 
-            // TODO Check if email address already exists in user table
-            // TODO Check if email address already has invites
+        if ($form->isSubmitted() && $form->isValid()) {
+            ['sent' => $sent, 'skipped' => $skipped] = $this->processInviteEntries(
+                $form->getData()['entries'], $car, $currentUser, $em, $mailer, $messageBus, $invitationRepo, $translator
+            );
+
+            if ($sent) {
+                $this->addFlash('success', $translator->trans('invitation.sent', ['%emails%' => implode(', ', $sent)]));
+            }
+            if ($skipped) {
+                $this->addFlash('warning', $translator->trans('invitation.already_pending', ['%emails%' => implode(', ', $skipped)]));
+            }
+
+            return $this->redirectToRoute($successRoute);
+        }
+
+        return $this->render($template, [
+            'invitationForm' => $form->createView(),
+            'car'            => $car,
+        ]);
+    }
+
+    private function buildInviteForm(\App\Entity\Car $car, User $currentUser): \Symfony\Component\Form\FormInterface
+    {
+        return $this->createFormBuilder(['entries' => [[]]])
+            ->add('entries', CollectionType::class, [
+                'entry_type'    => InvitationEntryType::class,
+                'entry_options' => ['car' => $car, 'default_locale' => $currentUser->getLocale() ?? 'en'],
+                'allow_add'     => true,
+                'prototype'     => true,
+                'label'         => false,
+            ])
+            ->getForm();
+    }
+
+    private function processInviteEntries(array $entries, \App\Entity\Car $car, User $currentUser, EntityManagerInterface $em, MailerInterface $mailer, MessageBusInterface $messageBus, InvitationRepository $invitationRepo, TranslatorInterface $translator): array
+    {
+        $sent = [];
+        $skipped = [];
+
+        foreach ($entries as $entry) {
+            if ($invitationRepo->hasPendingForEmailAndCar($entry['email'], $car)) {
+                $skipped[] = $entry['email'];
+                continue;
+            }
+
+            $invitation = new Invitation();
+            $invitation->setCreatedBy($currentUser);
+            $invitation->setStatus('new');
+            $invitation->setHash(bin2hex(random_bytes(80)));
+            $invitation->setCreatedAt(new DateTimeImmutable());
+            $invitation->setEmail($entry['email']);
+            $invitation->setUserType($entry['userType']);
 
             $em->persist($invitation);
             $em->flush();
 
+            $locale = $entry['locale'] ?? 'en';
             $mailer->send(
                 (new TemplatedEmail())
+                    ->locale($locale)
                     ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
                     ->to($invitation->getEmail())
-                    ->subject('You have been invited to join car sharing with Car Coop!')
-                    ->htmlTemplate(
-                        'admin/user/email/invite.html.twig'
-                    )
-                    ->context(
-                        [
-                            'invitation' => $invitation,
-                            'car' => $car,
-                        ]
-                    )
+                    ->subject($translator->trans('invitation.email.subject', [], 'messages', $locale))
+                    ->htmlTemplate('admin/user/email/invite.html.twig')
+                    ->context(['invitation' => $invitation, 'car' => $car, 'inviter' => $currentUser])
             );
 
             $messageBus->dispatch(new InvitationCreatedEvent($invitation->getId()));
-            $this->addFlash('success', 'Invitation created!');
-
-            return $this->redirectToRoute('app_user_list', ['car' => $car->getId()]);
+            $sent[] = $invitation->getEmail();
         }
 
-        return $this->render(
-            'admin/user/invite.html.twig',
-            [
-                'invitationForm' => $form->createView(),
-                'car' => $car,
-            ]
-        );
+        return ['sent' => $sent, 'skipped' => $skipped];
     }
 
     #[Route('/admin/user/edit', name: 'app_user_edit')]
@@ -215,7 +254,9 @@ class UserAdminController extends AbstractController
     ): Response {
         $activeCar = $activeCarService->getActiveCar();
         // Do not allow to delete users of other cars and do not allow to delete yourself
-        if ($activeCar !== $user->getCar() || $this->getUser()->getId() === $user->getId()) {
+        /** @var \App\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+        if ($activeCar !== $user->getCar() || $currentUser->getId() === $user->getId()) {
             $this->addFlash('error', 'You are not allowed to delete this user.');
         }
 

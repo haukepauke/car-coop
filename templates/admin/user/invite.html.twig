@@ -1,13 +1,108 @@
 {% extends 'base.html.twig' %}
 
+{% set activeGroups = car.userTypes|filter(ut => ut.active) %}
+{% set singleGroup = activeGroups|length == 1 %}
+
 {% block content_body %}
 <div class="col-xl-6 mt-5">
     <h4>{{ 'invitation.invite'|trans }}</h4>
 
-    {{ form_start(invitationForm)}}
-        {{ form_widget(invitationForm) }}
+    {{ form_start(invitationForm) }}
 
-        <button type="submit" class="btn btn-outline-dark my-3">{{ 'invitation.invite'|trans }}</button>
+    <div id="invite-entries"
+         data-prototype="{{ form_widget(invitationForm.entries.vars.prototype)|e('html_attr') }}"
+         data-single-group="{{ singleGroup ? '1' : '0' }}">
+      {% for entry in invitationForm.entries %}
+      <div class="invite-entry border rounded p-3 mb-2">
+        <div class="mb-2">
+          {{ form_label(entry.email) }}
+          {{ form_widget(entry.email, {'attr': {'class': 'form-control'}}) }}
+          {{ form_errors(entry.email) }}
+        </div>
+        {% if not singleGroup %}
+        <div class="mb-1">
+          {{ form_label(entry.userType) }}
+          {{ form_widget(entry.userType, {'attr': {'class': 'form-select'}}) }}
+          {{ form_errors(entry.userType) }}
+        </div>
+        {% else %}
+        <div hidden>{{ form_widget(entry.userType) }}</div>
+        {% endif %}
+        <div class="mb-1">
+          {{ form_label(entry.locale) }}
+          {{ form_widget(entry.locale, {'attr': {'class': 'form-select form-select-sm'}}) }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <button type="button" id="add-invite-entry" class="btn btn-outline-secondary w-100 mb-3">
+        <i class="fa-solid fa-plus me-1"></i>{{ 'invitation.invite_another'|trans }}
+    </button>
+
+    <button type="submit" class="btn btn-outline-dark">{{ 'invitation.invite'|trans }}</button>
+
     {{ form_end(invitationForm) }}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var container = document.getElementById('invite-entries');
+    var singleGroup = container.dataset.singleGroup === '1';
+    var index = container.querySelectorAll('.invite-entry').length;
+
+    document.getElementById('add-invite-entry').addEventListener('click', function () {
+        var prototype = container.dataset.prototype;
+        var html = prototype.replace(/__name__/g, index);
+
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+
+        var entry = document.createElement('div');
+        entry.className = 'invite-entry border rounded p-3 mb-2';
+
+        var emailDiv = document.createElement('div');
+        emailDiv.className = 'mb-2';
+        var emailLabel = wrapper.querySelector('label');
+        var emailInput = wrapper.querySelector('input[type="email"], input[type="text"]');
+        if (emailInput) { emailInput.className = 'form-control'; }
+        if (emailLabel) emailDiv.appendChild(emailLabel);
+        if (emailInput) emailDiv.appendChild(emailInput);
+        entry.appendChild(emailDiv);
+
+        var selects = wrapper.querySelectorAll('select');
+        var labels = wrapper.querySelectorAll('label');
+        var userTypeSelect = selects[0];
+        var localeSelect = selects[1];
+
+        if (userTypeSelect && !singleGroup) {
+            var typeDiv = document.createElement('div');
+            typeDiv.className = 'mb-1';
+            userTypeSelect.className = 'form-select';
+            if (labels[1]) typeDiv.appendChild(labels[1]);
+            typeDiv.appendChild(userTypeSelect);
+            entry.appendChild(typeDiv);
+        } else if (userTypeSelect) {
+            userTypeSelect.style.display = 'none';
+            entry.appendChild(userTypeSelect);
+        }
+
+        if (localeSelect) {
+            var localeDiv = document.createElement('div');
+            localeDiv.className = 'mb-1';
+            localeSelect.className = 'form-select form-select-sm';
+            var localeLabel = singleGroup ? labels[1] : labels[2];
+            if (localeLabel) localeDiv.appendChild(localeLabel);
+            localeDiv.appendChild(localeSelect);
+            entry.appendChild(localeDiv);
+        }
+
+        container.appendChild(entry);
+        index++;
+    });
+});
+</script>
 {% endblock %}

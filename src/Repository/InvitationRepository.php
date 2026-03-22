@@ -60,6 +60,21 @@ class InvitationRepository extends ServiceEntityRepository
         ;
     }
 
+    public function hasPendingForEmailAndCar(string $email, $car): bool
+    {
+        return (int) $this->createQueryBuilder('i')
+            ->select('COUNT(i.id)')
+            ->join('i.userType', 'ut')
+            ->andWhere('i.email = :email')
+            ->andWhere('ut.car = :car')
+            ->andWhere('i.status = :status')
+            ->setParameter('email', $email)
+            ->setParameter('car', $car)
+            ->setParameter('status', 'new')
+            ->getQuery()
+            ->getSingleScalarResult() > 0;
+    }
+
     public function findOneByHash($hash)
     {
         return $this->createQueryBuilder('i')

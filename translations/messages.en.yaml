@@ -127,8 +127,9 @@ booking:
   update: Update Booking
 car:
   add: Add vehicle
+  created: Vehicle created successfully.
   new:
-    intro: "Welcome! Start by adding your vehicle below. Once it's set up, you can invite other members to share it via Administration → Manage users."
+    intro: "Welcome! Start by adding your vehicle below. Once it's set up, you can invite other members to share it."
   delete:
     button: Delete vehicle
     confirm:
@@ -294,11 +295,28 @@ from: from
 fuel: Fuel
 invitation:
   invite: Invite user
+  invite_another: Add another member
+  sent: "Invitations sent to: %emails%"
+  already_pending: "Skipped — invitation already pending for: %emails%"
+  email:
+    language: Email language
+    subject: "You have been invited to join car sharing with Car Coop!"
+    greeting: "Hi! You have been invited by %inviter% (%inviter_email%) to join car sharing for %car% at Car Coop!"
+    description: "Car Coop is a non-profit car sharing platform that allows you to share a car with friends, colleagues or comrades. It helps you manage bookings and keep track of running costs."
+    register: "Please click the following link to register:"
+    register_link: Register for Car Coop
+    cheers: Cheers!
   for: Create invitation for
   status: Invitation status
   invited:
     by: Invited by
   pending: Pending invitations
+  onboarding:
+    title: Invite Members
+    description: "Your vehicle has been set up! Invite other members to share it. You can skip this step and invite members later via Administration → Manage users."
+    submit: Send invitations
+    invite_another: Add another member
+    skip: Skip for now
 log:
   in: Log in
   forgot_password: Reset password

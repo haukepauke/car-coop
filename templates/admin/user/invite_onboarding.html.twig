@@ -1,0 +1,140 @@
+{% extends 'blank.html.twig' %}
+
+{% block title %}{{ 'invitation.onboarding.title'|trans }}{% endblock %}
+
+{% set activeGroups = car.userTypes|filter(ut => ut.active) %}
+{% set singleGroup = activeGroups|length == 1 %}
+
+{% block body %}
+<section style="background-color: #ddd; min-height: 100vh; padding: 1.5rem 0;">
+  <div class="container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning">{{ message }}</div>
+        {% endfor %}
+
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-4 text-center">
+
+            {% include 'auth/_header.html.twig' %}
+            <h4 class="mb-3">{{ 'invitation.onboarding.title'|trans }}</h4>
+
+            <p class="text-muted small text-start mb-3">{{ 'invitation.onboarding.description'|trans }}</p>
+
+            {{ form_start(invitationForm) }}
+
+            <div id="invite-entries"
+                 data-prototype="{{ form_widget(invitationForm.entries.vars.prototype)|e('html_attr') }}"
+                 data-single-group="{{ singleGroup ? '1' : '0' }}">
+              {% for entry in invitationForm.entries %}
+              <div class="invite-entry border rounded p-3 mb-2 text-start">
+                <div class="mb-2">
+                  {{ form_label(entry.email) }}
+                  {{ form_widget(entry.email, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(entry.email) }}
+                </div>
+                {% if not singleGroup %}
+                <div class="mb-1">
+                  {{ form_label(entry.userType) }}
+                  {{ form_widget(entry.userType, {'attr': {'class': 'form-select'}}) }}
+                  {{ form_errors(entry.userType) }}
+                </div>
+                {% else %}
+                <div hidden>{{ form_widget(entry.userType) }}</div>
+                {% endif %}
+                <div class="mb-1">
+                  {{ form_label(entry.locale) }}
+                  {{ form_widget(entry.locale, {'attr': {'class': 'form-select form-select-sm'}}) }}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+            <button type="button" id="add-invite-entry" class="btn btn-outline-secondary w-100 mb-3">
+              <i class="fa-solid fa-plus me-1"></i>{{ 'invitation.onboarding.invite_another'|trans }}
+            </button>
+
+            <button type="submit" class="btn btn-dark btn-lg btn-block w-100">{{ 'invitation.onboarding.submit'|trans }}</button>
+            {{ form_end(invitationForm) }}
+
+          </div>
+        </div>
+
+        <div class="text-center mt-3">
+          <a href="{{ path('app_car_show') }}">{{ 'invitation.onboarding.skip'|trans }}</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+{% block importmap %}{{ importmap('app') }}{% endblock %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var container = document.getElementById('invite-entries');
+    var singleGroup = container.dataset.singleGroup === '1';
+    var index = container.querySelectorAll('.invite-entry').length;
+
+    document.getElementById('add-invite-entry').addEventListener('click', function () {
+        var prototype = container.dataset.prototype;
+        var html = prototype.replace(/__name__/g, index);
+
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+
+        var entry = document.createElement('div');
+        entry.className = 'invite-entry border rounded p-3 mb-2 text-start';
+
+        // Email field
+        var emailDiv = document.createElement('div');
+        emailDiv.className = 'mb-2';
+        var emailLabel = wrapper.querySelector('label');
+        var emailInput = wrapper.querySelector('input[type="email"], input[type="text"]');
+        if (emailInput) { emailInput.className = 'form-control'; }
+        if (emailLabel) emailDiv.appendChild(emailLabel);
+        if (emailInput) emailDiv.appendChild(emailInput);
+        entry.appendChild(emailDiv);
+
+        // UserType field — hide if single group
+        var selects = wrapper.querySelectorAll('select');
+        var labels = wrapper.querySelectorAll('label');
+        var userTypeSelect = selects[0];
+        var localeSelect = selects[1];
+
+        if (userTypeSelect && !singleGroup) {
+            var typeDiv = document.createElement('div');
+            typeDiv.className = 'mb-1';
+            userTypeSelect.className = 'form-select';
+            if (labels[1]) typeDiv.appendChild(labels[1]);
+            typeDiv.appendChild(userTypeSelect);
+            entry.appendChild(typeDiv);
+        } else if (userTypeSelect) {
+            userTypeSelect.style.display = 'none';
+            entry.appendChild(userTypeSelect);
+        }
+
+        // Locale field
+        if (localeSelect) {
+            var localeDiv = document.createElement('div');
+            localeDiv.className = 'mb-1';
+            localeSelect.className = 'form-select form-select-sm';
+            var localeLabel = singleGroup ? labels[1] : labels[2];
+            if (localeLabel) localeDiv.appendChild(localeLabel);
+            localeDiv.appendChild(localeSelect);
+            entry.appendChild(localeDiv);
+        }
+
+        container.appendChild(entry);
+        index++;
+    });
+});
+</script>
+{% endblock %}

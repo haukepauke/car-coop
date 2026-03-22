@@ -127,8 +127,9 @@ booking:
   update: Buchung aktualisieren
 car:
   add: Fahrzeug hinzufügen
+  created: Fahrzeug erfolgreich erstellt.
   new:
-    intro: "Willkommen! Füge zunächst dein Fahrzeug ein. Anschließend kannst du andere Mitglieder über Administration → Benutzer verwalten einladen."
+    intro: "Willkommen! Füge zunächst dein Fahrzeug ein. Im nächsten Schritt kannst du andere Mitglieder einladen."
   delete:
     button: Fahrzeug löschen
     confirm:
@@ -293,12 +294,29 @@ fixed: Steht fest
 from: von
 fuel: Sprit
 invitation:
-  invite: Benuter*in einladen
+  invite: Benutzer*in einladen
+  invite_another: Weitere Person hinzufügen
+  sent: "Einladungen gesendet an: %emails%"
+  already_pending: "Übersprungen — Einladung bereits ausstehend für: %emails%"
+  email:
+    language: E-Mail-Sprache
+    subject: "Du wurdest eingeladen, Car Coop beizutreten!"
+    greeting: "Hi! %inviter% (%inviter_email%) hat dich eingeladen, die Fahrgemeinschaft %car% bei Car Coop beizutreten!"
+    description: "Car Coop ist eine gemeinnützige Carsharing-Plattform, mit der du ein Auto mit Freunden, Kolleginnen oder Mitstreitern teilen kannst. Sie hilft dir, Buchungen zu verwalten und die laufenden Kosten im Blick zu behalten."
+    register: "Klicke auf den folgenden Link, um dich zu registrieren:"
+    register_link: Bei Car Coop registrieren
+    cheers: Viele Grüße!
   for: Einladung erstellen für
   status: Einladungsstatus
   invited:
     by: Eingeladen von
   pending: Offene Einladungen
+  onboarding:
+    title: Mitglieder einladen
+    description: "Dein Fahrzeug wurde eingerichtet! Lade andere Mitglieder ein, es zu teilen. Du kannst diesen Schritt überspringen und Mitglieder später über Administration → Benutzer verwalten einladen."
+    submit: Einladungen senden
+    invite_another: Weiteres Mitglied hinzufügen
+    skip: Überspringen
 log:
   in: Logge Dich ein
   forgot_password: Passwort vergessen?

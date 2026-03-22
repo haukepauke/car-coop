@@ -20,12 +20,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CarAdminController extends AbstractController
 {
     #[Route('/admin/car/new', name: 'app_car_new')]
-    public function new(EntityManagerInterface $em, Request $request): Response
+    public function new(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
     {
+        $isFirstCar = $this->getUser()->getUserTypes()->isEmpty();
+
         $form = $this->createForm(CarFormType::class);
 
         $form->handleRequest($request);
@@ -55,12 +58,14 @@ class CarAdminController extends AbstractController
 
             $em->flush();
 
-            $this->addFlash('success', 'Car created, Default Usergroup created!');
+            $this->addFlash('success', $translator->trans('car.created'));
+
+            if ($isFirstCar) {
+                return $this->redirectToRoute('app_user_invite_onboarding');
+            }
 
             return $this->redirectToRoute('app_car_show');
         }
-
-        $isFirstCar = $this->getUser()->getUserTypes()->isEmpty();
 
         return $this->render(
             $isFirstCar ? 'admin/car/new_first.html.twig' : 'admin/car/new.html.twig',

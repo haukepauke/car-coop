@@ -1,17 +1,16 @@
 <p>
-    <b>Hi! You have been invited by {{ app.user.name }} ({{ app.user.email }}) to join car sharing for {{ car.name }} at Car Coop!</b>
+    <b>{{ 'invitation.email.greeting'|trans({'%inviter%': inviter.name, '%inviter_email%': inviter.email, '%car%': car.name}) }}</b>
 </p>
 
 <p>
-    Car coop is a non-profit car sharing platform that allows you to share a car with friends, colleagues or comrades. It allows you to manage 
-    booking of the car, share and keep track of the costs of running the car.
+    {{ 'invitation.email.description'|trans }}
 </p>
 
 <p>
-    Please click the following link to register: <br><br>
-    <a href="{{ url('app_register_invited', {hash: invitation.hash}) }}">Register for Car Coop</a>.
+    {{ 'invitation.email.register'|trans }}<br><br>
+    <a href="{{ url('app_register_invited', {hash: invitation.hash}) }}">{{ 'invitation.email.register_link'|trans }}</a>
 </p>
 
 <p>
-    Cheers!
+    {{ 'invitation.email.cheers'|trans }}
 </p>
