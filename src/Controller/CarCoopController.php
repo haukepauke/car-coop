@@ -19,6 +19,10 @@ class CarCoopController extends AbstractController
     #[Route('/', name: 'app_homepage')]
     public function homepage(): Response
     {
-        return $this->redirect($this->homepageUrl);
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('app_car_show');
+        }
+
+        return $this->redirectToRoute('app_login');
     }
 }

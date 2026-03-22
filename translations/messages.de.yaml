@@ -413,6 +413,7 @@ trips:
 registration:
   form:
     headline: Registrierung
+    no_account: Noch kein Konto?
 remember:
   me: Erinnere Dich an mich
 sharing:

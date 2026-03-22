@@ -411,8 +411,9 @@ trips:
     start: Mileage start
     end: Mileage end
 registration:
-  form: 
+  form:
     headline: Registration
+    no_account: Don't have an account yet?
 remember:
   me: Remember me
 sharing:

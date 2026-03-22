@@ -39,7 +39,10 @@
           </div>
          
         </div>
-         <div class="text-center"><a href="{{ path('app_forgot_password_request') }}">{{ 'log.forgot_password'|trans }}</a></div>
+         <div class="text-center d-flex justify-content-center gap-4">
+           <a href="{{ path('app_forgot_password_request') }}">{{ 'log.forgot_password'|trans }}</a>
+           <a href="{{ path('app_register') }}">{{ 'registration.form.no_account'|trans }}</a>
+         </div>
       </div>
     </div>
   </div>
