@@ -64,6 +64,7 @@ class CarAdminController extends AbstractController
             'admin/car/new.html.twig',
             [
                 'carForm' => $form->createView(),
+                'isFirstCar' => $this->getUser()->getUserTypes()->isEmpty(),
             ]
         );
     }

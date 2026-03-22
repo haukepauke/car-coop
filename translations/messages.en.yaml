@@ -121,8 +121,10 @@ booking:
   update: Update Booking
 car:
   add: Add vehicle
+  new:
+    intro: "Welcome! Start by adding your vehicle below. Once it's set up, you can invite other members to share it via Administration → Manage users."
   delete:
-    button: Deletev vehicle
+    button: Delete vehicle
     confirm:
       title: Delete vehicle
       warning: "This action is irreversible. All trips, expenses, payments and bookings for this car will be permanently deleted."

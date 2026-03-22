@@ -121,6 +121,8 @@ booking:
   update: Buchung aktualisieren
 car:
   add: Fahrzeug hinzufügen
+  new:
+    intro: "Willkommen! Füge zunächst dein Fahrzeug ein. Anschließend kannst du andere Mitglieder über Administration → Benutzer verwalten einladen."
   delete:
     button: Fahrzeug löschen
     confirm:
