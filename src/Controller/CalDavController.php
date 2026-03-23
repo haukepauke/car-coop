@@ -8,6 +8,7 @@ use App\CalDAV\PrincipalBackend;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
+use Sabre\DAV\Exception as SabreException;
 use Sabre\DAV\Server;
 use Sabre\DAVACL\Plugin as ACLPlugin;
 use Sabre\DAVACL\PrincipalCollection;
@@ -87,7 +88,17 @@ class CalDavController extends AbstractController
 
         $sabreResponse = new SabreResponse();
 
-        $server->invokeMethod($sabreRequest, $sabreResponse, false);
+        try {
+            $server->invokeMethod($sabreRequest, $sabreResponse, false);
+        } catch (SabreException $e) {
+            // Sabre's start() handles exceptions; invokeMethod() does not.
+            // Convert DAV exceptions (401, 403, 404 …) to proper HTTP responses.
+            $sabreResponse->setStatus($e->getHTTPCode());
+            foreach ($e->getHTTPHeaders($server) as $name => $value) {
+                $sabreResponse->setHeader($name, $value);
+            }
+            $sabreResponse->setBody($e->getMessage());
+        }
 
         // Bridge Sabre response → Symfony response
         $responseHeaders = [];

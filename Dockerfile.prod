@@ -33,6 +33,10 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
 # ── Composer ─────────────────────────────────────────────────
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
+# ── Apache CalDAV config ─────────────────────────────────────
+COPY docker/apache-caldav.conf /etc/apache2/conf-available/caldav.conf
+RUN a2enconf caldav
+
 # ── Application source ───────────────────────────────────────
 WORKDIR /var/www/html
 COPY . .
