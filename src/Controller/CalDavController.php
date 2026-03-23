@@ -83,6 +83,7 @@ class CalDavController extends AbstractController
             $headers,
             $body,
         );
+        $sabreRequest->setBaseUrl($server->getBaseUri());
 
         $sabreResponse = new SabreResponse();
 
