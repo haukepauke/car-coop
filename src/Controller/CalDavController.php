@@ -14,7 +14,6 @@ use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Sabre\DAVACL\Plugin as ACLPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use Sabre\HTTP\Request as SabreRequest;
-use Sabre\HTTP\Response as SabreResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,7 +89,11 @@ class CalDavController extends AbstractController
         );
         $sabreRequest->setBaseUrl($server->getBaseUri());
 
-        $sabreResponse = new SabreResponse();
+        // Use the server's own httpResponse so that plugins which write directly to
+        // $this->server->httpResponse (e.g. SyncPlugin::sendSyncCollectionResponse) also
+        // write to the object we read back afterwards.
+        $server->httpRequest = $sabreRequest;
+        $sabreResponse = $server->httpResponse;
 
         try {
             $server->invokeMethod($sabreRequest, $sabreResponse, false);
