@@ -32,6 +32,10 @@ return [
         'path' => './assets/tour.js',
         'entrypoint' => true,
     ],
+    'invite' => [
+        'path' => './assets/invite.js',
+        'entrypoint' => true,
+    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
