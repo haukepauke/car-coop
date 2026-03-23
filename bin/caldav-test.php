@@ -199,6 +199,99 @@ $r = request('PROPFIND', $url,
     body: $propfindBody, user: $email, pass: $password);
 show($r);
 
+// ── 9. Discover calendar-home-set (as DAVx5 does) ────────────────────────────
+
+h("9. PROPFIND /caldav/principals/$encodedEmail — calendar-home-set discovery");
+$url = "$baseUrl/caldav/principals/$encodedEmail";
+echo "  PROPFIND $url\n";
+$homeSetBody = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<d:propfind xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav">
+  <d:prop>
+    <d:displayname/>
+    <c:calendar-home-set/>
+    <d:current-user-principal/>
+  </d:prop>
+</d:propfind>
+XML;
+$r = request('PROPFIND', $url,
+    ['Depth: 0', 'Content-Type: application/xml; charset=utf-8'],
+    body: $homeSetBody, user: $email, pass: $password);
+show($r);
+
+// Extract first car calendar URI from step 8 response to use in next steps
+preg_match('#/caldav/calendars/[^/]+/(car-\d+)/#', $r['body'], $calMatch);
+$calSlug = $calMatch[1] ?? null;
+
+// Re-fetch calendar list to find a calendar URI
+$calListUrl  = "$baseUrl/caldav/calendars/$encodedEmail";
+$calListResp = request('PROPFIND', $calListUrl,
+    ['Depth: 1', 'Content-Type: application/xml; charset=utf-8'],
+    body: $propfindBody, user: $email, pass: $password);
+preg_match('#<d:href>(/caldav/calendars/[^/]+/car-\d+/)</d:href>#', $calListResp['body'], $m);
+$calPath = $m[1] ?? null;
+
+// ── 10. sync-collection REPORT (what DAVx5 uses for incremental sync) ────────
+
+if ($calPath) {
+    h("10. REPORT sync-collection on $calPath");
+    $url = "$baseUrl$calPath";
+    echo "  REPORT $url\n";
+    $syncReport = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<d:sync-collection xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav">
+  <d:sync-token/>
+  <d:sync-level>1</d:sync-level>
+  <d:prop>
+    <d:getetag/>
+    <c:calendar-data/>
+  </d:prop>
+</d:sync-collection>
+XML;
+    $r = request('REPORT', $url,
+        ['Content-Type: application/xml; charset=utf-8'],
+        body: $syncReport, user: $email, pass: $password);
+    show($r);
+
+    // ── 11. calendar-query REPORT (fallback used by some clients) ────────────
+
+    h("11. REPORT calendar-query on $calPath");
+    echo "  REPORT $url\n";
+    $queryReport = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<c:calendar-query xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav">
+  <d:prop>
+    <d:getetag/>
+    <c:calendar-data/>
+  </d:prop>
+  <c:filter>
+    <c:comp-filter name="VCALENDAR"/>
+  </c:filter>
+</c:calendar-query>
+XML;
+    $r = request('REPORT', $url,
+        ['Depth: 1', 'Content-Type: application/xml; charset=utf-8'],
+        body: $queryReport, user: $email, pass: $password);
+    show($r);
+
+    // ── 12. GET first .ics object if any were listed ──────────────────────────
+
+    preg_match('#<d:href>(/caldav/calendars/[^"<>]+\.ics)</d:href>#', $r['body'], $icsMatch);
+    if ($icsMatch) {
+        h("12. GET first calendar object: " . $icsMatch[1]);
+        $getUrl = "$baseUrl" . $icsMatch[1];
+        echo "  GET $getUrl\n";
+        $r = request('GET', $getUrl, [], user: $email, pass: $password);
+        show($r);
+    } else {
+        h("12. GET .ics — skipped (no objects found in calendar)");
+        echo "  (No .ics objects returned in calendar-query)\n";
+    }
+} else {
+    h("10–12. REPORT / GET — skipped (could not determine calendar path)");
+    echo "  (Calendar path not found in step 8 response)\n";
+}
+
 echo "\n" . str_repeat('─', 60) . "\n";
 echo "  Done.\n";
 echo str_repeat('─', 60) . "\n\n";

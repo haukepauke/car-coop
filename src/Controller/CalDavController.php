@@ -10,6 +10,7 @@ use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAV\Exception as SabreException;
 use Sabre\DAV\Server;
+use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Sabre\DAVACL\Plugin as ACLPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use Sabre\HTTP\Request as SabreRequest;
@@ -53,6 +54,9 @@ class CalDavController extends AbstractController
 
         // CalDAV protocol support
         $server->addPlugin(new CalDAVPlugin());
+
+        // WebDAV sync (RFC 6578) — required by DAVx5 for incremental calendar sync
+        $server->addPlugin(new SyncPlugin());
 
         // ACL — enforces that users only see their own calendars
         $aclPlugin = new ACLPlugin();
@@ -98,6 +102,10 @@ class CalDavController extends AbstractController
                 $sabreResponse->setHeader($name, $value);
             }
             $sabreResponse->setBody($e->getMessage());
+        } catch (\Throwable $e) {
+            // Catch any other PHP error/exception and return 500 instead of crashing.
+            $sabreResponse->setStatus(500);
+            $sabreResponse->setBody($e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
         }
 
         // Bridge Sabre response → Symfony response

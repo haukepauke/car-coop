@@ -8,6 +8,7 @@ use App\Repository\CarRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sabre\CalDAV\Backend\AbstractBackend;
+use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\Exception\Forbidden;
@@ -15,7 +16,7 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Reader;
 
-class CalendarBackend extends AbstractBackend
+class CalendarBackend extends AbstractBackend implements SyncSupport
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -56,6 +57,7 @@ class CalendarBackend extends AbstractBackend
                 '{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp'         => new ScheduleCalendarTransp('transparent'),
                 '{http://apple.com/ns/ical/}calendar-color'                       => '#1baff4',
                 'ctag'                                                             => $ctag,
+                '{DAV:}sync-token'                                                 => $ctag,
             ];
         }
 
@@ -80,7 +82,9 @@ class CalendarBackend extends AbstractBackend
     {
         $bookings = $this->bookingRepository->findBy(['car' => $calendarId], ['startDate' => 'ASC']);
 
-        return array_map(fn(Booking $b) => $this->bookingToObjectInfo($b), $bookings);
+        return array_values(array_filter(
+            array_map(fn(Booking $b) => $this->bookingToObjectInfo($b), $bookings)
+        ));
     }
 
     public function getCalendarObject($calendarId, $objectUri)
@@ -181,12 +185,52 @@ class CalendarBackend extends AbstractBackend
     }
 
     // -------------------------------------------------------------------------
+    // Sync support (RFC 6578)
+    // -------------------------------------------------------------------------
+
+    public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null): ?array
+    {
+        $currentToken = $this->computeCtag((int) $calendarId);
+
+        // Initial sync: return all objects as added
+        if (empty($syncToken)) {
+            $uris = array_map(
+                fn(array $o) => $o['uri'],
+                $this->getCalendarObjects($calendarId)
+            );
+
+            return [
+                'syncToken' => $currentToken,
+                'added'     => $uris,
+                'modified'  => [],
+                'deleted'   => [],
+            ];
+        }
+
+        // Token unchanged: nothing to do
+        if ($syncToken === $currentToken) {
+            return [
+                'syncToken' => $currentToken,
+                'added'     => [],
+                'modified'  => [],
+                'deleted'   => [],
+            ];
+        }
+
+        // Unknown token: signal that client must do a full resync
+        return null;
+    }
+
+    // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
-    private function bookingToObjectInfo(Booking $booking): array
+    private function bookingToObjectInfo(Booking $booking): ?array
     {
         $ical = $this->bookingToIcal($booking);
+        if ($ical === '') {
+            return null;
+        }
 
         return [
             'id'           => $booking->getId(),
@@ -210,6 +254,10 @@ class CalendarBackend extends AbstractBackend
         $vevent->add('STATUS', $booking->getStatus() === 'maybe' ? 'TENTATIVE' : 'CONFIRMED');
 
         // All-day events: DATE format; DTEND is exclusive so +1 day
+        if (!$booking->getStartDate() || !$booking->getEndDate()) {
+            return '';
+        }
+
         $start = \DateTime::createFromInterface($booking->getStartDate());
         $end   = \DateTime::createFromInterface($booking->getEndDate());
 
