@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Car;
 use App\Entity\User;
+use App\Message\Event\SuperAdminBroadcastEvent;
 use App\Repository\CarRepository;
 use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\UserRepository;
@@ -11,12 +12,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 class SuperAdminController extends AbstractController
 {
+    public function __construct(private readonly TranslatorInterface $translator) {}
+
     #[Route('/superadmin', name: 'app_superadmin')]
     public function index(CarRepository $carRepo, UserRepository $userRepo): Response
     {
@@ -33,8 +38,10 @@ class SuperAdminController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        if ($user->getId() === $this->getUser()->getId()) {
-            $this->addFlash('error', 'You cannot delete your own account.');
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if ($user->getId() === $currentUser->getId()) {
+            $this->addFlash('error', $this->translator->trans('superadmin.cannot_delete_self'));
             return $this->redirectToRoute('app_superadmin');
         }
 
@@ -43,14 +50,37 @@ class SuperAdminController extends AbstractController
             $user->anonymize();
             $em->persist($user);
             $em->flush();
-            $this->addFlash('success', 'User has entries. Deletion not possible. User deactivated and anonymized instead.');
+            $this->addFlash('success', $this->translator->trans('superadmin.user_deactivated'));
         } else {
             $resetPasswordRepo->removeRequests($user);
             $em->remove($user);
             $em->flush();
-            $this->addFlash('success', 'User deleted.');
+            $this->addFlash('success', $this->translator->trans('superadmin.user_deleted'));
         }
 
+        return $this->redirectToRoute('app_superadmin');
+    }
+
+    #[Route('/superadmin/broadcast', name: 'app_superadmin_broadcast', methods: ['POST'])]
+    public function broadcast(Request $request, MessageBusInterface $bus): Response
+    {
+        if (!$this->isCsrfTokenValid('superadmin_broadcast', $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        $subject = trim($request->request->get('subject', ''));
+        $content = trim($request->request->get('content', ''));
+
+        if ($subject === '' || $content === '') {
+            $this->addFlash('error', $this->translator->trans('superadmin.broadcast.error_empty'));
+            return $this->redirectToRoute('app_superadmin');
+        }
+
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $bus->dispatch(new SuperAdminBroadcastEvent($subject, $content, $currentUser->getId()));
+
+        $this->addFlash('success', $this->translator->trans('superadmin.broadcast.sent'));
         return $this->redirectToRoute('app_superadmin');
     }
 
@@ -63,7 +93,7 @@ class SuperAdminController extends AbstractController
 
         $em->remove($car);
         $em->flush();
-        $this->addFlash('success', 'Car deleted.');
+        $this->addFlash('success', $this->translator->trans('superadmin.car_deleted'));
 
         return $this->redirectToRoute('app_superadmin');
     }

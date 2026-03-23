@@ -2,9 +2,41 @@
 
 {% block title %}{{ 'superadmin.title'|trans }}{% endblock %}
 
+{% block importmap %}{{ importmap(['app', 'messageboard']) }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('vendor/quill/dist/quill.snow.css') }}">
+{% endblock %}
+
 {% block content_body %}
 <div class="col-xl-12 mt-5">
     <h3>{{ 'superadmin.title'|trans }}</h3>
+
+    {# ── Broadcast message ────────────────────────────────────────────────── #}
+    <h5 class="mt-4">{{ 'superadmin.broadcast.title'|trans }}</h5>
+    <p class="text-muted small">{{ 'superadmin.broadcast.description'|trans }}</p>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="post" action="{{ path('app_superadmin_broadcast') }}" id="message-form">
+                <input type="hidden" name="_token" value="{{ csrf_token('superadmin_broadcast') }}">
+                <div class="mb-3">
+                    <label for="broadcast-subject" class="form-label">{{ 'superadmin.broadcast.subject'|trans }}</label>
+                    <input type="text" class="form-control" id="broadcast-subject" name="subject" required maxlength="255">
+                </div>
+                <label class="form-label">{{ 'superadmin.broadcast.content'|trans }}</label>
+                <div id="quill-editor" style="min-height: 8rem;"></div>
+                <input type="hidden" name="content" id="message-content">
+                <button type="button" class="btn btn-warning mt-2"
+                        data-bs-toggle="modal" data-bs-target="#broadcastConfirmModal">
+                    <i class="fas fa-bullhorn"></i> {{ 'superadmin.broadcast.submit'|trans }}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-5">
 
     {# ── Cars ─────────────────────────────────────────────────────────────── #}
     <h5 class="mt-4">{{ 'superadmin.cars'|trans }}</h5>
@@ -124,6 +156,26 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+{# ── Broadcast confirm modal ───────────────────────────────────────────────── #}
+<div class="modal fade" id="broadcastConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title"><i class="fas fa-bullhorn me-2"></i>{{ 'superadmin.broadcast.title'|trans }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">{{ 'superadmin.broadcast.confirm'|trans }}</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'cancel'|trans }}</button>
+                <button type="button" class="btn btn-warning" id="broadcastConfirmBtn"
+                        onclick="document.getElementById('message-content').value = document.querySelector('#quill-editor .ql-editor').innerHTML; document.getElementById('message-form').submit();">
+                    <i class="fas fa-bullhorn"></i> {{ 'superadmin.broadcast.submit'|trans }}
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

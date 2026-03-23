@@ -83,6 +83,10 @@ class Message
     #[Groups(['message:read'])]
     private ?array $photos = null;
 
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['message:read'])]
+    private bool $isBroadcast = false;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
@@ -156,6 +160,17 @@ class Message
     public function setPhotos(array $photos): self
     {
         $this->photos = $photos ?: null;
+        return $this;
+    }
+
+    public function isBroadcast(): bool
+    {
+        return $this->isBroadcast;
+    }
+
+    public function setIsBroadcast(bool $isBroadcast): self
+    {
+        $this->isBroadcast = $isBroadcast;
         return $this;
     }
 

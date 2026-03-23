@@ -75,6 +75,7 @@ messageboard:
   post: Post message
   no_messages: No messages yet.
   system: System
+  server_admin: ServerAdmin
   toggle_sticky: Pin/unpin message
   delete: Delete message
   delete_confirm: Really delete this message?
@@ -269,6 +270,8 @@ event_email:
     changed_detail: "The price per unit for group %group% in %car% has been adjusted."
     old_price: Previous price
     new_price: New price
+  broadcast:
+    subject: "Server announcement: %subject%"
   cheers: Cheers!
 entry:
   created_by: Created/Last edited by
@@ -477,6 +480,15 @@ superadmin:
   cannot_delete_self: You cannot delete your own account.
   confirm_delete_car: "Delete car \"%name%\"? This will delete all associated trips, expenses and bookings."
   confirm_delete_user: "Delete user \"%name%\"?"
+  broadcast:
+    title: Broadcast message
+    description: "Post a message to all message boards on the server and send it by email to all users."
+    subject: Subject
+    content: Message
+    submit: Send to all users
+    sent: "Broadcast sent — message posted to all boards and queued for email delivery."
+    error_empty: "Subject and message text are required."
+    confirm: "Send this message to all users on the server?"
 yes: Yes
 cancel: Cancel
 confirm_delete_title: Confirm deletion

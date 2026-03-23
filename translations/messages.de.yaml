@@ -75,6 +75,7 @@ messageboard:
   post: Nachricht posten
   no_messages: Noch keine Nachrichten.
   system: System
+  server_admin: ServerAdmin
   toggle_sticky: Nachricht anpinnen/lösen
   delete: Nachricht löschen
   delete_confirm: Diese Nachricht wirklich löschen?
@@ -271,6 +272,8 @@ event_email:
     changed_detail: "Der Preis pro Einheit für die Gruppe %group% bei %car% wurde angepasst."
     old_price: Bisheriger Preis
     new_price: Neuer Preis
+  broadcast:
+    subject: "Serverankündigung: %subject%"
   cheers: Viele Grüße!
 expenses:
   delete: Ausgabe löschen
@@ -477,6 +480,15 @@ superadmin:
   cannot_delete_self: Du kannst deinen eigenen Account nicht löschen.
   confirm_delete_car: "Fahrzeug \"%name%\" löschen? Alle zugehörigen Fahrten, Ausgaben und Buchungen werden ebenfalls gelöscht."
   confirm_delete_user: "Benutzer \"%name%\" löschen?"
+  broadcast:
+    title: Nachricht an alle senden
+    description: "Eine Nachricht auf allen Pinnwänden des Servers posten und per E-Mail an alle Benutzer senden."
+    subject: Betreff
+    content: Nachricht
+    submit: An alle Benutzer senden
+    sent: "Nachricht gesendet – auf allen Pinnwänden gepostet und für den E-Mail-Versand eingereiht."
+    error_empty: "Betreff und Nachrichtentext sind erforderlich."
+    confirm: "Diese Nachricht an alle Benutzer auf dem Server senden?"
 yes: Ja
 cancel: Abbrechen
 confirm_delete_title: Löschen bestätigen

@@ -32,6 +32,11 @@ class EventMailerService
 
         /** @var User $user */
         foreach ($users as $user) {
+            if (!$user->isActive()) {
+                $this->logger->info('Skipping user, inactive', ['user' => $user->getEmail()]);
+                continue;
+            }
+
             if (!$user->isNotifiedOnEvents()) {
                 $this->logger->info('Skipping user, isNotifiedOnEvents is false', ['user' => $user->getEmail()]);
                 continue;
