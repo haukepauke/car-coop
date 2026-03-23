@@ -278,13 +278,11 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         }
 
         if (isset($vevent->DTSTART)) {
-            $dt = $vevent->DTSTART->getDateTime();
-            $booking->setStartDate(\DateTimeImmutable::createFromMutable($dt));
+            $booking->setStartDate(\DateTime::createFromInterface($vevent->DTSTART->getDateTime()));
         }
 
         if (isset($vevent->DTEND)) {
-            $dt = $vevent->DTEND->getDateTime();
-            $end = \DateTimeImmutable::createFromMutable($dt);
+            $end = \DateTime::createFromInterface($vevent->DTEND->getDateTime());
             // All-day events: DTEND is exclusive, subtract 1 day to get inclusive end
             if (!isset($vevent->DTSTART['TZID']) && $vevent->DTSTART->isFloating()) {
                 $end = $end->modify('-1 day');

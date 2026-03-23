@@ -287,8 +287,76 @@ XML;
         h("12. GET .ics — skipped (no objects found in calendar)");
         echo "  (No .ics objects returned in calendar-query)\n";
     }
+    // ── 13. PUT — create a new calendar object ────────────────────────────────
+
+    $testUid  = 'test-caldav-script-' . time();
+    $testUri  = "$baseUrl{$calPath}{$testUid}.ics";
+    $today    = date('Ymd');
+    $tomorrow = date('Ymd', strtotime('+1 day'));
+    $dtstamp  = gmdate('Ymd\THis\Z');
+
+    h("13. PUT new calendar object — create booking");
+    echo "  PUT $testUri\n";
+    $icsBody = <<<ICS
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//caldav-test.php//EN
+BEGIN:VEVENT
+UID:{$testUid}@car-coop
+DTSTAMP:{$dtstamp}
+DTSTART;VALUE=DATE:{$today}
+DTEND;VALUE=DATE:{$tomorrow}
+SUMMARY:caldav-test.php test entry
+END:VEVENT
+END:VCALENDAR
+ICS;
+    $r = request('PUT', $testUri,
+        ['Content-Type: text/calendar; charset=utf-8'],
+        body: $icsBody, user: $email, pass: $password);
+    show($r, showBody: false);
+
+    // ── 14. Re-sync to find canonical URI assigned by server ──────────────────
+    // The server stores the booking as booking-{id}.ics, not the client URI.
+    // DAVx5 handles this by re-syncing after creation; we do the same here.
+
+    h("14. REPORT sync-collection — find canonical URI of the created booking");
+    $syncR = request('REPORT', "$baseUrl$calPath",
+        ['Content-Type: application/xml; charset=utf-8'],
+        body: $syncReport, user: $email, pass: $password);
+    show($syncR, showBody: false);
+
+    preg_match_all('#<d:href>(/caldav/calendars/[^<>]+\.ics)</d:href>#', $syncR['body'], $allIcs);
+    // Find the booking we just created by matching the SUMMARY in the calendar-data
+    $canonicalPath = null;
+    foreach ($allIcs[1] as $icsPath) {
+        $getR = request('GET', "$baseUrl$icsPath", [], user: $email, pass: $password);
+        if (str_contains($getR['body'], 'caldav-test.php test entry')) {
+            $canonicalPath = $icsPath;
+            break;
+        }
+    }
+
+    // ── 15. GET — verify the created object is readable at canonical URI ──────
+
+    if ($canonicalPath) {
+        h("15. GET canonical object: $canonicalPath");
+        echo "  GET $baseUrl$canonicalPath\n";
+        $r = request('GET', "$baseUrl$canonicalPath", [], user: $email, pass: $password);
+        show($r);
+
+        // ── 16. DELETE — clean up the test object ─────────────────────────────
+
+        h("16. DELETE the created object — clean up");
+        echo "  DELETE $baseUrl$canonicalPath\n";
+        $r = request('DELETE', "$baseUrl$canonicalPath", [], user: $email, pass: $password);
+        show($r, showBody: false);
+    } else {
+        h("15–16. GET / DELETE — skipped (created booking not found in re-sync)");
+        echo "  (Booking with SUMMARY 'caldav-test.php test entry' not found in sync response)\n";
+    }
+
 } else {
-    h("10–12. REPORT / GET — skipped (could not determine calendar path)");
+    h("10–15. REPORT / GET / PUT / DELETE — skipped (could not determine calendar path)");
     echo "  (Calendar path not found in step 8 response)\n";
 }
 
