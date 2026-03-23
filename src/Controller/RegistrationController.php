@@ -88,7 +88,7 @@ class RegistrationController extends AbstractController
 
             // set random color to start with
             $user->setColor('#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
-            $user->setNotifiedOnEvents(true);
+            $user->setNotifiedOnEvents(false);
             $user->setNotifiedOnOwnEvents(false);
 
             $entityManager->persist($user);
@@ -161,7 +161,7 @@ class RegistrationController extends AbstractController
 
             // set random color to start with
             $user->setColor('#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
-            $user->setNotifiedOnEvents(true);
+            $user->setNotifiedOnEvents(false);
             $user->setNotifiedOnOwnEvents(false);
             // invited users are trusted — mark as verified immediately
             $user->setIsVerified(true);

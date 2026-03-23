@@ -88,10 +88,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $locale;
 
     #[ORM\Column]
-    private ?bool $notifiedOnEvents = null;
+    private ?bool $notifiedOnEvents = false;
 
     #[ORM\Column]
-    private ?bool $notifiedOnOwnEvents = null;
+    private ?bool $notifiedOnOwnEvents = false;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $firstLogin = null;

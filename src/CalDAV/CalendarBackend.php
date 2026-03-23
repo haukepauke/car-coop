@@ -3,11 +3,15 @@
 namespace App\CalDAV;
 
 use App\Entity\Booking;
+use App\Message\Event\BookingAddedEvent;
+use App\Message\Event\BookingDeletedEvent;
+use App\Message\Event\BookingUpdatedEvent;
 use App\Repository\BookingRepository;
 use App\Repository\CarRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sabre\CalDAV\Backend\AbstractBackend;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
@@ -24,6 +28,7 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         private readonly CarRepository $carRepository,
         private readonly UserRepository $userRepository,
         private readonly AuthBackend $authBackend,
+        private readonly MessageBusInterface $messageBus,
     ) {}
 
     // -------------------------------------------------------------------------
@@ -141,6 +146,8 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         $this->em->persist($booking);
         $this->em->flush();
 
+        $this->messageBus->dispatch(new BookingAddedEvent($booking->getId()));
+
         return null;
     }
 
@@ -163,6 +170,8 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
         $this->em->flush();
 
+        $this->messageBus->dispatch(new BookingUpdatedEvent($booking->getId()));
+
         return null;
     }
 
@@ -180,8 +189,18 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
             throw new Forbidden('You are not a member of this car.');
         }
 
+        $event = new BookingDeletedEvent(
+            $booking->getCar()->getId(),
+            (string) $booking->getTitle(),
+            $booking->getUser()->getName(),
+            $booking->getStartDate()->format('Y-m-d H:i'),
+            $booking->getEndDate()->format('Y-m-d H:i'),
+        );
+
         $this->em->remove($booking);
         $this->em->flush();
+
+        $this->messageBus->dispatch($event);
     }
 
     // -------------------------------------------------------------------------
