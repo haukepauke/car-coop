@@ -15,12 +15,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 class SuperAdminController extends AbstractController
 {
-    public function __construct(private readonly TranslatorInterface $translator) {}
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly HtmlSanitizerInterface $htmlSanitizer,
+    ) {}
 
     #[Route('/superadmin', name: 'app_superadmin')]
     public function index(CarRepository $carRepo, UserRepository $userRepo): Response
@@ -68,8 +72,8 @@ class SuperAdminController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $subject = trim($request->request->get('subject', ''));
-        $content = trim($request->request->get('content', ''));
+        $subject = trim(strip_tags($request->request->get('subject', '')));
+        $content = trim($this->htmlSanitizer->sanitize($request->request->get('content', '')));
 
         if ($subject === '' || $content === '') {
             $this->addFlash('error', $this->translator->trans('superadmin.broadcast.error_empty'));
