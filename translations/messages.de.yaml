@@ -113,7 +113,9 @@ booking:
     url_label: Deine persönliche Kalender-URL
     copy: Link kopieren
     copied: Kopiert!
-  add: 
+    autodiscover_description: "DAVx5 und viele andere CalDAV-Clients unterstützen die automatische Kalender-Erkennung. Gib einfach die Server-Basis-URL zusammen mit deinem Benutzernamen und Passwort ein – der Client findet alle deine Kalender automatisch."
+    base_url_label: Server-Basis-URL (für DAVx5 und Clients mit Auto-Erkennung)
+  add:
     for: Buchung hinzufügen für
   create: Buchung erstellen
   edit:

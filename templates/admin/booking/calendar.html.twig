@@ -35,6 +35,19 @@
                     <i class="fa-regular fa-copy"></i>
                 </button>
             </div>
+
+            <hr class="my-3">
+            <p class="text-muted small mb-2">{{ 'booking.caldav.autodiscover_description'|trans }}</p>
+            <label class="form-label small fw-semibold mb-1">{{ 'booking.caldav.base_url_label'|trans }}</label>
+            <div class="input-group">
+                {% set baseUrl = app.request.schemeAndHttpHost ~ '/' %}
+                <input type="text" class="form-control form-control-sm font-monospace" id="caldav-base-url"
+                       value="{{ baseUrl }}" readonly>
+                <button class="btn btn-outline-secondary btn-sm js-copy-text" type="button"
+                        data-target="caldav-base-url">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -51,9 +64,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var copiedLabel = document.getElementById('caldav-i18n').dataset.copied;
-    document.querySelectorAll('.js-copy-caldav').forEach(function (btn) {
+    function attachCopyHandler(btn, getInput) {
         btn.addEventListener('click', function () {
-            var input = document.getElementById('caldav-url');
+            var input = getInput();
             input.select();
             input.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(input.value);
@@ -65,6 +78,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 btn.classList.replace('btn-success', 'btn-outline-secondary');
             }, 2000);
         });
+    }
+    document.querySelectorAll('.js-copy-caldav').forEach(function (btn) {
+        attachCopyHandler(btn, function () { return document.getElementById('caldav-url'); });
+    });
+    document.querySelectorAll('.js-copy-text').forEach(function (btn) {
+        attachCopyHandler(btn, function () { return document.getElementById(btn.dataset.target); });
     });
 });
 </script>
