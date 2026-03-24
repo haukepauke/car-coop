@@ -3,14 +3,17 @@ import interactionPlugin from "https://cdn.skypack.dev/@fullcalendar/interaction
 import dayGridPlugin from "https://cdn.skypack.dev/@fullcalendar/daygrid@6.1.15";
 import timeGridPlugin from "https://cdn.skypack.dev/@fullcalendar/timegrid@6.1.15";
 import listPlugin from "https://cdn.skypack.dev/@fullcalendar/list@6.1.15";
+import allLocales from "https://cdn.skypack.dev/@fullcalendar/core@6.1.15/locales-all";
 
 import "./styles/calendar.css"; // this will create a calendar.css file
 document.addEventListener("DOMContentLoaded", () => {
     let calendarEl = document.getElementById("calendar-holder");
   
-    let { eventsUrl } = calendarEl.dataset;
-  
+    let { eventsUrl, locale } = calendarEl.dataset;
+
     let calendar = new Calendar(calendarEl, {
+      locales: allLocales,
+      locale: locale,
       editable: true,
       eventSources: [
         {

@@ -9,7 +9,7 @@
                 class="fa fa-plus-circle"></span></button>
     </div>
     <div>
-        <div id="calendar-holder" data-events-url="{{ path('fc_load_events') }}"></div>
+        <div id="calendar-holder" data-events-url="{{ path('fc_load_events') }}" data-locale="{{ app.request.locale }}"></div>
     </div>
 
     {# CalDAV subscription info #}
