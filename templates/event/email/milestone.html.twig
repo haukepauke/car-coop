@@ -1,3 +1,5 @@
-<p>{{ milestoneMessageKey|trans(milestoneBoardParams)|raw }}</p>
+{% extends 'email/base.html.twig' %}
 
-<p>{{ 'event_email.cheers'|trans }}</p>
+{% block content %}
+{{ milestoneMessageKey|trans(milestoneBoardParams)|raw }}
+{% endblock %}

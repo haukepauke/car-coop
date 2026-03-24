@@ -1,3 +1,6 @@
+{% extends 'email/base.html.twig' %}
+
+{% block content %}
 <p><b>{{ 'event_email.trip.added_with'|trans({'%car%': car.name}) }}</b></p>
 
 <p>
@@ -5,27 +8,22 @@
 {{ 'event_email.trip.added_by'|trans({'%user%': userNames, '%car%': car.name}) }}
 </p>
 
-<p>
-    <table>
-        <tr>
-            <th>{{ 'date.start'|trans }}:</th>
-            <td>{{ trip.startDate|format_datetime(locale=locale) }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'date.end'|trans }}:</th>
-            <td>{{ trip.endDate|format_datetime(locale=locale) }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'trips.comment'|trans }}:</th>
-            <td>{{ trip.comment }}</td>
-        </tr>
-    </table>
-</p>
+<table class="data-table" style="margin:16px 0;">
+    <tr>
+        <th>{{ 'date.start'|trans }}:</th>
+        <td>{{ trip.startDate|format_datetime(locale=locale) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'date.end'|trans }}:</th>
+        <td>{{ trip.endDate|format_datetime(locale=locale) }}</td>
+    </tr>
+    {% if trip.comment %}
+    <tr>
+        <th>{{ 'trips.comment'|trans }}:</th>
+        <td>{{ trip.comment }}</td>
+    </tr>
+    {% endif %}
+</table>
 
-<p>
-    {{ 'event_email.trip.see_in_logbook'|trans({'%link%': '<a href="">' ~ 'trips.logbook'|trans ~ '</a>', '%car%': car.name|e('html')})|raw }}
-</p>
-
-<p>
-    {{ 'event_email.cheers'|trans }}
-</p>
+<p>{{ 'event_email.trip.see_in_logbook'|trans({'%link%': '<a href="">' ~ 'trips.logbook'|trans ~ '</a>', '%car%': car.name|e('html')})|raw }}</p>
+{% endblock %}

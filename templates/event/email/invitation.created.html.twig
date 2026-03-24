@@ -1,5 +1,7 @@
+{% extends 'email/base.html.twig' %}
+
+{% block content %}
 <p><b>{{ 'event_email.invitation.created_for'|trans({'%car%': car.name}) }}</b></p>
 
 <p>{{ 'event_email.invitation.created_by'|trans({'%user%': invitation.createdBy.name, '%email%': invitation.email, '%car%': car.name}) }}</p>
-
-<p>{{ 'event_email.cheers'|trans }}</p>
+{% endblock %}

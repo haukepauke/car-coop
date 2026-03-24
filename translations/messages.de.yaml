@@ -318,6 +318,10 @@ event_email:
     changed_detail: "Der Preis pro Einheit für die Gruppe %group% bei %car% wurde angepasst."
     old_price: Bisheriger Preis
     new_price: Neuer Preis
+  greeting: "Hallo %name%,"
+  footer:
+    sign_off: "Mit freundlichen Grüßen,"
+    team: Das Car Coop Team
   milestone:
     subject: "Meilenstein erreicht: %milestone% %unit% mit %car%!"
   broadcast:

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="{{ locale|default('en') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}Car Coop{% endblock %}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 15px;
+            color: #333333;
+        }
+        a { color: #2563eb; }
+        table { border-collapse: collapse; }
+        p { margin: 0 0 16px; line-height: 1.6; }
+        p:last-child { margin-bottom: 0; }
+        .data-table th {
+            text-align: left;
+            padding: 5px 20px 5px 0;
+            font-weight: 600;
+            color: #555555;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+        .data-table td {
+            padding: 5px 0;
+            vertical-align: top;
+            color: #333333;
+        }
+        blockquote {
+            margin: 0;
+            padding: 0.5em 1em;
+            border-left: 3px solid #dee2e6;
+        }
+        figure { margin: 0.75em 0 0; }
+        figcaption {
+            text-align: right;
+            font-size: 0.875em;
+            color: #6c757d;
+            margin-top: 0.25em;
+        }
+    </style>
+</head>
+<body>
+    <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+           style="background-color:#f0f2f5;">
+        <tr>
+            <td align="center" style="padding:32px 16px;">
+
+                <table width="600" cellpadding="0" cellspacing="0" role="presentation"
+                       style="max-width:600px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+
+                    {# ── Header ─────────────────────────────────────── #}
+                    <tr>
+                        <td style="background-color:#1e2d3d;padding:24px 40px;text-align:center;">
+                            <a href="{{ homepage_url|default('#') }}"
+                               style="text-decoration:none;display:inline-flex;align-items:center;gap:12px;">
+                                <img src="{{ homepage_url|default('') }}/images/email-logo.png"
+                                     alt="Car Coop" width="44" height="44"
+                                     style="border-radius:50%;display:block;">
+                                <span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,'Helvetica Neue',Arial,sans-serif;font-size:22px;font-weight:600;color:#ffffff;letter-spacing:0.3px;">Car&nbsp;Coop</span>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {# ── Body ───────────────────────────────────────── #}
+                    <tr>
+                        <td style="padding:36px 40px 32px;">
+
+                            {% if recipient_name is defined %}
+                            <p>{{ 'event_email.greeting'|trans({'%name%': recipient_name}) }}</p>
+                            {% endif %}
+
+                            {% block content %}{% endblock %}
+
+                        </td>
+                    </tr>
+
+                    {# ── Divider ─────────────────────────────────────── #}
+                    <tr>
+                        <td style="padding:0 40px;">
+                            <div style="border-top:1px solid #e8ecf0;"></div>
+                        </td>
+                    </tr>
+
+                    {# ── Footer ──────────────────────────────────────── #}
+                    <tr>
+                        <td style="padding:20px 40px 28px;color:#888888;font-size:13px;line-height:1.6;">
+                            <p style="margin:0 0 2px;">{{ 'event_email.footer.sign_off'|trans }}</p>
+                            <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-style:italic;color:#666666;">{{ 'event_email.footer.team'|trans }}</p>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

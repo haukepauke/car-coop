@@ -1,28 +1,28 @@
+{% extends 'email/base.html.twig' %}
+
+{% block content %}
 <p><b>{{ 'event_email.payment.added_for'|trans({'%car%': car.name}) }}</b></p>
 
 <p>{{ 'event_email.payment.added_by'|trans({'%from%': payment.fromUser.name, '%to%': payment.toUser.name, '%car%': car.name}) }}</p>
 
-<p>
-    <table>
-        <tr>
-            <th>{{ 'amount'|trans }}:</th>
-            <td>{{ (payment.amount / 100)|number_format(2) }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'payments.type'|trans }}:</th>
-            <td>{{ payment.type }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'date.date'|trans }}:</th>
-            <td>{{ payment.date|format_date(locale=locale) }}</td>
-        </tr>
-        {% if payment.comment %}
-        <tr>
-            <th>{{ 'comment'|trans }}:</th>
-            <td>{{ payment.comment }}</td>
-        </tr>
-        {% endif %}
-    </table>
-</p>
-
-<p>{{ 'event_email.cheers'|trans }}</p>
+<table class="data-table" style="margin:16px 0;">
+    <tr>
+        <th>{{ 'amount'|trans }}:</th>
+        <td>{{ (payment.amount / 100)|number_format(2) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'payments.type'|trans }}:</th>
+        <td>{{ payment.type }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'date.date'|trans }}:</th>
+        <td>{{ payment.date|format_date(locale=locale) }}</td>
+    </tr>
+    {% if payment.comment %}
+    <tr>
+        <th>{{ 'comment'|trans }}:</th>
+        <td>{{ payment.comment }}</td>
+    </tr>
+    {% endif %}
+</table>
+{% endblock %}

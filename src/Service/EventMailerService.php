@@ -17,13 +17,15 @@ class EventMailerService
     private LoggerInterface $logger;
     private LocaleSwitcher $localeSwitcher;
     private TranslatorInterface $translator;
+    private string $homepageUrl;
 
-    public function __construct(MailerInterface $mailer, LoggerInterface $logger, LocaleSwitcher $localeSwitcher, TranslatorInterface $translator)
+    public function __construct(MailerInterface $mailer, LoggerInterface $logger, LocaleSwitcher $localeSwitcher, TranslatorInterface $translator, string $homepageUrl)
     {
         $this->mailer = $mailer;
         $this->logger = $logger;
         $this->localeSwitcher = $localeSwitcher;
         $this->translator = $translator;
+        $this->homepageUrl = $homepageUrl;
     }
 
     public function sendMails(ArrayCollection $users, TemplatedEmail $email, array $subjectParams = [], bool $ignoreNotificationPreference = false): void
@@ -50,7 +52,11 @@ class EventMailerService
             $userEmail = (clone $email)
                 ->to($address)
                 ->subject($translatedSubject)
-                ->context(array_merge($email->getContext(), ['locale' => $user->getLocale()]));
+                ->context(array_merge($email->getContext(), [
+                    'locale'         => $user->getLocale(),
+                    'recipient_name' => $user->getName(),
+                    'homepage_url'   => $this->homepageUrl,
+                ]));
 
             $this->localeSwitcher->runWithLocale($user->getLocale(), function () use ($userEmail): void {
                 $this->mailer->send($userEmail);

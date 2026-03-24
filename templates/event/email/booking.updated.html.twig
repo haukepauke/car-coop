@@ -1,26 +1,26 @@
+{% extends 'email/base.html.twig' %}
+
+{% block content %}
 <p><b>{{ 'event_email.booking.updated_for'|trans({'%car%': car.name}) }}</b></p>
 
 <p>{{ 'event_email.booking.updated_by'|trans({'%user%': booking.editor.name, '%car%': car.name}) }}</p>
 
-<p>
-    <table>
-        <tr>
-            <th>{{ 'booking.form.title'|trans }}:</th>
-            <td>{{ booking.title }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'date.start'|trans }}:</th>
-            <td>{{ booking.startDate|format_datetime(locale=locale) }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'date.end'|trans }}:</th>
-            <td>{{ booking.endDate|format_datetime(locale=locale) }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'status'|trans }}:</th>
-            <td>{{ booking.status }}</td>
-        </tr>
-    </table>
-</p>
-
-<p>{{ 'event_email.cheers'|trans }}</p>
+<table class="data-table" style="margin:16px 0;">
+    <tr>
+        <th>{{ 'booking.form.title'|trans }}:</th>
+        <td>{{ booking.title }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'date.start'|trans }}:</th>
+        <td>{{ booking.startDate|format_datetime(locale=locale) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'date.end'|trans }}:</th>
+        <td>{{ booking.endDate|format_datetime(locale=locale) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'status'|trans }}:</th>
+        <td>{{ booking.status }}</td>
+    </tr>
+</table>
+{% endblock %}

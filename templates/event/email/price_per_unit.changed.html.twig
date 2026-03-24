@@ -1,22 +1,22 @@
+{% extends 'email/base.html.twig' %}
+
+{% block content %}
 <p><b>{{ 'event_email.price_per_unit.changed_for'|trans({'%car%': car.name}) }}</b></p>
 
 <p>{{ 'event_email.price_per_unit.changed_detail'|trans({'%group%': userType.name, '%car%': car.name}) }}</p>
 
-<p>
-    <table>
-        <tr>
-            <th>{{ 'user.group.name'|trans }}:</th>
-            <td>{{ userType.name }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'event_email.price_per_unit.old_price'|trans }}:</th>
-            <td>{{ oldPrice|number_format(2) }} €/{{ car.milageUnit }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'event_email.price_per_unit.new_price'|trans }}:</th>
-            <td>{{ newPrice|number_format(2) }} €/{{ car.milageUnit }}</td>
-        </tr>
-    </table>
-</p>
-
-<p>{{ 'event_email.cheers'|trans }}</p>
+<table class="data-table" style="margin:16px 0;">
+    <tr>
+        <th>{{ 'user.group.name'|trans }}:</th>
+        <td>{{ userType.name }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'event_email.price_per_unit.old_price'|trans }}:</th>
+        <td>{{ oldPrice|number_format(2) }} €/{{ car.milageUnit }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'event_email.price_per_unit.new_price'|trans }}:</th>
+        <td>{{ newPrice|number_format(2) }} €/{{ car.milageUnit }}</td>
+    </tr>
+</table>
+{% endblock %}

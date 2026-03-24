@@ -1,3 +1,5 @@
-{{ content|raw }}
+{% extends 'email/base.html.twig' %}
 
-<p>{{ 'event_email.cheers'|trans }}</p>
+{% block content %}
+{{ content|raw }}
+{% endblock %}
