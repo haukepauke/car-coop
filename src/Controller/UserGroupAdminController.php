@@ -19,7 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserGroupAdminController extends AbstractController
 {
     #[Route('/admin/usergroup/new', name: 'app_usergroup_new')]
-    public function new(EntityManagerInterface $em, Request $request): Response
+    public function new(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -35,7 +35,7 @@ class UserGroupAdminController extends AbstractController
             $em->persist($form->getData());
             $em->flush();
 
-            $this->addFlash('success', 'Usergroup created!');
+            $this->addFlash('success', $translator->trans('user.group.created'));
 
             return $this->redirectToRoute('app_user_list', ['car' => $car->getId()]);
         }
@@ -50,7 +50,7 @@ class UserGroupAdminController extends AbstractController
     }
 
     #[Route('/admin/usergroup/edit/{usergroup}', name: 'app_usergroup_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, UserType $usergroup, MessageBusInterface $bus): Response
+    public function edit(EntityManagerInterface $em, Request $request, UserType $usergroup, MessageBusInterface $bus, TranslatorInterface $translator): Response
     {
         if (!$usergroup->isActive()) {
             throw $this->createAccessDeniedException();
@@ -70,7 +70,7 @@ class UserGroupAdminController extends AbstractController
                 $bus->dispatch(new PricePerUnitChangedEvent($usergroup->getId(), $oldPrice, $usergroup->getPricePerUnit()));
             }
 
-            $this->addFlash('success', 'Usergroup updated!');
+            $this->addFlash('success', $translator->trans('user.group.updated'));
 
             return $this->redirectToRoute('app_user_list', ['car' => $carObj->getId()]);
         }
@@ -102,7 +102,7 @@ class UserGroupAdminController extends AbstractController
         $car = $usergroup->getCar();
 
         if (!$this->isCsrfTokenValid('move_user_' . $usergroup->getId(), $request->request->get('_token'))) {
-            $this->addFlash('error', 'Invalid CSRF token.');
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
         }
@@ -111,7 +111,7 @@ class UserGroupAdminController extends AbstractController
         $targetGroup = $userTypeRepository->find($request->request->get('target_group_id'));
 
         if (!$user || !$targetGroup || $targetGroup->getCar() !== $car) {
-            $this->addFlash('error', 'Invalid request.');
+            $this->addFlash('error', $translator->trans('error.invalid_request'));
 
             return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
         }
@@ -127,7 +127,7 @@ class UserGroupAdminController extends AbstractController
     }
 
     #[Route('/admin/usergroup/delete/{usergroup}', name: 'app_usergroup_delete')]
-    public function delete(EntityManagerInterface $em, UserType $usergroup)
+    public function delete(EntityManagerInterface $em, UserType $usergroup, TranslatorInterface $translator)
     {
         $car = $usergroup->getCar();
 
@@ -136,9 +136,9 @@ class UserGroupAdminController extends AbstractController
             $em->remove($usergroup);
             $em->flush();
 
-            $this->addFlash('success', 'Usergroup deleted.');
+            $this->addFlash('success', $translator->trans('user.group.deleted'));
         } else {
-            $this->addFlash('error', 'Usergroup deletion aborted. Usergroup still contains users.');
+            $this->addFlash('error', $translator->trans('user.group.delete_blocked'));
         }
 
         return $this->redirectToRoute('app_user_list', ['car' => $car->getId()]);

@@ -128,6 +128,10 @@ booking:
   calendar: Booking Calendar
   delete: Delete Booking
   update: Update Booking
+  created: Booking created.
+  updated: Booking updated.
+  deleted: Booking deleted.
+  delete_not_allowed: You can only delete your own bookings.
 car:
   add: Add vehicle
   created: Vehicle created successfully.
@@ -141,6 +145,9 @@ car:
       name_label: "Enter the vehicle name to confirm deletion:"
       confirm_button: Delete vehicle
       cancel: Cancel
+    name_mismatch: Vehicle name did not match. Deletion cancelled.
+  updated: Vehicle updated.
+  deleted: Vehicle deleted.
   bookings:
     next: Next bookings
   costs:
@@ -299,6 +306,10 @@ expenses:
     new: New expense
     add: Add expense
     for: New expense for
+  created: Expense created.
+  updated: Expense updated.
+  deleted: Expense deleted.
+  delete_not_allowed: You can only delete expenses you created or edited.
 fixed: Confirmed
 from: from
 fuel: Fuel
@@ -307,6 +318,8 @@ invitation:
   invite_another: Add another member
   sent: "Invitations sent to: %emails%"
   already_pending: "Skipped — invitation already pending for: %emails%"
+  deleted: Invitation deleted.
+  delete_not_allowed: This invitation was created by another user. You can only delete invitations you created yourself.
   email:
     language: Email language
     subject: "You have been invited to join vehicle sharing with Car Coop!"
@@ -356,6 +369,10 @@ payments:
     update: Update payment
     for: Edit payment for
   type: Payment type
+  created: Payment created.
+  updated: Payment updated.
+  deleted: Payment deleted.
+  delete_not_allowed: You can only delete payments you are involved in.
 paypal: Paypal
 price:
   per: Price per
@@ -398,6 +415,10 @@ user:
       occasional_use: Members of this group use the vehicle only occasionally (e.g. guests).
     error:
       orphaned_users: Cannot save — one or more members would be left without a group. Please assign them to another group first.
+    created: User group created.
+    updated: User group updated.
+    deleted: User group deleted.
+    delete_blocked: Deletion aborted. User group still contains members.
   groups: User group
   inactive: Inactive
   locale: Language
@@ -423,7 +444,12 @@ user:
       warning: "Do you really want to delete your account? If you have trips, expenses or payments recorded, your account will be deactivated and anonymized instead of deleted."
       confirm_button: Delete account
       cancel: Cancel
+    not_allowed: You are not allowed to delete this user.
+    has_entries: User has entries. Deletion not possible. User deactivated instead.
   register: Register
+  updated: Profile updated.
+  deleted: User deleted.
+  already_logged_in: You are already logged in.
   status: State
   verified: Verified
   type: Group
@@ -444,6 +470,7 @@ trips:
   edit:
     with: Edit trip with
     update: Update trip
+    blocked: "Trip editing aborted. Newer trips for this vehicle exist. Only the last trip can be edited."
   add:
     add: Add trip
     new: New trip
@@ -452,6 +479,10 @@ trips:
   mileage:
     start: Mileage start
     end: Mileage end
+  created: Trip created.
+  updated: Trip updated.
+  deleted: Trip deleted.
+  delete_blocked: "Trip deletion aborted. Newer trips for this vehicle exist. Only the last trip can be deleted."
 registration:
   form:
     headline: Registration
@@ -464,6 +495,9 @@ registration:
     spam_hint: "Didn't receive anything? Check your spam folder."
     resend: Resend verification email
     login_link: Back to login
+  already_logged_in: You are already logged in.
+  invitation_not_found: Invitation not found (or has expired).
+  email_verified: Your email address has been verified.
 remember:
   me: Remember me
 sharing:
@@ -500,3 +534,6 @@ cancel: Cancel
 confirm_delete_title: Confirm deletion
 form:
   optional: optional
+error:
+  csrf_invalid: Invalid CSRF token.
+  invalid_request: Invalid request.

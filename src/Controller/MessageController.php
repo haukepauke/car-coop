@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MessageController extends AbstractController
 {
@@ -48,6 +49,7 @@ class MessageController extends AbstractController
         EntityManagerInterface $em,
         ActiveCarService $activeCarService,
         FileUploaderService $uploader,
+        TranslatorInterface $translator,
     ): Response {
         if (!$this->isCsrfTokenValid('message_new', $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
@@ -77,23 +79,23 @@ class MessageController extends AbstractController
         $photoFilenames = [];
         foreach ($uploadedFiles as $file) {
             if (!$file->isValid()) {
-                $this->addFlash('warning', 'messageboard.photo_upload_failed');
+                $this->addFlash('warning', $translator->trans('messageboard.photo_upload_failed'));
                 continue;
             }
             if ($file->getSize() > self::MAX_PHOTO_SIZE) {
-                $this->addFlash('warning', 'messageboard.photo_too_large');
+                $this->addFlash('warning', $translator->trans('messageboard.photo_too_large'));
                 continue;
             }
             $mimeType = $file->getMimeType() ?? $file->getClientMimeType();
             if (!str_starts_with((string) $mimeType, 'image/')) {
-                $this->addFlash('warning', 'messageboard.photo_invalid_type');
+                $this->addFlash('warning', $translator->trans('messageboard.photo_invalid_type'));
                 continue;
             }
             $filename = $uploader->upload($file, self::PHOTO_FOLDER);
             if (file_exists($uploadDir . '/' . $filename)) {
                 $photoFilenames[] = $filename;
             } else {
-                $this->addFlash('warning', 'messageboard.photo_upload_failed');
+                $this->addFlash('warning', $translator->trans('messageboard.photo_upload_failed'));
             }
         }
 

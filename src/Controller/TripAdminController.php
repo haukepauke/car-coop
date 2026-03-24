@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TripAdminController extends AbstractController
 {
@@ -56,7 +57,8 @@ class TripAdminController extends AbstractController
         EntityManagerInterface $em,
         Request $request,
         MessageBusInterface $messageBus,
-        ActiveCarService $activeCarService
+        ActiveCarService $activeCarService,
+        TranslatorInterface $translator
     ): Response {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -105,7 +107,7 @@ class TripAdminController extends AbstractController
             $em->flush();
 
             $messageBus->dispatch(new TripAddedEvent($trip->getId()));
-            $this->addFlash('success', 'Trip created!');
+            $this->addFlash('success', $translator->trans('trips.created'));
 
             return $this->redirectToRoute('app_trip_list');
         }
@@ -120,7 +122,7 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/edit/{trip}', name: 'app_trip_edit')]
-    public function edit(TripCostCalculatorService $tc, EntityManagerInterface $em, Request $request, Trip $trip): Response
+    public function edit(TripCostCalculatorService $tc, EntityManagerInterface $em, Request $request, Trip $trip, TranslatorInterface $translator): Response
     {
         $car = $trip->getCar();
         $form = $this->createForm(
@@ -130,7 +132,7 @@ class TripAdminController extends AbstractController
         );
 
         if ($car->getMileage() !== $trip->getEndMileage() && $trip->isCompleted() && !($form->isSubmitted() && $form->isValid())) {
-            $this->addFlash('error', 'Trip editing aborted. Newer trips for this vehicle exist. Only the last trip can be edited.');
+            $this->addFlash('error', $translator->trans('trips.edit.blocked'));
         } else {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -144,7 +146,7 @@ class TripAdminController extends AbstractController
                 $em->persist($car);
                 $em->flush();
 
-                $this->addFlash('success', 'Trip updated!');
+                $this->addFlash('success', $translator->trans('trips.updated'));
 
                 return $this->redirectToRoute('app_trip_list');
             }
@@ -163,7 +165,7 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete')]
-    public function delete(EntityManagerInterface $em, Trip $trip)
+    public function delete(EntityManagerInterface $em, Trip $trip, TranslatorInterface $translator)
     {
         $car = $trip->getCar();
 
@@ -174,9 +176,9 @@ class TripAdminController extends AbstractController
             $em->remove($trip);
             $em->flush();
 
-            $this->addFlash('success', 'Trip deleted.');
+            $this->addFlash('success', $translator->trans('trips.deleted'));
         } else {
-            $this->addFlash('error', 'Trip deletion aborted. Newer trips for this vehicle exist. Only the last trip can be deleted.');
+            $this->addFlash('error', $translator->trans('trips.delete_blocked'));
         }
 
         return $this->redirectToRoute('app_trip_list');

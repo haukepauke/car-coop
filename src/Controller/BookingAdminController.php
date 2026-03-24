@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BookingAdminController extends AbstractController
 {
@@ -37,7 +38,7 @@ class BookingAdminController extends AbstractController
     }
 
     #[Route('/admin/booking/new', name: 'app_booking_new')]
-    public function new(Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService, MessageBusInterface $messageBus): Response
+    public function new(Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -64,7 +65,7 @@ class BookingAdminController extends AbstractController
             $em->flush();
 
             $messageBus->dispatch(new BookingAddedEvent($booking->getId()));
-            $this->addFlash('success', 'Booking created!');
+            $this->addFlash('success', $translator->trans('booking.created'));
 
             return $this->redirectToRoute('app_booking_show');
         }
@@ -81,7 +82,7 @@ class BookingAdminController extends AbstractController
     }
 
     #[Route('/admin/booking/edit/{booking}', name: 'app_booking_edit')]
-    public function edit(Request $request, BookingRepository $bookingRepo, EntityManagerInterface $em, MessageBusInterface $messageBus, $booking): Response
+    public function edit(Request $request, BookingRepository $bookingRepo, EntityManagerInterface $em, MessageBusInterface $messageBus, TranslatorInterface $translator, $booking): Response
     {
         $booking = $bookingRepo->find($booking);
         $car = $booking->getCar();
@@ -100,7 +101,7 @@ class BookingAdminController extends AbstractController
             $em->flush();
 
             $messageBus->dispatch(new BookingUpdatedEvent($booking->getId()));
-            $this->addFlash('success', 'Booking updated!');
+            $this->addFlash('success', $translator->trans('booking.updated'));
 
             return $this->redirectToRoute('app_booking_show');
         }
@@ -117,12 +118,12 @@ class BookingAdminController extends AbstractController
     }
 
     #[Route('/admin/booking/delete/{booking}', name: 'app_booking_delete')]
-    public function delete(EntityManagerInterface $em, BookingRepository $bookingRepo, MessageBusInterface $messageBus, $booking)
+    public function delete(EntityManagerInterface $em, BookingRepository $bookingRepo, MessageBusInterface $messageBus, TranslatorInterface $translator, $booking)
     {
         $booking = $bookingRepo->find($booking);
 
         if ($this->getUser() !== $booking->getUser()) {
-            $this->addFlash('error', 'You can only delete your own bookings.');
+            $this->addFlash('error', $translator->trans('booking.delete_not_allowed'));
 
             return $this->redirectToRoute('app_booking_show');
         }
@@ -139,7 +140,7 @@ class BookingAdminController extends AbstractController
         $em->flush();
 
         $messageBus->dispatch($event);
-        $this->addFlash('success', 'Booking deleted.');
+        $this->addFlash('success', $translator->trans('booking.deleted'));
 
         return $this->redirectToRoute('app_booking_show');
     }

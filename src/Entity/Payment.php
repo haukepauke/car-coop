@@ -66,7 +66,7 @@ class Payment
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'paymentsReceived')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank()]
-    #[Assert\Expression('this.getFromUser() !== this.getToUser()', message: 'Payment sender and receiver must be different users')]
+    #[Assert\Expression('this.getFromUser() !== this.getToUser()', message: 'payment.sender_receiver_same')]
     #[Groups(['payment:read', 'payment:write'])]
     private $toUser;
 

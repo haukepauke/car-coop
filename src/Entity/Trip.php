@@ -54,7 +54,7 @@ class Trip
     private $startMileage;
 
     #[ORM\Column(type: 'integer')]
-    #[Assert\Expression('this.getEndMileage() > this.getStartMileage()', message: 'Did you drive backwards?!')]
+    #[Assert\Expression('this.getEndMileage() > this.getStartMileage()', message: 'trip.backwards')]
     #[Groups(['trip:read', 'trip:write'])]
     private $endMileage;
 
@@ -64,7 +64,7 @@ class Trip
     private $startDate;
 
     #[ORM\Column(type: 'date')]
-    #[Assert\Expression('this.getEndDate() >= this.getStartDate()', message: 'End date has to be after or the same as the startdate')]
+    #[Assert\Expression('this.getEndDate() >= this.getStartDate()', message: 'trip.end_date_before_start')]
     #[Groups(['trip:read', 'trip:write'])]
     private $endDate;
 

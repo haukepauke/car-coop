@@ -59,7 +59,7 @@ class Expense
     private $comment;
 
     #[ORM\Column(type: 'float')]
-    #[Assert\Positive(message: 'Please provide the amount you have spent')]
+    #[Assert\Positive(message: 'expense.amount_required')]
     #[Groups(['expense:read', 'expense:write'])]
     private $amount;
 

@@ -45,12 +45,12 @@ class Booking
     private $id;
 
     #[ORM\Column(type: 'datetime')]
-    #[Assert\GreaterThan(value: 'today', message: 'Bookings can not be made for the past')]
+    #[Assert\GreaterThan(value: 'today', message: 'booking.not_in_past')]
     #[Groups(['booking:read', 'booking:write'])]
     private $startDate;
 
     #[ORM\Column(type: 'datetime')]
-    #[Assert\Expression('this.getEndDate() > this.getStartDate()', message: 'End date must be after start date of booking')]
+    #[Assert\Expression('this.getEndDate() > this.getStartDate()', message: 'booking.end_before_start')]
     #[Groups(['booking:read', 'booking:write'])]
     private $endDate;
 

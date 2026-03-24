@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PaymentAdminController extends AbstractController
 {
@@ -48,7 +49,7 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/new', name: 'app_payment_new')]
-    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService, MessageBusInterface $messageBus): Response
+    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator): Response
     {
         $car = $activeCarService->getActiveCar();
 
@@ -73,7 +74,7 @@ class PaymentAdminController extends AbstractController
             $em->flush();
 
             $messageBus->dispatch(new PaymentAddedEvent($payment->getId()));
-            $this->addFlash('success', 'Payment created!');
+            $this->addFlash('success', $translator->trans('payments.created'));
 
             return $this->redirectToRoute('app_payment_list');
         }
@@ -88,7 +89,7 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/edit/{payment}', name: 'app_payment_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, Payment $payment): Response
+    public function edit(EntityManagerInterface $em, Request $request, Payment $payment, TranslatorInterface $translator): Response
     {
         $car = $payment->getCar();
         $form = $this->createForm(
@@ -106,7 +107,7 @@ class PaymentAdminController extends AbstractController
 
             // inform other user
 
-            $this->addFlash('success', 'Payment updated!');
+            $this->addFlash('success', $translator->trans('payments.updated'));
 
             return $this->redirectToRoute('app_payment_list');
         }
@@ -124,12 +125,12 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/delete/{payment}', name: 'app_payment_delete')]
-    public function delete(EntityManagerInterface $em, Payment $payment)
+    public function delete(EntityManagerInterface $em, Payment $payment, TranslatorInterface $translator)
     {
         /** @var User $user */
         $user = $this->getUser();
         if ($payment->getFromUser() !== $user && $payment->getToUser() !== $user) {
-            $this->addFlash('error', 'You can only delete payments, you are involved in.');
+            $this->addFlash('error', $translator->trans('payments.delete_not_allowed'));
 
             return $this->redirectToRoute('app_payment_list');
         }
@@ -139,7 +140,7 @@ class PaymentAdminController extends AbstractController
 
         // inform other user
 
-        $this->addFlash('success', 'Payment deleted.');
+        $this->addFlash('success', $translator->trans('payments.deleted'));
 
         return $this->redirectToRoute('app_payment_list');
     }

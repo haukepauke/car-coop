@@ -85,7 +85,7 @@ class CarAdminController extends AbstractController
     }
 
     #[Route('/admin/car/edit', name: 'app_car_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader, ActiveCarService $activeCarService, TripRepository $tripRepo): Response
+    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader, ActiveCarService $activeCarService, TripRepository $tripRepo, TranslatorInterface $translator): Response
     {
         $car = $activeCarService->getActiveCar();
 
@@ -107,7 +107,7 @@ class CarAdminController extends AbstractController
 
             $em->flush();
 
-            $this->addFlash('success', 'Car updated!');
+            $this->addFlash('success', $translator->trans('car.updated'));
 
             return $this->redirectToRoute('app_car_show');
         }
@@ -217,7 +217,7 @@ class CarAdminController extends AbstractController
     }
 
     #[Route('/admin/car/review/accept-price/{userType}', name: 'app_car_review_accept_price', methods: ['POST'])]
-    public function acceptPrice(UserType $userType, Request $request, EntityManagerInterface $em, MessageBusInterface $bus): Response
+    public function acceptPrice(UserType $userType, Request $request, EntityManagerInterface $em, MessageBusInterface $bus, TranslatorInterface $translator): Response
     {
         if (!$this->isCsrfTokenValid('accept_price_' . $userType->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
@@ -229,7 +229,7 @@ class CarAdminController extends AbstractController
             $userType->setPricePerUnit($suggested);
             $em->flush();
             $bus->dispatch(new PricePerUnitChangedEvent($userType->getId(), $oldPrice, $suggested));
-            $this->addFlash('success', 'car.review.price.accepted');
+            $this->addFlash('success', $translator->trans('car.review.price.accepted'));
         }
 
         return $this->redirectToRoute('app_car_review');
@@ -253,7 +253,8 @@ class CarAdminController extends AbstractController
     public function delete(
         EntityManagerInterface $em,
         Request $request,
-        ActiveCarService $activeCarService
+        ActiveCarService $activeCarService,
+        TranslatorInterface $translator
     ): Response {
         $car = $activeCarService->getActiveCar();
 
@@ -266,14 +267,14 @@ class CarAdminController extends AbstractController
         }
 
         if ($request->request->get('car_name') !== $car->getName()) {
-            $this->addFlash('error', 'Car name did not match. Deletion cancelled.');
+            $this->addFlash('error', $translator->trans('car.delete.name_mismatch'));
             return $this->redirectToRoute('app_car_delete_confirm');
         }
 
         $em->remove($car);
         $em->flush();
 
-        $this->addFlash('success', 'Car deleted.');
+        $this->addFlash('success', $translator->trans('car.deleted'));
 
         return $this->redirectToRoute('app_car_show');
     }

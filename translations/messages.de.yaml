@@ -128,6 +128,10 @@ booking:
   calendar: Buchungskalender
   delete: Buchung löschen
   update: Buchung aktualisieren
+  created: Buchung erstellt.
+  updated: Buchung aktualisiert.
+  deleted: Buchung gelöscht.
+  delete_not_allowed: Du kannst nur deine eigenen Buchungen löschen.
 car:
   add: Fahrzeug hinzufügen
   created: Fahrzeug erfolgreich erstellt.
@@ -141,6 +145,9 @@ car:
       name_label: "Fahrzeugnamen zur Bestätigung eingeben:"
       confirm_button: Fahrzeug löschen
       cancel: Abbrechen
+    name_mismatch: Fahrzeugname stimmt nicht überein. Löschen abgebrochen.
+  updated: Fahrzeug aktualisiert.
+  deleted: Fahrzeug gelöscht.
   bookings:
     next: Nächste Buchungen
   costs:
@@ -299,6 +306,10 @@ expenses:
     new: Neue Ausgabe
     add: Ausgabe erstellen
     for: Neue Ausgabe für
+  created: Ausgabe erstellt.
+  updated: Ausgabe aktualisiert.
+  deleted: Ausgabe gelöscht.
+  delete_not_allowed: Du kannst nur Ausgaben löschen, die du erstellt oder bearbeitet hast.
 fixed: Steht fest
 from: von
 fuel: Sprit
@@ -307,6 +318,8 @@ invitation:
   invite_another: Weitere Person hinzufügen
   sent: "Einladungen gesendet an: %emails%"
   already_pending: "Übersprungen — Einladung bereits ausstehend für: %emails%"
+  deleted: Einladung gelöscht.
+  delete_not_allowed: Diese Einladung wurde von einer anderen Person erstellt. Du kannst nur Einladungen löschen, die du selbst erstellt hast.
   email:
     language: E-Mail-Sprache
     subject: "Du wurdest eingeladen, Car Coop beizutreten!"
@@ -356,6 +369,10 @@ payments:
     update: Zahlung aktualisieren
     for: Zahlung bearbeiten für
   type: Zahlungsart
+  created: Zahlung erstellt.
+  updated: Zahlung aktualisiert.
+  deleted: Zahlung gelöscht.
+  delete_not_allowed: Du kannst nur Zahlungen löschen, an denen du beteiligt bist.
 paypal: Paypal
 price:
   per: Preis pro
@@ -398,6 +415,10 @@ user:
       occasional_use: Mitglieder dieser Gruppe nutzen das Fahrzeug nur gelegentlich (z. B. Gäste).
     error:
       orphaned_users: Speichern nicht möglich — ein oder mehrere Mitglieder wären danach in keiner Gruppe mehr. Bitte weise sie zuerst einer anderen Gruppe zu.
+    created: Benutzergruppe erstellt.
+    updated: Benutzergruppe aktualisiert.
+    deleted: Benutzergruppe gelöscht.
+    delete_blocked: Löschen abgebrochen. Die Benutzergruppe enthält noch Mitglieder.
   groups: Benutzungsgruppen
   inactive: Inaktiv
   locale: Sprache
@@ -423,7 +444,12 @@ user:
       warning: "Möchtest Du Dein Konto wirklich löschen? Falls Du Fahrten, Ausgaben oder Zahlungen erfasst hast, wird Dein Konto stattdessen deaktiviert und anonymisiert."
       confirm_button: Konto löschen
       cancel: Abbrechen
+    not_allowed: Du darfst diese Benutzer*in nicht löschen.
+    has_entries: Benutzer*in hat Einträge. Löschen nicht möglich. Stattdessen deaktiviert.
   register: Registrieren
+  updated: Profil aktualisiert.
+  deleted: Benutzer*in gelöscht.
+  already_logged_in: Du bist bereits angemeldet.
   status: Status
   type: Gruppe
   verified: Verifiziert
@@ -444,6 +470,7 @@ trips:
   edit:
     with: Fahrt bearbeiten mit
     update: Fahrt aktualisieren
+    blocked: "Bearbeitung abgebrochen. Es gibt neuere Fahrten für dieses Fahrzeug. Nur die letzte Fahrt kann bearbeitet werden."
   add:
     add: Fahrt hinzufügen
     new: Neue Fahrt
@@ -452,6 +479,10 @@ trips:
   mileage:
     start: Tachostand Start
     end: Tachostand Ende
+  created: Fahrt erstellt.
+  updated: Fahrt aktualisiert.
+  deleted: Fahrt gelöscht.
+  delete_blocked: "Löschen abgebrochen. Es gibt neuere Fahrten für dieses Fahrzeug. Nur die letzte Fahrt kann gelöscht werden."
 registration:
   form:
     headline: Registrierung
@@ -464,6 +495,9 @@ registration:
     spam_hint: "Keine E-Mail erhalten? Überprüfe deinen Spam-Ordner."
     resend: Bestätigungs-E-Mail erneut senden
     login_link: Zurück zur Anmeldung
+  already_logged_in: Du bist bereits angemeldet.
+  invitation_not_found: Einladung nicht gefunden (oder abgelaufen).
+  email_verified: Deine E-Mail-Adresse wurde bestätigt.
 remember:
   me: Erinnere Dich an mich
 sharing:
@@ -500,3 +534,6 @@ cancel: Abbrechen
 confirm_delete_title: Löschen bestätigen
 form:
   optional: optional
+error:
+  csrf_invalid: Ungültiges CSRF-Token.
+  invalid_request: Ungültige Anfrage.

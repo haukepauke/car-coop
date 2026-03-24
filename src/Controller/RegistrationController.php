@@ -62,11 +62,11 @@ class RegistrationController extends AbstractController
             '_locale' => 'en|de',
         ],
     )]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             // user is already authenticated: redirect them to their target page instead
-            $this->addFlash('error', 'User already logged in!');
+            $this->addFlash('error', $translator->trans('registration.already_logged_in'));
             return $this->redirectToRoute('app_car_show');
         }
         $user = new User();
@@ -127,11 +127,12 @@ class RegistrationController extends AbstractController
         MessageBusInterface $messageBus,
         UserAuthenticatorInterface $userAuthenticator,
         \App\Security\LoginFormAuthenticator $authenticator,
+        TranslatorInterface $translator,
         $hash
     ): Response {
         $invite = $inviteRepo->findOneByHash($hash);
         if (null === $invite) {
-            $this->addFlash('error', 'Invitation not found (or has expired)!');
+            $this->addFlash('error', $translator->trans('registration.invitation_not_found'));
 
             return $this->redirectToRoute('app_homepage');
         }
@@ -240,7 +241,7 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', $translator->trans('registration.email_verified'));
 
         if ($user->getUserTypes()->isEmpty()) {
             // A user without user types is new without car, redirect to the car creation page

@@ -1,5 +1,15 @@
 {% use 'bootstrap_4_layout.html.twig' %}
 
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        <div class="invalid-feedback d-block">
+            {%- for error in errors -%}
+                <div><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error.message }}</div>
+            {%- endfor -%}
+        </div>
+    {%- endif %}
+{%- endblock form_errors %}
+
 {% block form_label -%}
     {% if label is not same as(false) %}
         {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) %}

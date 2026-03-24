@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -22,10 +23,10 @@ class SecurityController extends AbstractController
             '_locale' => 'en|de',
         ],
     )]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, TranslatorInterface $translator): Response
     {
         if ($this->getUser()) {
-            $this->addFlash('success', 'You are already logged in!');
+            $this->addFlash('success', $translator->trans('user.already_logged_in'));
 
             if (null === $this->getUser()->getCar()) {
                 return $this->redirectToRoute('app_car_new');

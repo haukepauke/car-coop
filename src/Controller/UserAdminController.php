@@ -153,7 +153,7 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/edit', name: 'app_user_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader): Response
+    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader, TranslatorInterface $translator): Response
     {
         /** @var User */
         $user = $this->getUser();
@@ -178,7 +178,7 @@ class UserAdminController extends AbstractController
                 $request->getSession()->set('_locale', $user->getLocale());
             }
 
-            $this->addFlash('success', 'User updated!');
+            $this->addFlash('success', $translator->trans('user.updated'));
 
             return $this->redirectToRoute('app_user_list');
         }
@@ -231,16 +231,16 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete')]
-    public function deleteInvite(EntityManagerInterface $em, Invitation $invite): Response
+    public function deleteInvite(EntityManagerInterface $em, Invitation $invite, TranslatorInterface $translator): Response
     {
         if ($this->getUser() !== $invite->getCreatedBy()) {
-            $this->addFlash('error', 'Invitation was created by another user. You can only delete invites created by yourself.');
+            $this->addFlash('error', $translator->trans('invitation.delete_not_allowed'));
         }
 
         $em->remove($invite);
         $em->flush();
 
-        $this->addFlash('success', 'Invitation deleted.');
+        $this->addFlash('success', $translator->trans('invitation.deleted'));
 
         return $this->redirectToRoute('app_user_list');
     }
@@ -251,13 +251,14 @@ class UserAdminController extends AbstractController
         User $user,
         ActiveCarService $activeCarService,
         MessageBusInterface $messageBus,
+        TranslatorInterface $translator,
     ): Response {
         $activeCar = $activeCarService->getActiveCar();
         // Do not allow to delete users of other cars and do not allow to delete yourself
         /** @var \App\Entity\User $currentUser */
         $currentUser = $this->getUser();
         if ($activeCar !== $user->getCar() || $currentUser->getId() === $user->getId()) {
-            $this->addFlash('error', 'You are not allowed to delete this user.');
+            $this->addFlash('error', $translator->trans('user.delete.not_allowed'));
         }
 
         // Capture data before deactivation/deletion changes or removes it
@@ -272,13 +273,13 @@ class UserAdminController extends AbstractController
             $em->flush();
 
             $messageBus->dispatch($event);
-            $this->addFlash('success', 'User has entries. Deletion not possible. User deactivated instead.');
+            $this->addFlash('success', $translator->trans('user.delete.has_entries'));
         } else {
             $em->remove($user);
             $em->flush();
 
             $messageBus->dispatch($event);
-            $this->addFlash('success', 'User deleted.');
+            $this->addFlash('success', $translator->trans('user.deleted'));
         }
 
         return $this->redirectToRoute('app_user_list');

@@ -42,7 +42,7 @@ class Car
     private $licensePlate;
 
     #[ORM\Column(type: 'integer')]
-    #[Assert\PositiveOrZero(message: 'Please enter a positive value')]
+    #[Assert\PositiveOrZero(message: 'car.positive_value')]
     #[Groups(['car:read'])]
     private $mileage;
 
@@ -85,7 +85,7 @@ class Car
     private ?string $fuelType = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    #[Assert\PositiveOrZero(message: 'Please enter a positive value')]
+    #[Assert\PositiveOrZero(message: 'car.positive_value')]
     #[Groups(['car:read'])]
     private ?float $fuelConsumption100 = null;
 

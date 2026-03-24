@@ -1,0 +1,15 @@
+trip:
+  backwards: Bist du rückwärts gefahren?!
+  end_date_before_start: Das Enddatum muss gleich oder nach dem Startdatum liegen.
+booking:
+  not_in_past: Buchungen können nicht in der Vergangenheit erstellt werden.
+  end_before_start: Das Enddatum muss nach dem Startdatum der Buchung liegen.
+payment:
+  sender_receiver_same: Sender und Empfänger müssen unterschiedliche Personen sein.
+user:
+  email_taken: Es gibt bereits ein Konto mit dieser E-Mail-Adresse.
+  password_insecure: Dieses Passwort ist unsicher. Bitte wähle ein stärkeres Passwort.
+expense:
+  amount_required: Bitte gib einen positiven Betrag ein.
+car:
+  positive_value: Bitte einen Wert von null oder größer eingeben.

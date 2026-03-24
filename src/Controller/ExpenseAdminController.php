@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExpenseAdminController extends AbstractController
 {
@@ -46,7 +47,7 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/new', name: 'app_expense_new')]
-    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService): Response
+    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService, TranslatorInterface $translator): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -69,7 +70,7 @@ class ExpenseAdminController extends AbstractController
             $em->persist($expense);
             $em->flush();
 
-            $this->addFlash('success', 'Expense created!');
+            $this->addFlash('success', $translator->trans('expenses.created'));
 
             return $this->redirectToRoute('app_expense_list');
         }
@@ -84,7 +85,7 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/edit/{expense}', name: 'app_expense_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, Expense $expense): Response
+    public function edit(EntityManagerInterface $em, Request $request, Expense $expense, TranslatorInterface $translator): Response
     {
         $car = $expense->getCar();
         $form = $this->createForm(
@@ -100,7 +101,7 @@ class ExpenseAdminController extends AbstractController
             $em->persist($trip);
             $em->flush();
 
-            $this->addFlash('success', 'Expense updated!');
+            $this->addFlash('success', $translator->trans('expenses.updated'));
 
             return $this->redirectToRoute('app_expense_list');
         }
@@ -116,10 +117,10 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/delete/{expense}', name: 'app_expense_delete')]
-    public function delete(EntityManagerInterface $em, Expense $expense)
+    public function delete(EntityManagerInterface $em, Expense $expense, TranslatorInterface $translator)
     {
         if ($this->getUser() !== $expense->getEditor()) {
-            $this->addFlash('error', 'You can only delete expenses you created or edited.');
+            $this->addFlash('error', $translator->trans('expenses.delete_not_allowed'));
 
             return $this->redirectToRoute('app_expense_list');
         }
@@ -127,7 +128,7 @@ class ExpenseAdminController extends AbstractController
         $em->remove($expense);
         $em->flush();
 
-        $this->addFlash('success', 'Expense deleted.');
+        $this->addFlash('success', $translator->trans('expenses.deleted'));
 
         return $this->redirectToRoute('app_expense_list');
     }
