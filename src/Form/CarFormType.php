@@ -17,6 +17,8 @@ class CarFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $mileageDisabled = $options['mileage_disabled'];
+
         $builder
             ->add(
                 'name',
@@ -35,7 +37,11 @@ class CarFormType extends AbstractType
                     'label' => 'car.form.licenseplate',
                 ]
             )
-            ->add('mileage', IntegerType::class, ['help' => 'Distance, this car has done in its live so far (be exact here)'])
+            ->add('mileage', IntegerType::class, [
+                'label'    => 'car.form.mileage',
+                'help'     => $mileageDisabled ? 'car.form.help.mileage_locked' : 'car.form.help.mileage',
+                'disabled' => $mileageDisabled,
+            ])
             ->add(
                 'milageUnit',
                 ChoiceType::class,
@@ -123,7 +129,9 @@ class CarFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Car::class,
+            'data_class'       => Car::class,
+            'mileage_disabled' => false,
         ]);
+        $resolver->setAllowedTypes('mileage_disabled', 'bool');
     }
 }

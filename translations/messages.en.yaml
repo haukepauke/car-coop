@@ -185,7 +185,11 @@ car:
         picture: Upload a picture in JPEG, PNG or GIF format
       vendor: The manufacturer of the vehicle
       fuelconsumption100: Average fuel consumption per 100 km/mi
+      mileage: The total distance this vehicle has covered in its lifetime (be precise — this is the starting value for mileage tracking)
+      mileage_locked: Mileage cannot be changed here once trips have been recorded.
     licenseplate: License plate
+    mileage: Mileage
+    mileage_locked_notice: Mileage cannot be changed here once trips have been recorded.
     name: Name
     make: Make
     profile:

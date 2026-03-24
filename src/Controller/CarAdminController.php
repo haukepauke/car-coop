@@ -8,6 +8,7 @@ use App\Form\CarFormType;
 use App\Message\Event\PricePerUnitChangedEvent;
 use App\Repository\BookingRepository;
 use App\Repository\CarRepository;
+use App\Repository\TripRepository;
 use App\Service\ActiveCarService;
 use App\Service\CarChartService;
 use App\Service\CarPdfExportService;
@@ -84,13 +85,13 @@ class CarAdminController extends AbstractController
     }
 
     #[Route('/admin/car/edit', name: 'app_car_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader, ActiveCarService $activeCarService): Response
+    public function edit(EntityManagerInterface $em, Request $request, FileUploaderService $fileUploader, ActiveCarService $activeCarService, TripRepository $tripRepo): Response
     {
         $car = $activeCarService->getActiveCar();
 
-        // TODO: Disable mileage field when trips exist
+        $mileageDisabled = count($tripRepo->findByCar($car)) > 0;
 
-        $form = $this->createForm(CarFormType::class, $car);
+        $form = $this->createForm(CarFormType::class, $car, ['mileage_disabled' => $mileageDisabled]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -114,9 +115,10 @@ class CarAdminController extends AbstractController
         return $this->render(
             'admin/car/edit.html.twig',
             [
-                'carForm' => $form->createView(),
-                'car'     => $car,
-                'isAdmin' => $car->isAdminUser($this->getUser()),
+                'carForm'         => $form->createView(),
+                'car'             => $car,
+                'isAdmin'         => $car->isAdminUser($this->getUser()),
+                'mileageDisabled' => $mileageDisabled,
             ]
         );
     }
