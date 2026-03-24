@@ -29,3 +29,4 @@ framework:
             App\Message\Event\InvitationCreatedEvent: async
             App\Message\Event\InvitationAcceptedEvent: async
             App\Message\Event\UserRemovedEvent: async
+            App\Message\Event\MilestoneReachedEvent: async

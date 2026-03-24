@@ -61,6 +61,39 @@ board_system:
   invitation_accepted: "<strong>%user%</strong> ist <strong>%car%</strong> beigetreten."
   user_removed: "<strong>%user%</strong> hat <strong>%car%</strong> verlassen oder wurde entfernt."
   price_per_unit_changed: "Der Preis pro Einheit für die Gruppe <strong>%group%</strong> bei <strong>%car%</strong> wurde von %old_price% € auf <strong>%new_price% €</strong> geändert."
+  milestone_100k: |
+    <p><strong>%car%</strong> hat soeben <strong>100.000 %unit%</strong> erreicht! Der Tacho zeigt erstmals sechs Stellen &mdash; ein historischer Moment!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Wenn alles unter Kontrolle zu sein scheint, fährst du nicht schnell genug.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Mario Andretti</figcaption></figure>
+  milestone_200k: |
+    <p><strong>%car%</strong> überschreitet <strong>200.000 %unit%</strong>! Zweihunderttausend &mdash; das sind ungefähr fünf Erdumrundungen. Keine Erklärungen nötig &mdash; das ist pure Hingabe!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Wenn man gewinnt, macht man sich nicht viele Gedanken darüber. Nur wenn man verliert, sucht man Erklärungen.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Niki Lauda</figcaption></figure>
+  milestone_300k: |
+    <p><strong>%car%</strong> erreicht <strong>300.000 %unit%</strong>! Damit hättest du bis zum Mond und fast wieder zurückfahren können. Und <strong>%car%</strong> hat eindeutig alles gegeben!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Man verpflichtet sich auf einem Niveau, bei dem es keine Kompromisse gibt. Man gibt alles, was man hat.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Ayrton Senna</figcaption></figure>
+  milestone_400k: |
+    <p><strong>%car%</strong> jagt an <strong>400.000 %unit%</strong> vorbei! Das entspricht der Entfernung zum Mond &mdash; zurückgelegt auf vier Rädern! Keine Katastrophen hier &mdash; nur herrlicher Kilometerstand!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Um in diesem Spiel etwas zu erreichen, muss man bereit sein, auf der Grenze zur Katastrophe zu tanzen.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Stirling Moss</figcaption></figure>
+  milestone_500k: |
+    <p>EINE HALBE MILLION! <strong>%car%</strong> cruist an <strong>500.000 %unit%</strong> vorbei! Fünfhunderttausend &mdash; auf halbem Weg zur Legende. Heute kam alles wunderbar zusammen.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;So vieles musste zusammenkommen: das Auto, das Team, der Fahrer.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Michael Schumacher</figcaption></figure>
+  milestone_600k: |
+    <p><strong>%car%</strong> pflügt durch <strong>600.000 %unit%</strong>! Das sind fünfzehn Erdumrundungen. Und <strong>%car%</strong> hat uns durch jeden Kilometer des Wandels getragen.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Der Wandel kommt nicht, wenn wir auf andere Personen oder andere Zeiten warten. Wir sind es, auf die wir gewartet haben.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Barack Obama</figcaption></figure>
+  milestone_700k: |
+    <p><strong>%car%</strong> schießt an <strong>700.000 %unit%</strong> vorbei! Auf dieser Strecke hättest du fast die Route von der Erde zur Venus zurückgelegt. Treffender könnte man es nicht sagen.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Ich fahre einfach gerne schnell.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Jim Clark</figcaption></figure>
+  milestone_800k: |
+    <p><strong>%car%</strong> rast an <strong>800.000 %unit%</strong> vorbei! Nur noch 200.000 bis zur magischen Million! <strong>%car%</strong> ist der lebende &mdash; und fahrende &mdash; Beweis!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Racing is a great mania to which one must sacrifice everything.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; S&eacute;bastien Loeb</figcaption></figure>
+  milestone_900k: |
+    <p><strong>%car%</strong> donnert durch <strong>900.000 %unit%</strong>! Der vorletzte Meilenstein &mdash; nur noch hunderttausend! Für <strong>%car%</strong> ist dies sehr wohl der Beginn des Endes &mdash; des Weges zur Million!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Dies ist nicht das Ende. Es ist nicht einmal der Anfang des Endes. Aber es ist vielleicht das Ende des Anfangs.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Winston Churchill</figcaption></figure>
+  milestone_1000k: |
+    <p>EINE MILLION! <strong>%car%</strong> bezwingt den ultimativen Meilenstein: <strong>1.000.000 %unit%</strong>! Heute macht <strong>%car%</strong> seinen eigenen Riesensprung in die Automobilgeschichte. HERZLICHEN GLÜCKWUNSCH!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Das ist ein kleiner Schritt für einen Menschen, aber ein riesiger Sprung für die Menschheit.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Neil Armstrong</figcaption></figure>
+  milestone_repeating: |
+    <p><strong>%car%</strong> hat soeben <strong>%milestone% %unit%</strong> überschritten &mdash; was für eine wunderschön poetische Zahl! Diese Palindromziffern kommen nicht jeden Tag vor.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&bdquo;Der Weg geht immer weiter, weit über das Tor hinaus, woher er kam.&ldquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; J.R.R. Tolkien</figcaption></figure>
 filter:
   year: Jahr
   all_years: Alle Jahre
@@ -285,6 +318,8 @@ event_email:
     changed_detail: "Der Preis pro Einheit für die Gruppe %group% bei %car% wurde angepasst."
     old_price: Bisheriger Preis
     new_price: Neuer Preis
+  milestone:
+    subject: "Meilenstein erreicht: %milestone% %unit% mit %car%!"
   broadcast:
     subject: "Serverankündigung: %subject%"
   cheers: Viele Grüße!
