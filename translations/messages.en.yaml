@@ -16,14 +16,14 @@ tour:
     desc: "Key facts about the vehicle — license plate, mileage, annual distance, costs, fuel type and consumption — are shown as cards here."
   bookings:
     title: Upcoming bookings
-    desc: "The next scheduled bookings are listed here so you always know when the car is available."
+    desc: "The next scheduled bookings are listed here so you always know when the vehicle is available."
   charts:
     title: Statistics
     desc: "These charts show the distance driven and the balance between members over time."
   nav:
     messages:
       title: Message board
-      desc: "Share news, questions or updates with all members of your car cooperative."
+      desc: "Share news, questions or updates with all members of your vehicle cooperative."
     calendar:
       title: Booking calendar
       desc: "See when the vehicle is booked and reserve it for your own trips."
@@ -38,7 +38,7 @@ tour:
       desc: "Track money transfers between members to settle outstanding balances."
     parking:
       title: Parking location
-      desc: "See where the car is currently parked on a map, and update the location when you park it."
+      desc: "See where the vehicle is currently parked on a map, and update the location when you park it."
     admin:
       title: Administration
       desc: "Add or manage vehicles and control who has access to the cooperative."
@@ -137,7 +137,7 @@ car:
     button: Delete vehicle
     confirm:
       title: Delete vehicle
-      warning: "This action is irreversible. All trips, expenses, payments and bookings for this car will be permanently deleted."
+      warning: "This action is irreversible. All trips, expenses, payments and bookings for this vehicle will be permanently deleted."
       name_label: "Enter the vehicle name to confirm deletion:"
       confirm_button: Delete vehicle
       cancel: Cancel
@@ -305,9 +305,9 @@ invitation:
   already_pending: "Skipped — invitation already pending for: %emails%"
   email:
     language: Email language
-    subject: "You have been invited to join car sharing with Car Coop!"
-    greeting: "Hi! You have been invited by %inviter% (%inviter_email%) to join car sharing for %car% at Car Coop!"
-    description: "Car Coop is a non-profit car sharing platform that allows you to share a car with friends, colleagues or comrades. It helps you manage bookings and keep track of running costs."
+    subject: "You have been invited to join vehicle sharing with Car Coop!"
+    greeting: "Hi! You have been invited by %inviter% (%inviter_email%) to join vehicle sharing for %car% at Car Coop!"
+    description: "Car Coop is a non-profit vehicle sharing platform that allows you to share a vehicle with friends, colleagues or comrades. It helps you manage bookings and keep track of running costs."
     register: "Please click the following link to register:"
     register_link: Register for Car Coop
     cheers: Cheers!
@@ -470,17 +470,17 @@ transport: Transport
 vacation: Vacation
 superadmin:
   title: Super Admin
-  cars: Cars
+  cars: Vehicles
   users: Users
   members: Members
   roles: Roles
-  no_cars: No cars registered.
+  no_cars: No vehicles registered.
   no_users: No users found.
   user_deleted: User deleted.
   user_deactivated: User has entries and was deactivated instead of deleted.
-  car_deleted: Car deleted.
+  car_deleted: Vehicle deleted.
   cannot_delete_self: You cannot delete your own account.
-  confirm_delete_car: "Delete car \"%name%\"? This will delete all associated trips, expenses and bookings."
+  confirm_delete_car: "Delete vehicle \"%name%\"? This will delete all associated trips, expenses and bookings."
   confirm_delete_user: "Delete user \"%name%\"?"
   broadcast:
     title: Broadcast message

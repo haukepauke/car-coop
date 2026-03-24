@@ -16,7 +16,7 @@ tour:
     desc: "Wichtige Daten zum Fahrzeug – Kennzeichen, Kilometerstand, Jahreskilometer, Kosten, Kraftstoffart und -verbrauch – sind hier als Karten dargestellt."
   bookings:
     title: Nächste Buchungen
-    desc: "Die nächsten geplanten Buchungen sind hier aufgelistet, damit du immer weißt, wann das Auto verfügbar ist."
+    desc: "Die nächsten geplanten Buchungen sind hier aufgelistet, damit du immer weißt, wann das Fahrzeug verfügbar ist."
   charts:
     title: Statistiken
     desc: "Diese Diagramme zeigen die zurückgelegte Strecke und den Saldo zwischen den Mitgliedern über die Zeit."
@@ -38,7 +38,7 @@ tour:
       desc: "Verfolge Geldtransfers zwischen den Mitgliedern, um offene Salden auszugleichen."
     parking:
       title: Parkposition
-      desc: "Sieh auf einer Karte, wo das Auto gerade steht, und aktualisiere den Standort nach dem Parken."
+      desc: "Sieh auf einer Karte, wo das Fahrzeug gerade steht, und aktualisiere den Standort nach dem Parken."
     admin:
       title: Administration
       desc: "Fahrzeuge hinzufügen oder verwalten und den Zugang zur Fahrgemeinschaft steuern."
@@ -175,7 +175,7 @@ car:
       current_rates: Aktuelle Preise pro Benutzergruppe (empfohlener neuer Preis fett)
       accept: Vorschlag übernehmen
       accepted: Preis pro Einheit erfolgreich aktualisiert.
-      edit_hint: "Um die Änderung zu übernehmen, gehe zu Admin → Benutzer verwalten → Benutzergruppen bearbeiten."
+      edit_hint: "Um die Änderung zu übernehmen, gehe zu Admin → Benutzer*innen verwalten → Benutzergruppen bearbeiten."
   form:
     help:
       name: Wähle einen guten Namen für Dein Fahrzeug
@@ -307,7 +307,7 @@ invitation:
     language: E-Mail-Sprache
     subject: "Du wurdest eingeladen, Car Coop beizutreten!"
     greeting: "Hi! %inviter% (%inviter_email%) hat dich eingeladen, die Fahrgemeinschaft %car% bei Car Coop beizutreten!"
-    description: "Car Coop ist eine gemeinnützige Carsharing-Plattform, mit der du ein Auto mit Freunden, Kolleginnen oder Mitstreitern teilen kannst. Sie hilft dir, Buchungen zu verwalten und die laufenden Kosten im Blick zu behalten."
+    description: "Car Coop ist eine gemeinnützige Carsharing-Plattform, mit der du ein Fahrzeug mit Freunden, Kolleginnen oder Mitstreitern teilen kannst. Sie hilft dir, Buchungen zu verwalten und die laufenden Kosten im Blick zu behalten."
     register: "Klicke auf den folgenden Link, um dich zu registrieren:"
     register_link: Bei Car Coop registrieren
     cheers: Viele Grüße!
@@ -318,7 +318,7 @@ invitation:
   pending: Offene Einladungen
   onboarding:
     title: Mitglieder einladen
-    description: "Dein Fahrzeug wurde eingerichtet! Lade andere Mitglieder ein, es zu teilen. Du kannst diesen Schritt überspringen und Mitglieder später über Administration → Benutzer verwalten einladen."
+    description: "Dein Fahrzeug wurde eingerichtet! Lade andere Mitglieder ein, es zu teilen. Du kannst diesen Schritt überspringen und Mitglieder später über Administration → Benutzer*innen verwalten einladen."
     submit: Einladungen senden
     invite_another: Weiteres Mitglied hinzufügen
     skip: Überspringen
@@ -390,7 +390,7 @@ user:
     user_moved: Mitglied in neue Gruppe verschoben.
     help:
       name: Wähle einen einprägsamen Namen für die Gruppe!
-      admin: Sind User dieser Gruppe Administrato*innen?
+      admin: Sind Benutzer*innen dieser Gruppe Administrato*innen?
       occasional_use: Mitglieder dieser Gruppe nutzen das Fahrzeug nur gelegentlich (z. B. Gäste).
     error:
       orphaned_users: Speichern nicht möglich — ein oder mehrere Mitglieder wären danach in keiner Gruppe mehr. Bitte weise sie zuerst einer anderen Gruppe zu.
@@ -404,7 +404,7 @@ user:
   first_login: Erste Anmeldung
   last_login: Letzte Anmeldung
   logout: Ausloggen
-  manage: User verwalten
+  manage: Benutzer*innen verwalten
   name: Name
   of: Benutzer*innen von
   profile:
@@ -471,26 +471,26 @@ vacation: Urlaub
 superadmin:
   title: Super Admin
   cars: Fahrzeuge
-  users: Benutzer
+  users: Benutzer*innen
   members: Mitglieder
   roles: Rollen
   no_cars: Keine Fahrzeuge registriert.
-  no_users: Keine Benutzer gefunden.
-  user_deleted: Benutzer gelöscht.
-  user_deactivated: Benutzer hat Einträge und wurde statt gelöscht deaktiviert.
+  no_users: Keine Benutzer*innen gefunden.
+  user_deleted: Benutzer*in gelöscht.
+  user_deactivated: Benutzer*in hat Einträge und wurde statt gelöscht deaktiviert.
   car_deleted: Fahrzeug gelöscht.
   cannot_delete_self: Du kannst deinen eigenen Account nicht löschen.
   confirm_delete_car: "Fahrzeug \"%name%\" löschen? Alle zugehörigen Fahrten, Ausgaben und Buchungen werden ebenfalls gelöscht."
-  confirm_delete_user: "Benutzer \"%name%\" löschen?"
+  confirm_delete_user: "Benutzer*in \"%name%\" löschen?"
   broadcast:
     title: Nachricht an alle senden
-    description: "Eine Nachricht auf allen Pinnwänden des Servers posten und per E-Mail an alle Benutzer senden."
+    description: "Eine Nachricht auf allen Pinnwänden des Servers posten und per E-Mail an alle Benutzer*innen senden."
     subject: Betreff
     content: Nachricht
-    submit: An alle Benutzer senden
+    submit: An alle Benutzer*innen senden
     sent: "Nachricht gesendet – auf allen Pinnwänden gepostet und für den E-Mail-Versand eingereiht."
     error_empty: "Betreff und Nachrichtentext sind erforderlich."
-    confirm: "Diese Nachricht an alle Benutzer auf dem Server senden?"
+    confirm: "Diese Nachricht an alle Benutzer*innen auf dem Server senden?"
 yes: Ja
 cancel: Abbrechen
 confirm_delete_title: Löschen bestätigen
