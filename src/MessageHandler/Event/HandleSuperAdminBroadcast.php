@@ -56,6 +56,6 @@ class HandleSuperAdminBroadcast
                 'content' => $event->getContent(),
             ]);
 
-        $this->mailer->sendMails($users, $email, ['%subject%' => $event->getSubject()]);
+        $this->mailer->sendMails($users, $email, ['%subject%' => $event->getSubject()], true);
     }
 }

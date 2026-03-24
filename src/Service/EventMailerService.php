@@ -26,7 +26,7 @@ class EventMailerService
         $this->translator = $translator;
     }
 
-    public function sendMails(ArrayCollection $users, TemplatedEmail $email, array $subjectParams = []): void
+    public function sendMails(ArrayCollection $users, TemplatedEmail $email, array $subjectParams = [], bool $ignoreNotificationPreference = false): void
     {
         $this->logger->info('sendMails called', ['users' => $users->toArray()]);
 
@@ -37,7 +37,7 @@ class EventMailerService
                 continue;
             }
 
-            if (!$user->isNotifiedOnEvents()) {
+            if (!$ignoreNotificationPreference && !$user->isNotifiedOnEvents()) {
                 $this->logger->info('Skipping user, isNotifiedOnEvents is false', ['user' => $user->getEmail()]);
                 continue;
             }
