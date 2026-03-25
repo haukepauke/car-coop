@@ -1,0 +1,15 @@
+trip:
+  backwards: ¿Has conducido marcha atrás?!
+  end_date_before_start: La fecha de fin debe ser igual o posterior a la fecha de inicio.
+booking:
+  not_in_past: Las reservas no pueden hacerse en el pasado.
+  end_before_start: La fecha de fin debe ser posterior a la fecha de inicio de la reserva.
+payment:
+  sender_receiver_same: El remitente y el destinatario del pago deben ser usuarios distintos.
+user:
+  email_taken: Ya existe una cuenta con esta dirección de correo electrónico.
+  password_insecure: Esta contraseña es insegura. Por favor, elige una más segura.
+expense:
+  amount_required: Por favor, introduce un importe positivo.
+car:
+  positive_value: Por favor, introduce un valor igual o mayor que cero.

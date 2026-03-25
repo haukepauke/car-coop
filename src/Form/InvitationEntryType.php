@@ -36,7 +36,7 @@ class InvitationEntryType extends AbstractType
             ])
             ->add('locale', ChoiceType::class, [
                 'label'   => 'invitation.email.language',
-                'choices' => ['English' => 'en', 'Deutsch' => 'de'],
+                'choices' => ['English' => 'en', 'Deutsch' => 'de', 'Nederlands' => 'nl', 'Français' => 'fr', 'Español' => 'es', 'Polski' => 'pl'],
                 'data'    => $options['default_locale'],
             ]);
     }

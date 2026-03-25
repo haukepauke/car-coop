@@ -1,0 +1,577 @@
+tour:
+  banner:
+    title: "Nieuw hier? Volg een snelle rondleiding!"
+    desc: "We laten je de belangrijkste functies van Car Coop zien."
+    start: Rondleiding starten
+    dismiss: Niet geïnteresseerd
+  welcome:
+    title: "Welkom bij Car Coop!"
+    desc: "Deze korte rondleiding stelt je voor aan de belangrijkste functies. Je kunt hem op elk moment overslaan."
+  car:
+    title: Jouw voertuig
+    desc: "Elk paneel toont één voertuig. Klik op de koptekst om het uit te vouwen en alle details te zien."
+  stats:
+    title: Voertuiggegevens
+    desc: "Belangrijke informatie over het voertuig — kenteken, kilometerstand, jaarlijkse afstand, kosten, brandstoftype en verbruik — worden hier als kaarten weergegeven."
+  bookings:
+    title: Aankomende boekingen
+    desc: "De volgende geplande boekingen worden hier weergegeven, zodat je altijd weet wanneer het voertuig beschikbaar is."
+  charts:
+    title: Statistieken
+    desc: "Deze grafieken tonen de gereden afstand en het saldo tussen leden over de tijd."
+  nav:
+    messages:
+      title: Prikbord
+      desc: "Deel nieuws, vragen of updates met alle leden van jouw voertuigcoöperatie."
+    calendar:
+      title: Boekingskalender
+      desc: "Bekijk wanneer het voertuig geboekt is en reserveer het voor je eigen ritten."
+    trips:
+      title: Ritten
+      desc: "Registreer elke rit die je maakt — afstand, datum en doel. Dit is de basis voor de kostenberekening."
+    expenses:
+      title: Uitgaven
+      desc: "Registreer brandstof, reparaties en andere kosten. Deze worden afgetrokken van de berekende kosten van je ritten."
+    payments:
+      title: Betalingen
+      desc: "Houd geldoverdrachten tussen leden bij om openstaande saldi te vereffenen."
+    parking:
+      title: Parkeerlocatie
+      desc: "Bekijk waar het voertuig momenteel geparkeerd staat op een kaart en werk de locatie bij wanneer je het parkeert."
+    admin:
+      title: Beheer
+      desc: "Voeg voertuigen toe of beheer ze en bepaal wie toegang heeft tot de coöperatie."
+    user:
+      title: Jouw profiel
+      desc: "Bewerk je persoonlijke gegevens of log hier uit."
+  progress: "{{current}} van {{total}}"
+  btn:
+    next: Volgende
+    prev: Terug
+    done: Klaar
+
+board_system:
+  trip_added: "<strong>%user%</strong> heeft een nieuwe rit toegevoegd met <strong>%car%</strong>."
+  booking_added: "<strong>%user%</strong> heeft een nieuwe boeking toegevoegd voor <strong>%car%</strong> (<em>%start%</em> – <em>%end%</em>)."
+  booking_updated: "<strong>%user%</strong> heeft een boeking bijgewerkt voor <strong>%car%</strong>."
+  booking_deleted: "<strong>%user%</strong> heeft een boeking verwijderd voor <strong>%car%</strong>: <em>%title%</em> (%start% – %end%)."
+  payment_added: "<strong>%from%</strong> heeft een betaling gestuurd aan <strong>%to%</strong> voor <strong>%car%</strong>."
+  invitation_created: "<strong>%user%</strong> heeft <em>%email%</em> uitgenodigd om lid te worden van <strong>%car%</strong>."
+  invitation_accepted: "<strong>%user%</strong> is lid geworden van <strong>%car%</strong>."
+  user_removed: "<strong>%user%</strong> heeft <strong>%car%</strong> verlaten of is verwijderd."
+  price_per_unit_changed: "De prijs per eenheid voor groep <strong>%group%</strong> in <strong>%car%</strong> is gewijzigd van %old_price% € naar <strong>%new_price% €</strong>."
+  milestone_100k: |
+    <p><strong>%car%</strong> heeft zojuist <strong>100.000 %unit%</strong> bereikt! De teller heeft de grens van zes cijfers doorbroken — een historisch moment!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;If everything seems under control, you're not going fast enough.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Mario Andretti</figcaption></figure>
+  milestone_200k: |
+    <p><strong>%car%</strong> passeert <strong>200.000 %unit%</strong>! Tweehonderdduizend — ongeveer vijf rondjes om de evenaar van de Aarde. Hier hoeft niets te worden geanalyseerd — dit is pure toewijding!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;When you win, you don't examine it very much. It is only when you lose that you think about it.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Niki Lauda</figcaption></figure>
+  milestone_300k: |
+    <p><strong>%car%</strong> bereikt <strong>300.000 %unit%</strong>! Je had naar de Maan kunnen rijden en het grootste deel van de weg terug. En duidelijk heeft <strong>%car%</strong> alles gegeven!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;You commit yourself to such a level that there's no compromise. You give everything you have.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Ayrton Senna</figcaption></figure>
+  milestone_400k: |
+    <p><strong>%car%</strong> raast voorbij <strong>400.000 %unit%</strong>! Dat is de afstand tot de Maan — gehaald op vier wielen! Geen rampen hier — gewoon glorieuze kilometers!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;To achieve anything in this game, you must be prepared to dabble on the boundary of disaster.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Stirling Moss</figcaption></figure>
+  milestone_500k: |
+    <p>EEN HALF MILJOEN! <strong>%car%</strong> kruist de grens van <strong>500.000 %unit%</strong>! Vijfhonderdduizend — halverwege de legendestatus. Vandaag is alles prachtig samengekomen.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;There are so many things that had to come together: the car, the team, the driver.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Michael Schumacher</figcaption></figure>
+  milestone_600k: |
+    <p><strong>%car%</strong> dendert door <strong>600.000 %unit%</strong>! Dat zijn vijftien rondjes om de evenaar van de Aarde. En <strong>%car%</strong> heeft ons door elke kilometer verandering gedragen.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;Change will not come if we wait for some other person or some other time. We are the ones we've been waiting for.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Barack Obama</figcaption></figure>
+  milestone_700k: |
+    <p><strong>%car%</strong> schiet voorbij <strong>700.000 %unit%</strong>! Op deze afstand heb je bijna de route van de Aarde naar Venus afgelegd. Wij hadden het zelf niet beter kunnen zeggen.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;I just like going fast.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Jim Clark</figcaption></figure>
+  milestone_800k: |
+    <p><strong>%car%</strong> scheurt voorbij <strong>800.000 %unit%</strong>! Nog maar 200.000 te gaan naar het magische miljoen! <strong>%car%</strong> is het levende — en rijdende — bewijs!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;Racing is a great mania to which one must sacrifice everything.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Sébastien Loeb</figcaption></figure>
+  milestone_900k: |
+    <p><strong>%car%</strong> dondert door <strong>900.000 %unit%</strong>! Het voorlaatste mijlpaal — nog maar honderdduizend te gaan! Voor <strong>%car%</strong> is dit werkelijk het begin van het einde — van de weg naar een miljoen!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;This is not the end. It is not even the beginning of the end. But it is, perhaps, the end of the beginning.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Winston Churchill</figcaption></figure>
+  milestone_1000k: |
+    <p>EEN MILJOEN! <strong>%car%</strong> verovert de ultieme mijlpaal: <strong>1.000.000 %unit%</strong>! Vandaag maakt <strong>%car%</strong> zijn eigen reuzensprong in de autogeschiedenis. GEFELICITEERD!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;That's one small step for man, one giant leap for mankind.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Neil Armstrong</figcaption></figure>
+  milestone_repeating: |
+    <p><strong>%car%</strong> is zojuist voorbij <strong>%milestone% %unit%</strong> gerold — wat een prachtig poëtisch getal! Die herhalende cijfers kom je niet elke dag tegen.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;The Road goes ever on and on, down from the door where it began.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; J.R.R. Tolkien</figcaption></figure>
+filter:
+  year: Jaar
+  all_years: Alle jaren
+  user: Gebruiker
+  all_users: Alle gebruikers
+  total: Totaal
+
+messageboard:
+  title: Prikbord
+  total_messages: "%count% berichten"
+  new_message: Nieuw bericht
+  post: Bericht plaatsen
+  no_messages: Nog geen berichten.
+  system: Systeem
+  server_admin: ServerBeheer
+  toggle_sticky: Bericht vastpinnen/losmaken
+  delete: Bericht verwijderen
+  delete_confirm: Dit bericht echt verwijderen?
+  attach_photos: Foto's bijvoegen
+  photo_hint: Je kunt meerdere afbeeldingen selecteren. Maximaal 4 MB per foto.
+  photo: Foto
+  photo_too_large: Een of meer foto's overschrijden de maximale toegestane grootte van 4 MB en zijn niet geüpload.
+  photo_invalid_type: Een of meer bestanden zijn geen geldige afbeeldingsbestanden en zijn niet geüpload.
+  photo_upload_failed: Een of meer foto's konden niet worden opgeslagen op de server.
+  download_photo: Downloaden
+  close: Sluiten
+parking:
+  title: Parkeerlocatie
+  add_current_location: Huidige locatie als parkeerlocatie instellen
+  geolocation_unavailable: Geolocatie wordt niet ondersteund door je browser.
+  locating: Locatie bepalen...
+  location_captured: Locatie vastgelegd.
+  location_error: Locatie kon niet worden bepaald. Controleer je browsermachtigingen.
+  no_location: Nog geen parkeerlocatie vastgelegd.
+  recorded_at: Vastgelegd op
+  recorded_by: door
+  click_to_set: Klik ergens op de kaart om een nieuwe parkeerlocatie in te stellen. De markering kan worden versleept om de positie nauwkeurig af te stellen.
+  save_location: Parkeerlocatie opslaan
+actions: Acties
+admin: Beheer
+amount: Bedrag
+author: Auteur
+banktransfer: Bankoverschrijving
+booking:
+  bookings: Boekingen
+  new: Nieuwe boeking
+  caldav:
+    title: Abonneren op kalender
+    description: "Voeg deze kalender toe aan je kalender-app (Apple Agenda, Thunderbird, enz.) om boekingen te zien en nieuwe boekingen rechtstreeks vanaf je apparaat te maken."
+    url_label: Jouw persoonlijke kalender-URL
+    copy: Link kopiëren
+    copied: Gekopieerd!
+    autodiscover_description: "DAVx5 en veel andere CalDAV-clients ondersteunen automatische kalenderdetectie. Voer gewoon de basis-URL van de server in samen met je gebruikersnaam en wachtwoord — de client vindt al je kalenders automatisch."
+    base_url_label: Basis-URL van de server (voor DAVx5 en automatische detectie-clients)
+  add:
+    for: Boeking toevoegen voor
+  create: Boeking aanmaken
+  edit:
+    for: Boeking bewerken voor
+  form:
+    startdate: Begindatum
+    enddate: Einddatum
+    title: Omschrijving
+    status: Status
+  calendar: Boekingskalender
+  delete: Boeking verwijderen
+  update: Boeking bijwerken
+  created: Boeking aangemaakt.
+  updated: Boeking bijgewerkt.
+  deleted: Boeking verwijderd.
+  delete_not_allowed: Je kunt alleen je eigen boekingen verwijderen.
+car:
+  add: Voertuig toevoegen
+  created: Voertuig succesvol aangemaakt.
+  new:
+    intro: "Welkom! Begin met het toevoegen van je voertuig hieronder. Zodra het is ingesteld, kun je andere leden uitnodigen om het te delen."
+  delete:
+    button: Voertuig verwijderen
+    confirm:
+      title: Voertuig verwijderen
+      warning: "Deze actie is onomkeerbaar. Alle ritten, uitgaven, betalingen en boekingen voor dit voertuig worden permanent verwijderd."
+      name_label: "Voer de naam van het voertuig in om de verwijdering te bevestigen:"
+      confirm_button: Voertuig verwijderen
+      cancel: Annuleren
+    name_mismatch: Naam van het voertuig komt niet overeen. Verwijdering geannuleerd.
+  updated: Voertuig bijgewerkt.
+  deleted: Voertuig verwijderd.
+  bookings:
+    next: Volgende boekingen
+  costs:
+    calculated: Berekende kosten
+    calculated_for_year: "Berekende kosten voor %year%"
+    calculated_all_years: Berekende kosten (alle jaren)
+  create: Voertuig aanmaken
+  data: Voertuiggegevens
+  exportpdf:
+    button: Voertuiggegevens exporteren (PDF)
+  review:
+    button: Kosten en saldi bekijken
+    confirm: "Heb je alle ritten en uitgaven ingevoerd? De voorstellen zijn gebaseerd op huidige gegevens. Doorgaan?"
+    title: Kosten en saldi bekijken
+    back: Terug
+    intro: "De volgende analyse is gebaseerd op alle tot nu toe geregistreerde gegevens. Zorg ervoor dat alle ritten en uitgaven zijn ingevoerd voordat je op basis van deze voorstellen handelt."
+    balances:
+      title: Huidige saldi
+      info: "Positief saldo = gebruiker heeft meer betaald dan zijn aandeel (krijgt geld terug). Negatief saldo = gebruiker heeft meer gebruikt dan betaald (is geld verschuldigd)."
+      total: Totaal
+    payments:
+      title: Voorgestelde betalingen om saldi te vereffenen
+      balanced: Alle saldi zijn gelijk (of binnen 5% van elkaar) — geen betalingen nodig.
+      info: "De volgende betalingen brengen alle saldi naar hetzelfde niveau met het minimum aantal transacties."
+      hint: "Nadat deze betalingen zijn gedaan, registreer ze dan onder Betalingen zodat de saldi worden bijgewerkt."
+    price:
+      title: "Aanpassing prijs per %unit%"
+      actual: "Werkelijke kosten per %unit% op basis van alle geregistreerde uitgaven en ritten: %actual% €/%unit%"
+      balanced: "De prijs per %unit% lijkt goed gekalibreerd — geen aanpassing nodig (onbalans < 5% van totale uitgaven)."
+      increase: "Het totale saldo is positief, wat betekent dat geregistreerde uitgaven meer zijn dan wat via ritkosten is geïnd. Overweeg alle prijzen met %percent%%% te verhogen om de lopende kosten beter te dekken."
+      decrease: "Het totale saldo is negatief, wat betekent dat er meer is geïnd via ritkosten dan er aan uitgaven was. Overweeg alle prijzen met %percent%%% te verlagen."
+      current_rates: Huidige tarieven per gebruikersgroep (voorgesteld nieuw tarief in vet)
+      accept: Voorstel accepteren
+      accepted: Prijs per eenheid succesvol bijgewerkt.
+      edit_hint: "Om de wijziging toe te passen, ga naar Beheer → Gebruikers beheren → bewerk de gebruikersgroepen."
+  form:
+    help:
+      name: Kies een mooie naam voor het voertuig
+      licenseplate: Wat staat er op het kenteken
+      make: Het merk van het voertuig
+      profile:
+        picture: Upload een afbeelding in JPEG, PNG of GIF-formaat
+      vendor: De fabrikant van het voertuig
+      fuelconsumption100: Gemiddeld brandstofverbruik per 100 km/mi
+      mileage: De totale afstand die dit voertuig in zijn leven heeft afgelegd (wees precies — dit is de beginwaarde voor het bijhouden van de kilometerstand)
+      mileage_locked: De kilometerstand kan hier niet worden gewijzigd zodra ritten zijn geregistreerd.
+    licenseplate: Kenteken
+    mileage: Kilometerstand
+    mileage_locked_notice: De kilometerstand kan hier niet worden gewijzigd zodra ritten zijn geregistreerd.
+    name: Naam
+    make: Merk
+    profile:
+      picture: Profielfoto
+    vendor: Fabrikant
+    mileageunit: Eenheid kilometerstand
+    fueltype: Brandstoftype
+    fueltype.placeholder: "— selecteer —"
+    fueltype.petrol: Benzine
+    fueltype.diesel: Diesel
+    fueltype.electric: Elektrisch
+    fueltype.hybrid: Hybride
+    fueltype.lpg: LPG
+    fueltype.other: Overig
+    fuelconsumption100: "Verbruik (l/100)"
+  manage: Voertuig bewerken
+  mileage: Kilometerstand
+  season:
+    mileage: Gereden afstand in
+    spent: Uitgegeven geld in
+    fuel: Brandstof
+  statistics: Statistieken
+  update: Voertuig bijwerken
+cash: Contant
+confirm:
+  email: E-mail bevestigen
+comment: Opmerkingen
+costs: Kosten
+date:
+  date: Datum
+  start: Begindatum
+  end: Einddatum
+email: E-mail
+export:
+  data_export: Gegevensexport
+  distance: Afstand
+  generated: Gegenereerd
+  all_time_summary: Samenvatting over alle tijd
+  total_trips: Totaal aantal ritten
+  total_distance: Totale gereden afstand
+  total_expenses: Totale uitgaven
+  total_payments: Totaal geregistreerde betalingen
+  total: Totaal
+  ongoing: lopend
+  no_trips: Geen ritten geregistreerd.
+  no_expenses: Geen uitgaven geregistreerd.
+  no_payments: Geen betalingen geregistreerd.
+  no_bookings: Geen boekingen geregistreerd.
+end: Eind
+event_email:
+  trip:
+    added: Ritregistratie toegevoegd
+    added_with: Er is een rit toegevoegd met %car%
+    added_by: "%user% heeft een rit toegevoegd met %car%."
+    see_in_logbook: "Je kunt de nieuwe rit zien in het %link% van %car%."
+  booking:
+    added: Nieuwe boeking voor %car%
+    added_for: Er is een nieuwe boeking aangemaakt voor %car%
+    added_by: "%user% heeft een boeking aangemaakt voor %car%."
+    updated: Boeking bijgewerkt voor %car%
+    updated_for: Er is een boeking bijgewerkt voor %car%
+    updated_by: "%user% heeft een boeking bijgewerkt voor %car%."
+    deleted: Boeking verwijderd voor %car%
+    deleted_for: Er is een boeking verwijderd voor %car%
+    deleted_by: "%user% heeft een boeking verwijderd voor %car%."
+  payment:
+    added: Nieuwe betaling geregistreerd voor %car%
+    added_for: Er is een nieuwe betaling geregistreerd voor %car%
+    added_by: "%from% heeft een betaling gestuurd naar %to% voor %car%."
+  invitation:
+    created: Nieuwe uitnodiging verstuurd voor %car%
+    created_for: Er is een nieuwe uitnodiging verstuurd voor %car%
+    created_by: "%user% heeft %email% uitgenodigd om lid te worden van %car%."
+    accepted: Nieuw lid heeft zich aangesloten bij %car%
+    accepted_for: Een nieuw lid heeft zich aangesloten bij %car%
+    accepted_by: "%user% is lid geworden van %car%."
+  user:
+    removed: Een lid heeft %car% verlaten
+    removed_from: Een lid heeft %car% verlaten
+    removed_message: "%user% heeft %car% verlaten of is verwijderd."
+  price_per_unit:
+    changed: Prijs per eenheid bijgewerkt voor %car%
+    changed_for: De prijs per eenheid is bijgewerkt voor %car%
+    changed_detail: "De prijs per eenheid voor groep %group% in %car% is aangepast."
+    old_price: Vorige prijs
+    new_price: Nieuwe prijs
+  greeting: "Hoi %name%,"
+  footer:
+    sign_off: "Met vriendelijke groet,"
+    team: Het Car Coop Team
+  milestone:
+    subject: "Mijlpaal bereikt: %milestone% %unit% met %car%!"
+  broadcast:
+    subject: "Serveraankondiging: %subject%"
+  cheers: Proost!
+entry:
+  created_by: Aangemaakt/Laatst bewerkt door
+expenses:
+  delete: Uitgave verwijderen
+  expenses: Uitgaven
+  for: Uitgaven voor
+  form:
+    fuel: Brandstof
+    charging: Opladen
+    service: Werkplaats/Service
+    other: Overig
+  name: Naam
+  type: Uitgavetype
+  edit:
+    update: Uitgave bijwerken
+    for: Uitgave bewerken voor
+  add:
+    new: Nieuwe uitgave
+    add: Uitgave toevoegen
+    for: Nieuwe uitgave voor
+  created: Uitgave aangemaakt.
+  updated: Uitgave bijgewerkt.
+  deleted: Uitgave verwijderd.
+  delete_not_allowed: Je kunt alleen uitgaven verwijderen die je zelf hebt aangemaakt of bewerkt.
+fixed: Bevestigd
+from: van
+fuel: Brandstof
+invitation:
+  invite: Gebruiker uitnodigen
+  invite_another: Nog een lid toevoegen
+  sent: "Uitnodigingen verstuurd naar: %emails%"
+  already_pending: "Overgeslagen — uitnodiging al in behandeling voor: %emails%"
+  deleted: Uitnodiging verwijderd.
+  delete_not_allowed: Deze uitnodiging is aangemaakt door een andere gebruiker. Je kunt alleen uitnodigingen verwijderen die je zelf hebt aangemaakt.
+  email:
+    language: E-mailtaal
+    subject: "Je bent uitgenodigd om voertuig te delen via Car Coop!"
+    greeting: "Hoi! Je bent uitgenodigd door %inviter% (%inviter_email%) om voertuig te delen voor %car% bij Car Coop!"
+    description: "Car Coop is een non-profit platform voor voertuigdeling waarmee je een voertuig kunt delen met vrienden, collega's of medestanders. Het helpt je boekingen te beheren en de lopende kosten bij te houden."
+    register: "Klik op de volgende link om je te registreren:"
+    register_link: Registreren voor Car Coop
+    cheers: Proost!
+  for: Uitnodiging aanmaken voor
+  status: Uitnodigingsstatus
+  invited:
+    by: Uitgenodigd door
+  pending: Openstaande uitnodigingen
+  onboarding:
+    title: Leden uitnodigen
+    description: "Je voertuig is ingesteld! Nodig andere leden uit om het te delen. Je kunt deze stap overslaan en later leden uitnodigen via Beheer → Gebruikers beheren."
+    submit: Uitnodigingen versturen
+    invite_another: Nog een lid toevoegen
+    skip: Nu overslaan
+log:
+  in: Inloggen
+  forgot_password: Wachtwoord herstellen
+  remember_me: Onthoud mij
+charging: Opladen
+maybe: Misschien
+members: Leden
+mileage:
+  per:
+    user: Gereden afstand per gebruiker
+money:
+  balance: Saldo
+  spent: Uitgegeven geld
+  user:
+    balance: Saldo per gebruiker
+no: Nee
+other: Overig
+password: Wachtwoord
+payments:
+  payments: Betalingen
+  add:
+    new: Nieuwe betaling
+    for: Nieuwe betaling voor
+    add: Betaling toevoegen
+  for: Betaling voor
+  delete: Betaling verwijderen
+  edit:
+    update: Betaling bijwerken
+    for: Betaling bewerken voor
+  type: Betalingstype
+  created: Betaling aangemaakt.
+  updated: Betaling bijgewerkt.
+  deleted: Betaling verwijderd.
+  delete_not_allowed: Je kunt alleen betalingen verwijderen waarbij je betrokken bent.
+paypal: Paypal
+price:
+  per: Prijs per
+  unit: km/mi
+  per_unit: "Prijs per %unit%"
+  help:
+    per:
+      unit: Stel de prijs per gereden kilometer/mijl in.
+service: Service
+start: Start
+status: Status
+user:
+  active: Actief
+  retire:
+    short: Deactiveren
+  user: Gebruiker
+  users: Gebruikers
+  calendar:
+    color: Kalenderkleur
+  driven: gereden
+  events:
+    notify: E-mailmelding ontvangen bij gebeurtenissen
+    own:
+      notify: Ook e-mailmelding ontvangen voor mijn eigen gebeurtenissen
+  group:
+    group: Gebruikersgroep
+    new: Nieuwe groep
+    name: Groepsnaam
+    admin: Beheerder
+    occasional_use: Occasioneel gebruik
+    delete: Groep verwijderen
+    edit: Gebruikersgroep bewerken
+    save: Gebruikersgroep opslaan
+    no_members: Geen leden in deze groep.
+    move: Naar groep verplaatsen
+    user_moved: Lid verplaatst naar nieuwe groep.
+    help:
+      name: Kies een goede naam voor de groep!
+      admin: Zijn gebruikers van deze groep beheerders?
+      occasional_use: Leden van deze groep gebruiken het voertuig slechts af en toe (bijv. gasten).
+    error:
+      orphaned_users: Kan niet opslaan — een of meer leden zouden zonder groep komen te staan. Wijs hen eerst toe aan een andere groep.
+    created: Gebruikersgroep aangemaakt.
+    updated: Gebruikersgroep bijgewerkt.
+    deleted: Gebruikersgroep verwijderd.
+    delete_blocked: Verwijdering afgebroken. Gebruikersgroep bevat nog steeds leden.
+  groups: Gebruikersgroep
+  inactive: Inactief
+  locale: Taal
+  logged:
+    in:
+      as: Ingelogd als
+  login: Inloggen
+  first_login: Eerste aanmelding
+  last_login: Laatste aanmelding
+  logout: Uitloggen
+  manage: Gebruiker beheren
+  name: Naam
+  of: Gebruikers van
+  profile:
+    edit: Profiel bewerken
+    update: Profiel bijwerken
+    picture: Profielfoto
+    email_admin_warning: "Je hebt superbeheerdersrechten. Als je je e-mailadres wijzigt, wordt je beheerderstoegang verwijderd bij het volgende verzoek, tenzij het nieuwe adres ook is opgenomen in de SUPERADMIN-configuratie."
+  delete:
+    button: Account verwijderen
+    confirm:
+      title: Account verwijderen
+      warning: "Wil je je account echt verwijderen? Als je ritten, uitgaven of betalingen hebt geregistreerd, wordt je account gedeactiveerd en geanonimiseerd in plaats van verwijderd."
+      confirm_button: Account verwijderen
+      cancel: Annuleren
+    not_allowed: Je hebt geen toestemming om deze gebruiker te verwijderen.
+    has_entries: Gebruiker heeft registraties. Verwijderen niet mogelijk. Gebruiker is in plaats daarvan gedeactiveerd.
+  register: Registreren
+  updated: Profiel bijgewerkt.
+  deleted: Gebruiker verwijderd.
+  already_logged_in: Je bent al ingelogd.
+  status: Status
+  verified: Geverifieerd
+  type: Groep
+update: Bijwerken
+welcome: Welkom
+calendar: Kalender
+terms:
+  agree: Ik ga akkoord met de <a href="/nl/terms" target="_blank">Algemene voorwaarden</a>
+  must:
+    agree: Je moet akkoord gaan met onze gebruiksvoorwaarden.
+to: aan
+trips:
+  comment: Opmerkingen
+  trips: Ritten
+  delete: Rit verwijderen
+  driven: gereden
+  logbook: Rittenboek
+  edit:
+    with: Rit bewerken met
+    update: Rit bijwerken
+    blocked: "Bewerken van rit afgebroken. Er bestaan nieuwere ritten voor dit voertuig. Alleen de laatste rit kan worden bewerkt."
+  add:
+    add: Rit toevoegen
+    new: Nieuwe rit
+    with: Nieuwe rit met
+  type: Type
+  mileage:
+    start: Kilometerstand begin
+    end: Kilometerstand eind
+  created: Rit aangemaakt.
+  updated: Rit bijgewerkt.
+  deleted: Rit verwijderd.
+  delete_blocked: "Verwijderen van rit afgebroken. Er bestaan nieuwere ritten voor dit voertuig. Alleen de laatste rit kan worden verwijderd."
+registration:
+  form:
+    headline: Registratie
+    no_account: Nog geen account?
+    have_account: Al een account?
+  check_email:
+    title: Controleer je inbox
+    message: "We hebben een verificatielink gestuurd naar %email%. Klik op de link in de e-mail om je account te activeren."
+    message_generic: "Controleer je inbox en klik op de verificatielink om je account te activeren."
+    spam_hint: "Niets ontvangen? Controleer je spammap."
+    resend: Verificatie-e-mail opnieuw versturen
+    login_link: Terug naar inloggen
+  already_logged_in: Je bent al ingelogd.
+  invitation_not_found: Uitnodiging niet gevonden (of verlopen).
+  email_verified: Je e-mailadres is geverifieerd.
+remember:
+  me: Onthoud mij
+sharing:
+  is:
+    caring: Delen is vermenigvuldigen
+delete: Verwijderen
+transport: Transport
+vacation: Vakantie
+superadmin:
+  title: Superbeheerder
+  cars: Voertuigen
+  users: Gebruikers
+  members: Leden
+  roles: Rollen
+  no_cars: Geen voertuigen geregistreerd.
+  no_users: Geen gebruikers gevonden.
+  user_deleted: Gebruiker verwijderd.
+  user_deactivated: Gebruiker heeft registraties en is gedeactiveerd in plaats van verwijderd.
+  car_deleted: Voertuig verwijderd.
+  cannot_delete_self: Je kunt je eigen account niet verwijderen.
+  confirm_delete_car: "Voertuig \"%name%\" verwijderen? Dit verwijdert alle bijbehorende ritten, uitgaven en boekingen."
+  confirm_delete_user: "Gebruiker \"%name%\" verwijderen?"
+  broadcast:
+    title: Berichtgeving aan alle gebruikers
+    description: "Plaats een bericht op alle prikborden op de server en stuur het per e-mail naar alle gebruikers."
+    subject: Onderwerp
+    content: Bericht
+    submit: Naar alle gebruikers versturen
+    sent: "Berichtgeving verzonden — bericht geplaatst op alle prikborden en in de wachtrij gezet voor e-mailbezorging."
+    error_empty: "Onderwerp en berichttekst zijn verplicht."
+    confirm: "Dit bericht naar alle gebruikers op de server sturen?"
+yes: Ja
+cancel: Annuleren
+confirm_delete_title: Verwijdering bevestigen
+form:
+  optional: optioneel
+error:
+  csrf_invalid: Ongeldig CSRF-token.
+  invalid_request: Ongeldig verzoek.

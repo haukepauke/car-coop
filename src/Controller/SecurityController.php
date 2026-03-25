@@ -20,7 +20,7 @@ class SecurityController extends AbstractController
         path: '/{_locale}/login', 
         name: 'app_login',
         requirements: [
-            '_locale' => 'en|de',
+            '_locale' => 'en|de|nl|fr|es|pl',
         ],
     )]
     public function login(AuthenticationUtils $authenticationUtils, TranslatorInterface $translator): Response

@@ -41,6 +41,10 @@ class RegistrationFormType extends AbstractType
                     'choices' => [
                         'English' => 'en',
                         'Deutsch' => 'de',
+                        'Nederlands' => 'nl',
+                        'Français' => 'fr',
+                        'Español' => 'es',
+                        'Polski' => 'pl',
                     ],
                     'label' => 'user.locale',
                 ]

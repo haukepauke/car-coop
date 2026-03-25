@@ -1,0 +1,15 @@
+trip:
+  backwards: Heb je achteruit gereden?!
+  end_date_before_start: De einddatum moet op of na de startdatum liggen.
+booking:
+  not_in_past: Boekingen kunnen niet in het verleden worden gemaakt.
+  end_before_start: De einddatum moet na de startdatum van de boeking liggen.
+payment:
+  sender_receiver_same: De verzender en ontvanger van de betaling moeten verschillende gebruikers zijn.
+user:
+  email_taken: Er bestaat al een account met dit e-mailadres.
+  password_insecure: Dit wachtwoord is onveilig. Kies een sterker wachtwoord.
+expense:
+  amount_required: Voer een positief bedrag in.
+car:
+  positive_value: Voer een waarde van nul of hoger in.

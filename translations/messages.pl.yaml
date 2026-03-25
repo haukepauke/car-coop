@@ -1,0 +1,577 @@
+tour:
+  banner:
+    title: "Jesteś tu nowy? Zrób krótkie wprowadzenie!"
+    desc: "Przeprowadzimy Cię przez najważniejsze funkcje Car Coop."
+    start: Rozpocznij wprowadzenie
+    dismiss: Nie jestem zainteresowany
+  welcome:
+    title: "Witaj w Car Coop!"
+    desc: "To krótkie wprowadzenie zapozna Cię z najważniejszymi funkcjami. Możesz je pominąć w dowolnym momencie."
+  car:
+    title: Twój pojazd
+    desc: "Każdy panel przedstawia jeden pojazd. Kliknij nagłówek, aby go rozwinąć i zobaczyć wszystkie szczegóły."
+  stats:
+    title: Dane pojazdu
+    desc: "Kluczowe informacje o pojeździe — tablica rejestracyjna, przebieg, roczny dystans, koszty, rodzaj paliwa i zużycie — są wyświetlane tutaj jako karty."
+  bookings:
+    title: Nadchodzące rezerwacje
+    desc: "Tutaj wyświetlane są następne zaplanowane rezerwacje, dzięki czemu zawsze wiesz, kiedy pojazd jest dostępny."
+  charts:
+    title: Statystyki
+    desc: "Te wykresy pokazują przebyty dystans oraz bilans między członkami w czasie."
+  nav:
+    messages:
+      title: Tablica ogłoszeń
+      desc: "Udostępniaj wiadomości, pytania lub aktualizacje wszystkim członkom swojej spółdzielni samochodowej."
+    calendar:
+      title: Kalendarz rezerwacji
+      desc: "Sprawdź, kiedy pojazd jest zarezerwowany i zarezerwuj go na własne przejazdy."
+    trips:
+      title: Przejazdy
+      desc: "Rejestruj każdy przejazd — dystans, datę i cel. To jest podstawa do obliczania kosztów."
+    expenses:
+      title: Wydatki
+      desc: "Zapisuj koszty paliwa, napraw i inne wydatki. Są one odejmowane od obliczonych kosztów Twoich przejazdów."
+    payments:
+      title: Płatności
+      desc: "Śledź transfery pieniężne między członkami w celu rozliczenia zaległych sald."
+    parking:
+      title: Miejsce parkingowe
+      desc: "Sprawdź na mapie, gdzie aktualnie zaparkowany jest pojazd, i zaktualizuj lokalizację po zaparkowaniu."
+    admin:
+      title: Administracja
+      desc: "Dodawaj pojazdy lub zarządzaj nimi oraz kontroluj, kto ma dostęp do spółdzielni."
+    user:
+      title: Twój profil
+      desc: "Edytuj swoje dane osobowe lub wyloguj się stąd."
+  progress: "{{current}} z {{total}}"
+  btn:
+    next: Dalej
+    prev: Wstecz
+    done: Gotowe
+
+board_system:
+  trip_added: "<strong>%user%</strong> dodał nowy przejazd z <strong>%car%</strong>."
+  booking_added: "<strong>%user%</strong> dodał nową rezerwację dla <strong>%car%</strong> (<em>%start%</em> – <em>%end%</em>)."
+  booking_updated: "<strong>%user%</strong> zaktualizował rezerwację dla <strong>%car%</strong>."
+  booking_deleted: "<strong>%user%</strong> usunął rezerwację dla <strong>%car%</strong>: <em>%title%</em> (%start% – %end%)."
+  payment_added: "<strong>%from%</strong> wysłał płatność do <strong>%to%</strong> za <strong>%car%</strong>."
+  invitation_created: "<strong>%user%</strong> zaprosił <em>%email%</em> do dołączenia do <strong>%car%</strong>."
+  invitation_accepted: "<strong>%user%</strong> dołączył do <strong>%car%</strong>."
+  user_removed: "<strong>%user%</strong> opuścił lub został usunięty z <strong>%car%</strong>."
+  price_per_unit_changed: "Cena za jednostkę dla grupy <strong>%group%</strong> w <strong>%car%</strong> została zmieniona z %old_price% € na <strong>%new_price% €</strong>."
+  milestone_100k: |
+    <p><strong>%car%</strong> właśnie osiągnął <strong>100 000 %unit%</strong>! Licznik przebił barierę sześciu cyfr — historyczny moment!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;If everything seems under control, you're not going fast enough.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Mario Andretti</figcaption></figure>
+  milestone_200k: |
+    <p><strong>%car%</strong> przekracza <strong>200 000 %unit%</strong>! Dwieście tysięcy — to mniej więcej pięć okrążeń równika Ziemi. Nie trzeba tu nic analizować — to czyste poświęcenie!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;When you win, you don't examine it very much. It is only when you lose that you think about it.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Niki Lauda</figcaption></figure>
+  milestone_300k: |
+    <p><strong>%car%</strong> osiąga <strong>300 000 %unit%</strong>! Można by dotrzeć na Księżyc i prawie wrócić. I wyraźnie widać, że <strong>%car%</strong> dał z siebie wszystko!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;You commit yourself to such a level that there's no compromise. You give everything you have.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Ayrton Senna</figcaption></figure>
+  milestone_400k: |
+    <p><strong>%car%</strong> z impetem mija <strong>400 000 %unit%</strong>! To dystans do Księżyca — osiągnięty na czterech kółkach! Żadnych katastrof — tylko chwalebny przebieg!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;To achieve anything in this game, you must be prepared to dabble on the boundary of disaster.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Stirling Moss</figcaption></figure>
+  milestone_500k: |
+    <p>PÓŁ MILIONA! <strong>%car%</strong> spokojnie mija <strong>500 000 %unit%</strong>! Pięćset tysięcy — w połowie drogi do legendy. Dziś wszystko złożyło się w piękną całość.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;There are so many things that had to come together: the car, the team, the driver.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Michael Schumacher</figcaption></figure>
+  milestone_600k: |
+    <p><strong>%car%</strong> przebija się przez <strong>600 000 %unit%</strong>! To piętnaście okrążeń równika Ziemi. A <strong>%car%</strong> towarzyszył nam przez każdy kilometr zmian.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;Change will not come if we wait for some other person or some other time. We are the ones we've been waiting for.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Barack Obama</figcaption></figure>
+  milestone_700k: |
+    <p><strong>%car%</strong> wystrzelił poza <strong>700 000 %unit%</strong>! Na tym dystansie prawie pokonałeś trasę z Ziemi do Wenus. Sami nie powiedzielibyśmy tego lepiej.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;I just like going fast.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Jim Clark</figcaption></figure>
+  milestone_800k: |
+    <p><strong>%car%</strong> z rykiem mija <strong>800 000 %unit%</strong>! Tylko 200 000 dzieli go od magicznego miliona! <strong>%car%</strong> jest żywym — i jeżdżącym — dowodem!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;Racing is a great mania to which one must sacrifice everything.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Sébastien Loeb</figcaption></figure>
+  milestone_900k: |
+    <p><strong>%car%</strong> grzmi przez <strong>900 000 %unit%</strong>! Przedostatni kamień milowy — zostało tylko sto tysięcy! Dla <strong>%car%</strong> to zdecydowanie początek końca — drogi do miliona!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;This is not the end. It is not even the beginning of the end. But it is, perhaps, the end of the beginning.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Winston Churchill</figcaption></figure>
+  milestone_1000k: |
+    <p>MILION! <strong>%car%</strong> zdobywa ostateczny kamień milowy: <strong>1 000 000 %unit%</strong>! Dziś <strong>%car%</strong> wykonuje swój własny olbrzymi skok w historię motoryzacji. GRATULACJE!</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;That's one small step for man, one giant leap for mankind.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; Neil Armstrong</figcaption></figure>
+  milestone_repeating: |
+    <p><strong>%car%</strong> właśnie minął <strong>%milestone% %unit%</strong> — cóż za pięknie poetycka liczba! Takie powtarzające się cyfry nie pojawiają się każdego dnia.</p>
+    <figure style="margin:0.75em 0 0"><blockquote style="margin:0;padding:0.5em 1em;border-left:3px solid #dee2e6"><em>&ldquo;The Road goes ever on and on, down from the door where it began.&rdquo;</em></blockquote><figcaption style="text-align:right;font-size:0.875em;color:#6c757d;margin-top:0.25em">&mdash; J.R.R. Tolkien</figcaption></figure>
+filter:
+  year: Rok
+  all_years: Wszystkie lata
+  user: Użytkownik
+  all_users: Wszyscy użytkownicy
+  total: Łącznie
+
+messageboard:
+  title: Tablica ogłoszeń
+  total_messages: "%count% wiadomości"
+  new_message: Nowa wiadomość
+  post: Opublikuj wiadomość
+  no_messages: Brak wiadomości.
+  system: System
+  server_admin: AdminSerwera
+  toggle_sticky: Przypnij/odepnij wiadomość
+  delete: Usuń wiadomość
+  delete_confirm: Czy na pewno chcesz usunąć tę wiadomość?
+  attach_photos: Załącz zdjęcia
+  photo_hint: Możesz wybrać wiele zdjęć. Maksymalnie 4 MB na zdjęcie.
+  photo: Zdjęcie
+  photo_too_large: Jedno lub więcej zdjęć przekracza maksymalny dozwolony rozmiar 4 MB i nie zostały przesłane.
+  photo_invalid_type: Jeden lub więcej plików nie jest prawidłowym plikiem graficznym i nie zostały przesłane.
+  photo_upload_failed: Nie udało się zapisać jednego lub więcej zdjęć na serwerze.
+  download_photo: Pobierz
+  close: Zamknij
+parking:
+  title: Miejsce parkingowe
+  add_current_location: Dodaj bieżącą lokalizację jako miejsce parkingowe
+  geolocation_unavailable: Geolokalizacja nie jest obsługiwana przez Twoją przeglądarkę.
+  locating: Określanie Twojej lokalizacji...
+  location_captured: Lokalizacja zapisana.
+  location_error: Nie udało się określić lokalizacji. Sprawdź uprawnienia swojej przeglądarki.
+  no_location: Nie zarejestrowano jeszcze żadnego miejsca parkingowego.
+  recorded_at: Zarejestrowano o
+  recorded_by: przez
+  click_to_set: Kliknij dowolne miejsce na mapie, aby ustawić nowe miejsce parkingowe. Znacznik można przeciągnąć, aby precyzyjnie dostosować pozycję.
+  save_location: Zapisz miejsce parkingowe
+actions: Akcje
+admin: Administracja
+amount: Kwota
+author: Autor
+banktransfer: Przelew bankowy
+booking:
+  bookings: Rezerwacje
+  new: Nowa rezerwacja
+  caldav:
+    title: Subskrybuj kalendarz
+    description: "Dodaj ten kalendarz do swojej aplikacji kalendarza (Apple Calendar, Thunderbird itp.), aby widzieć rezerwacje i tworzyć nowe bezpośrednio ze swojego urządzenia."
+    url_label: Twój osobisty adres URL kalendarza
+    copy: Kopiuj link
+    copied: Skopiowano!
+    autodiscover_description: "DAVx5 i wiele innych klientów CalDAV obsługuje automatyczne wykrywanie kalendarzy. Wystarczy podać bazowy adres URL serwera wraz z nazwą użytkownika i hasłem — klient automatycznie znajdzie wszystkie Twoje kalendarze."
+    base_url_label: Bazowy adres URL serwera (dla DAVx5 i klientów z automatycznym wykrywaniem)
+  add:
+    for: Dodaj rezerwację dla
+  create: Utwórz rezerwację
+  edit:
+    for: Edytuj rezerwację dla
+  form:
+    startdate: Data rozpoczęcia
+    enddate: Data zakończenia
+    title: Opis
+    status: Status
+  calendar: Kalendarz rezerwacji
+  delete: Usuń rezerwację
+  update: Zaktualizuj rezerwację
+  created: Rezerwacja utworzona.
+  updated: Rezerwacja zaktualizowana.
+  deleted: Rezerwacja usunięta.
+  delete_not_allowed: Możesz usuwać tylko własne rezerwacje.
+car:
+  add: Dodaj pojazd
+  created: Pojazd został pomyślnie utworzony.
+  new:
+    intro: "Witaj! Zacznij od dodania swojego pojazdu poniżej. Po skonfigurowaniu możesz zaprosić innych członków do wspólnego korzystania z niego."
+  delete:
+    button: Usuń pojazd
+    confirm:
+      title: Usuń pojazd
+      warning: "Ta operacja jest nieodwracalna. Wszystkie przejazdy, wydatki, płatności i rezerwacje dla tego pojazdu zostaną trwale usunięte."
+      name_label: "Wpisz nazwę pojazdu, aby potwierdzić usunięcie:"
+      confirm_button: Usuń pojazd
+      cancel: Anuluj
+    name_mismatch: Nazwa pojazdu nie pasuje. Usuwanie anulowane.
+  updated: Pojazd zaktualizowany.
+  deleted: Pojazd usunięty.
+  bookings:
+    next: Następne rezerwacje
+  costs:
+    calculated: Obliczone koszty
+    calculated_for_year: "Obliczone koszty za %year%"
+    calculated_all_years: Obliczone koszty (wszystkie lata)
+  create: Utwórz pojazd
+  data: Dane pojazdu
+  exportpdf:
+    button: Eksportuj dane pojazdu (PDF)
+  review:
+    button: Przejrzyj koszty i salda
+    confirm: "Czy wprowadziłeś wszystkie przejazdy i wydatki? Propozycje są oparte na aktualnych danych. Kontynuować?"
+    title: Przejrzyj koszty i salda
+    back: Wstecz
+    intro: "Poniższa analiza opiera się na wszystkich dotychczas zarejestrowanych danych. Upewnij się, że wszystkie przejazdy i wydatki zostały wprowadzone przed podjęciem działań na podstawie tych propozycji."
+    balances:
+      title: Aktualne salda
+      info: "Saldo dodatnie = użytkownik wpłacił więcej niż wynosi jego udział (należy mu się zwrot). Saldo ujemne = użytkownik korzystał więcej niż zapłacił (jest dłużny)."
+      total: Łącznie
+    payments:
+      title: Proponowane płatności w celu wyrównania sald
+      balanced: Wszystkie salda są równe (lub w granicach 5% od siebie) — płatności nie są potrzebne.
+      info: "Poniższe płatności doprowadzą wszystkie salda do tego samego poziomu przy minimalnej liczbie transakcji."
+      hint: "Po dokonaniu tych płatności zarejestruj je w sekcji Płatności, aby salda zostały zaktualizowane."
+    price:
+      title: "Korekta ceny za %unit%"
+      actual: "Rzeczywisty koszt za %unit% na podstawie wszystkich zarejestrowanych wydatków i przejazdów: %actual% €/%unit%"
+      balanced: "Cena za %unit% wydaje się dobrze skalibrowana — korekta nie jest potrzebna (nierównowaga < 5% całkowitych wydatków)."
+      increase: "Całkowite saldo jest dodatnie, co oznacza, że zarejestrowane wydatki przekraczają to, co zostało pobrane w kosztach przejazdów. Rozważ podniesienie wszystkich cen o %percent%%%, aby lepiej pokryć bieżące koszty."
+      decrease: "Całkowite saldo jest ujemne, co oznacza, że w kosztach przejazdów pobrano więcej niż wydano na wydatki. Rozważ obniżenie wszystkich cen o %percent%%%."
+      current_rates: Aktualne stawki dla grup użytkowników (sugerowana nowa stawka pogrubiona)
+      accept: Zaakceptuj propozycję
+      accepted: Cena za jednostkę zaktualizowana pomyślnie.
+      edit_hint: "Aby zastosować zmianę, przejdź do Administracja → Zarządzaj użytkownikami → edytuj grupy użytkowników."
+  form:
+    help:
+      name: Wybierz dobrą nazwę dla pojazdu
+      licenseplate: Co widnieje na tablicy rejestracyjnej
+      make: Marka pojazdu
+      profile:
+        picture: Prześlij zdjęcie w formacie JPEG, PNG lub GIF
+      vendor: Producent pojazdu
+      fuelconsumption100: Średnie zużycie paliwa na 100 km/mi
+      mileage: Całkowity dystans przejechany przez ten pojazd w ciągu jego życia (bądź precyzyjny — to jest wartość początkowa do śledzenia przebiegu)
+      mileage_locked: Przebiegu nie można tu zmienić po zarejestrowaniu przejazdów.
+    licenseplate: Tablica rejestracyjna
+    mileage: Przebieg
+    mileage_locked_notice: Przebiegu nie można tu zmienić po zarejestrowaniu przejazdów.
+    name: Nazwa
+    make: Marka
+    profile:
+      picture: Zdjęcie profilowe
+    vendor: Producent
+    mileageunit: Jednostka przebiegu
+    fueltype: Rodzaj paliwa
+    fueltype.placeholder: "— wybierz —"
+    fueltype.petrol: Benzyna
+    fueltype.diesel: Diesel
+    fueltype.electric: Elektryczny
+    fueltype.hybrid: Hybrydowy
+    fueltype.lpg: LPG
+    fueltype.other: Inny
+    fuelconsumption100: "Zużycie (l/100)"
+  manage: Edytuj pojazd
+  mileage: Przebieg
+  season:
+    mileage: Dystans przejechany w
+    spent: Pieniądze wydane w
+    fuel: Paliwo
+  statistics: Statystyki
+  update: Zaktualizuj pojazd
+cash: Gotówka
+confirm:
+  email: Potwierdź adres e-mail
+comment: Komentarze
+costs: Koszty
+date:
+  date: Data
+  start: Data rozpoczęcia
+  end: Data zakończenia
+email: E-mail
+export:
+  data_export: Eksport danych
+  distance: Dystans
+  generated: Wygenerowano
+  all_time_summary: Podsumowanie całkowite
+  total_trips: Łączna liczba przejazdów
+  total_distance: Łączny przejechany dystans
+  total_expenses: Łączne wydatki
+  total_payments: Łączna liczba zarejestrowanych płatności
+  total: Łącznie
+  ongoing: w toku
+  no_trips: Brak zarejestrowanych przejazdów.
+  no_expenses: Brak zarejestrowanych wydatków.
+  no_payments: Brak zarejestrowanych płatności.
+  no_bookings: Brak zarejestrowanych rezerwacji.
+end: Koniec
+event_email:
+  trip:
+    added: Dodano wpis w dzienniku przejazdów
+    added_with: Dodano przejazd z %car%
+    added_by: "%user% dodał przejazd z %car%."
+    see_in_logbook: "Nowy przejazd możesz zobaczyć w %link% pojazdu %car%."
+  booking:
+    added: Nowa rezerwacja dla %car%
+    added_for: Utworzono nową rezerwację dla %car%
+    added_by: "%user% utworzył rezerwację dla %car%."
+    updated: Rezerwacja zaktualizowana dla %car%
+    updated_for: Rezerwacja dla %car% została zaktualizowana
+    updated_by: "%user% zaktualizował rezerwację dla %car%."
+    deleted: Rezerwacja usunięta dla %car%
+    deleted_for: Rezerwacja dla %car% została usunięta
+    deleted_by: "%user% usunął rezerwację dla %car%."
+  payment:
+    added: Zarejestrowano nową płatność dla %car%
+    added_for: Zarejestrowano nową płatność dla %car%
+    added_by: "%from% wysłał płatność do %to% za %car%."
+  invitation:
+    created: Wysłano nowe zaproszenie dla %car%
+    created_for: Wysłano nowe zaproszenie dla %car%
+    created_by: "%user% zaprosił %email% do dołączenia do %car%."
+    accepted: Nowy członek dołączył do %car%
+    accepted_for: Nowy członek dołączył do %car%
+    accepted_by: "%user% dołączył do %car%."
+  user:
+    removed: Członek opuścił %car%
+    removed_from: Członek opuścił %car%
+    removed_message: "%user% opuścił lub został usunięty z %car%."
+  price_per_unit:
+    changed: Cena za jednostkę zaktualizowana dla %car%
+    changed_for: Cena za jednostkę została zaktualizowana dla %car%
+    changed_detail: "Cena za jednostkę dla grupy %group% w %car% została dostosowana."
+    old_price: Poprzednia cena
+    new_price: Nowa cena
+  greeting: "Cześć %name%,"
+  footer:
+    sign_off: "Z poważaniem,"
+    team: Zespół Car Coop
+  milestone:
+    subject: "Osiągnięto kamień milowy: %milestone% %unit% z %car%!"
+  broadcast:
+    subject: "Ogłoszenie serwera: %subject%"
+  cheers: Pozdrawiam!
+entry:
+  created_by: Utworzone/Ostatnio edytowane przez
+expenses:
+  delete: Usuń wydatek
+  expenses: Wydatki
+  for: Wydatki dla
+  form:
+    fuel: Paliwo
+    charging: Ładowanie
+    service: Warsztat/Serwis
+    other: Inne
+  name: Nazwa
+  type: Rodzaj wydatku
+  edit:
+    update: Zaktualizuj wydatek
+    for: Edytuj wydatek dla
+  add:
+    new: Nowy wydatek
+    add: Dodaj wydatek
+    for: Nowy wydatek dla
+  created: Wydatek utworzony.
+  updated: Wydatek zaktualizowany.
+  deleted: Wydatek usunięty.
+  delete_not_allowed: Możesz usuwać tylko wydatki, które sam utworzyłeś lub edytowałeś.
+fixed: Potwierdzony
+from: od
+fuel: Paliwo
+invitation:
+  invite: Zaproś użytkownika
+  invite_another: Dodaj kolejnego członka
+  sent: "Zaproszenia wysłane do: %emails%"
+  already_pending: "Pominięto — zaproszenie już oczekuje dla: %emails%"
+  deleted: Zaproszenie usunięte.
+  delete_not_allowed: To zaproszenie zostało utworzone przez innego użytkownika. Możesz usuwać tylko zaproszenia, które sam utworzyłeś.
+  email:
+    language: Język wiadomości e-mail
+    subject: "Zostałeś zaproszony do wspólnego korzystania z pojazdu w Car Coop!"
+    greeting: "Cześć! Użytkownik %inviter% (%inviter_email%) zaprosił Cię do wspólnego korzystania z pojazdu %car% w Car Coop!"
+    description: "Car Coop to non-profit platforma do współdzielenia pojazdów, która umożliwia dzielenie się pojazdem z przyjaciółmi, współpracownikami lub partnerami. Pomaga zarządzać rezerwacjami i śledzić bieżące koszty."
+    register: "Kliknij poniższy link, aby się zarejestrować:"
+    register_link: Zarejestruj się w Car Coop
+    cheers: Pozdrawiam!
+  for: Utwórz zaproszenie dla
+  status: Status zaproszenia
+  invited:
+    by: Zaproszony przez
+  pending: Oczekujące zaproszenia
+  onboarding:
+    title: Zaproś członków
+    description: "Twój pojazd został skonfigurowany! Zaproś innych członków do wspólnego korzystania. Możesz pominąć ten krok i zaprosić członków później przez Administracja → Zarządzaj użytkownikami."
+    submit: Wyślij zaproszenia
+    invite_another: Dodaj kolejnego członka
+    skip: Pomiń na razie
+log:
+  in: Zaloguj się
+  forgot_password: Zresetuj hasło
+  remember_me: Zapamiętaj mnie
+charging: Ładowanie
+maybe: Może
+members: Członkowie
+mileage:
+  per:
+    user: Przejechany dystans na użytkownika
+money:
+  balance: Saldo
+  spent: Wydane pieniądze
+  user:
+    balance: Saldo na użytkownika
+no: Nie
+other: Inne
+password: Hasło
+payments:
+  payments: Płatności
+  add:
+    new: Nowa płatność
+    for: Nowa płatność dla
+    add: Dodaj płatność
+  for: Płatność dla
+  delete: Usuń płatność
+  edit:
+    update: Zaktualizuj płatność
+    for: Edytuj płatność dla
+  type: Rodzaj płatności
+  created: Płatność utworzona.
+  updated: Płatność zaktualizowana.
+  deleted: Płatność usunięta.
+  delete_not_allowed: Możesz usuwać tylko płatności, w których bierzesz udział.
+paypal: Paypal
+price:
+  per: Cena za
+  unit: km/mi
+  per_unit: "Cena za %unit%"
+  help:
+    per:
+      unit: Ustaw cenę za kilometr/milę.
+service: Serwis
+start: Start
+status: Status
+user:
+  active: Aktywny
+  retire:
+    short: Dezaktywuj
+  user: Użytkownik
+  users: Użytkownicy
+  calendar:
+    color: Kolor kalendarza
+  driven: przejechane
+  events:
+    notify: Otrzymuj powiadomienia e-mail o zdarzeniach
+    own:
+      notify: Otrzymuj również powiadomienia e-mail o własnych zdarzeniach
+  group:
+    group: Grupa użytkowników
+    new: Nowa grupa
+    name: Nazwa grupy
+    admin: Admin
+    occasional_use: Okazjonalne użytkowanie
+    delete: Usuń grupę
+    edit: Edytuj grupę użytkowników
+    save: Zapisz grupę użytkowników
+    no_members: Brak członków w tej grupie.
+    move: Przenieś do grupy
+    user_moved: Członek przeniesiony do nowej grupy.
+    help:
+      name: Wybierz dobrą nazwę dla grupy!
+      admin: Czy użytkownicy tej grupy są administratorami?
+      occasional_use: Członkowie tej grupy korzystają z pojazdu tylko okazjonalnie (np. goście).
+    error:
+      orphaned_users: Nie można zapisać — jeden lub więcej członków pozostałoby bez grupy. Najpierw przypisz ich do innej grupy.
+    created: Grupa użytkowników utworzona.
+    updated: Grupa użytkowników zaktualizowana.
+    deleted: Grupa użytkowników usunięta.
+    delete_blocked: Usuwanie anulowane. Grupa użytkowników nadal zawiera członków.
+  groups: Grupa użytkowników
+  inactive: Nieaktywny
+  locale: Język
+  logged:
+    in:
+      as: Zalogowany jako
+  login: Logowanie
+  first_login: Pierwsze logowanie
+  last_login: Ostatnie logowanie
+  logout: Wyloguj się
+  manage: Zarządzaj użytkownikiem
+  name: Nazwa
+  of: Użytkownicy
+  profile:
+    edit: Edytuj profil
+    update: Zaktualizuj profil
+    picture: Zdjęcie profilowe
+    email_admin_warning: "Masz uprawnienia superadmina. Jeśli zmienisz swój adres e-mail, Twój dostęp administratora zostanie usunięty przy następnym żądaniu, chyba że nowy adres jest również wymieniony w konfiguracji SUPERADMIN."
+  delete:
+    button: Usuń konto
+    confirm:
+      title: Usuń konto
+      warning: "Czy naprawdę chcesz usunąć swoje konto? Jeśli masz zarejestrowane przejazdy, wydatki lub płatności, Twoje konto zostanie dezaktywowane i zanonimizowane zamiast usunięte."
+      confirm_button: Usuń konto
+      cancel: Anuluj
+    not_allowed: Nie masz uprawnień do usunięcia tego użytkownika.
+    has_entries: Użytkownik ma wpisy. Usunięcie niemożliwe. Użytkownik dezaktywowany zamiast tego.
+  register: Zarejestruj się
+  updated: Profil zaktualizowany.
+  deleted: Użytkownik usunięty.
+  already_logged_in: Jesteś już zalogowany.
+  status: Stan
+  verified: Zweryfikowany
+  type: Grupa
+update: Aktualizuj
+welcome: Witaj
+calendar: Kalendarz
+terms:
+  agree: Akceptuję <a href="https://car-coop.net/en/terms" target="_blank">Regulamin</a>
+  must:
+    agree: Musisz zaakceptować nasze warunki użytkowania.
+to: do
+trips:
+  comment: Komentarze
+  trips: Przejazdy
+  delete: Usuń przejazd
+  driven: przejechane
+  logbook: Dziennik przejazdów
+  edit:
+    with: Edytuj przejazd z
+    update: Zaktualizuj przejazd
+    blocked: "Edycja przejazdu anulowana. Istnieją nowsze przejazdy dla tego pojazdu. Można edytować tylko ostatni przejazd."
+  add:
+    add: Dodaj przejazd
+    new: Nowy przejazd
+    with: Nowy przejazd z
+  type: Typ
+  mileage:
+    start: Przebieg początkowy
+    end: Przebieg końcowy
+  created: Przejazd utworzony.
+  updated: Przejazd zaktualizowany.
+  deleted: Przejazd usunięty.
+  delete_blocked: "Usuwanie przejazdu anulowane. Istnieją nowsze przejazdy dla tego pojazdu. Można usunąć tylko ostatni przejazd."
+registration:
+  form:
+    headline: Rejestracja
+    no_account: Nie masz jeszcze konta?
+    have_account: Masz już konto?
+  check_email:
+    title: Sprawdź swoją skrzynkę odbiorczą
+    message: "Wysłaliśmy link weryfikacyjny na adres %email%. Kliknij link w wiadomości e-mail, aby aktywować swoje konto."
+    message_generic: "Sprawdź swoją skrzynkę odbiorczą i kliknij link weryfikacyjny, aby aktywować swoje konto."
+    spam_hint: "Nic nie dotarło? Sprawdź folder spam."
+    resend: Wyślij ponownie e-mail weryfikacyjny
+    login_link: Powrót do logowania
+  already_logged_in: Jesteś już zalogowany.
+  invitation_not_found: Zaproszenie nie zostało znalezione (lub wygasło).
+  email_verified: Twój adres e-mail został zweryfikowany.
+remember:
+  me: Zapamiętaj mnie
+sharing:
+  is:
+    caring: Dzielenie się jest troską
+delete: Usuń
+transport: Transport
+vacation: Wakacje
+superadmin:
+  title: Super Admin
+  cars: Pojazdy
+  users: Użytkownicy
+  members: Członkowie
+  roles: Role
+  no_cars: Brak zarejestrowanych pojazdów.
+  no_users: Nie znaleziono użytkowników.
+  user_deleted: Użytkownik usunięty.
+  user_deactivated: Użytkownik ma wpisy i został dezaktywowany zamiast usunięty.
+  car_deleted: Pojazd usunięty.
+  cannot_delete_self: Nie możesz usunąć własnego konta.
+  confirm_delete_car: "Usunąć pojazd \"%name%\"? Spowoduje to usunięcie wszystkich powiązanych przejazdów, wydatków i rezerwacji."
+  confirm_delete_user: "Usunąć użytkownika \"%name%\"?"
+  broadcast:
+    title: Wiadomość zbiorcza
+    description: "Opublikuj wiadomość na wszystkich tablicach ogłoszeń serwera i wyślij ją e-mailem do wszystkich użytkowników."
+    subject: Temat
+    content: Wiadomość
+    submit: Wyślij do wszystkich użytkowników
+    sent: "Wiadomość zbiorcza wysłana — opublikowana na wszystkich tablicach i umieszczona w kolejce do dostarczenia e-mailem."
+    error_empty: "Temat i treść wiadomości są wymagane."
+    confirm: "Wysłać tę wiadomość do wszystkich użytkowników serwera?"
+yes: Tak
+cancel: Anuluj
+confirm_delete_title: Potwierdź usunięcie
+form:
+  optional: opcjonalnie
+error:
+  csrf_invalid: Nieprawidłowy token CSRF.
+  invalid_request: Nieprawidłowe żądanie.

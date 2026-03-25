@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public const LOCALES = ['en', 'de'];
+    public const LOCALES = ['en', 'de', 'nl', 'fr', 'es', 'pl'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
