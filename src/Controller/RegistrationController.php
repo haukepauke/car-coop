@@ -70,6 +70,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_car_show');
         }
         $user = new User();
+        $user->setLocale($request->getLocale());
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
