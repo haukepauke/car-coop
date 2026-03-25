@@ -59,7 +59,7 @@ class RegistrationController extends AbstractController
         path: '/{_locale}/register',
         name: 'app_register',
         requirements: [
-            '_locale' => 'en|de',
+            '_locale' => 'en|de|nl|fr|es|pl',
         ],
     )]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
