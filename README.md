@@ -22,7 +22,7 @@ The app can assist you with finding the right rate per kilometer/mile after you'
 
 ## Example Website
 
-The software is running at [car-coop.net](https://car-coop.net). You can try it out by [creating a free account](https://app.car-coop.net/en/register). Please note that the app is currently in alpha — bug reports are very welcome.
+The software is running at [car-coop.net](https://car-coop.net). You can try it out or use it there by [creating a free account](https://app.car-coop.net/en/register). Please note that the app is currently in beta — bug reports are very welcome.
 
 ---
 
