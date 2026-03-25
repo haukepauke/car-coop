@@ -18,6 +18,7 @@ The app can assist you with finding the right rate per kilometer/mile after you'
 * **Message board** — post updates and notes about the vehicle for all members to see
 * **Calendar sync** — sync bookings with any CalDAV-compatible calendar app (DAVx⁵, Apple Calendar, Thunderbird …) — see [docs/caldav.md](docs/caldav.md)
 * **REST API** — control the application programmatically, e.g. from a smartphone app
+* **Available languages** - english, german, french, spanish, dutch and polish 
 
 ## Example Website
 
