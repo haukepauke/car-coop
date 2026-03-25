@@ -226,6 +226,7 @@ car:
       fuelconsumption100: Consommation de carburant moyenne par 100 km/mi
       mileage: La distance totale parcourue par ce véhicule tout au long de sa vie (soyez précis — c'est la valeur de départ pour le suivi du kilométrage)
       mileage_locked: Le kilométrage ne peut pas être modifié ici une fois que des trajets ont été enregistrés.
+      currency_locked: La devise ne peut pas être modifiée une fois que des trajets, des dépenses ou des paiements ont été enregistrés.
     licenseplate: Plaque d'immatriculation
     mileage: Kilométrage
     mileage_locked_notice: Le kilométrage ne peut pas être modifié ici une fois que des trajets ont été enregistrés.
@@ -235,6 +236,7 @@ car:
       picture: Photo de profil
     vendor: Fabricant
     mileageunit: Unité de kilométrage
+    currency: Devise
     fueltype: Type de carburant
     fueltype.placeholder: "— sélectionner —"
     fueltype.petrol: Essence

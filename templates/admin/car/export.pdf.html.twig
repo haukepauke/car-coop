@@ -78,10 +78,10 @@
         <tr>
             <td><div class="label">{{ 'car.mileage'|trans }}</div><div class="value">{{ car.mileage }} {{ car.milageUnit }}</div></td>
             <td><div class="label">{{ 'car.season.mileage'|trans }} {{ "now"|date("Y") }}</div><div class="value">{{ distanceTravelled }} {{ car.milageUnit }}</div></td>
-            <td><div class="label">{{ 'car.season.spent'|trans }} {{ "now"|date("Y") }}</div><div class="value">{{ moneySpent }} € ({{ 'car.season.fuel'|trans }} {{ moneySpentFuel }} €)</div></td>
+            <td><div class="label">{{ 'car.season.spent'|trans }} {{ "now"|date("Y") }}</div><div class="value">{{ moneySpent }} {{ car.currencySymbol }} ({{ 'car.season.fuel'|trans }} {{ moneySpentFuel }} {{ car.currencySymbol }})</div></td>
         </tr>
         <tr>
-            <td><div class="label">{{ 'car.costs.calculated'|trans }} / {{ car.milageUnit }}</div><div class="value">{{ calculatedCostsPerUnit|number_format(3, '.', ',') }} €</div></td>
+            <td><div class="label">{{ 'car.costs.calculated'|trans }} / {{ car.milageUnit }}</div><div class="value">{{ calculatedCostsPerUnit|number_format(3, '.', ',') }} {{ car.currencySymbol }}</div></td>
             <td></td><td></td>
         </tr>
     </table>
@@ -126,11 +126,11 @@
         </tr>
         <tr>
             <td class="label">{{ 'export.total_expenses'|trans }}</td>
-            <td class="value">{{ totalExpenses|number_format(2, '.', ',') }} €</td>
+            <td class="value">{{ totalExpenses|number_format(2, '.', ',') }} {{ car.currencySymbol }}</td>
         </tr>
         <tr>
             <td class="label">{{ 'export.total_payments'|trans }}</td>
-            <td class="value">{{ totalPayments|number_format(2, '.', ',') }} €</td>
+            <td class="value">{{ totalPayments|number_format(2, '.', ',') }} {{ car.currencySymbol }}</td>
         </tr>
     </table>
 </div>
@@ -215,7 +215,7 @@
                 <th>{{ 'expenses.name'|trans }}</th>
                 <th>{{ 'user.user'|trans }}</th>
                 <th>{{ 'comment'|trans }}</th>
-                <th class="num">{{ 'amount'|trans }} (€)</th>
+                <th class="num">{{ 'amount'|trans }} ({{ car.currencySymbol }})</th>
             </tr>
         </thead>
         <tbody>
@@ -263,7 +263,7 @@
                 <th>{{ 'to'|trans }}</th>
                 <th>{{ 'payments.type'|trans }}</th>
                 <th>{{ 'comment'|trans }}</th>
-                <th class="num">{{ 'amount'|trans }} (€)</th>
+                <th class="num">{{ 'amount'|trans }} ({{ car.currencySymbol }})</th>
             </tr>
         </thead>
         <tbody>

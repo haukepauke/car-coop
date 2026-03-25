@@ -25,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Car
 {
     public const MILEAGE_UNITS = ['km', 'mi'];
+    public const CURRENCIES = ['EUR', 'USD', 'GBP', 'PLN'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -88,6 +89,11 @@ class Car
     #[Assert\PositiveOrZero(message: 'car.positive_value')]
     #[Groups(['car:read'])]
     private ?float $fuelConsumption100 = null;
+
+    #[ORM\Column(type: 'string', length: 3)]
+    #[Assert\Choice(Car::CURRENCIES)]
+    #[Groups(['car:read'])]
+    private string $currency = 'EUR';
 
     public function __construct()
     {
@@ -470,6 +476,28 @@ class Car
         $this->fuelConsumption100 = $fuelConsumption100;
 
         return $this;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): self
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getCurrencySymbol(): string
+    {
+        return match ($this->currency) {
+            'USD' => '$',
+            'GBP' => '£',
+            'PLN' => 'zł',
+            default => '€',
+        };
     }
 
     public function getCalculatedCosts(DateTime $start, DateTime $end): float {

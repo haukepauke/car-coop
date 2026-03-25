@@ -227,6 +227,7 @@ car:
       fuelconsumption100: Durchschnittlicher Kraftstoffverbrauch pro 100 km/mi
       mileage: Der gesamte Kilometerstand des Fahrzeugs bis heute (bitte genau angeben – dies ist der Startwert für die Kilometererfassung)
       mileage_locked: Der Kilometerstand kann hier nicht mehr geändert werden, sobald Fahrten erfasst wurden.
+      currency_locked: Die Währung kann nicht mehr geändert werden, sobald Fahrten, Ausgaben oder Zahlungen erfasst wurden.
     licenseplate: Nummernschild
     mileage: Kilometerstand
     mileage_locked_notice: Der Kilometerstand kann hier nicht mehr geändert werden, sobald Fahrten erfasst wurden.
@@ -236,6 +237,7 @@ car:
       picture: Profilbild
     vendor: Fahrzeughersteller
     mileageunit: Entfernungsmaß
+    currency: Währung
     fueltype: Kraftstoffart
     fueltype.placeholder: "— auswählen —"
     fueltype.petrol: Benzin

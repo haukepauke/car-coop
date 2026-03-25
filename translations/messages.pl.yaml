@@ -226,6 +226,7 @@ car:
       fuelconsumption100: Średnie zużycie paliwa na 100 km/mi
       mileage: Całkowity dystans przejechany przez ten pojazd w ciągu jego życia (bądź precyzyjny — to jest wartość początkowa do śledzenia przebiegu)
       mileage_locked: Przebiegu nie można tu zmienić po zarejestrowaniu przejazdów.
+      currency_locked: Waluty nie można zmienić po zarejestrowaniu przejazdów, wydatków lub płatności.
     licenseplate: Tablica rejestracyjna
     mileage: Przebieg
     mileage_locked_notice: Przebiegu nie można tu zmienić po zarejestrowaniu przejazdów.
@@ -235,6 +236,7 @@ car:
       picture: Zdjęcie profilowe
     vendor: Producent
     mileageunit: Jednostka przebiegu
+    currency: Waluta
     fueltype: Rodzaj paliwa
     fueltype.placeholder: "— wybierz —"
     fueltype.petrol: Benzyna

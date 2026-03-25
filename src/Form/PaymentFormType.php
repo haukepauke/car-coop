@@ -30,6 +30,7 @@ class PaymentFormType extends AbstractType
                 MoneyType::class,
                 [
                     'label' => 'amount',
+                    'currency' => $options['car'] ? $options['car']->getCurrency() : 'EUR',
                 ]
             )
             ->add(

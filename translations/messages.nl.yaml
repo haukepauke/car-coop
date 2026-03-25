@@ -226,6 +226,7 @@ car:
       fuelconsumption100: Gemiddeld brandstofverbruik per 100 km/mi
       mileage: De totale afstand die dit voertuig in zijn leven heeft afgelegd (wees precies — dit is de beginwaarde voor het bijhouden van de kilometerstand)
       mileage_locked: De kilometerstand kan hier niet worden gewijzigd zodra ritten zijn geregistreerd.
+      currency_locked: De valuta kan niet worden gewijzigd zodra ritten, uitgaven of betalingen zijn geregistreerd.
     licenseplate: Kenteken
     mileage: Kilometerstand
     mileage_locked_notice: De kilometerstand kan hier niet worden gewijzigd zodra ritten zijn geregistreerd.
@@ -235,6 +236,7 @@ car:
       picture: Profielfoto
     vendor: Fabrikant
     mileageunit: Eenheid kilometerstand
+    currency: Valuta
     fueltype: Brandstoftype
     fueltype.placeholder: "— selecteer —"
     fueltype.petrol: Benzine

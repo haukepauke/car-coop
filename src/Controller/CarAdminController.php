@@ -41,7 +41,7 @@ class CarAdminController extends AbstractController
             $userType = new UserType();
             $userType->setCar($car);
             $userType->setName('Crew');
-            $userType->setPricePerUnit(0.30);
+            $userType->setPricePerUnit($car->getCurrency() === 'PLN' ? 1.00 : 0.30);
             $userType->addUser($this->getUser());
             $userType->setAdmin(true);
             $userType->setFixed(true);
@@ -89,9 +89,15 @@ class CarAdminController extends AbstractController
     {
         $car = $activeCarService->getActiveCar();
 
-        $mileageDisabled = count($tripRepo->findByCar($car)) > 0;
+        $mileageDisabled  = count($tripRepo->findByCar($car)) > 0;
+        $currencyDisabled = !$car->getTrips()->isEmpty()
+            || !$car->getExpenses()->isEmpty()
+            || !$car->getPayments()->isEmpty();
 
-        $form = $this->createForm(CarFormType::class, $car, ['mileage_disabled' => $mileageDisabled]);
+        $form = $this->createForm(CarFormType::class, $car, [
+            'mileage_disabled'  => $mileageDisabled,
+            'currency_disabled' => $currencyDisabled,
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

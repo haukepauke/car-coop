@@ -226,6 +226,7 @@ car:
       fuelconsumption100: Consumo medio de combustible por 100 km/mi
       mileage: La distancia total recorrida por este vehículo a lo largo de su vida (sé preciso — este es el valor inicial para el seguimiento del kilometraje)
       mileage_locked: El kilometraje no se puede cambiar aquí una vez que se han registrado trayectos.
+      currency_locked: La moneda no se puede cambiar una vez que se han registrado trayectos, gastos o pagos.
     licenseplate: Matrícula
     mileage: Kilometraje
     mileage_locked_notice: El kilometraje no se puede cambiar aquí una vez que se han registrado trayectos.
@@ -235,6 +236,7 @@ car:
       picture: Foto de perfil
     vendor: Fabricante
     mileageunit: Unidad de kilometraje
+    currency: Moneda
     fueltype: Tipo de combustible
     fueltype.placeholder: "— seleccionar —"
     fueltype.petrol: Gasolina

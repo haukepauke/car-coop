@@ -227,6 +227,7 @@ car:
       fuelconsumption100: Average fuel consumption per 100 km/mi
       mileage: The total distance this vehicle has covered in its lifetime (be precise — this is the starting value for mileage tracking)
       mileage_locked: Mileage cannot be changed here once trips have been recorded.
+      currency_locked: Currency cannot be changed once trips, expenses or payments have been recorded.
     licenseplate: License plate
     mileage: Mileage
     mileage_locked_notice: Mileage cannot be changed here once trips have been recorded.
@@ -236,6 +237,7 @@ car:
       picture: Profile picture
     vendor: Vendor
     mileageunit: Mileage unit
+    currency: Currency
     fueltype: Fuel type
     fueltype.placeholder: "— select —"
     fueltype.petrol: Petrol

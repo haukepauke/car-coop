@@ -12,11 +12,11 @@
     </tr>
     <tr>
         <th>{{ 'event_email.price_per_unit.old_price'|trans }}:</th>
-        <td>{{ oldPrice|number_format(2) }} €/{{ car.milageUnit }}</td>
+        <td>{{ oldPrice|number_format(2) }} {{ car.currencySymbol }}/{{ car.milageUnit }}</td>
     </tr>
     <tr>
         <th>{{ 'event_email.price_per_unit.new_price'|trans }}:</th>
-        <td>{{ newPrice|number_format(2) }} €/{{ car.milageUnit }}</td>
+        <td>{{ newPrice|number_format(2) }} {{ car.currencySymbol }}/{{ car.milageUnit }}</td>
     </tr>
 </table>
 {% endblock %}

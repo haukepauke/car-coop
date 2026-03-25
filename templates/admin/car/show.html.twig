@@ -122,17 +122,17 @@
                             </div>
                             <div class="stat-card">
                                 <span class="stat-card__label">{{ 'car.season.spent'|trans }} {{ "now"|date("Y") }}</span>
-                                <span class="stat-card__value">{{ carData.moneySpent }} €
-                                    <small class="fw-normal text-muted">({{ 'car.season.fuel'|trans }} {{ carData.moneySpentFuel }} €)</small>
+                                <span class="stat-card__value">{{ carData.moneySpent }} {{ carData.car.currencySymbol }}
+                                    <small class="fw-normal text-muted">({{ 'car.season.fuel'|trans }} {{ carData.moneySpentFuel }} {{ carData.car.currencySymbol }})</small>
                                 </span>
                             </div>
                             <div class="stat-card">
                                 <span class="stat-card__label">{{ 'car.costs.calculated_for_year'|trans({'%year%': 'now'|date('Y')}) }}</span>
-                                <span class="stat-card__value">{{ carData.calculatedCostsPerUnit|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</span>
+                                <span class="stat-card__value">{{ carData.calculatedCostsPerUnit|number_format(3, '.', ',') }} {{ carData.car.currencySymbol }} / {{ carData.car.milageUnit }}</span>
                             </div>
                             <div class="stat-card">
                                 <span class="stat-card__label">{{ 'car.costs.calculated_all_years'|trans }}</span>
-                                <span class="stat-card__value">{{ carData.calculatedCostsPerUnitAllYears|number_format(3, '.', ',') }} € / {{ carData.car.milageUnit }}</span>
+                                <span class="stat-card__value">{{ carData.calculatedCostsPerUnitAllYears|number_format(3, '.', ',') }} {{ carData.car.currencySymbol }} / {{ carData.car.milageUnit }}</span>
                             </div>
                             {% if carData.car.fuelType %}
                             <div class="stat-card">

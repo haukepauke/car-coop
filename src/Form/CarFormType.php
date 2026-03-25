@@ -17,7 +17,8 @@ class CarFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $mileageDisabled = $options['mileage_disabled'];
+        $mileageDisabled  = $options['mileage_disabled'];
+        $currencyDisabled = $options['currency_disabled'];
 
         $builder
             ->add(
@@ -51,6 +52,21 @@ class CarFormType extends AbstractType
                         'Miles' => 'mi',
                     ],
                     'label' => 'car.form.mileageunit',
+                ]
+            )
+            ->add(
+                'currency',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'Euro (€)' => 'EUR',
+                        'US Dollar ($)' => 'USD',
+                        'British Pound (£)' => 'GBP',
+                        'Polish Złoty (zł)' => 'PLN',
+                    ],
+                    'label'    => 'car.form.currency',
+                    'disabled' => $currencyDisabled,
+                    'help'     => $currencyDisabled ? 'car.form.help.currency_locked' : null,
                 ]
             )
             ->add(
@@ -129,9 +145,11 @@ class CarFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class'       => Car::class,
-            'mileage_disabled' => false,
+            'data_class'        => Car::class,
+            'mileage_disabled'  => false,
+            'currency_disabled' => false,
         ]);
         $resolver->setAllowedTypes('mileage_disabled', 'bool');
+        $resolver->setAllowedTypes('currency_disabled', 'bool');
     }
 }

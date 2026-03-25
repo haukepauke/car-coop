@@ -32,7 +32,7 @@
                 <tr>
                     <td>{{ entry.user.name }}</td>
                     <td class="text-end fw-semibold {% if entry.balance > 0 %}text-success{% elseif entry.balance < 0 %}text-danger{% endif %}">
-                        {{ entry.balance|format_currency('EUR', locale='de') }}
+                        {{ entry.balance|format_currency(car.currency, locale=app.user.locale) }}
                     </td>
                 </tr>
                 {% endfor %}
@@ -41,7 +41,7 @@
                 <tr class="table-secondary">
                     <td><strong>{{ 'car.review.balances.total'|trans }}</strong></td>
                     <td class="text-end fw-semibold {% if totalBalance > 0 %}text-success{% elseif totalBalance < 0 %}text-danger{% endif %}">
-                        {{ totalBalance|format_currency('EUR', locale='de') }}
+                        {{ totalBalance|format_currency(car.currency, locale=app.user.locale) }}
                     </td>
                 </tr>
             </tfoot>
@@ -63,7 +63,7 @@
                     <strong>{{ proposal.to.name }}</strong>
                 </span>
                 <span class="badge bg-primary rounded-pill fs-6">
-                    {{ proposal.amount|format_currency('EUR', locale='de') }}
+                    {{ proposal.amount|format_currency(car.currency, locale=app.user.locale) }}
                 </span>
             </li>
             {% endfor %}
@@ -99,10 +99,10 @@
                 <span>{{ ut.name }}</span>
                 <span class="d-flex align-items-center gap-3">
                     <span>
-                        {{ ut.pricePerUnit|number_format(2, '.', ',') }} €/{{ car.milageUnit }}
+                        {{ ut.pricePerUnit|number_format(2, '.', ',') }} {{ car.currencySymbol }}/{{ car.milageUnit }}
                         {% if entry is not null %}
                             &rarr;
-                            <strong>{{ entry.suggested|number_format(2, '.', ',') }} €/{{ car.milageUnit }}</strong>
+                            <strong>{{ entry.suggested|number_format(2, '.', ',') }} {{ car.currencySymbol }}/{{ car.milageUnit }}</strong>
                         {% endif %}
                     </span>
                     {% if entry is not null %}
