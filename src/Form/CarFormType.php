@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Car;
+use App\Service\CurrencyService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,6 +16,10 @@ use Symfony\Component\Validator\Constraints\File;
 
 class CarFormType extends AbstractType
 {
+    public function __construct(private readonly CurrencyService $currencyService)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $mileageDisabled  = $options['mileage_disabled'];
@@ -58,12 +63,7 @@ class CarFormType extends AbstractType
                 'currency',
                 ChoiceType::class,
                 [
-                    'choices' => [
-                        'Euro (€)' => 'EUR',
-                        'US Dollar ($)' => 'USD',
-                        'British Pound (£)' => 'GBP',
-                        'Polish Złoty (zł)' => 'PLN',
-                    ],
+                    'choices' => CurrencyService::getFormChoices(),
                     'label'    => 'car.form.currency',
                     'disabled' => $currencyDisabled,
                     'help'     => $currencyDisabled ? 'car.form.help.currency_locked' : null,

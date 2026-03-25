@@ -13,6 +13,7 @@ use App\Service\ActiveCarService;
 use App\Service\CarChartService;
 use App\Service\CarPdfExportService;
 use App\Service\CarReviewService;
+use App\Service\CurrencyService;
 use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CarAdminController extends AbstractController
 {
     #[Route('/admin/car/new', name: 'app_car_new')]
-    public function new(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
+    public function new(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, CurrencyService $currencyService): Response
     {
         $isFirstCar = $this->getUser()->getUserTypes()->isEmpty();
 
@@ -41,7 +42,7 @@ class CarAdminController extends AbstractController
             $userType = new UserType();
             $userType->setCar($car);
             $userType->setName('Crew');
-            $userType->setPricePerUnit($car->getCurrency() === 'PLN' ? 1.00 : 0.30);
+            $userType->setPricePerUnit($currencyService->getDefaultPricePerUnit($car->getCurrency()));
             $userType->addUser($this->getUser());
             $userType->setAdmin(true);
             $userType->setFixed(true);

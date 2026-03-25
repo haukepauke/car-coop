@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CarRepository;
+use App\Service\CurrencyService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Car
 {
     public const MILEAGE_UNITS = ['km', 'mi'];
-    public const CURRENCIES = ['EUR', 'USD', 'GBP', 'PLN'];
+    public const CURRENCIES = CurrencyService::CURRENCIES;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -492,12 +493,7 @@ class Car
 
     public function getCurrencySymbol(): string
     {
-        return match ($this->currency) {
-            'USD' => '$',
-            'GBP' => '£',
-            'PLN' => 'zł',
-            default => '€',
-        };
+        return CurrencyService::getSymbol($this->currency);
     }
 
     public function getCalculatedCosts(DateTime $start, DateTime $end): float {
