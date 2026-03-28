@@ -49,7 +49,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             processor: MessageDeleteProcessor::class,
         ),
     ],
-    normalizationContext: ['groups' => ['message:read']],
+    normalizationContext: ['groups' => ['message:read', 'user:read']],
     order: ['createdAt' => 'DESC'],
 )]
 class Message

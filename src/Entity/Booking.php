@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
     ],
-    normalizationContext: ['groups' => ['booking:read']],
+    normalizationContext: ['groups' => ['booking:read', 'user:read']],
     denormalizationContext: ['groups' => ['booking:write']],
     order: ['startDate' => 'ASC'],
 )]
