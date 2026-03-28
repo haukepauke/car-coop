@@ -81,6 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $color;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['user:read'])]
     private $profilePicturePath;
 
     #[ORM\Column(type: 'string', length: 2)]
