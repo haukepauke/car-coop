@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER") and object.hasUser(user)'),
     ],
-    normalizationContext: ['groups' => ['car:read']],
+    normalizationContext: ['groups' => ['car:read', 'user:read']],
     order: ['name' => 'ASC'],
 )]
 class Car
@@ -399,6 +399,12 @@ class Car
         }
 
         return $users;
+    }
+
+    #[Groups(['car:read'])]
+    public function getMembers(): ArrayCollection
+    {
+        return $this->getActiveUsers();
     }
 
     public function getActiveUsers(): ArrayCollection
