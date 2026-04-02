@@ -80,6 +80,7 @@ class Car
     private $parkingLocations;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['car:read'])]
     private $profilePicturePath;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
