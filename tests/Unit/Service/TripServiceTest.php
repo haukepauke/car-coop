@@ -7,7 +7,6 @@ use App\Entity\Trip;
 use App\Entity\User;
 use App\Entity\UserType;
 use App\Message\Event\TripAddedEvent;
-use App\Service\TripCostCalculatorService;
 use App\Service\TripService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,20 +18,18 @@ class TripServiceTest extends TestCase
 {
     private EntityManagerInterface&MockObject $em;
     private MessageBusInterface&MockObject $messageBus;
-    private TripCostCalculatorService&MockObject $costCalculator;
     private TripService $service;
 
     protected function setUp(): void
     {
-        $this->em             = $this->createMock(EntityManagerInterface::class);
-        $this->messageBus     = $this->createMock(MessageBusInterface::class);
-        $this->costCalculator = $this->createMock(TripCostCalculatorService::class);
+        $this->em         = $this->createMock(EntityManagerInterface::class);
+        $this->messageBus = $this->createMock(MessageBusInterface::class);
 
         $this->messageBus->method('dispatch')->willReturnCallback(
             fn(object $message) => new Envelope($message)
         );
 
-        $this->service = new TripService($this->costCalculator, $this->em, $this->messageBus);
+        $this->service = new TripService($this->em, $this->messageBus);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -43,7 +40,7 @@ class TripServiceTest extends TestCase
         $prop->setValue($entity, $id);
     }
 
-    private function makeCompletedTrip(int $start = 10000, int $end = 10300): Trip
+    private function makeCompletedTrip(int $start = 10000, int $end = 10300, float $pricePerUnit = 0.30): Trip
     {
         $car = new Car();
         $car->setName('Test Car');
@@ -51,7 +48,7 @@ class TripServiceTest extends TestCase
         $car->setMilageUnit('km');
 
         $userType = new UserType();
-        $userType->setPricePerUnit(0.30);
+        $userType->setPricePerUnit($pricePerUnit);
         $userType->setName('Members');
         $userType->setCar($car);
         $userType->setActive(true);
@@ -77,6 +74,13 @@ class TripServiceTest extends TestCase
         return $trip;
     }
 
+    private function makeServiceTrip(): Trip
+    {
+        $trip = $this->makeCompletedTrip();
+        $trip->setType('service');
+        return $trip;
+    }
+
     private function makeIncompleteTrip(): Trip
     {
         $car = new Car();
@@ -84,11 +88,27 @@ class TripServiceTest extends TestCase
         $car->setMileage(10000);
         $car->setMilageUnit('km');
 
+        $userType = new UserType();
+        $userType->setPricePerUnit(0.30);
+        $userType->setName('Members');
+        $userType->setCar($car);
+        $userType->setActive(true);
+        $userType->setAdmin(false);
+        $userType->setOccasionalUse(false);
+
+        $user = new User();
+        $user->setEmail('driver@test.com');
+        $user->setName('Driver');
+        $user->setLocale('en');
+        $user->setPassword('hashed');
+        $user->addUserType($userType);
+
         $trip = new Trip();
         $trip->setCar($car);
         $trip->setType('vacation');
         $trip->setStartMileage(10000);
         $trip->setStartDate(new \DateTime('2024-06-01'));
+        $trip->addUser($user);
         // no endMileage / endDate → not completed
 
         return $trip;
@@ -96,26 +116,30 @@ class TripServiceTest extends TestCase
 
     // ── createTrip() ──────────────────────────────────────────────────────────
 
-    public function testCreateTripSetsCostsFromCalculator(): void
+    public function testCreateTripCalculatesCosts(): void
     {
-        $trip = $this->makeCompletedTrip();
+        $trip = $this->makeCompletedTrip(10000, 10300, 0.30); // 300 * 0.30 = 90.0
         $this->setId($trip, 42);
-
-        $this->costCalculator->expects($this->once())
-            ->method('calculateTripCosts')
-            ->with($trip)
-            ->willReturn(90.0);
 
         $this->service->createTrip($trip);
 
         $this->assertSame(90.0, $trip->getCosts());
     }
 
+    public function testCreateTripSetsCostsToZeroForServiceTrip(): void
+    {
+        $trip = $this->makeServiceTrip();
+        $this->setId($trip, 1);
+
+        $this->service->createTrip($trip);
+
+        $this->assertSame(0.0, $trip->getCosts());
+    }
+
     public function testCreateTripUpdatesCarMileageWhenCompleted(): void
     {
         $trip = $this->makeCompletedTrip(10000, 10300);
         $this->setId($trip, 1);
-        $this->costCalculator->method('calculateTripCosts')->willReturn(90.0);
 
         $this->service->createTrip($trip);
 
@@ -127,7 +151,6 @@ class TripServiceTest extends TestCase
         $trip = $this->makeIncompleteTrip();
         $this->setId($trip, 1);
         $originalMileage = $trip->getCar()->getMileage();
-        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
 
         $this->service->createTrip($trip);
 
@@ -138,7 +161,6 @@ class TripServiceTest extends TestCase
     {
         $trip = $this->makeCompletedTrip();
         $this->setId($trip, 1);
-        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
 
         $this->em->expects($this->exactly(2))
             ->method('persist')
@@ -154,7 +176,6 @@ class TripServiceTest extends TestCase
     {
         $trip = $this->makeCompletedTrip();
         $this->setId($trip, 99);
-        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
 
         $dispatched = null;
         $this->messageBus->expects($this->once())
@@ -173,23 +194,27 @@ class TripServiceTest extends TestCase
 
     // ── updateTrip() ──────────────────────────────────────────────────────────
 
-    public function testUpdateTripSetsCostsFromCalculator(): void
+    public function testUpdateTripCalculatesCosts(): void
     {
-        $trip = $this->makeCompletedTrip();
-        $this->costCalculator->expects($this->once())
-            ->method('calculateTripCosts')
-            ->with($trip)
-            ->willReturn(75.0);
+        $trip = $this->makeCompletedTrip(10000, 10250, 0.40); // 250 * 0.40 = 100.0
 
         $this->service->updateTrip($trip);
 
-        $this->assertSame(75.0, $trip->getCosts());
+        $this->assertSame(100.0, $trip->getCosts());
+    }
+
+    public function testUpdateTripSetsCostsToZeroForServiceTrip(): void
+    {
+        $trip = $this->makeServiceTrip();
+
+        $this->service->updateTrip($trip);
+
+        $this->assertSame(0.0, $trip->getCosts());
     }
 
     public function testUpdateTripUpdatesCarMileageWhenCompleted(): void
     {
         $trip = $this->makeCompletedTrip(10000, 10250);
-        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
 
         $this->service->updateTrip($trip);
 
@@ -200,7 +225,6 @@ class TripServiceTest extends TestCase
     {
         $trip = $this->makeIncompleteTrip();
         $originalMileage = $trip->getCar()->getMileage();
-        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
 
         $this->service->updateTrip($trip);
 
@@ -210,7 +234,6 @@ class TripServiceTest extends TestCase
     public function testUpdateTripPersistsTripAndCar(): void
     {
         $trip = $this->makeCompletedTrip();
-        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
 
         $this->em->expects($this->exactly(2))->method('persist');
         $this->em->expects($this->once())->method('flush');
@@ -221,7 +244,6 @@ class TripServiceTest extends TestCase
     public function testUpdateTripDoesNotDispatchEvent(): void
     {
         $trip = $this->makeCompletedTrip();
-        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
 
         $this->messageBus->expects($this->never())->method('dispatch');
 

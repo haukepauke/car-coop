@@ -10,7 +10,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class TripService
 {
     public function __construct(
-        private readonly TripCostCalculatorService $costCalculator,
         private readonly EntityManagerInterface $em,
         private readonly MessageBusInterface $messageBus,
     ) {}
@@ -34,9 +33,21 @@ class TripService
 
     private function prepareTrip(Trip $trip): void
     {
-        $trip->setCosts($this->costCalculator->calculateTripCosts($trip));
+        $trip->setCosts($this->calculateTripCosts($trip));
         if ($trip->isCompleted()) {
             $trip->getCar()->setMileage($trip->getEndMileage());
         }
+    }
+
+    private function calculateTripCosts(Trip $trip): float
+    {
+        $user = $trip->getUsers()->first();
+        $userType = $user->getUserTypes()->get(0);
+
+        if ('service' === $trip->getType()) {
+            return 0.0;
+        }
+
+        return ($trip->getEndMileage() - $trip->getStartMileage()) * $userType->getPricePerUnit();
     }
 }
