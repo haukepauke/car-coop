@@ -2,20 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\ParkingLocation;
 use App\Entity\Trip;
 use App\Form\TripFormType;
-use App\Message\Event\TripAddedEvent;
 use App\Repository\TripRepository;
 use App\Service\ActiveCarService;
-use App\Service\TripCostCalculatorService;
+use App\Service\ParkingLocationService;
+use App\Service\TripService;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -53,10 +51,9 @@ class TripAdminController extends AbstractController
 
     #[Route('/admin/trip/new', name: 'app_trip_new')]
     public function new(
-        TripCostCalculatorService $tc,
-        EntityManagerInterface $em,
+        TripService $tripService,
+        ParkingLocationService $parkingLocationService,
         Request $request,
-        MessageBusInterface $messageBus,
         ActiveCarService $activeCarService,
         TranslatorInterface $translator
     ): Response {
@@ -72,7 +69,7 @@ class TripAdminController extends AbstractController
         $trip->setCar($car);
 
         $form = $this->createForm(
-            TripFormType::class, 
+            TripFormType::class,
             $trip,
             ['car' => $car]
         );
@@ -81,32 +78,14 @@ class TripAdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $trip = $form->getData();
 
-            $trip->setCosts($tc->calculateTripCosts($trip));
-
-            if ($trip->isCompleted()) {
-                $car->setMileage($trip->getEndMileage());
-            }
-
-            // Ensure Trip-Dates are after the last trip and start Milage is greater than
-            // end Milage of last trip
-
-            $em->persist($trip);
-            $em->persist($car);
+            $tripService->createTrip($trip);
 
             $lat = $request->request->get('parking_lat');
             $lng = $request->request->get('parking_lng');
             if ($lat !== null && $lng !== null && $lat !== '' && $lng !== '') {
-                $parking = new ParkingLocation();
-                $parking->setCar($car);
-                $parking->setUser($user);
-                $parking->setLatitude((float) $lat);
-                $parking->setLongitude((float) $lng);
-                $em->persist($parking);
+                $parkingLocationService->save($car, $user, (float) $lat, (float) $lng);
             }
 
-            $em->flush();
-
-            $messageBus->dispatch(new TripAddedEvent($trip->getId()));
             $this->addFlash('success', $translator->trans('trips.created'));
 
             return $this->redirectToRoute('app_trip_list');
@@ -122,11 +101,11 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/edit/{trip}', name: 'app_trip_edit')]
-    public function edit(TripCostCalculatorService $tc, EntityManagerInterface $em, Request $request, Trip $trip, TranslatorInterface $translator): Response
+    public function edit(TripService $tripService, Request $request, Trip $trip, TranslatorInterface $translator): Response
     {
         $car = $trip->getCar();
         $form = $this->createForm(
-            TripFormType::class, 
+            TripFormType::class,
             $trip,
             ['car' => $car]
         );
@@ -138,13 +117,8 @@ class TripAdminController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $trip = $form->getData();
 
-                $trip->setCosts($tc->calculateTripCosts($trip));
-
-                $car->setMileage($trip->getEndMileage());
                 $trip->setEditor($this->getUser());
-                $em->persist($trip);
-                $em->persist($car);
-                $em->flush();
+                $tripService->updateTrip($trip);
 
                 $this->addFlash('success', $translator->trans('trips.updated'));
 

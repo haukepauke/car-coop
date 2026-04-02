@@ -44,9 +44,18 @@ services:
             $mailerFromEmail: '%app.mailer_from_email%'
             $mailerFromName: '%app.mailer_from_name%'
 
-    App\State\EditorStateProcessor:
+    App\State\ExpenseStateProcessor:
         arguments:
             $inner: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\ParkingLocationStateProcessor:
+        arguments:
+            $inner: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\TripStateProcessor: ~
+    App\State\BookingStateProcessor: ~
+    App\State\BookingDeleteProcessor: ~
+    App\State\PaymentStateProcessor: ~
 
     App\State\MessageDeleteProcessor:
         arguments:

@@ -1,0 +1,230 @@
+<?php
+
+namespace App\Tests\Unit\Service;
+
+use App\Entity\Car;
+use App\Entity\Trip;
+use App\Entity\User;
+use App\Entity\UserType;
+use App\Message\Event\TripAddedEvent;
+use App\Service\TripCostCalculatorService;
+use App\Service\TripService;
+use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+
+class TripServiceTest extends TestCase
+{
+    private EntityManagerInterface&MockObject $em;
+    private MessageBusInterface&MockObject $messageBus;
+    private TripCostCalculatorService&MockObject $costCalculator;
+    private TripService $service;
+
+    protected function setUp(): void
+    {
+        $this->em             = $this->createMock(EntityManagerInterface::class);
+        $this->messageBus     = $this->createMock(MessageBusInterface::class);
+        $this->costCalculator = $this->createMock(TripCostCalculatorService::class);
+
+        $this->messageBus->method('dispatch')->willReturnCallback(
+            fn(object $message) => new Envelope($message)
+        );
+
+        $this->service = new TripService($this->costCalculator, $this->em, $this->messageBus);
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private function setId(object $entity, int $id): void
+    {
+        $prop = new \ReflectionProperty($entity, 'id');
+        $prop->setValue($entity, $id);
+    }
+
+    private function makeCompletedTrip(int $start = 10000, int $end = 10300): Trip
+    {
+        $car = new Car();
+        $car->setName('Test Car');
+        $car->setMileage($start);
+        $car->setMilageUnit('km');
+
+        $userType = new UserType();
+        $userType->setPricePerUnit(0.30);
+        $userType->setName('Members');
+        $userType->setCar($car);
+        $userType->setActive(true);
+        $userType->setAdmin(false);
+        $userType->setOccasionalUse(false);
+
+        $user = new User();
+        $user->setEmail('driver@test.com');
+        $user->setName('Driver');
+        $user->setLocale('en');
+        $user->setPassword('hashed');
+        $user->addUserType($userType);
+
+        $trip = new Trip();
+        $trip->setCar($car);
+        $trip->setType('vacation');
+        $trip->setStartMileage($start);
+        $trip->setEndMileage($end);
+        $trip->setStartDate(new \DateTime('2024-06-01'));
+        $trip->setEndDate(new \DateTime('2024-06-05'));
+        $trip->addUser($user);
+
+        return $trip;
+    }
+
+    private function makeIncompleteTrip(): Trip
+    {
+        $car = new Car();
+        $car->setName('Test Car');
+        $car->setMileage(10000);
+        $car->setMilageUnit('km');
+
+        $trip = new Trip();
+        $trip->setCar($car);
+        $trip->setType('vacation');
+        $trip->setStartMileage(10000);
+        $trip->setStartDate(new \DateTime('2024-06-01'));
+        // no endMileage / endDate → not completed
+
+        return $trip;
+    }
+
+    // ── createTrip() ──────────────────────────────────────────────────────────
+
+    public function testCreateTripSetsCostsFromCalculator(): void
+    {
+        $trip = $this->makeCompletedTrip();
+        $this->setId($trip, 42);
+
+        $this->costCalculator->expects($this->once())
+            ->method('calculateTripCosts')
+            ->with($trip)
+            ->willReturn(90.0);
+
+        $this->service->createTrip($trip);
+
+        $this->assertSame(90.0, $trip->getCosts());
+    }
+
+    public function testCreateTripUpdatesCarMileageWhenCompleted(): void
+    {
+        $trip = $this->makeCompletedTrip(10000, 10300);
+        $this->setId($trip, 1);
+        $this->costCalculator->method('calculateTripCosts')->willReturn(90.0);
+
+        $this->service->createTrip($trip);
+
+        $this->assertSame(10300, $trip->getCar()->getMileage());
+    }
+
+    public function testCreateTripDoesNotUpdateCarMileageWhenIncomplete(): void
+    {
+        $trip = $this->makeIncompleteTrip();
+        $this->setId($trip, 1);
+        $originalMileage = $trip->getCar()->getMileage();
+        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
+
+        $this->service->createTrip($trip);
+
+        $this->assertSame($originalMileage, $trip->getCar()->getMileage());
+    }
+
+    public function testCreateTripPersistsTripAndCar(): void
+    {
+        $trip = $this->makeCompletedTrip();
+        $this->setId($trip, 1);
+        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
+
+        $this->em->expects($this->exactly(2))
+            ->method('persist')
+            ->willReturnCallback(function (object $entity) {
+                $this->assertContains(get_class($entity), [Trip::class, Car::class]);
+            });
+        $this->em->expects($this->once())->method('flush');
+
+        $this->service->createTrip($trip);
+    }
+
+    public function testCreateTripDispatchesTripAddedEvent(): void
+    {
+        $trip = $this->makeCompletedTrip();
+        $this->setId($trip, 99);
+        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
+
+        $dispatched = null;
+        $this->messageBus->expects($this->once())
+            ->method('dispatch')
+            ->willReturnCallback(function (object $message) use (&$dispatched) {
+                $dispatched = $message;
+                return new Envelope($message);
+            });
+
+        $this->service->createTrip($trip);
+
+        $this->assertInstanceOf(TripAddedEvent::class, $dispatched);
+        assert($dispatched instanceof TripAddedEvent);
+        $this->assertSame(99, $dispatched->getTripId());
+    }
+
+    // ── updateTrip() ──────────────────────────────────────────────────────────
+
+    public function testUpdateTripSetsCostsFromCalculator(): void
+    {
+        $trip = $this->makeCompletedTrip();
+        $this->costCalculator->expects($this->once())
+            ->method('calculateTripCosts')
+            ->with($trip)
+            ->willReturn(75.0);
+
+        $this->service->updateTrip($trip);
+
+        $this->assertSame(75.0, $trip->getCosts());
+    }
+
+    public function testUpdateTripUpdatesCarMileageWhenCompleted(): void
+    {
+        $trip = $this->makeCompletedTrip(10000, 10250);
+        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
+
+        $this->service->updateTrip($trip);
+
+        $this->assertSame(10250, $trip->getCar()->getMileage());
+    }
+
+    public function testUpdateTripDoesNotUpdateCarMileageWhenIncomplete(): void
+    {
+        $trip = $this->makeIncompleteTrip();
+        $originalMileage = $trip->getCar()->getMileage();
+        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
+
+        $this->service->updateTrip($trip);
+
+        $this->assertSame($originalMileage, $trip->getCar()->getMileage());
+    }
+
+    public function testUpdateTripPersistsTripAndCar(): void
+    {
+        $trip = $this->makeCompletedTrip();
+        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
+
+        $this->em->expects($this->exactly(2))->method('persist');
+        $this->em->expects($this->once())->method('flush');
+
+        $this->service->updateTrip($trip);
+    }
+
+    public function testUpdateTripDoesNotDispatchEvent(): void
+    {
+        $trip = $this->makeCompletedTrip();
+        $this->costCalculator->method('calculateTripCosts')->willReturn(0.0);
+
+        $this->messageBus->expects($this->never())->method('dispatch');
+
+        $this->service->updateTrip($trip);
+    }
+}

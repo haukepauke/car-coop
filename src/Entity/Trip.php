@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\TripRepository;
-use App\State\EditorStateProcessor;
+use App\State\TripStateProcessor;
 use App\Validator\IsValidTripDate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,11 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             security: 'is_granted("ROLE_USER")',
             securityPostDenormalize: 'object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: TripStateProcessor::class,
         ),
         new Put(
             security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: TripStateProcessor::class,
         ),
         new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
     ],

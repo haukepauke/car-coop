@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Payment;
 use App\Form\PaymentFormType;
-use App\Message\Event\PaymentAddedEvent;
 use App\Repository\PaymentRepository;
 use App\Service\ActiveCarService;
+use App\Service\PaymentService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -14,7 +14,6 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -49,7 +48,7 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/new', name: 'app_payment_new')]
-    public function new(EntityManagerInterface $em, Request $request, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator): Response
+    public function new(Request $request, PaymentService $paymentService, ActiveCarService $activeCarService, TranslatorInterface $translator): Response
     {
         $car = $activeCarService->getActiveCar();
 
@@ -70,10 +69,7 @@ class PaymentAdminController extends AbstractController
                 throw new Exception('Payment sender and receiver can not be the same user');
             }
 
-            $em->persist($payment);
-            $em->flush();
-
-            $messageBus->dispatch(new PaymentAddedEvent($payment->getId()));
+            $paymentService->createPayment($payment);
             $this->addFlash('success', $translator->trans('payments.created'));
 
             return $this->redirectToRoute('app_payment_list');
@@ -89,7 +85,7 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/edit/{payment}', name: 'app_payment_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, Payment $payment, TranslatorInterface $translator): Response
+    public function edit(Request $request, PaymentService $paymentService, Payment $payment, TranslatorInterface $translator): Response
     {
         $car = $payment->getCar();
         $form = $this->createForm(
@@ -100,10 +96,7 @@ class PaymentAdminController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $trip = $form->getData();
-
-            $em->persist($trip);
-            $em->flush();
+            $paymentService->updatePayment($form->getData());
 
             // inform other user
 

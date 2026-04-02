@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\PaymentRepository;
-use App\State\EditorStateProcessor;
+use App\State\PaymentStateProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,11 +25,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             security: 'is_granted("ROLE_USER")',
             securityPostDenormalize: 'object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: PaymentStateProcessor::class,
         ),
         new Put(
             security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: PaymentStateProcessor::class,
         ),
         new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
     ],

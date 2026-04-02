@@ -96,9 +96,9 @@ class ExpenseAdminController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $trip = $form->getData();
-            $trip->setEditor($this->getUser());
-            $em->persist($trip);
+            $expense = $form->getData();
+            $expense->setEditor($this->getUser());
+            $em->persist($expense);
             $em->flush();
 
             $this->addFlash('success', $translator->trans('expenses.updated'));

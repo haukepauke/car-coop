@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\ParkingLocationRepository;
-use App\State\EditorStateProcessor;
+use App\State\ParkingLocationStateProcessor;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -24,11 +24,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             security: 'is_granted("ROLE_USER")',
             securityPostDenormalize: 'object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: ParkingLocationStateProcessor::class,
         ),
         new Put(
             security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: ParkingLocationStateProcessor::class,
         ),
     ],
     normalizationContext: ['groups' => ['parking:read']],

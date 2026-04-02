@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\ParkingLocation;
 use App\Repository\ParkingLocationRepository;
 use App\Service\ActiveCarService;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\ParkingLocationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,7 @@ class ParkingLocationController extends AbstractController
     }
 
     #[Route('/admin/parking/save', name: 'app_parking_save', methods: ['POST'])]
-    public function save(Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService): Response
+    public function save(Request $request, ParkingLocationService $parkingLocationService, ActiveCarService $activeCarService): Response
     {
         $car = $activeCarService->getActiveCar();
 
@@ -37,14 +36,12 @@ class ParkingLocationController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        $parking = new ParkingLocation();
-        $parking->setCar($car);
-        $parking->setUser($user);
-        $parking->setLatitude((float) $request->request->get('lat'));
-        $parking->setLongitude((float) $request->request->get('lng'));
-
-        $em->persist($parking);
-        $em->flush();
+        $parkingLocationService->save(
+            $car,
+            $user,
+            (float) $request->request->get('lat'),
+            (float) $request->request->get('lng'),
+        );
 
         return $this->redirectToRoute('app_parking_show');
     }

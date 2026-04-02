@@ -11,7 +11,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\BookingRepository;
-use App\State\EditorStateProcessor;
+use App\State\BookingDeleteProcessor;
+use App\State\BookingStateProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,13 +26,16 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             security: 'is_granted("ROLE_USER")',
             securityPostDenormalize: 'object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: BookingStateProcessor::class,
         ),
         new Put(
             security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
-            processor: EditorStateProcessor::class,
+            processor: BookingStateProcessor::class,
         ),
-        new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),
+        new Delete(
+            security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
+            processor: BookingDeleteProcessor::class,
+        ),
     ],
     normalizationContext: ['groups' => ['booking:read', 'user:read']],
     denormalizationContext: ['groups' => ['booking:write']],
