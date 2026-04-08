@@ -148,14 +148,15 @@ class TripAdminController extends AbstractController
         $nextTrip = $tripRepo->findNextByMileage($trip);
 
         $trip2 = new Trip();
-        $trip2->setStartDate($trip->getStartDate());
-        $trip2->setEndDate($trip->getEndDate());
-        $trip2->setType($trip->getType());
-        foreach ($trip->getUsers() as $user) {
-            $trip2->addUser($user);
-        }
+        $trip2->setCar($car);
 
-        $form = $this->createForm(TripSplitFormType::class, $trip2, [
+        $form = $this->createForm(TripSplitFormType::class, [
+            'startDate' => $trip->getStartDate(),
+            'endDate'   => $trip->getEndDate(),
+            'type'      => $trip->getType(),
+            'users'     => $trip->getUsers()->toArray(),
+            'comment'   => '',
+        ], [
             'car'           => $car,
             'original_trip' => $trip,
             'next_trip'     => $nextTrip,
@@ -164,6 +165,20 @@ class TripAdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $splitMileage = (int) $form->get('splitMileage')->getData();
+            $data         = $form->getData();
+
+            $trip2->setStartMileage($splitMileage);
+            $trip2->setEndMileage($trip->getEndMileage());
+            $trip2->setStartDate($data['startDate']);
+            $trip2->setEndDate($data['endDate']);
+            $trip2->setType($data['type']);
+            $trip2->setComment($data['comment'] ?? '');
+            foreach ($trip2->getUsers()->toArray() as $u) {
+                $trip2->removeUser($u);
+            }
+            foreach ($data['users'] as $u) {
+                $trip2->addUser($u);
+            }
             $trip2->setEditor($this->getUser());
 
             $tripService->splitTrip($trip, $splitMileage, $trip2);

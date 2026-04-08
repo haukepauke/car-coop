@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Trip;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -59,7 +59,7 @@ class TripSplitFormType extends AbstractType
             )
             ->add(
                 'startDate',
-                null,
+                DateType::class,
                 [
                     'widget' => 'single_text',
                     'label' => 'date.start',
@@ -68,7 +68,7 @@ class TripSplitFormType extends AbstractType
             )
             ->add(
                 'endDate',
-                null,
+                DateType::class,
                 [
                     'widget' => 'single_text',
                     'label' => 'date.end',
@@ -117,7 +117,7 @@ class TripSplitFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Trip::class,
+            'data_class' => null,
             'car' => null,
             'original_trip' => null,
             'next_trip' => null,
