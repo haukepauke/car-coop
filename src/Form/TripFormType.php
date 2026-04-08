@@ -58,6 +58,7 @@ class TripFormType extends AbstractType
                         'vacation' => 'vacation',
                         'transport' => 'transport',
                         'service' => 'service',
+                        'other' => 'other'
                     ],
                     'choice_translation_domain' => 'messages',
                     'label' => 'trips.type',
