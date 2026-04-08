@@ -84,7 +84,7 @@ return [
         'type' => 'css',
     ],
     'lodash-es' => [
-        'version' => '4.17.23',
+        'version' => '4.18.1',
     ],
     'parchment' => [
         'version' => '3.0.0',
