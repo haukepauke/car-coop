@@ -530,6 +530,18 @@ trips:
   created: Przejazd utworzony.
   updated: Przejazd zaktualizowany.
   deleted: Przejazd usunięty.
+  split: Podziel przejazd
+  split.title: Podziel przejazd
+  split.mileage: Podziel przy przebiegu
+  split.mileage.min: Przebieg musi być większy niż przebieg początkowy oryginalnego przejazdu.
+  split.mileage.max: Przebieg musi być mniejszy niż przebieg końcowy oryginalnego przejazdu.
+  split.first_trip: Oryginalny przejazd
+  split.second_trip: Drugi przejazd
+  split.save: Zapisz podział
+  split.success: Przejazd pomyślnie podzielony.
+  split.not_possible: Tego przejazdu nie można podzielić (dystans musi być większy niż 1).
+  split.date.start_min: Data rozpoczęcia drugiego przejazdu nie może być wcześniejsza niż data rozpoczęcia oryginalnego przejazdu.
+  split.date.end_max: Data zakończenia drugiego przejazdu nie może być późniejsza niż data rozpoczęcia następnego przejazdu.
   delete_blocked: "Usuwanie przejazdu anulowane. Istnieją nowsze przejazdy dla tego pojazdu. Można usunąć tylko ostatni przejazd."
 registration:
   form:

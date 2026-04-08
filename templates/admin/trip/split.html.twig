@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+<div class="col-xl-6 mt-5">
+    <h4>{{ 'trips.split.title'|trans }}</h4>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">{{ 'trips.split.first_trip'|trans }}</h6>
+            <dl class="row mb-0">
+                <dt class="col-sm-5">{{ 'date.start'|trans }}</dt>
+                <dd class="col-sm-7">{{ trip.startDate|date('d.m.Y') }}</dd>
+                <dt class="col-sm-5">{{ 'date.end'|trans }}</dt>
+                <dd class="col-sm-7">{{ trip.endDate ? trip.endDate|date('d.m.Y') : '-' }}</dd>
+                <dt class="col-sm-5">{{ 'start'|trans }} {{ car.milageUnit }}</dt>
+                <dd class="col-sm-7">{{ trip.startMileage|number_format(0, ',', '.') }}</dd>
+                <dt class="col-sm-5">{{ 'end'|trans }} {{ car.milageUnit }}</dt>
+                <dd class="col-sm-7">{{ trip.endMileage|number_format(0, ',', '.') }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <h5>{{ 'trips.split.second_trip'|trans }}</h5>
+
+    {{ form_start(splitForm) }}
+        {{ form_row(splitForm.splitMileage) }}
+        {{ form_row(splitForm.startDate) }}
+        {{ form_row(splitForm.endDate) }}
+        {{ form_row(splitForm.type) }}
+        {{ form_row(splitForm.users) }}
+        {{ form_row(splitForm.comment) }}
+
+        <div class="d-flex gap-2 my-3">
+            <button type="submit" class="btn btn-outline-dark">{{ 'trips.split.save'|trans }}</button>
+            <a href="{{ path('app_trip_edit', {trip: trip.id}) }}" class="btn btn-outline-secondary">{{ 'cancel'|trans }}</a>
+        </div>
+    {{ form_end(splitForm) }}
+</div>
+{% endblock %}

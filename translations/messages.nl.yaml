@@ -530,6 +530,18 @@ trips:
   created: Rit aangemaakt.
   updated: Rit bijgewerkt.
   deleted: Rit verwijderd.
+  split: Rit splitsen
+  split.title: Rit splitsen
+  split.mileage: Splitsen bij kilometerstand
+  split.mileage.min: De kilometerstand moet groter zijn dan de beginkilometerstand van de originele rit.
+  split.mileage.max: De kilometerstand moet kleiner zijn dan de eindkilometerstand van de originele rit.
+  split.first_trip: Originele rit
+  split.second_trip: Tweede rit
+  split.save: Splitsing opslaan
+  split.success: Rit succesvol gesplitst.
+  split.not_possible: Deze rit kan niet worden gesplitst (afstand moet groter zijn dan 1).
+  split.date.start_min: De startdatum van de tweede rit mag niet vóór de startdatum van de originele rit liggen.
+  split.date.end_max: De einddatum van de tweede rit mag niet na de startdatum van de volgende rit liggen.
   delete_blocked: "Verwijderen van rit afgebroken. Er bestaan nieuwere ritten voor dit voertuig. Alleen de laatste rit kan worden verwijderd."
 registration:
   form:

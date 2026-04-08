@@ -531,6 +531,18 @@ trips:
   created: Fahrt erstellt.
   updated: Fahrt aktualisiert.
   deleted: Fahrt gelöscht.
+  split: Fahrt aufteilen
+  split.title: Fahrt aufteilen
+  split.mileage: Aufteilen bei Kilometerstand
+  split.mileage.min: Der Kilometerstand muss größer als der Startkilometerstand der Originalfahrt sein.
+  split.mileage.max: Der Kilometerstand muss kleiner als der Endkilometerstand der Originalfahrt sein.
+  split.first_trip: Originalfahrt
+  split.second_trip: Zweite Fahrt
+  split.save: Aufteilung speichern
+  split.success: Fahrt erfolgreich aufgeteilt.
+  split.not_possible: Diese Fahrt kann nicht aufgeteilt werden (Distanz muss größer als 1 sein).
+  split.date.start_min: Das Startdatum der zweiten Fahrt darf nicht vor dem Startdatum der Originalfahrt liegen.
+  split.date.end_max: Das Enddatum der zweiten Fahrt darf nicht nach dem Startdatum der nächsten Fahrt liegen.
   delete_blocked: "Löschen abgebrochen. Es gibt neuere Fahrten für dieses Fahrzeug. Nur die letzte Fahrt kann gelöscht werden."
 registration:
   form:

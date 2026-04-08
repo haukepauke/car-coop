@@ -530,6 +530,18 @@ trips:
   created: Trayecto creado.
   updated: Trayecto actualizado.
   deleted: Trayecto eliminado.
+  split: Dividir trayecto
+  split.title: Dividir trayecto
+  split.mileage: Dividir en kilometraje
+  split.mileage.min: El kilometraje debe ser mayor que el kilometraje inicial del trayecto original.
+  split.mileage.max: El kilometraje debe ser menor que el kilometraje final del trayecto original.
+  split.first_trip: Trayecto original
+  split.second_trip: Segundo trayecto
+  split.save: Guardar división
+  split.success: Trayecto dividido correctamente.
+  split.not_possible: Este trayecto no puede dividirse (la distancia debe ser mayor que 1).
+  split.date.start_min: La fecha de inicio del segundo trayecto no puede ser anterior a la fecha de inicio del trayecto original.
+  split.date.end_max: La fecha de fin del segundo trayecto no puede ser posterior a la fecha de inicio del trayecto siguiente.
   delete_blocked: "Eliminación del trayecto cancelada. Existen trayectos más recientes para este vehículo. Solo se puede eliminar el último trayecto."
 registration:
   form:

@@ -1,6 +1,8 @@
 trip:
   backwards: Heb je achteruit gereden?!
   end_date_before_start: De einddatum moet op of na de startdatum liggen.
+  date.future: Ritdatums mogen niet in de toekomst liggen.
+  date.before_previous: De startdatum mag niet vóór de einddatum van de vorige rit liggen ({{ prevTripEndDate }}).
 booking:
   not_in_past: Boekingen kunnen niet in het verleden worden gemaakt.
   end_before_start: De einddatum moet na de startdatum van de boeking liggen.

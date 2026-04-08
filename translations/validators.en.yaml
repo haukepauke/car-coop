@@ -1,6 +1,8 @@
 trip:
   backwards: Did you drive backwards?!
   end_date_before_start: End date must be on or after the start date.
+  date.future: Trip dates cannot be in the future.
+  date.before_previous: Start date cannot be before the end date of the previous trip ({{ prevTripEndDate }}).
 booking:
   not_in_past: Bookings cannot be made for the past.
   end_before_start: End date must be after the start date of the booking.

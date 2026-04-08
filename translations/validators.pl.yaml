@@ -1,6 +1,8 @@
 trip:
   backwards: Czy jechałeś do tyłu?!
   end_date_before_start: Data zakończenia musi być równa dacie rozpoczęcia lub późniejsza.
+  date.future: Daty przejazdu nie mogą być w przyszłości.
+  date.before_previous: Data rozpoczęcia nie może być wcześniejsza niż data zakończenia poprzedniego przejazdu ({{ prevTripEndDate }}).
 booking:
   not_in_past: Rezerwacji nie można dokonać w przeszłości.
   end_before_start: Data zakończenia musi być późniejsza niż data rozpoczęcia rezerwacji.

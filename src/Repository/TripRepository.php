@@ -130,6 +130,61 @@ class TripRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find the previous completed trip: the one with the highest endMileage that is
+     * strictly less than the given trip's startMileage (excludes the trip itself).
+     */
+    public function findPreviousByMileage(Trip $trip): ?Trip
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->andWhere('t.car = :car')
+            ->andWhere('t.endMileage <= :startMileage')
+            ->andWhere('t.endMileage IS NOT NULL')
+            ->setParameter('car', $trip->getCar())
+            ->setParameter('startMileage', $trip->getStartMileage())
+            ->orderBy('t.endMileage', 'DESC')
+            ->setMaxResults(1);
+
+        if ($trip->getId() !== null) {
+            $qb->andWhere('t.id != :id')->setParameter('id', $trip->getId());
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * Find the trip with the highest endMileage for the given car.
+     */
+    public function findLastByEndMileage($car): ?Trip
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.car = :car')
+            ->andWhere('t.endMileage IS NOT NULL')
+            ->setParameter('car', $car)
+            ->orderBy('t.endMileage', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Find the chronologically next trip for the same car (the one whose startMileage >= this trip's endMileage).
+     */
+    public function findNextByMileage(Trip $trip): ?Trip
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.car = :car')
+            ->andWhere('t.startMileage >= :endMileage')
+            ->andWhere('t.id != :id')
+            ->setParameter('car', $trip->getCar())
+            ->setParameter('endMileage', $trip->getEndMileage())
+            ->setParameter('id', $trip->getId())
+            ->orderBy('t.startMileage', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Get the last trip entered.
      */
     public function findLast($car)

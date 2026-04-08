@@ -531,6 +531,18 @@ trips:
   created: Trip created.
   updated: Trip updated.
   deleted: Trip deleted.
+  split: Split trip
+  split.title: Split trip
+  split.mileage: Split at mileage
+  split.mileage.min: The split mileage must be greater than the start mileage of the original trip.
+  split.mileage.max: The split mileage must be less than the end mileage of the original trip.
+  split.first_trip: Original trip
+  split.second_trip: Second trip
+  split.save: Save split
+  split.success: Trip split successfully.
+  split.not_possible: This trip cannot be split (distance must be more than 1).
+  split.date.start_min: The start date of the second trip cannot be before the start date of the original trip.
+  split.date.end_max: The end date of the second trip cannot be after the start date of the following trip.
   delete_blocked: "Trip deletion aborted. Newer trips for this vehicle exist. Only the last trip can be deleted."
 registration:
   form:

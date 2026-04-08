@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Trip;
 use App\Form\TripFormType;
+use App\Form\TripSplitFormType;
 use App\Repository\TripRepository;
 use App\Service\ActiveCarService;
 use App\Service\ParkingLocationService;
@@ -101,9 +102,9 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/edit/{trip}', name: 'app_trip_edit')]
-    public function edit(TripService $tripService, Request $request, Trip $trip, TranslatorInterface $translator): Response
+    public function edit(TripService $tripService, TripRepository $tripRepo, Request $request, Trip $trip, TranslatorInterface $translator): Response
     {
-        $car = $trip->getCar();
+        $car  = $trip->getCar();
         $form = $this->createForm(
             TripFormType::class,
             $trip,
@@ -122,23 +123,70 @@ class TripAdminController extends AbstractController
             return $this->redirectToRoute('app_trip_list');
         }
 
+        $lastTrip = $tripRepo->findLastByEndMileage($car);
+
         return $this->render(
             'admin/trip/edit.html.twig',
             [
-                'tripForm' => $form->createView(),
-                'car' => $car,
-                'trip' => $trip,
+                'tripForm'   => $form->createView(),
+                'car'        => $car,
+                'trip'       => $trip,
+                'canDelete'  => $lastTrip !== null && $lastTrip->getId() === $trip->getId(),
             ]
         );
     }
 
-    #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete')]
-    public function delete(EntityManagerInterface $em, Trip $trip, TranslatorInterface $translator)
+    #[Route('/admin/trip/split/{trip}', name: 'app_trip_split')]
+    public function split(TripService $tripService, TripRepository $tripRepo, Request $request, Trip $trip, TranslatorInterface $translator): Response
     {
-        $car = $trip->getCar();
+        if (!$trip->isCompleted() || $trip->getMileage() <= 1) {
+            $this->addFlash('error', $translator->trans('trips.split.not_possible'));
+            return $this->redirectToRoute('app_trip_edit', ['trip' => $trip->getId()]);
+        }
 
-        // only allow to delete last trip for car
-        if ($car->getMileage() === $trip->getEndMileage() || !$trip->isCompleted()) {
+        $car      = $trip->getCar();
+        $nextTrip = $tripRepo->findNextByMileage($trip);
+
+        $trip2 = new Trip();
+        $trip2->setStartDate($trip->getStartDate());
+        $trip2->setEndDate($trip->getEndDate());
+        $trip2->setType($trip->getType());
+        foreach ($trip->getUsers() as $user) {
+            $trip2->addUser($user);
+        }
+
+        $form = $this->createForm(TripSplitFormType::class, $trip2, [
+            'car'           => $car,
+            'original_trip' => $trip,
+            'next_trip'     => $nextTrip,
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $splitMileage = (int) $form->get('splitMileage')->getData();
+            $trip2->setEditor($this->getUser());
+
+            $tripService->splitTrip($trip, $splitMileage, $trip2);
+
+            $this->addFlash('success', $translator->trans('trips.split.success'));
+
+            return $this->redirectToRoute('app_trip_list');
+        }
+
+        return $this->render('admin/trip/split.html.twig', [
+            'splitForm' => $form->createView(),
+            'trip'      => $trip,
+            'car'       => $car,
+        ]);
+    }
+
+    #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete')]
+    public function delete(EntityManagerInterface $em, TripRepository $tripRepo, Trip $trip, TranslatorInterface $translator)
+    {
+        $car      = $trip->getCar();
+        $lastTrip = $tripRepo->findLastByEndMileage($car);
+
+        if ($lastTrip !== null && $lastTrip->getId() === $trip->getId()) {
             $car->setMileage($trip->getStartMileage());
             $em->persist($car);
             $em->remove($trip);

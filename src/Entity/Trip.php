@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TripRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['car' => 'exact'])]
-#[IsValidTripDate(groups: ['create'])]
+#[IsValidTripDate]
 #[ApiResource(
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
