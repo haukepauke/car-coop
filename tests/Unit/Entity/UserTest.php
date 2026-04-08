@@ -56,7 +56,7 @@ class UserTest extends TestCase
         return $p;
     }
 
-    private function makeCompletedTrip(int $startMileage, int $endMileage, float $costs, Car $car = null): Trip
+    private function makeTrip(int $startMileage, int $endMileage, float $costs, Car $car = null): Trip
     {
         $trip = new Trip();
         $trip->setStartMileage($startMileage);
@@ -169,7 +169,7 @@ class UserTest extends TestCase
     {
         $car  = $this->makeCar();
         $user = $this->makeUser();
-        $trip = $this->makeCompletedTrip(10000, 10200, 0.0, $car);
+        $trip = $this->makeTrip(10000, 10200, 0.0, $car);
         $trip->addUser($user);
         $user->addTrip($trip);
 
@@ -188,7 +188,7 @@ class UserTest extends TestCase
         $user2->setLocale('en');
         $user2->setPassword('hashed');
 
-        $trip = $this->makeCompletedTrip(0, 100, 0.0, $car);
+        $trip = $this->makeTrip(0, 100, 0.0, $car);
         $trip->addUser($user1);
         $trip->addUser($user2);
         $user1->addTrip($trip);
@@ -198,25 +198,6 @@ class UserTest extends TestCase
         $this->assertSame(50, $mileage); // 100 / 2 users
     }
 
-    public function testGetTripMileageIgnoresIncompleteTrips(): void
-    {
-        $car  = $this->makeCar();
-        $user = $this->makeUser();
-        $trip = new Trip();
-        $trip->setCar($car);
-        $trip->setStartMileage(0);
-        $trip->setEndMileage(200);
-        $trip->setStartDate(new \DateTime('2024-02-01'));
-        $trip->setType('vacation');
-        // no endDate → not completed
-        $trip->addUser($user);
-        $user->addTrip($trip);
-
-        $mileage = $user->getTripMileage($car, new \DateTime('2023-12-31'), new \DateTime('2025-01-01'));
-
-        $this->assertSame(0, $mileage);
-    }
-
     // ── getBalance() ──────────────────────────────────────────────────────────
 
     public function testGetBalanceAddsExpensesAndSubtractsTripCosts(): void
@@ -224,7 +205,7 @@ class UserTest extends TestCase
         $car  = $this->makeCar();
         $user = $this->makeUser();
 
-        $trip = $this->makeCompletedTrip(0, 100, 40.0, $car); // costs 40, split between 1 user
+        $trip = $this->makeTrip(0, 100, 40.0, $car); // costs 40, split between 1 user
         $trip->addUser($user);
         $user->addTrip($trip);
 
@@ -285,7 +266,7 @@ class UserTest extends TestCase
     public function testHasEntriesReturnsTrueWhenUserHasTrips(): void
     {
         $user = $this->makeUser();
-        $trip = $this->makeCompletedTrip(0, 100, 0.0);
+        $trip = $this->makeTrip(0, 100, 0.0);
         $trip->addUser($user);
         $user->addTrip($trip);
         $this->assertTrue($user->hasEntries());

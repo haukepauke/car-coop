@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
@@ -42,7 +43,6 @@ class TripSplitFormType extends AbstractType
                 'splitMileage',
                 IntegerType::class,
                 [
-                    'mapped' => false,
                     'label' => 'trips.split.mileage',
                     'constraints' => [
                         new NotBlank(),
@@ -89,7 +89,7 @@ class TripSplitFormType extends AbstractType
             )
             ->add(
                 'comment',
-                null,
+                TextareaType::class,
                 [
                     'label' => 'trips.comment',
                     'required' => false,

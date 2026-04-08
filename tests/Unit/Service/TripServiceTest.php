@@ -81,39 +81,6 @@ class TripServiceTest extends TestCase
         return $trip;
     }
 
-    private function makeIncompleteTrip(): Trip
-    {
-        $car = new Car();
-        $car->setName('Test Car');
-        $car->setMileage(10000);
-        $car->setMilageUnit('km');
-
-        $userType = new UserType();
-        $userType->setPricePerUnit(0.30);
-        $userType->setName('Members');
-        $userType->setCar($car);
-        $userType->setActive(true);
-        $userType->setAdmin(false);
-        $userType->setOccasionalUse(false);
-
-        $user = new User();
-        $user->setEmail('driver@test.com');
-        $user->setName('Driver');
-        $user->setLocale('en');
-        $user->setPassword('hashed');
-        $user->addUserType($userType);
-
-        $trip = new Trip();
-        $trip->setCar($car);
-        $trip->setType('vacation');
-        $trip->setStartMileage(10000);
-        $trip->setStartDate(new \DateTime('2024-06-01'));
-        $trip->addUser($user);
-        // no endMileage / endDate → not completed
-
-        return $trip;
-    }
-
     // ── createTrip() ──────────────────────────────────────────────────────────
 
     public function testCreateTripCalculatesCosts(): void
@@ -146,18 +113,7 @@ class TripServiceTest extends TestCase
         $this->assertSame(10300, $trip->getCar()->getMileage());
     }
 
-    public function testCreateTripDoesNotUpdateCarMileageWhenIncomplete(): void
-    {
-        $trip = $this->makeIncompleteTrip();
-        $this->setId($trip, 1);
-        $originalMileage = $trip->getCar()->getMileage();
-
-        $this->service->createTrip($trip);
-
-        $this->assertSame($originalMileage, $trip->getCar()->getMileage());
-    }
-
-    public function testCreateTripPersistsTripAndCar(): void
+public function testCreateTripPersistsTripAndCar(): void
     {
         $trip = $this->makeCompletedTrip();
         $this->setId($trip, 1);
@@ -221,17 +177,7 @@ class TripServiceTest extends TestCase
         $this->assertSame(10250, $trip->getCar()->getMileage());
     }
 
-    public function testUpdateTripDoesNotUpdateCarMileageWhenIncomplete(): void
-    {
-        $trip = $this->makeIncompleteTrip();
-        $originalMileage = $trip->getCar()->getMileage();
-
-        $this->service->updateTrip($trip);
-
-        $this->assertSame($originalMileage, $trip->getCar()->getMileage());
-    }
-
-    public function testUpdateTripPersistsTripAndCar(): void
+public function testUpdateTripPersistsTripAndCar(): void
     {
         $trip = $this->makeCompletedTrip();
 

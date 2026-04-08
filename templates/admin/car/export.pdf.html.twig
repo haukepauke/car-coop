@@ -165,17 +165,15 @@
         {% set tripDistanceSum = 0 %}
         {% set tripCostsSum = 0 %}
         {% for trip in trips %}
-            {% if trip.isCompleted %}
-                {% set tripDistanceSum = tripDistanceSum + trip.mileage %}
-            {% endif %}
+            {% set tripDistanceSum = tripDistanceSum + trip.mileage %}
             {% set tripCostsSum = tripCostsSum + trip.costs %}
             <tr>
                 <td>{{ trip.startDate|date('d.m.Y') }}</td>
-                <td>{% if trip.endDate %}{{ trip.endDate|date('d.m.Y') }}{% else %}<span class="text-muted">{{ 'export.ongoing'|trans }}</span>{% endif %}</td>
+                <td>{{ trip.endDate|date('d.m.Y') }}</td>
                 <td>{{ trip.type|trans }}</td>
                 <td class="num">{{ trip.startMileage }}</td>
-                <td class="num">{{ trip.endMileage ?? '–' }}</td>
-                <td class="num">{% if trip.isCompleted %}{{ trip.mileage }}{% else %}–{% endif %}</td>
+                <td class="num">{{ trip.endMileage }}</td>
+                <td class="num">{{ trip.mileage }}</td>
                 <td class="num">{{ trip.costs|number_format(2, '.', ',') }}</td>
                 <td>{{ trip.users|map(u => u.name)|join(', ') }}</td>
                 <td>{{ trip.comment }}</td>

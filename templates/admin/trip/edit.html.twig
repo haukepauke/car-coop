@@ -8,7 +8,7 @@
         {{ form_widget(tripForm) }}
 
         <button type="submit" class="btn btn-outline-dark my-3">{{ 'trips.edit.update'|trans }}</button>
-        {% if trip.isCompleted() and trip.mileage > 1 %}
+        {% if trip.mileage > 1 %}
         <a href="{{ path('app_trip_split', {trip: trip.id}) }}" class="btn btn-outline-secondary my-3">{{ 'trips.split'|trans }} <i class="fas fa-scissors"></i></a>
         {% endif %}
         {% if canDelete %}

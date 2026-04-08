@@ -435,7 +435,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         foreach ($this->getTrips() as $trip) {
             if ($trip->getCar() === $car
-                && $trip->isCompleted()
                 && $trip->getStartDate() > $start
                 && $trip->getEndDate() < $end
             ) {
@@ -452,7 +451,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $balance = 0.0;
 
         foreach ($this->getTrips() as $trip) {
-            if ($trip->getCar() === $car && $trip->isCompleted()) {
+            if ($trip->getCar() === $car) {
                 $numUsers = max(1, $trip->getUsers()->count());
                 $balance -= $trip->getCosts() / $numUsers;
             }

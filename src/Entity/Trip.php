@@ -205,11 +205,7 @@ class Trip
 
     public function getCosts(): ?float
     {
-        if ($this->isCompleted()) {
-            return $this->costs;
-        }
-
-        return 0.0;
+        return $this->costs ?? 0.0;
     }
 
     public function setCosts(?float $costs): self
@@ -233,20 +229,7 @@ class Trip
 
     public function getMileage(): int
     {
-        if ($this->isCompleted()) {
-            return $this->getEndMileage() - $this->getStartMileage();
-        }
-
-        return 0;
-    }
-
-    public function isCompleted(): bool
-    {
-        if (null !== $this->getEndDate() && null !== $this->getEndMileage()) {
-            return true;
-        }
-
-        return false;
+        return $this->getEndMileage() - $this->getStartMileage();
     }
 
     public function setComment(?string $comment): self

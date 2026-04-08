@@ -55,9 +55,7 @@ class TripService
     private function prepareTrip(Trip $trip): void
     {
         $trip->setCosts($this->calculateTripCosts($trip));
-        if ($trip->isCompleted()) {
-            $trip->getCar()->setMileage($trip->getEndMileage());
-        }
+        $trip->getCar()->setMileage($trip->getEndMileage());
     }
 
     private function calculateTripCosts(Trip $trip): float

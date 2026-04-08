@@ -33,7 +33,7 @@ class CarPdfExportService
         usort($bookings, fn($a, $b) => $a->getStartDate() <=> $b->getStartDate());
 
         $totalDistance = array_sum(
-            array_map(fn($t) => $t->isCompleted() ? $t->getMileage() : 0, $trips)
+            array_map(fn($t) => $t->getMileage(), $trips)
         );
         $totalExpenses = array_sum(array_map(fn($e) => $e->getAmount(), $expenses));
         $totalPayments = array_sum(array_map(fn($p) => $p->getAmount(), $payments));

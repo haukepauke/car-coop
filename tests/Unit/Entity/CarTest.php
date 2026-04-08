@@ -207,26 +207,7 @@ class CarTest extends TestCase
         $this->assertSame(0, $distance);
     }
 
-    public function testGetDistanceTravelledIgnoresIncompleteTrips(): void
-    {
-        $car  = $this->makeCar();
-        $trip = new Trip();
-        $trip->setStartMileage(1000);
-        $trip->setEndMileage(1200);
-        $trip->setStartDate(new \DateTime('2024-02-01'));
-        $trip->setType('vacation');
-        // no endDate → not completed
-        $car->addTrip($trip);
-
-        $distance = $car->getDistanceTravelled(
-            new \DateTime('2024-01-01'),
-            new \DateTime('2024-12-31'),
-        );
-
-        $this->assertSame(0, $distance);
-    }
-
-    // ── getMoneySpent() ───────────────────────────────────────────────────────
+// ── getMoneySpent() ───────────────────────────────────────────────────────
 
     private function makeExpense(float $amount, string $date, string $type = 'fuel'): Expense
     {

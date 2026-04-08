@@ -425,7 +425,7 @@ class Car
     {
         $distance = 0;
         foreach ($this->trips as $trip) {
-            if ($trip->isCompleted() && $trip->getStartDate() > $start && $trip->getEndDate() < $end) {
+            if ($trip->getStartDate() > $start && $trip->getEndDate() < $end) {
                 $distance += $trip->getMileage();
             }
         }

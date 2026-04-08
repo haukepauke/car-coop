@@ -139,7 +139,7 @@ class TripAdminController extends AbstractController
     #[Route('/admin/trip/split/{trip}', name: 'app_trip_split')]
     public function split(TripService $tripService, TripRepository $tripRepo, Request $request, Trip $trip, TranslatorInterface $translator): Response
     {
-        if (!$trip->isCompleted() || $trip->getMileage() <= 1) {
+        if ($trip->getMileage() <= 1) {
             $this->addFlash('error', $translator->trans('trips.split.not_possible'));
             return $this->redirectToRoute('app_trip_edit', ['trip' => $trip->getId()]);
         }
@@ -164,8 +164,8 @@ class TripAdminController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $splitMileage = (int) $form->get('splitMileage')->getData();
             $data         = $form->getData();
+            $splitMileage = (int) $data['splitMileage'];
 
             $trip2->setStartMileage($splitMileage);
             $trip2->setEndMileage($trip->getEndMileage());
