@@ -5,27 +5,35 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
+    use TargetPathTrait;
+
     public function __construct(private readonly string $homepageUrl)
     {
     }
 
     #[Route(
-        path: '/{_locale}/login', 
+        path: '/{_locale}/login',
         name: 'app_login',
         requirements: [
             '_locale' => 'en|de|nl|fr|es|pl',
         ],
     )]
-    public function login(AuthenticationUtils $authenticationUtils, TranslatorInterface $translator): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils, TranslatorInterface $translator): Response
     {
         if ($this->getUser()) {
+            if ($targetPath = $this->getTargetPath($request->getSession(), 'main')) {
+                return new RedirectResponse($targetPath);
+            }
+
             $this->addFlash('success', $translator->trans('user.already_logged_in'));
 
             if (null === $this->getUser()->getCar()) {

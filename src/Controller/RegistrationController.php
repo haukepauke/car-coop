@@ -20,11 +20,14 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
+    use TargetPathTrait;
+
     private EmailVerifier $emailVerifier;
 
     public function __construct(
@@ -192,6 +195,7 @@ class RegistrationController extends AbstractController
     #[Route('/invite/accept/{hash}', name: 'app_invite_accept')]
     public function acceptInvite(
         string $hash,
+        Request $request,
         InvitationRepository $inviteRepo,
         EntityManagerInterface $entityManager,
         MessageBusInterface $messageBus,
@@ -204,8 +208,8 @@ class RegistrationController extends AbstractController
         }
 
         if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            // Store hash in session and redirect to login; after login the user is sent to this route
-            return $this->redirectToRoute('app_login', ['_target_path' => $this->generateUrl('app_invite_accept', ['hash' => $hash])]);
+            $this->saveTargetPath($request->getSession(), 'main', $this->generateUrl('app_invite_accept', ['hash' => $hash]));
+            return $this->redirectToRoute('app_login');
         }
 
         /** @var User $user */
