@@ -107,35 +107,29 @@ class TripAdminController extends AbstractController
         $form = $this->createForm(
             TripFormType::class,
             $trip,
-            ['car' => $car]
+            ['car' => $car, 'edit_mode' => true]
         );
 
-        if ($car->getMileage() !== $trip->getEndMileage() && $trip->isCompleted() && !($form->isSubmitted() && $form->isValid())) {
-            $this->addFlash('error', $translator->trans('trips.edit.blocked'));
-        } else {
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $trip = $form->getData();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trip = $form->getData();
 
-                $trip->setEditor($this->getUser());
-                $tripService->updateTrip($trip);
+            $trip->setEditor($this->getUser());
+            $tripService->updateTrip($trip);
 
-                $this->addFlash('success', $translator->trans('trips.updated'));
+            $this->addFlash('success', $translator->trans('trips.updated'));
 
-                return $this->redirectToRoute('app_trip_list');
-            }
-
-            return $this->render(
-                'admin/trip/edit.html.twig',
-                [
-                    'tripForm' => $form->createView(),
-                    'car' => $car,
-                    'trip' => $trip,
-                ]
-            );
+            return $this->redirectToRoute('app_trip_list');
         }
 
-        return $this->redirectToRoute('app_trip_list');
+        return $this->render(
+            'admin/trip/edit.html.twig',
+            [
+                'tripForm' => $form->createView(),
+                'car' => $car,
+                'trip' => $trip,
+            ]
+        );
     }
 
     #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete')]

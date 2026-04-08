@@ -15,6 +15,8 @@ class TripFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $editMode = $options['edit_mode'];
+
         $builder
             ->add(
                 'startMileage',
@@ -28,6 +30,7 @@ class TripFormType extends AbstractType
                 'endMileage',
                 null,
                 [
+                    'disabled' => $editMode,
                     'label' => 'trips.mileage.end',
                 ]
             )
@@ -91,6 +94,7 @@ class TripFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Trip::class,
             'car' => null,
+            'edit_mode' => false,
         ]);
     }
 }
