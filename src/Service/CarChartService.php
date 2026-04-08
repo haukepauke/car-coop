@@ -20,7 +20,7 @@ class CarChartService
         $this->translator = $translator;
     }
 
-    public function getDistanceDrivenByUserChart(Car $car, \DateTime $start = null, \DateTime $end = null): Chart
+    public function getDistanceDrivenByUserChart(Car $car, ?\DateTime $start = null, ?\DateTime $end = null): Chart
     {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
         $users = $car->getActiveUsers();
@@ -31,7 +31,7 @@ class CarChartService
         foreach ($users as $user) {
             $labels[] = $user->getName();
             $colors[] = $user->getColor();
-            $mileAge[] = $user->getTripMileage($start, $end);
+            $mileAge[] = $user->getTripMileage($car, $start, $end);
         }
 
         $chart->setData([
@@ -58,7 +58,7 @@ class CarChartService
         return $chart;
     }
 
-    public function getUserBalanceChart(Car $car, \DateTime $start = null, \DateTime $end = null): Chart
+    public function getUserBalanceChart(Car $car, ?\DateTime $start = null, ?\DateTime $end = null): Chart
     {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
         $users = $car->getActiveUsers();
@@ -70,8 +70,8 @@ class CarChartService
         foreach ($users as $user) {
             $labels[] = $user->getName();
             $colors[] = $user->getColor();
-            $balance[] = $user->getBalance();
-            $moneySpent[] = $user->getMoneySpent($start, $end);
+            $balance[] = $user->getBalance($car);
+            $moneySpent[] = $user->getMoneySpent($car, $start, $end);
         }
 
         $chart->setData([

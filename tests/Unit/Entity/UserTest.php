@@ -22,26 +22,41 @@ class UserTest extends TestCase
         return $user;
     }
 
-    private function makeExpense(float $amount, string $date): Expense
+    private function makeCar(): Car
+    {
+        $car = new Car();
+        $car->setName('Test Car');
+        $car->setMileage(0);
+        $car->setMilageUnit('km');
+        return $car;
+    }
+
+    private function makeExpense(float $amount, string $date, Car $car = null): Expense
     {
         $e = new Expense();
         $e->setName('Fuel');
         $e->setType('fuel');
         $e->setAmount($amount);
         $e->setDate(new \DateTime($date));
+        if ($car !== null) {
+            $e->setCar($car);
+        }
         return $e;
     }
 
-    private function makePayment(float $amount, string $date): Payment
+    private function makePayment(float $amount, string $date, Car $car = null): Payment
     {
         $p = new Payment();
         $p->setAmount($amount);
         $p->setDate(new \DateTime($date));
         $p->setType('cash');
+        if ($car !== null) {
+            $p->setCar($car);
+        }
         return $p;
     }
 
-    private function makeCompletedTrip(int $startMileage, int $endMileage, float $costs): Trip
+    private function makeCompletedTrip(int $startMileage, int $endMileage, float $costs, Car $car = null): Trip
     {
         $trip = new Trip();
         $trip->setStartMileage($startMileage);
@@ -50,6 +65,9 @@ class UserTest extends TestCase
         $trip->setEndDate(new \DateTime('2024-01-10'));
         $trip->setType('vacation');
         $trip->setCosts($costs);
+        if ($car !== null) {
+            $trip->setCar($car);
+        }
         return $trip;
     }
 
@@ -117,28 +135,30 @@ class UserTest extends TestCase
 
     public function testGetMoneySpentSumsExpensesAndPaymentsMade(): void
     {
+        $car  = $this->makeCar();
         $user = $this->makeUser();
-        $user->addExpense($this->makeExpense(50.0, '2024-03-01'));
+        $user->addExpense($this->makeExpense(50.0, '2024-03-01', $car));
 
-        $payment = $this->makePayment(20.0, '2024-04-01');
+        $payment = $this->makePayment(20.0, '2024-04-01', $car);
         $payment->setFromUser($user);
         $user->addPaymentsMade($payment);
 
-        $spent = $user->getMoneySpent(new \DateTime('2024-01-01'), new \DateTime('2024-12-31'));
+        $spent = $user->getMoneySpent($car, new \DateTime('2024-01-01'), new \DateTime('2024-12-31'));
 
         $this->assertEquals(70, $spent);
     }
 
     public function testGetMoneySpentSubtractsPaymentsReceived(): void
     {
+        $car  = $this->makeCar();
         $user = $this->makeUser();
-        $user->addExpense($this->makeExpense(100.0, '2024-03-01'));
+        $user->addExpense($this->makeExpense(100.0, '2024-03-01', $car));
 
-        $received = $this->makePayment(30.0, '2024-04-01');
+        $received = $this->makePayment(30.0, '2024-04-01', $car);
         $received->setToUser($user);
         $user->addPaymentsReceived($received);
 
-        $spent = $user->getMoneySpent(new \DateTime('2024-01-01'), new \DateTime('2024-12-31'));
+        $spent = $user->getMoneySpent($car, new \DateTime('2024-01-01'), new \DateTime('2024-12-31'));
 
         $this->assertEquals(70, $spent);
     }
@@ -147,19 +167,20 @@ class UserTest extends TestCase
 
     public function testGetTripMileageSumsCompletedTrips(): void
     {
+        $car  = $this->makeCar();
         $user = $this->makeUser();
-        $trip = $this->makeCompletedTrip(10000, 10200, 0.0);
+        $trip = $this->makeCompletedTrip(10000, 10200, 0.0, $car);
         $trip->addUser($user);
         $user->addTrip($trip);
 
-        // Use strict bounds: trip starts 2024-01-01, so range must start before that
-        $mileage = $user->getTripMileage(new \DateTime('2023-12-31'), new \DateTime('2025-01-01'));
+        $mileage = $user->getTripMileage($car, new \DateTime('2023-12-31'), new \DateTime('2025-01-01'));
 
         $this->assertSame(200, $mileage);
     }
 
     public function testGetTripMileageDividesByNumberOfUsers(): void
     {
+        $car   = $this->makeCar();
         $user1 = $this->makeUser();
         $user2 = new User();
         $user2->setEmail('b@test.com');
@@ -167,20 +188,22 @@ class UserTest extends TestCase
         $user2->setLocale('en');
         $user2->setPassword('hashed');
 
-        $trip = $this->makeCompletedTrip(0, 100, 0.0);
+        $trip = $this->makeCompletedTrip(0, 100, 0.0, $car);
         $trip->addUser($user1);
         $trip->addUser($user2);
         $user1->addTrip($trip);
 
-        $mileage = $user1->getTripMileage(new \DateTime('2023-12-31'), new \DateTime('2025-01-01'));
+        $mileage = $user1->getTripMileage($car, new \DateTime('2023-12-31'), new \DateTime('2025-01-01'));
 
         $this->assertSame(50, $mileage); // 100 / 2 users
     }
 
     public function testGetTripMileageIgnoresIncompleteTrips(): void
     {
+        $car  = $this->makeCar();
         $user = $this->makeUser();
         $trip = new Trip();
+        $trip->setCar($car);
         $trip->setStartMileage(0);
         $trip->setEndMileage(200);
         $trip->setStartDate(new \DateTime('2024-02-01'));
@@ -189,8 +212,7 @@ class UserTest extends TestCase
         $trip->addUser($user);
         $user->addTrip($trip);
 
-        // Use strict bounds: trip starts 2024-01-01, so range must start before that
-        $mileage = $user->getTripMileage(new \DateTime('2023-12-31'), new \DateTime('2025-01-01'));
+        $mileage = $user->getTripMileage($car, new \DateTime('2023-12-31'), new \DateTime('2025-01-01'));
 
         $this->assertSame(0, $mileage);
     }
@@ -199,36 +221,50 @@ class UserTest extends TestCase
 
     public function testGetBalanceAddsExpensesAndSubtractsTripCosts(): void
     {
+        $car  = $this->makeCar();
         $user = $this->makeUser();
 
-        $trip = $this->makeCompletedTrip(0, 100, 40.0); // costs 40, split between 1 user
+        $trip = $this->makeCompletedTrip(0, 100, 40.0, $car); // costs 40, split between 1 user
         $trip->addUser($user);
         $user->addTrip($trip);
 
-        $user->addExpense($this->makeExpense(100.0, '2024-03-01'));
+        $user->addExpense($this->makeExpense(100.0, '2024-03-01', $car));
 
         // balance = 100 (expense) - 40 (trip costs / 1 user) = 60
-        $this->assertEquals(60.0, $user->getBalance());
+        $this->assertEquals(60.0, $user->getBalance($car));
     }
 
     public function testGetBalanceAddsMadePayments(): void
     {
+        $car     = $this->makeCar();
         $user    = $this->makeUser();
-        $payment = $this->makePayment(25.0, '2024-04-01');
+        $payment = $this->makePayment(25.0, '2024-04-01', $car);
         $payment->setFromUser($user);
         $user->addPaymentsMade($payment);
 
-        $this->assertEquals(25.0, $user->getBalance());
+        $this->assertEquals(25.0, $user->getBalance($car));
     }
 
     public function testGetBalanceSubtractsReceivedPayments(): void
     {
+        $car      = $this->makeCar();
         $user     = $this->makeUser();
-        $received = $this->makePayment(15.0, '2024-04-01');
+        $received = $this->makePayment(15.0, '2024-04-01', $car);
         $received->setToUser($user);
         $user->addPaymentsReceived($received);
 
-        $this->assertEquals(-15.0, $user->getBalance());
+        $this->assertEquals(-15.0, $user->getBalance($car));
+    }
+
+    public function testGetBalanceIgnoresOtherCars(): void
+    {
+        $car1 = $this->makeCar();
+        $car2 = $this->makeCar();
+        $user = $this->makeUser();
+
+        $user->addExpense($this->makeExpense(100.0, '2024-03-01', $car2));
+
+        $this->assertEquals(0.0, $user->getBalance($car1));
     }
 
     // ── hasEntries() ──────────────────────────────────────────────────────────

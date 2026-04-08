@@ -390,50 +390,55 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * TODO implement date time filter for money spent.
-     */
-    public function getMoneySpent(?\DateTime $start = null, ?\DateTime $end = null)
+    public function getMoneySpent(Car $car, ?\DateTime $start = null, ?\DateTime $end = null): float
     {
-        $amount = 0;
-
         if (null === $start) {
             $start = new \DateTime('2000-01-01');
         }
-
         if (null === $end) {
             $end = new \DateTime();
         }
 
+        $amount = 0.0;
+
         foreach ($this->getExpensesByPeriod($start, $end) as $expense) {
-            $amount += $expense->getAmount();
+            if ($expense->getCar() === $car) {
+                $amount += $expense->getAmount();
+            }
         }
 
         foreach ($this->getPaymentsMadeByPeriod($start, $end) as $payment) {
-            $amount += $payment->getAmount();
+            if ($payment->getCar() === $car) {
+                $amount += $payment->getAmount();
+            }
         }
 
         foreach ($this->getPaymentsReceivedByPeriod($start, $end) as $payment) {
-            $amount -= $payment->getAmount();
+            if ($payment->getCar() === $car) {
+                $amount -= $payment->getAmount();
+            }
         }
 
         return $amount;
     }
 
-    public function getTripMileage(?\DateTime $start = null, ?\DateTime $end = null): int
+    public function getTripMileage(Car $car, ?\DateTime $start = null, ?\DateTime $end = null): int
     {
-        $mileage = 0;
-
         if (null === $start) {
             $start = new \DateTime('2000-01-01');
         }
-
         if (null === $end) {
             $end = new \DateTime();
         }
 
+        $mileage = 0;
+
         foreach ($this->getTrips() as $trip) {
-            if ($trip->isCompleted() && $trip->getStartDate() > $start && $trip->getEndDate() < $end) {
+            if ($trip->getCar() === $car
+                && $trip->isCompleted()
+                && $trip->getStartDate() > $start
+                && $trip->getEndDate() < $end
+            ) {
                 $numUsers = max(1, $trip->getUsers()->count());
                 $mileage += intdiv($trip->getMileage(), $numUsers);
             }
@@ -442,27 +447,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $mileage;
     }
 
-    public function getBalance()
+    public function getBalance(Car $car): float
     {
         $balance = 0.0;
 
         foreach ($this->getTrips() as $trip) {
-            if ($trip->isCompleted()) {
+            if ($trip->getCar() === $car && $trip->isCompleted()) {
                 $numUsers = max(1, $trip->getUsers()->count());
                 $balance -= $trip->getCosts() / $numUsers;
             }
         }
 
         foreach ($this->getExpenses() as $expense) {
-            $balance += $expense->getAmount();
+            if ($expense->getCar() === $car) {
+                $balance += $expense->getAmount();
+            }
         }
 
         foreach ($this->paymentsMade as $payment) {
-            $balance += $payment->getAmount();
+            if ($payment->getCar() === $car) {
+                $balance += $payment->getAmount();
+            }
         }
 
         foreach ($this->getPaymentsReceived() as $payment) {
-            $balance -= $payment->getAmount();
+            if ($payment->getCar() === $car) {
+                $balance -= $payment->getAmount();
+            }
         }
 
         return $balance;

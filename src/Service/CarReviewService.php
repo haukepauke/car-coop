@@ -29,7 +29,7 @@ class CarReviewService
 
         $userBalances = array_map(fn($u) => [
             'user'    => $u,
-            'balance' => round($u->getBalance(), 2),
+            'balance' => round($u->getBalance($car), 2),
         ], $users);
 
         $paymentProposals  = $this->computePaymentProposals($userBalances);
