@@ -80,10 +80,11 @@ class TripSplitFormType extends AbstractType
                 ChoiceType::class,
                 [
                     'choices' => [
-                        'Vacation' => 'vacation',
-                        'Transport' => 'transport',
-                        'Workshop/Service' => 'service',
+                        'vacation' => 'vacation',
+                        'transport' => 'transport',
+                        'service' => 'service',
                     ],
+                    'choice_translation_domain' => 'messages',
                     'label' => 'trips.type',
                 ]
             )

@@ -23,10 +23,8 @@
     {{ form_end(tripForm) }}
 </div>
 
-{% block javascripts %}
-{{ parent() }}
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
     const checkbox = document.getElementById('add-parking-location');
     const latInput = document.getElementById('parking-lat');
     const lngInput = document.getElementById('parking-lng');
@@ -67,7 +65,6 @@
             { enableHighAccuracy: true, timeout: 10000 }
         );
     });
-})();
+});
 </script>
-{% endblock %}
 {% endblock %}
