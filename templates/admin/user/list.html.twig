@@ -34,9 +34,9 @@
                             <td class="align-middle text-center">{{ user.name }}</td>
                             <td class="align-middle text-center">{{ user.email }}</td>
                             <td class="align-middle text-center"><i class="fas fa-circle" style="color: {{ user.color }}"></i></td>
-                            <td class="align-middle text-center">{{ user.tripMileage|number_format(0, ',', '.') }}</td>
-                            <td class="align-middle text-center">{{ user.moneySpent|format_currency(car.currency, locale=app.user.locale) }}
-                            <td class="align-middle text-center">{{ user.balance|format_currency(car.currency, locale=app.user.locale) }}</td>
+                            <td class="align-middle text-center">{{ user.getTripMileage(car)|number_format(0, ',', '.') }}</td>
+                            <td class="align-middle text-center">{{ user.getMoneySpent(car)|format_currency(car.currency, locale=app.user.locale) }}
+                            <td class="align-middle text-center">{{ user.getBalance(car)|format_currency(car.currency, locale=app.user.locale) }}</td>
                             <td class="align-middle text-center">
                             {% if user.isActive() %}
                                 {{ 'user.active'|trans }}
