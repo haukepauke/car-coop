@@ -187,6 +187,14 @@ car:
     calculated_for_year: "Obliczone koszty za %year%"
     calculated_all_years: Obliczone koszty (wszystkie lata)
   create: Utwórz pojazd
+  pricing:
+    title: Ustaw cenę startową za jednostkę
+    intro: "Podaj aktualną cenę paliwa i średnie zużycie paliwa pojazdu, aby obliczyć sprawiedliwą cenę za km/milę. Cena zostanie ustawiona dla grupy Crew i można ją zmienić w dowolnym momencie."
+    fuel_price:
+      label: Aktualna cena paliwa (za litr/galon)
+      help: Sprawdź cenę na najbliższej stacji paliw
+    calculate: Oblicz i zapisz cenę
+    skip: Pomiń
   data: Dane pojazdu
   exportpdf:
     button: Eksportuj dane pojazdu (PDF)
@@ -378,7 +386,7 @@ invitation:
     description: "Twój pojazd został skonfigurowany! Zaproś innych członków do wspólnego korzystania. Możesz pominąć ten krok i zaprosić członków później przez Administracja → Zarządzaj użytkownikami."
     submit: Wyślij zaproszenia
     invite_another: Dodaj kolejnego członka
-    skip: Pomiń na razie
+    skip: Pomiń
 log:
   in: Zaloguj się
   forgot_password: Zresetuj hasło

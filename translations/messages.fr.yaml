@@ -187,6 +187,14 @@ car:
     calculated_for_year: "Coûts calculés pour %year%"
     calculated_all_years: Coûts calculés (toutes les années)
   create: Créer un véhicule
+  pricing:
+    title: Définir le prix de départ par unité
+    intro: "Saisissez le prix actuel du carburant et la consommation moyenne du véhicule pour calculer un prix équitable par km/mile. Le prix sera défini pour le groupe Crew et pourra être modifié à tout moment."
+    fuel_price:
+      label: Prix actuel du carburant (par litre/gallon)
+      help: Vérifiez le prix à la station-service la plus proche
+    calculate: Calculer & enregistrer le prix
+    skip: Passer
   data: Données du véhicule
   exportpdf:
     button: Exporter les données du véhicule (PDF)

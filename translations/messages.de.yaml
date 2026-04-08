@@ -188,6 +188,14 @@ car:
     calculated_for_year: "Errechnete Kosten für %year%"
     calculated_all_years: Errechnete Kosten (alle Jahre)
   create: Fahrzeug erstellen
+  pricing:
+    title: Startpreis pro Einheit festlegen
+    intro: "Um einen fairen Preis pro km/Meile zu berechnen, gib den aktuellen Kraftstoffpreis und den durchschnittlichen Verbrauch des Fahrzeugs ein. Der Preis wird für die Crew-Gruppe gesetzt und kann jederzeit geändert werden."
+    fuel_price:
+      label: Aktueller Kraftstoffpreis (pro Liter/Gallone)
+      help: Preis an der nächsten Tankstelle prüfen
+    calculate: Preis berechnen & speichern
+    skip: Überspringen
   data: Daten zum Fahrzeug
   exportpdf:
     button: Fahrzeugdaten exportieren (PDF)

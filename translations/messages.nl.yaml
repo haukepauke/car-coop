@@ -187,6 +187,14 @@ car:
     calculated_for_year: "Berekende kosten voor %year%"
     calculated_all_years: Berekende kosten (alle jaren)
   create: Voertuig aanmaken
+  pricing:
+    title: Startprijs per eenheid instellen
+    intro: "Voer de huidige brandstofprijs en het gemiddelde brandstofverbruik in om een eerlijke prijs per km/mijl te berekenen. De prijs wordt ingesteld voor de Crew-groep en kan later worden gewijzigd."
+    fuel_price:
+      label: Huidige brandstofprijs (per liter/gallon)
+      help: Controleer de prijs bij het dichtstbijzijnde tankstation
+    calculate: Prijs berekenen & opslaan
+    skip: Overslaan
   data: Voertuiggegevens
   exportpdf:
     button: Voertuiggegevens exporteren (PDF)

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+<div class="col-xl-6 mt-5">
+    <h4>{{ 'car.pricing.title'|trans }}</h4>
+
+    <div class="alert alert-info">
+        {{ 'car.pricing.intro'|trans }}
+    </div>
+
+    {{ form_start(pricingForm) }}
+        {{ form_row(pricingForm.fuelPrice) }}
+        {{ form_row(pricingForm.fuelConsumption100) }}
+
+        <div class="my-3">
+            <button type="submit" class="btn btn-outline-dark">{{ 'car.pricing.calculate'|trans }}</button>
+        </div>
+    {{ form_end(pricingForm) }}
+
+    <a href="{{ skipUrl }}">{{ 'car.pricing.skip'|trans }}</a>
+</div>
+{% endblock %}

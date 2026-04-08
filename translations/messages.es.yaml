@@ -187,6 +187,14 @@ car:
     calculated_for_year: "Costes calculados para %year%"
     calculated_all_years: Costes calculados (todos los años)
   create: Crear vehículo
+  pricing:
+    title: Establecer precio inicial por unidad
+    intro: "Introduce el precio actual del combustible y el consumo medio del vehículo para calcular un precio justo por km/milla. El precio se establecerá para el grupo Crew y podrá modificarse en cualquier momento."
+    fuel_price:
+      label: Precio actual del combustible (por litro/galón)
+      help: Consulta el precio en la gasolinera más cercana
+    calculate: Calcular y guardar precio
+    skip: Omitir
   data: Datos del vehículo
   exportpdf:
     button: Exportar datos del vehículo (PDF)
@@ -378,7 +386,7 @@ invitation:
     description: "¡Tu vehículo ha sido configurado! Invita a otros miembros a compartirlo. Puedes omitir este paso e invitar miembros más tarde desde Administración → Gestionar usuarios."
     submit: Enviar invitaciones
     invite_another: Añadir otro miembro
-    skip: Omitir por ahora
+    skip: Omitir
 log:
   in: Iniciar sesión
   forgot_password: Restablecer contraseña

@@ -188,6 +188,14 @@ car:
     calculated_for_year: "Calculated costs for %year%"
     calculated_all_years: Calculated costs (all years)
   create: Create vehicle
+  pricing:
+    title: Set starting price per unit
+    intro: "To help calculate a fair price per km/mi, enter the current fuel price and your vehicle's average fuel consumption. The price will be set for the Crew group. You can change it at any time."
+    fuel_price:
+      label: Current fuel price (per litre/gallon)
+      help: Check the price at your nearest petrol station
+    calculate: Calculate & save price
+    skip: Skip
   data: Vehicle data
   exportpdf:
     button: Export vehicle data (PDF)
@@ -379,7 +387,7 @@ invitation:
     description: "Your vehicle has been set up! Invite other members to share it. You can skip this step and invite members later via Administration → Manage users."
     submit: Send invitations
     invite_another: Add another member
-    skip: Skip for now
+    skip: Skip
 log:
   in: Log in
   forgot_password: Reset password

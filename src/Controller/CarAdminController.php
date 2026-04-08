@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Entity\UserType;
 use App\Form\CarFormType;
+use App\Form\CarPricingFormType;
 use App\Message\Event\PricePerUnitChangedEvent;
 use App\Repository\BookingRepository;
 use App\Repository\CarRepository;
@@ -31,14 +32,14 @@ class CarAdminController extends AbstractController
     {
         $isFirstCar = $this->getUser()->getUserTypes()->isEmpty();
 
-        $form = $this->createForm(CarFormType::class);
+        $form = $this->createForm(CarFormType::class, null, ['show_fuel_consumption' => false]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $car = $form->getData();
             $em->persist($car);
 
-            // Set default usergroup
+            // Set default usergroup — price will be refined on the next pricing step
             $userType = new UserType();
             $userType->setCar($car);
             $userType->setName('Crew');
@@ -55,24 +56,82 @@ class CarAdminController extends AbstractController
             $retiredUserType->setPricePerUnit(0.00);
             $retiredUserType->setActive(false);
             $retiredUserType->setFixed(true);
-
             $em->persist($retiredUserType);
 
             $em->flush();
 
             $this->addFlash('success', $translator->trans('car.created'));
 
-            if ($isFirstCar) {
-                return $this->redirectToRoute('app_user_invite_onboarding');
-            }
-
-            return $this->redirectToRoute('app_car_show');
+            return $this->redirectToRoute('app_car_pricing', [
+                'id'         => $car->getId(),
+                'first_car'  => $isFirstCar ? 1 : 0,
+            ]);
         }
 
         return $this->render(
             $isFirstCar ? 'admin/car/new_first.html.twig' : 'admin/car/new.html.twig',
             ['carForm' => $form->createView()],
         );
+    }
+
+    #[Route('/admin/car/pricing/{id}', name: 'app_car_pricing')]
+    public function pricing(
+        Car $car,
+        Request $request,
+        EntityManagerInterface $em,
+        CurrencyService $currencyService,
+        TranslatorInterface $translator,
+    ): Response {
+        $isFirstCar = (bool) $request->query->get('first_car', 0);
+
+        if (!$car->hasUser($this->getUser())) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Skip: keep the default price and continue
+        if ($request->query->get('skip')) {
+            if ($isFirstCar) {
+                return $this->redirectToRoute('app_user_invite_onboarding');
+            }
+            return $this->redirectToRoute('app_car_show');
+        }
+
+        $form = $this->createForm(CarPricingFormType::class, $car);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $fuelPrice        = (float) $form->get('fuelPrice')->getData();
+            $consumption      = $car->getFuelConsumption100();
+            $pricePerUnit     = round($fuelPrice * $consumption / 100 * 1.8, 2);
+
+            // Update the Crew user type price
+            foreach ($car->getUserTypes() as $userType) {
+                if ($userType->getName() === 'Crew') {
+                    $userType->setPricePerUnit($pricePerUnit);
+                    break;
+                }
+            }
+
+            $em->flush();
+
+            if ($isFirstCar) {
+                return $this->redirectToRoute('app_user_invite_onboarding');
+            }
+            return $this->redirectToRoute('app_car_show');
+        }
+
+        $template = $isFirstCar ? 'admin/car/pricing_first.html.twig' : 'admin/car/pricing.html.twig';
+
+        return $this->render($template, [
+            'pricingForm' => $form->createView(),
+            'car'         => $car,
+            'first_car'   => $isFirstCar,
+            'skipUrl'     => $this->generateUrl('app_car_pricing', [
+                'id'        => $car->getId(),
+                'first_car' => $isFirstCar ? 1 : 0,
+                'skip'      => 1,
+            ]),
+        ]);
     }
 
     #[Route('/admin/car/activate/{id}', name: 'app_car_activate', methods: ['POST'])]

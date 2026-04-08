@@ -104,7 +104,10 @@ class CarFormType extends AbstractType
                     'label' => 'car.form.fueltype',
                 ]
             )
-            ->add(
+        ;
+
+        if ($options['show_fuel_consumption']) {
+            $builder->add(
                 'fuelConsumption100',
                 NumberType::class,
                 [
@@ -113,8 +116,11 @@ class CarFormType extends AbstractType
                     'label' => 'car.form.fuelconsumption100',
                     'help' => 'car.form.help.fuelconsumption100',
                 ]
-            )
-            ->add(
+            );
+        }
+
+        $builder->
+add(
                 'picture',
                 FileType::class,
                 [
@@ -145,11 +151,13 @@ class CarFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class'        => Car::class,
-            'mileage_disabled'  => false,
-            'currency_disabled' => false,
+            'data_class'             => Car::class,
+            'mileage_disabled'       => false,
+            'currency_disabled'      => false,
+            'show_fuel_consumption'  => true,
         ]);
         $resolver->setAllowedTypes('mileage_disabled', 'bool');
         $resolver->setAllowedTypes('currency_disabled', 'bool');
+        $resolver->setAllowedTypes('show_fuel_consumption', 'bool');
     }
 }
