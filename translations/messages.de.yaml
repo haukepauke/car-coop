@@ -376,7 +376,11 @@ invitation:
     description: "Car Coop ist eine gemeinnützige Carsharing-Plattform, mit der du ein Fahrzeug mit Freunden, Kolleginnen oder Mitstreitern teilen kannst. Sie hilft dir, Buchungen zu verwalten und die laufenden Kosten im Blick zu behalten."
     register: "Klicke auf den folgenden Link, um dich zu registrieren:"
     register_link: Bei Car Coop registrieren
+    existing_user: "Du hast bereits ein Car Coop-Konto. Klicke auf den Link unten, um die Einladung anzunehmen und dem Fahrzeug beizutreten:"
+    accept_link: Einladung annehmen
     cheers: Viele Grüße!
+  accepted: "Du bist erfolgreich %car% beigetreten."
+  wrong_user: Diese Einladung wurde an eine andere E-Mail-Adresse gesendet.
   for: Einladung erstellen für
   status: Einladungsstatus
   invited:

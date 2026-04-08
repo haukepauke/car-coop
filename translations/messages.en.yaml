@@ -376,7 +376,11 @@ invitation:
     description: "Car Coop is a non-profit vehicle sharing platform that allows you to share a vehicle with friends, colleagues or comrades. It helps you manage bookings and keep track of running costs."
     register: "Please click the following link to register:"
     register_link: Register for Car Coop
+    existing_user: "You already have a Car Coop account. Click the link below to accept the invitation and join the vehicle:"
+    accept_link: Accept invitation
     cheers: Cheers!
+  accepted: "You have successfully joined %car%."
+  wrong_user: This invitation was sent to a different email address.
   for: Create invitation for
   status: Invitation status
   invited:

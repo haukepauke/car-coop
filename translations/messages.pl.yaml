@@ -375,7 +375,11 @@ invitation:
     description: "Car Coop to non-profit platforma do współdzielenia pojazdów, która umożliwia dzielenie się pojazdem z przyjaciółmi, współpracownikami lub partnerami. Pomaga zarządzać rezerwacjami i śledzić bieżące koszty."
     register: "Kliknij poniższy link, aby się zarejestrować:"
     register_link: Zarejestruj się w Car Coop
+    existing_user: "Masz już konto w Car Coop. Kliknij poniższy link, aby zaakceptować zaproszenie i dołączyć do pojazdu:"
+    accept_link: Zaakceptuj zaproszenie
     cheers: Pozdrawiam!
+  accepted: "Pomyślnie dołączyłeś do %car%."
+  wrong_user: To zaproszenie zostało wysłane na inny adres e-mail.
   for: Utwórz zaproszenie dla
   status: Status zaproszenia
   invited:

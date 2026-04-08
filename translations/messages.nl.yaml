@@ -375,7 +375,11 @@ invitation:
     description: "Car Coop is een non-profit platform voor voertuigdeling waarmee je een voertuig kunt delen met vrienden, collega's of medestanders. Het helpt je boekingen te beheren en de lopende kosten bij te houden."
     register: "Klik op de volgende link om je te registreren:"
     register_link: Registreren voor Car Coop
+    existing_user: "Je hebt al een Car Coop-account. Klik op de onderstaande link om de uitnodiging te accepteren en lid te worden van het voertuig:"
+    accept_link: Uitnodiging accepteren
     cheers: Proost!
+  accepted: "Je bent succesvol lid geworden van %car%."
+  wrong_user: Deze uitnodiging is verstuurd naar een ander e-mailadres.
   for: Uitnodiging aanmaken voor
   status: Uitnodigingsstatus
   invited:

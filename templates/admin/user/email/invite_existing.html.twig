@@ -1,0 +1,16 @@
+<p>
+    <b>{{ 'invitation.email.greeting'|trans({'%inviter%': inviter.name, '%inviter_email%': inviter.email, '%car%': car.name}) }}</b>
+</p>
+
+<p>
+    {{ 'invitation.email.description'|trans }}
+</p>
+
+<p>
+    {{ 'invitation.email.existing_user'|trans }}<br><br>
+    <a href="{{ acceptUrl }}">{{ 'invitation.email.accept_link'|trans }}</a>
+</p>
+
+<p>
+    {{ 'invitation.email.cheers'|trans }}
+</p>

@@ -11,6 +11,7 @@ use App\Message\Event\InvitationCreatedEvent;
 use App\Message\Event\UserRemovedEvent;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Service\ActiveCarService;
 use App\Service\FileUploaderService;
 use DateTimeImmutable;
@@ -59,18 +60,18 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/invite/onboarding', name: 'app_user_invite_onboarding')]
-    public function inviteOnboarding(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo): Response
+    public function inviteOnboarding(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo, UserRepository $userRepo): Response
     {
-        return $this->handleInviteRequest($em, $request, $mailer, $activeCarService, $messageBus, $translator, $invitationRepo, 'admin/user/invite_onboarding.html.twig', 'app_car_show');
+        return $this->handleInviteRequest($em, $request, $mailer, $activeCarService, $messageBus, $translator, $invitationRepo, $userRepo, 'admin/user/invite_onboarding.html.twig', 'app_car_show');
     }
 
     #[Route('/admin/user/invite', name: 'app_user_invite')]
-    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo): Response
+    public function invite(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo, UserRepository $userRepo): Response
     {
-        return $this->handleInviteRequest($em, $request, $mailer, $activeCarService, $messageBus, $translator, $invitationRepo, 'admin/user/invite.html.twig', 'app_user_list');
+        return $this->handleInviteRequest($em, $request, $mailer, $activeCarService, $messageBus, $translator, $invitationRepo, $userRepo, 'admin/user/invite.html.twig', 'app_user_list');
     }
 
-    private function handleInviteRequest(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo, string $template, string $successRoute): Response
+    private function handleInviteRequest(EntityManagerInterface $em, Request $request, MailerInterface $mailer, ActiveCarService $activeCarService, MessageBusInterface $messageBus, TranslatorInterface $translator, InvitationRepository $invitationRepo, UserRepository $userRepo, string $template, string $successRoute): Response
     {
         $car = $activeCarService->getActiveCar();
         /** @var \App\Entity\User $currentUser */
@@ -80,7 +81,7 @@ class UserAdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             ['sent' => $sent, 'skipped' => $skipped] = $this->processInviteEntries(
-                $form->getData()['entries'], $car, $currentUser, $em, $mailer, $messageBus, $invitationRepo, $translator
+                $form->getData()['entries'], $car, $currentUser, $em, $mailer, $messageBus, $invitationRepo, $translator, $userRepo
             );
 
             if ($sent) {
@@ -112,7 +113,7 @@ class UserAdminController extends AbstractController
             ->getForm();
     }
 
-    private function processInviteEntries(array $entries, \App\Entity\Car $car, User $currentUser, EntityManagerInterface $em, MailerInterface $mailer, MessageBusInterface $messageBus, InvitationRepository $invitationRepo, TranslatorInterface $translator): array
+    private function processInviteEntries(array $entries, \App\Entity\Car $car, User $currentUser, EntityManagerInterface $em, MailerInterface $mailer, MessageBusInterface $messageBus, InvitationRepository $invitationRepo, TranslatorInterface $translator, UserRepository $userRepo): array
     {
         $sent = [];
         $skipped = [];
@@ -134,15 +135,28 @@ class UserAdminController extends AbstractController
             $em->persist($invitation);
             $em->flush();
 
-            $locale = $entry['locale'] ?? 'en';
+            $locale       = $entry['locale'] ?? 'en';
+            $existingUser = $userRepo->findOneBy(['email' => $entry['email']]);
+            $isExisting   = $existingUser !== null;
+
+            $acceptUrl = $this->generateUrl(
+                'app_invite_accept',
+                ['hash' => $invitation->getHash()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+
+            $template = $isExisting
+                ? 'admin/user/email/invite_existing.html.twig'
+                : 'admin/user/email/invite.html.twig';
+
             $mailer->send(
                 (new TemplatedEmail())
                     ->locale($locale)
                     ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
                     ->to($invitation->getEmail())
                     ->subject($translator->trans('invitation.email.subject', [], 'messages', $locale))
-                    ->htmlTemplate('admin/user/email/invite.html.twig')
-                    ->context(['invitation' => $invitation, 'car' => $car, 'inviter' => $currentUser])
+                    ->htmlTemplate($template)
+                    ->context(['invitation' => $invitation, 'car' => $car, 'inviter' => $currentUser, 'acceptUrl' => $acceptUrl])
             );
 
             $messageBus->dispatch(new InvitationCreatedEvent($invitation->getId()));

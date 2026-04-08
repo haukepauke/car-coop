@@ -189,6 +189,47 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    #[Route('/invite/accept/{hash}', name: 'app_invite_accept')]
+    public function acceptInvite(
+        string $hash,
+        InvitationRepository $inviteRepo,
+        EntityManagerInterface $entityManager,
+        MessageBusInterface $messageBus,
+        TranslatorInterface $translator,
+    ): Response {
+        $invite = $inviteRepo->findOneByHash($hash);
+        if (null === $invite) {
+            $this->addFlash('error', $translator->trans('registration.invitation_not_found'));
+            return $this->redirectToRoute('app_login');
+        }
+
+        if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            // Store hash in session and redirect to login; after login the user is sent to this route
+            return $this->redirectToRoute('app_login', ['_target_path' => $this->generateUrl('app_invite_accept', ['hash' => $hash])]);
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user->getEmail() !== $invite->getEmail()) {
+            $this->addFlash('error', $translator->trans('invitation.wrong_user'));
+            return $this->redirectToRoute('app_car_show');
+        }
+
+        $userType = $invite->getUserType();
+        $carId    = $userType->getCar()->getId();
+
+        $user->addUserType($userType);
+        $entityManager->remove($invite);
+        $entityManager->flush();
+
+        $messageBus->dispatch(new InvitationAcceptedEvent($user->getId(), $carId));
+
+        $this->addFlash('success', $translator->trans('invitation.accepted', ['%car%' => $userType->getCar()->getName()]));
+
+        return $this->redirectToRoute('app_car_show');
+    }
+
     #[Route('/register/check-email', name: 'app_register_check_email')]
     public function checkEmail(Request $request): Response
     {
