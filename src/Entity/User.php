@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,8 +22,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER")'),
+        new Patch(security: 'is_granted("ROLE_USER") and object == user'),
     ],
     normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
     order: ['name' => 'ASC'],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -86,6 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 2)]
     #[Assert\Choice(User::LOCALES)]
+    #[Groups(['user:read', 'user:write'])]
     private $locale;
 
     #[ORM\Column]

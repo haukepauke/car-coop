@@ -24,6 +24,7 @@ class MeController extends AbstractController
             'name'               => $user->getName(),
             'color'              => $user->getColor(),
             'profilePicturePath' => $user->getProfilePicturePath(),
+            'locale'             => $user->getLocale(),
             'roles'              => $user->getRoles(),
         ]);
     }
