@@ -537,6 +537,13 @@ trips:
   created: Trajet créé.
   updated: Trajet mis à jour.
   deleted: Trajet supprimé.
+  cost_calculator:
+    open: Estimer les frais du trajet
+    estimated_mileage: Kilométrage estimé
+    estimated_mileage_help: "Saisissez le kilométrage estimé en %unit%."
+    calculate: Calculer
+    result: "Frais estimés du trajet : %costs%"
+    info: "Les frais estimés comprennent toutes les dépenses nécessaires au bon fonctionnement du véhicule (carburant, huile, assurance, taxes, etc.). Ne sont pas inclus les frais de péage, de ferry ou les amendes de stationnement."
   split: Diviser le trajet
   split.title: Diviser le trajet
   split.mileage: Diviser au kilométrage

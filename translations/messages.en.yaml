@@ -538,6 +538,13 @@ trips:
   created: Trip created.
   updated: Trip updated.
   deleted: Trip deleted.
+  cost_calculator:
+    open: Estimate trip costs
+    estimated_mileage: Estimated mileage
+    estimated_mileage_help: "Enter the estimated mileage in %unit%."
+    calculate: Calculate
+    result: "Estimated trip costs: %costs%"
+    info: "The estimated costs include all expenses for the vehicle to keep it running (fuel, oil, insurrance, taxes, etc.). Not included are costs for toll roads, ferrys or parking tickets."
   split: Split trip
   split.title: Split trip
   split.mileage: Split at mileage

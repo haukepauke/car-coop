@@ -85,6 +85,14 @@
                         <div class="d-flex justify-content-between align-items-center mb-3 page-header">
                             <h5 class="mb-0">{{ 'car.data'|trans }}</h5>
                             <div class="d-flex gap-2">
+                                <button type="button"
+                                        class="btn btn-outline-secondary btn-sm js-trip-cost-estimate"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#tripCostCalculatorModal"
+                                        data-car-name="{{ carData.car.name }}"
+                                        data-estimate-url="{{ path('app_car_estimate_trip_costs', {car: carData.car.id}) }}">
+                                    {{ 'trips.cost_calculator.open'|trans }}
+                                </button>
                                 <a href="{{ path('app_car_review') }}" class="btn btn-outline-primary btn-sm">
                                     &#9881; {{ 'car.review.button'|trans }}
                                 </a>
@@ -202,6 +210,23 @@
 
     </div>
 </div>
+
+<div class="modal fade" id="tripCostCalculatorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tripCostCalculatorModalTitle">
+                    {{ 'trips.cost_calculator.open'|trans }}
+                    {% if calculatorCar is not null %} - {{ calculatorCar.name }}{% endif %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="tripCostCalculatorModalBody" data-current-action="{{ path('app_car_estimate_trip_costs', {car: calculatorCar.id}) }}">
+                {% include 'admin/trip/_cost_calculator_form.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block stylesheets %}
@@ -213,9 +238,14 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
+    <script type="module">
+    import { Modal } from 'bootstrap';
+
     document.addEventListener('DOMContentLoaded', function () {
         const accordion = document.getElementById('carsAccordion');
+        const modalElement = document.getElementById('tripCostCalculatorModal');
+        const modalBody = document.getElementById('tripCostCalculatorModalBody');
+        const modalTitle = document.getElementById('tripCostCalculatorModalTitle');
         if (!accordion) return;
 
         const brandImg  = document.getElementById('navbar-brand-img');
@@ -244,6 +274,45 @@
         // Activate the initially open panel on page load
         const openButton = accordion.querySelector('.accordion-button:not(.collapsed)');
         if (openButton) activateCar(openButton);
+
+        document.querySelectorAll('.js-trip-cost-estimate').forEach(function (button) {
+            button.addEventListener('click', function () {
+                modalBody.dataset.currentAction = button.dataset.estimateUrl;
+                modalTitle.textContent = "{{ 'trips.cost_calculator.open'|trans }}" + ' - ' + button.dataset.carName;
+
+                const form = modalBody.querySelector('form');
+                if (form) {
+                    form.action = button.dataset.estimateUrl;
+                }
+            });
+        });
+
+        document.addEventListener('submit', async function (event) {
+            const form = event.target;
+            if (!(form instanceof HTMLFormElement) || form.id !== 'trip-cost-calculator-form') {
+                return;
+            }
+
+            event.preventDefault();
+
+            const response = await fetch(form.action || modalBody.dataset.currentAction, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            const payload = await response.json();
+            modalBody.innerHTML = payload.html;
+            modalBody.dataset.currentAction = form.action || modalBody.dataset.currentAction;
+
+            if (payload.carName) {
+                modalTitle.textContent = "{{ 'trips.cost_calculator.open'|trans }}" + ' - ' + payload.carName;
+            }
+
+            Modal.getOrCreateInstance(modalElement).show();
+        });
     });
     </script>
 {% endblock %}

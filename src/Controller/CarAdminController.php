@@ -6,6 +6,7 @@ use App\Entity\Car;
 use App\Entity\UserType;
 use App\Form\CarFormType;
 use App\Form\CarPricingFormType;
+use App\Form\TripCostCalculatorType;
 use App\Message\Event\PricePerUnitChangedEvent;
 use App\Repository\BookingRepository;
 use App\Repository\CarRepository;
@@ -16,9 +17,11 @@ use App\Service\CarPdfExportService;
 use App\Service\CarReviewService;
 use App\Service\CurrencyService;
 use App\Service\FileUploaderService;
+use App\Service\TripService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -207,7 +210,7 @@ class CarAdminController extends AbstractController
         CarRepository $carRepo,
         BookingRepository $bookingRepo,
         CarChartService $charts,
-        ActiveCarService $activeCarService
+        ActiveCarService $activeCarService,
     ): Response {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -239,12 +242,51 @@ class CarAdminController extends AbstractController
             ];
         }
 
+        $calculatorCar = $activeCar ?? $cars[0];
+        $calculatorForm = $this->createForm(TripCostCalculatorType::class, null, [
+            'action' => $this->generateUrl('app_car_estimate_trip_costs', ['car' => $calculatorCar->getId()]),
+        ]);
+
         return $this->render('admin/car/show.html.twig', [
             'user'        => $user,
             'car'         => $activeCar,
             'activeCarId' => $activeCar?->getId(),
             'carPanels'   => $carPanels,
+            'calculatorCar' => $calculatorCar,
+            'calculatorForm' => $calculatorForm->createView(),
+            'estimatedCosts' => null,
         ]);
+    }
+
+    #[Route('/admin/car/{car}/estimate-trip-costs', name: 'app_car_estimate_trip_costs', methods: ['POST'])]
+    public function estimateTripCosts(Car $car, Request $request, TripService $tripService): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        if (!$car->hasUser($user)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $form = $this->createForm(TripCostCalculatorType::class, null, [
+            'action' => $this->generateUrl('app_car_estimate_trip_costs', ['car' => $car->getId()]),
+        ]);
+        $form->handleRequest($request);
+
+        $estimatedCosts = null;
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $estimatedCosts = $tripService->estimateTripCostsForUser($user, $car, (int) $data['estimatedMileage']);
+        }
+
+        return new JsonResponse([
+            'html' => $this->renderView('admin/trip/_cost_calculator_form.html.twig', [
+                'calculatorForm' => $form->createView(),
+                'estimatedCosts' => $estimatedCosts,
+                'car' => $car,
+            ]),
+            'carName' => $car->getName(),
+        ], $form->isValid() ? Response::HTTP_OK : Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     #[Route('/admin/car/export/pdf', name: 'app_car_export_pdf')]

@@ -538,6 +538,13 @@ trips:
   created: Fahrt erstellt.
   updated: Fahrt aktualisiert.
   deleted: Fahrt gelöscht.
+  cost_calculator:
+    open: Fahrtkosten schätzen
+    estimated_mileage: Geschätzte Strecke
+    estimated_mileage_help: "Gib die geschätzte Strecke in %unit% ein."
+    calculate: Berechnen
+    result: "Geschätzte Fahrtkosten: %costs%"
+    info: "Die geschätzten Kosten beinhalten alle Ausgaben, die anfallen, um das Fahrzeug betriebsbereit zu halten (Treibstoff, Öl, Versicherung, Steuern usw.). Nicht enthalten sind Kosten für Mautstraßen, Fähren oder Parktickets."
   split: Fahrt aufteilen
   split.title: Fahrt aufteilen
   split.mileage: Aufteilen bei Kilometerstand

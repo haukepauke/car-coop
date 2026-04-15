@@ -1,0 +1,22 @@
+{{ form_start(calculatorForm, { attr: { id: 'trip-cost-calculator-form' } }) }}
+    {{ form_row(calculatorForm.estimatedMileage, {
+        attr: { min: 1 },
+        help: 'trips.cost_calculator.estimated_mileage_help'|trans({'%unit%': car.milageUnit})
+    }) }}
+
+    {% if estimatedCosts is not null %}
+        <div class="alert alert-success mb-3">
+            {{ 'trips.cost_calculator.result'|trans({
+                '%costs%': estimatedCosts|format_currency(car.currency, locale=app.user.locale)
+            }) }}
+        </div>
+        <div class="alert alert-info mb-3">
+            {{ 'trips.cost_calculator.info'|trans }}
+        </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'cancel'|trans }}</button>
+        <button type="submit" class="btn btn-dark">{{ 'trips.cost_calculator.calculate'|trans }}</button>
+    </div>
+{{ form_end(calculatorForm) }}

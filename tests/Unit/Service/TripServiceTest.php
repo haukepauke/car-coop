@@ -74,6 +74,26 @@ class TripServiceTest extends TestCase
         return $trip;
     }
 
+    private function makeUserForCar(Car $car, float $pricePerUnit): User
+    {
+        $userType = new UserType();
+        $userType->setPricePerUnit($pricePerUnit);
+        $userType->setName('Members');
+        $userType->setCar($car);
+        $userType->setActive(true);
+        $userType->setAdmin(false);
+        $userType->setOccasionalUse(false);
+
+        $user = new User();
+        $user->setEmail('driver@test.com');
+        $user->setName('Driver');
+        $user->setLocale('en');
+        $user->setPassword('hashed');
+        $user->addUserType($userType);
+
+        return $user;
+    }
+
     private function makeServiceTrip(): Trip
     {
         $trip = $this->makeCompletedTrip();
@@ -220,5 +240,29 @@ public function testUpdateTripPersistsTripAndCar(): void
         $this->messageBus->expects($this->never())->method('dispatch');
 
         $this->service->updateTrip($trip);
+    }
+
+    public function testEstimateTripCostsUsesUserGroupPriceForCar(): void
+    {
+        $car = new Car();
+        $car->setName('Test Car');
+        $car->setMileage(10000);
+        $car->setMilageUnit('km');
+
+        $otherCar = new Car();
+        $otherCar->setName('Other Car');
+        $otherCar->setMileage(5000);
+        $otherCar->setMilageUnit('km');
+
+        $user = $this->makeUserForCar($car, 0.35);
+        $user->addUserType((new UserType())
+            ->setPricePerUnit(0.99)
+            ->setName('Other')
+            ->setCar($otherCar)
+            ->setActive(true)
+            ->setAdmin(false)
+            ->setOccasionalUse(false));
+
+        $this->assertSame(87.5, $this->service->estimateTripCostsForUser($user, $car, 250));
     }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Service;
 
+use App\Entity\Car;
 use App\Entity\Trip;
+use App\Entity\User;
+use App\Entity\UserType;
 use App\Message\Event\TripAddedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -58,16 +61,33 @@ class TripService
         $trip->getCar()->setMileage($trip->getEndMileage());
     }
 
+    public function estimateTripCostsForUser(User $user, Car $car, int $estimatedMileage): float
+    {
+        return $estimatedMileage * $this->getUserTypeForCar($user, $car)->getPricePerUnit();
+    }
+
     private function calculateTripCosts(Trip $trip): float
     {
         $user = $trip->getUsers()->first();
-        $userType = $user->getUserTypes()->get(0);
 
         $tripType = $trip->getType();
         if ('service' === $tripType || str_contains((string) $tripType, '_free')) {
             return 0.0;
         }
 
+        $userType = $this->getUserTypeForCar($user, $trip->getCar());
+
         return ($trip->getEndMileage() - $trip->getStartMileage()) * $userType->getPricePerUnit();
+    }
+
+    private function getUserTypeForCar(User $user, Car $car): UserType
+    {
+        foreach ($user->getUserTypes() as $userType) {
+            if ($userType->getCar() === $car) {
+                return $userType;
+            }
+        }
+
+        throw new \LogicException('User has no user group for the given car.');
     }
 }

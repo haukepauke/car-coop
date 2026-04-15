@@ -537,6 +537,13 @@ trips:
   created: Trayecto creado.
   updated: Trayecto actualizado.
   deleted: Trayecto eliminado.
+  cost_calculator:
+    open: Estimar costes del trayecto
+    estimated_mileage: Kilometraje estimado
+    estimated_mileage_help: "Introduce el kilometraje estimado en %unit%."
+    calculate: Calcular
+    result: "Costes estimados del trayecto: %costs%"
+    info: "Los costes estimados incluyen todos los gastos necesarios para mantener el vehículo en funcionamiento (combustible, aceite, seguro, impuestos, etc.). No se incluyen los costes de peajes, ferris o multas de aparcamiento."
   split: Dividir trayecto
   split.title: Dividir trayecto
   split.mileage: Dividir en kilometraje

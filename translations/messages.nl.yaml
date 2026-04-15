@@ -537,6 +537,13 @@ trips:
   created: Rit aangemaakt.
   updated: Rit bijgewerkt.
   deleted: Rit verwijderd.
+  cost_calculator:
+    open: Ritkosten schatten
+    estimated_mileage: Geschatte afstand
+    estimated_mileage_help: "Voer de geschatte afstand in %unit% in."
+    calculate: Berekenen
+    result: "Geschatte ritkosten: %costs%"
+    info: "De geschatte kosten omvatten alle uitgaven die nodig zijn om het voertuig rijdend te houden (brandstof, olie, verzekering, belastingen, enz.). Niet inbegrepen zijn kosten voor tolwegen, veerboten of parkeerboetes."
   split: Rit splitsen
   split.title: Rit splitsen
   split.mileage: Splitsen bij kilometerstand
