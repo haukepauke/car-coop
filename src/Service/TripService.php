@@ -63,7 +63,8 @@ class TripService
         $user = $trip->getUsers()->first();
         $userType = $user->getUserTypes()->get(0);
 
-        if ('service' === $trip->getType()) {
+        $tripType = $trip->getType();
+        if ('service' === $tripType || str_contains((string) $tripType, '_free')) {
             return 0.0;
         }
 

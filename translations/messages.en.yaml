@@ -409,6 +409,7 @@ money:
     balance: Balance per user
 no: No
 other: Other
+other_free: Other (free)
 password: Password
 payments:
   payments: Payments
@@ -435,8 +436,10 @@ price:
     per:
       unit: Set the price per kilometer/mile driven.
 service: Service
+service_free: Service (free)
 start: Start
 status: Status
+placeholder_free: Placeholder (free)
 user:
   active: Active
   retire:

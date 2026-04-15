@@ -408,6 +408,7 @@ money:
     balance: Saldo por usuario
 no: No
 other: Otro
+other_free: Otro (gratis)
 password: Contraseña
 payments:
   payments: Pagos
@@ -434,8 +435,10 @@ price:
     per:
       unit: Establece el precio por kilómetro/milla recorrida.
 service: Servicio
+service_free: Servicio (gratis)
 start: Inicio
 status: Estado
+placeholder_free: Marcador (gratis)
 user:
   active: Activo
   retire:

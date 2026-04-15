@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Trip;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -79,12 +80,7 @@ class TripSplitFormType extends AbstractType
                 'type',
                 ChoiceType::class,
                 [
-                    'choices' => [
-                        'vacation' => 'vacation',
-                        'transport' => 'transport',
-                        'service' => 'service',
-                        'other' => 'other'
-                    ],
+                    'choices' => array_combine(Trip::TYPES, Trip::TYPES),
                     'choice_translation_domain' => 'messages',
                     'label' => 'trips.type',
                 ]

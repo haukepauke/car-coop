@@ -408,6 +408,7 @@ money:
     balance: Saldo per gebruiker
 no: Nee
 other: Overig
+other_free: Overig (gratis)
 password: Wachtwoord
 payments:
   payments: Betalingen
@@ -434,8 +435,10 @@ price:
     per:
       unit: Stel de prijs per gereden kilometer/mijl in.
 service: Service
+service_free: Service (gratis)
 start: Start
 status: Status
+placeholder_free: Tijdelijke aanduiding (gratis)
 user:
   active: Actief
   retire:

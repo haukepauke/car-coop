@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Trip
 {
-    public const TYPES = ['vacation', 'transport', 'service'];
+    public const TYPES = ['vacation', 'transport', 'other', 'service_free', 'other_free', 'placeholder_free'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

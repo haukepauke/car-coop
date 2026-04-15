@@ -54,12 +54,7 @@ class TripFormType extends AbstractType
                 'type',
                 ChoiceType::class,
                 [
-                    'choices' => [
-                        'vacation' => 'vacation',
-                        'transport' => 'transport',
-                        'service' => 'service',
-                        'other' => 'other'
-                    ],
+                    'choices' => array_combine(Trip::TYPES, Trip::TYPES),
                     'choice_translation_domain' => 'messages',
                     'label' => 'trips.type',
                 ]

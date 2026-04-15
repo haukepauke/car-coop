@@ -409,6 +409,7 @@ money:
     balance: Kontostand pro Benutzer*in
 no: Nein
 other: Anderes
+other_free: Anderes (kostenlos)
 password: Passwort
 payments:
   payments: Zahlungen
@@ -435,8 +436,10 @@ price:
     per:
       unit: Lege den Preis einer Fahrt pro Kilometer/Meile fest.
 service: Werkstatt/Service
+service_free: Werkstatt/Service (kostenlos)
 start: Start
 status: Status
+placeholder_free: Platzhalter (kostenlos)
 user:
   active: Aktiv
   retire:

@@ -408,6 +408,7 @@ money:
     balance: Saldo na użytkownika
 no: Nie
 other: Inne
+other_free: Inne (bez opłat)
 password: Hasło
 payments:
   payments: Płatności
@@ -434,8 +435,10 @@ price:
     per:
       unit: Ustaw cenę za kilometr/milę.
 service: Serwis
+service_free: Serwis (bez opłat)
 start: Start
 status: Status
+placeholder_free: Symbol zastępczy (bez opłat)
 user:
   active: Aktywny
   retire:
