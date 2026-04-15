@@ -81,6 +81,13 @@ class TripServiceTest extends TestCase
         return $trip;
     }
 
+    private function makeFreeTrip(string $type = 'service_free'): Trip
+    {
+        $trip = $this->makeCompletedTrip();
+        $trip->setType($type);
+        return $trip;
+    }
+
     // ── createTrip() ──────────────────────────────────────────────────────────
 
     public function testCreateTripCalculatesCosts(): void
@@ -96,6 +103,16 @@ class TripServiceTest extends TestCase
     public function testCreateTripSetsCostsToZeroForServiceTrip(): void
     {
         $trip = $this->makeServiceTrip();
+        $this->setId($trip, 1);
+
+        $this->service->createTrip($trip);
+
+        $this->assertSame(0.0, $trip->getCosts());
+    }
+
+    public function testCreateTripSetsCostsToZeroForFreeTripType(): void
+    {
+        $trip = $this->makeFreeTrip('other_free');
         $this->setId($trip, 1);
 
         $this->service->createTrip($trip);
@@ -162,6 +179,15 @@ public function testCreateTripPersistsTripAndCar(): void
     public function testUpdateTripSetsCostsToZeroForServiceTrip(): void
     {
         $trip = $this->makeServiceTrip();
+
+        $this->service->updateTrip($trip);
+
+        $this->assertSame(0.0, $trip->getCosts());
+    }
+
+    public function testUpdateTripSetsCostsToZeroForFreeTripType(): void
+    {
+        $trip = $this->makeFreeTrip('placeholder_free');
 
         $this->service->updateTrip($trip);
 

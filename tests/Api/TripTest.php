@@ -115,7 +115,7 @@ class TripTest extends ApiTestCase
                 'endMileage'   => 10500,
                 'startDate'    => '2024-01-01',
                 'endDate'      => '2024-01-10',
-                'type'         => 'service',
+                'type'         => 'service_free',
                 'car'          => static::carIri(),
                 'users'        => [static::userIri()],
             ],
@@ -124,7 +124,7 @@ class TripTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
         $data = $response->toArray();
         $this->assertSame(10500, $data['endMileage']);
-        $this->assertSame('service', $data['type']);
+        $this->assertSame('service_free', $data['type']);
     }
 
     // ── DELETE ────────────────────────────────────────────────────────────────
