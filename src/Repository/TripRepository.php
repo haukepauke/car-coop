@@ -60,7 +60,8 @@ class TripRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('t')
             ->andWhere('t.car = :val')
             ->setParameter('val', $car)
-            ->orderBy('t.endDate', 'DESC');
+            ->orderBy('t.endDate', 'DESC')
+            ->addOrderBy('t.id', 'DESC');
 
         if ($year !== null) {
             $qb->andWhere('t.startDate >= :yearStart')

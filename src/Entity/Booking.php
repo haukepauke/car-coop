@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['booking:read', 'user:read']],
     denormalizationContext: ['groups' => ['booking:write']],
-    order: ['startDate' => 'ASC'],
+    order: ['startDate' => 'DESC', 'id' => 'DESC'],
 )]
 class Booking
 {

@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['trip:read', 'user:read']],
     denormalizationContext: ['groups' => ['trip:write']],
-    order: ['startDate' => 'DESC'],
+    order: ['endDate' => 'DESC', 'id' => 'DESC'],
 )]
 class Trip
 {

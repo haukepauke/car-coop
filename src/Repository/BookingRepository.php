@@ -66,7 +66,8 @@ class BookingRepository extends ServiceEntityRepository
             ->setParameter('val', $car)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
-            ->orderBy('b.startDate', 'ASC')
+            ->orderBy('b.startDate', 'DESC')
+            ->addOrderBy('b.id', 'DESC')
             ->setMaxResults($limit)
         ;
     }
