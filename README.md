@@ -24,9 +24,9 @@ The app can assist you with finding the right rate per kilometer/mile after you'
 
 The software is running at [car-coop.net](https://car-coop.net). You can try it out or use it there by [creating a free account](https://app.car-coop.net/en/register). Please note that the app is currently in beta — bug reports are very welcome.
 
-## Android and iOS App
+## Android ~~and iOS~~ App 
 
-Currently there is an Android and iOS App in development (using [flutter](https://flutter.dev/)). Release of the Android App on Google Play Store and fdroid is planned until may. Check out the [github project](https://github.com/haukepauke/car-coop-app).
+Currently there is an Android and iOS app in development (using [flutter](https://flutter.dev/)). Release of the Android App on Google Play Store and fdroid is planned until may. Check out the [github project](https://github.com/haukepauke/car-coop-app). Developing open source for iOS and the apple store however is a pain and involves yearly fees which i am currently not willing to pay.
 
 ---
 
