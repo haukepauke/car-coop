@@ -10,15 +10,15 @@ The app can assist you with finding the right rate per kilometer/mile after you'
 
 ## Features
 
-* **Calendar** — book the vehicle and see when other users have upcoming reservations
-* **Expenses & trips** — track fuel costs, service bills, and cash transfers between users
-* **User groups** — assign users to groups with different per-kilometre/per-mile rates (e.g. "Crew" for regular members and "Guests" for occasional drivers)
-* **Statistics** — view overall usage and cost statistics for the vehicle
-* **Parking location** — share the current parking spot with other users, including a map view
-* **Message board** — post updates and notes about the vehicle for all members to see
-* **Calendar sync** — sync bookings with any CalDAV-compatible calendar app (DAVx⁵, Apple Calendar, Thunderbird …) — see [docs/caldav.md](docs/caldav.md)
-* **REST API** — control the application programmatically, e.g. from a smartphone app
-* **Available languages** - english, german, french, spanish, dutch and polish 
+* **📅 Calendar** — book the vehicle and see when other users have upcoming reservations
+* **🚗 Expenses & trips** — track fuel costs, service bills, and cash transfers between users
+* **👥 User groups** — assign users to groups with different per-kilometre/per-mile rates (e.g. "Crew" for regular members and "Guests" for occasional drivers)
+* **📊 Statistics** — view overall usage and cost statistics for the vehicle
+* **📍 Parking location** — share the current parking spot with other users, including a map view
+* **💬 Message board** — post updates and notes about the vehicle for all members to see
+* **🔄 Calendar sync** — sync bookings with any CalDAV-compatible calendar app (DAVx⁵, Apple Calendar, Thunderbird …) — see [docs/caldav.md](docs/caldav.md)
+* **🧩 REST API** — control the application programmatically, e.g. from a smartphone app
+* **🌍 Available languages** - english, german, french, spanish, dutch and polish 
 
 ## Example Website
 
