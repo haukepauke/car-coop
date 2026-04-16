@@ -2,6 +2,88 @@
 
 {% block title %}{{ 'user.register'|trans }}{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        (() => {
+            const storageKey = 'registration-locale-form-state';
+
+            const restoreState = () => {
+                const form = document.querySelector('form[data-registration-form]');
+                if (!form) {
+                    return;
+                }
+
+                const rawState = window.sessionStorage.getItem(storageKey);
+                if (!rawState) {
+                    return;
+                }
+
+                window.sessionStorage.removeItem(storageKey);
+
+                try {
+                    const state = JSON.parse(rawState);
+                    const email = form.querySelector('[data-registration-email]');
+                    const name = form.querySelector('[data-registration-name]');
+                    const locale = form.querySelector('[data-registration-locale]');
+                    const agreeTerms = form.querySelector('[data-registration-agree-terms]');
+
+                    if (email && !email.disabled && typeof state.email === 'string') {
+                        email.value = state.email;
+                    }
+
+                    if (name && typeof state.name === 'string') {
+                        name.value = state.name;
+                    }
+
+                    if (locale && typeof state.locale === 'string') {
+                        locale.value = state.locale;
+                    }
+
+                    if (agreeTerms && typeof state.agreeTerms === 'boolean') {
+                        agreeTerms.checked = state.agreeTerms;
+                    }
+                } catch (error) {
+                    window.sessionStorage.removeItem(storageKey);
+                }
+            };
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const form = document.querySelector('form[data-registration-form]');
+                if (!form) {
+                    return;
+                }
+
+                restoreState();
+
+                const localeSelect = form.querySelector('[data-registration-locale]');
+                if (!localeSelect) {
+                    return;
+                }
+
+                localeSelect.addEventListener('change', () => {
+                    const email = form.querySelector('[data-registration-email]');
+                    const name = form.querySelector('[data-registration-name]');
+                    const agreeTerms = form.querySelector('[data-registration-agree-terms]');
+
+                    const state = {
+                        locale: localeSelect.value,
+                        email: email && !email.disabled ? email.value : null,
+                        name: name ? name.value : null,
+                        agreeTerms: agreeTerms ? agreeTerms.checked : null,
+                    };
+
+                    window.sessionStorage.setItem(storageKey, JSON.stringify(state));
+
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('ui_locale', localeSelect.value);
+                    window.location.assign(url.toString());
+                });
+            });
+        })();
+    </script>
+{% endblock %}
+
 {% block body %}
 <section style="background-color: #ddd; min-height: 100vh; padding: 1.5rem 0;">
   <div class="container">
@@ -17,24 +99,40 @@
             {% include 'auth/_header.html.twig' %}
             <h4 class="mb-3">{{ 'registration.form.headline'|trans }}</h4>
 
-            {{ form_start(registrationForm) }}
+            {{ form_start(registrationForm, {
+              attr: {
+                'data-registration-form': true
+              }
+            }) }}
             {# Honeypot field: hidden from real users, bots fill it in #}
             <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;">
                 {{ form_row(registrationForm.website) }}
             </div>
             <div class="form-group mb-2 text-start">
                 <label>{{ form_label(registrationForm.email) }}</label>
-                {{ form_widget(registrationForm.email) }}
+                {{ form_widget(registrationForm.email, {
+                  attr: {
+                    'data-registration-email': true
+                  }
+                }) }}
                 {{ form_errors(registrationForm.email) }}
             </div>
             <div class="form-group mb-2 text-start">
                 <label>{{ form_label(registrationForm.name) }}</label>
-                {{ form_widget(registrationForm.name) }}
+                {{ form_widget(registrationForm.name, {
+                  attr: {
+                    'data-registration-name': true
+                  }
+                }) }}
                 {{ form_errors(registrationForm.name) }}
             </div>
             <div class="form-group mb-2 text-start">
                 <label>{{ form_label(registrationForm.locale) }}</label>
-                {{ form_widget(registrationForm.locale) }}
+                {{ form_widget(registrationForm.locale, {
+                  attr: {
+                    'data-registration-locale': true
+                  }
+                }) }}
                 {{ form_errors(registrationForm.locale) }}
             </div>
             <div class="form-group mb-2 text-start">
@@ -43,7 +141,12 @@
                 {{ form_errors(registrationForm.plainPassword) }}
             </div>
             <div class="form-check mb-2 text-start">
-                {{ form_widget(registrationForm.agreeTerms, {'label_html': true}) }}
+                {{ form_widget(registrationForm.agreeTerms, {
+                  'label_html': true,
+                  attr: {
+                    'data-registration-agree-terms': true
+                  }
+                }) }}
             </div>
             <button type="submit" class="btn btn-dark btn-lg btn-block w-100 mt-2">{{ 'user.register'|trans }}</button>
             {{ form_end(registrationForm) }}
@@ -51,7 +154,7 @@
           </div>
         </div>
         <div class="text-center d-flex justify-content-center gap-4">
-            <a href="{{ path('app_login') }}">{{ 'registration.form.have_account'|trans }}</a>
+            <a href="{{ path('app_login', {'_locale': app.request.locale}) }}">{{ 'registration.form.have_account'|trans }}</a>
         </div>
       </div>
     </div>

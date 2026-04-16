@@ -28,6 +28,8 @@ class RegistrationController extends AbstractController
 {
     use TargetPathTrait;
 
+    private const SUPPORTED_LOCALES = ['en', 'de', 'nl', 'fr', 'es', 'pl'];
+
     private EmailVerifier $emailVerifier;
 
     public function __construct(
@@ -58,6 +60,27 @@ class RegistrationController extends AbstractController
         return false;
     }
 
+    private function applyRegistrationLocale(Request $request, TranslatorInterface $translator, ?string $locale = null): string
+    {
+        $requestedLocale = $locale;
+
+        if (null === $requestedLocale) {
+            $queryLocale = $request->query->get('ui_locale');
+            if (\is_string($queryLocale)) {
+                $requestedLocale = $queryLocale;
+            }
+        }
+
+        if (!\is_string($requestedLocale) || !\in_array($requestedLocale, self::SUPPORTED_LOCALES, true)) {
+            $requestedLocale = $request->getLocale();
+        }
+
+        $request->setLocale($requestedLocale);
+        $translator->setLocale($requestedLocale);
+
+        return $requestedLocale;
+    }
+
     #[Route(
         path: '/{_locale}/register',
         name: 'app_register',
@@ -67,15 +90,24 @@ class RegistrationController extends AbstractController
     )]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
+        $uiLocale = $this->applyRegistrationLocale($request, $translator);
+
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             // user is already authenticated: redirect them to their target page instead
             $this->addFlash('error', $translator->trans('registration.already_logged_in'));
             return $this->redirectToRoute('app_car_show');
         }
         $user = new User();
-        $user->setLocale($request->getLocale());
+        $user->setLocale($uiLocale);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $selectedLocale = $form->get('locale')->getData();
+            if (\is_string($selectedLocale)) {
+                $this->applyRegistrationLocale($request, $translator, $selectedLocale);
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->isBotSubmission($request, $form)) {
@@ -134,6 +166,8 @@ class RegistrationController extends AbstractController
         TranslatorInterface $translator,
         $hash
     ): Response {
+        $uiLocale = $this->applyRegistrationLocale($request, $translator);
+
         $invite = $inviteRepo->findOneByHash($hash);
         if (null === $invite) {
             $this->addFlash('error', $translator->trans('registration.invitation_not_found'));
@@ -148,8 +182,16 @@ class RegistrationController extends AbstractController
         $user = new User();
         $user->addUserType($userType);
         $user->setEmail($invite->getEmail());
+        $user->setLocale($uiLocale);
         $form = $this->createForm(RegistrationFormType::class, $user, ['email_locked' => true]);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $selectedLocale = $form->get('locale')->getData();
+            if (\is_string($selectedLocale)) {
+                $this->applyRegistrationLocale($request, $translator, $selectedLocale);
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->isBotSubmission($request, $form)) {
