@@ -10,6 +10,11 @@ if (file_exists(dirname(__DIR__) . '/.env')) {
     (new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
 }
 
+$testDatabase = dirname(__DIR__) . '/var/test.db';
+if (file_exists($testDatabase)) {
+    unlink($testDatabase);
+}
+
 // Create (or recreate) the test database schema once before the test suite runs.
 $kernel = new Kernel($_SERVER['APP_ENV'] ?? 'test', (bool) ($_SERVER['APP_DEBUG'] ?? false));
 $kernel->boot();

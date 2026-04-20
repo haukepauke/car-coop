@@ -18,6 +18,9 @@
         <testsuite name="Api">
             <directory>tests/Api</directory>
         </testsuite>
+        <testsuite name="Scenario">
+            <directory>tests/Scenario</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
