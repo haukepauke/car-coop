@@ -3,6 +3,7 @@
 {% block content_body %}
 <div class="mt-5">
     <div class="container-fluid">
+        <h1 class="visually-hidden">{{ car ? car.name : 'car.data'|trans }}</h1>
 
         {# ── Guided tour banner ── #}
         <div id="tour-banner" class="d-none tour-banner mb-4"
@@ -83,7 +84,7 @@
 
                         {# ── Car data ── #}
                         <div class="d-flex justify-content-between align-items-center mb-3 page-header">
-                            <h5 class="mb-0">{{ 'car.data'|trans }}</h5>
+                            <h3 class="mb-0">{{ 'car.data'|trans }}</h3>
                             <div class="d-flex gap-2">
                                 <button type="button"
                                         class="btn btn-outline-secondary btn-sm js-trip-cost-estimate"
@@ -159,7 +160,7 @@
                         {# ── Next bookings ── #}
                         {% if carData.bookings|length > 0 %}
                         <div class="row pt-4" id="tour-bookings">
-                            <div class="col"><h5>{{ 'car.bookings.next'|trans }}</h5></div>
+                            <div class="col"><h3>{{ 'car.bookings.next'|trans }}</h3></div>
                         </div>
                         <div class="table-responsive">
                             <table class="table">
@@ -190,7 +191,7 @@
                         {# ── Statistics (hidden on mobile) ── #}
                         <div class="statistics-section">
                             <div class="row pt-4">
-                                <div class="col"><h5>{{ 'car.statistics'|trans }}</h5></div>
+                                <div class="col"><h3>{{ 'car.statistics'|trans }}</h3></div>
                             </div>
                             <div class="chart-grid">
                                 <div class="chart">

@@ -32,9 +32,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function add(User $entity, bool $flush = true): void
     {
-        $this->_em->persist($entity);
+        $em = $this->getEntityManager();
+        $em->persist($entity);
         if ($flush) {
-            $this->_em->flush();
+            $em->flush();
         }
     }
 
@@ -44,9 +45,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function remove(User $entity, bool $flush = true): void
     {
-        $this->_em->remove($entity);
+        $em = $this->getEntityManager();
+        $em->remove($entity);
         if ($flush) {
-            $this->_em->flush();
+            $em->flush();
         }
     }
 
@@ -60,8 +62,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
 
         $user->setPassword($newHashedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
     }
 
     public function findByCar($car)

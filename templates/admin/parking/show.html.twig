@@ -12,7 +12,7 @@
 
 {% block content_body %}
 <div class="col-xl-8 mt-5">
-    <h4>{{ 'parking.title'|trans }}</h4>
+    <h1 class="h4">{{ 'parking.title'|trans }}</h1>
 
     {% if location %}
     <p class="text-muted">
@@ -23,6 +23,8 @@
     <p class="text-muted">{{ 'parking.click_to_set'|trans }}</p>
 
     <div id="parking-map"
+         role="region"
+         aria-label="{{ 'parking.title'|trans }}"
          data-lat="{{ location.latitude ?? '' }}"
          data-lng="{{ location.longitude ?? '' }}"
          data-label="{{ car.name }}"

@@ -3,7 +3,7 @@
 {% block title %}{{ 'log.forgot_password'|trans }}{% endblock %}
 
 {% block body %}
-<section class="vh-100" style="background-color: #ddd;">
+<section class="auth-shell vh-100">
   <div class="container h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -15,7 +15,7 @@
             {% endfor %}
 
             {% include 'auth/_header.html.twig' %}
-            <h4 class="mb-3">{{ 'log.forgot_password'|trans }}</h4>
+            <h1 class="h4 mb-3">{{ 'log.forgot_password'|trans }}</h1>
 
             {{ form_start(requestForm) }}
               {# Honeypot field: hidden from real users, bots fill it in #}
@@ -29,7 +29,9 @@
               <button class="btn btn-dark btn-lg btn-block w-100">Send password reset email</button>
             {{ form_end(requestForm) }}
 
-            <a href="{{ path('app_login') }}" class="text-muted small mt-3 d-block">{{ 'registration.check_email.login_link'|trans }}</a>
+            <div class="auth-links text-center mt-3">
+              <a href="{{ path('app_login') }}" class="small">{{ 'registration.check_email.login_link'|trans }}</a>
+            </div>
 
           </div>
         </div>

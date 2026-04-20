@@ -29,9 +29,10 @@ class ExpenseRepository extends ServiceEntityRepository
      */
     public function add(Expense $entity, bool $flush = true): void
     {
-        $this->_em->persist($entity);
+        $em = $this->getEntityManager();
+        $em->persist($entity);
         if ($flush) {
-            $this->_em->flush();
+            $em->flush();
         }
     }
 
@@ -41,9 +42,10 @@ class ExpenseRepository extends ServiceEntityRepository
      */
     public function remove(Expense $entity, bool $flush = true): void
     {
-        $this->_em->remove($entity);
+        $em = $this->getEntityManager();
+        $em->remove($entity);
         if ($flush) {
-            $this->_em->flush();
+            $em->flush();
         }
     }
 

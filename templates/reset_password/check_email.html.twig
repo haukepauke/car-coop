@@ -3,7 +3,7 @@
 {% block title %}{{ 'log.forgot_password'|trans }}{% endblock %}
 
 {% block body %}
-<section class="vh-100" style="background-color: #ddd;">
+<section class="auth-shell vh-100">
   <div class="container h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -11,7 +11,7 @@
           <div class="card-body p-4 text-center">
 
             {% include 'auth/_header.html.twig' %}
-            <h4 class="mb-3">{{ 'registration.check_email.title'|trans }}</h4>
+            <h1 class="h4 mb-3">{{ 'registration.check_email.title'|trans }}</h1>
 
             <p class="mb-1">
                 If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
@@ -21,7 +21,9 @@
 
             <a href="{{ path('app_forgot_password_request') }}" class="btn btn-dark btn-lg btn-block w-100 mb-3">Try again</a>
 
-            <a href="{{ path('app_login') }}" class="text-muted small">{{ 'registration.check_email.login_link'|trans }}</a>
+            <div class="auth-links text-center">
+              <a href="{{ path('app_login') }}" class="small">{{ 'registration.check_email.login_link'|trans }}</a>
+            </div>
 
           </div>
         </div>

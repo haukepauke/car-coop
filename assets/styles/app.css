@@ -10,7 +10,7 @@
     --cc-surface:      #ffffff;
     --cc-border:       #e2e8f0;
     --cc-text:         #1e293b;
-    --cc-text-muted:   #64748b;
+    --cc-text-muted:   #475569;
     --cc-danger:       #ef4444;
     --cc-warning:      #f59e0b;
     --cc-success:      #22c55e;
@@ -44,6 +44,20 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
     color: var(--cc-accent-dark);
+}
+
+.auth-shell {
+    background-color: #ddd;
+}
+
+.auth-links a {
+    color: var(--cc-navy-dark);
+    font-weight: 600;
+}
+
+.form-check-label a {
+    color: var(--cc-navy-dark);
+    font-weight: 600;
 }
 
 input[type=color] {
@@ -181,13 +195,13 @@ footer {
 }
 
 .btn-outline-primary {
-    color: var(--cc-accent-dark);
-    border-color: var(--cc-accent);
+    color: var(--cc-navy-dark);
+    border-color: var(--cc-accent-dark);
 }
 
 .btn-outline-primary:hover {
-    background-color: var(--cc-accent);
-    border-color: var(--cc-accent);
+    background-color: var(--cc-navy);
+    border-color: var(--cc-navy);
     color: #fff;
 }
 
@@ -356,7 +370,7 @@ footer {
 
 .accordion-button:not(.collapsed) {
     background-color: var(--cc-surface);
-    color: var(--cc-accent-dark);
+    color: var(--cc-navy-dark);
     box-shadow: none !important;
 }
 

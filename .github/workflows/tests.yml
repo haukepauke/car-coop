@@ -35,3 +35,57 @@ jobs:
 
       - name: Run API tests
         run: php bin/phpunit --testsuite Api
+
+  accessibility:
+    name: Accessibility
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: intl, pdo_sqlite, gd
+          coverage: none
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+        env:
+          APP_ENV: test
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Start docker test stack
+        run: docker compose up -d --build db www
+
+      - name: Wait for app
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:8080/en/login >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker compose logs db
+          docker compose logs www
+          exit 1
+
+      - name: Run accessibility tests
+        run: npm run a11y:test
+
+      - name: Stop docker test stack
+        if: always()
+        run: docker compose down -v

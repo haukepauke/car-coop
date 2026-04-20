@@ -1,7 +1,7 @@
 {% extends 'blank.html.twig' %}
 
 {% block body %}
-<section class="vh-100" style="background-color: #ddd;">
+<section class="auth-shell vh-100">
   <div class="container h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -13,7 +13,7 @@
             {% endif %}
 
             {% include 'auth/_header.html.twig' %}
-            <h4 class="mb-3">{{ 'log.in'|trans }}</h4>
+            <h1 class="h4 mb-3">{{ 'log.in'|trans }}</h1>
 
             <form method="post">
               <div class="form-outline mb-3">
@@ -34,7 +34,7 @@
 
           </div>
         </div>
-        <div class="text-center d-flex justify-content-center gap-4">
+        <div class="auth-links text-center d-flex justify-content-center gap-4">
           <a href="{{ path('app_forgot_password_request') }}">{{ 'log.forgot_password'|trans }}</a>
           <a href="{{ path('app_register') }}">{{ 'registration.form.no_account'|trans }}</a>
         </div>

@@ -19,6 +19,12 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
+###> node/playwright ###
+/node_modules/
+/test-results/
+/playwright-report/
+###< node/playwright ###
+
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###

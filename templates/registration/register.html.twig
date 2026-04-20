@@ -85,7 +85,7 @@
 {% endblock %}
 
 {% block body %}
-<section style="background-color: #ddd; min-height: 100vh; padding: 1.5rem 0;">
+<section class="auth-shell" style="min-height: 100vh; padding: 1.5rem 0;">
   <div class="container">
     <div class="row d-flex justify-content-center">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -97,7 +97,7 @@
             {% endfor %}
 
             {% include 'auth/_header.html.twig' %}
-            <h4 class="mb-3">{{ 'registration.form.headline'|trans }}</h4>
+            <h1 class="h4 mb-3">{{ 'registration.form.headline'|trans }}</h1>
 
             {{ form_start(registrationForm, {
               attr: {
@@ -109,7 +109,11 @@
                 {{ form_row(registrationForm.website) }}
             </div>
             <div class="form-group mb-2 text-start">
-                <label>{{ form_label(registrationForm.email) }}</label>
+                {{ form_label(registrationForm.email, null, {
+                  label_attr: {
+                    class: 'form-label'
+                  }
+                }) }}
                 {{ form_widget(registrationForm.email, {
                   attr: {
                     'data-registration-email': true
@@ -118,7 +122,11 @@
                 {{ form_errors(registrationForm.email) }}
             </div>
             <div class="form-group mb-2 text-start">
-                <label>{{ form_label(registrationForm.name) }}</label>
+                {{ form_label(registrationForm.name, null, {
+                  label_attr: {
+                    class: 'form-label'
+                  }
+                }) }}
                 {{ form_widget(registrationForm.name, {
                   attr: {
                     'data-registration-name': true
@@ -127,7 +135,11 @@
                 {{ form_errors(registrationForm.name) }}
             </div>
             <div class="form-group mb-2 text-start">
-                <label>{{ form_label(registrationForm.locale) }}</label>
+                {{ form_label(registrationForm.locale, null, {
+                  label_attr: {
+                    class: 'form-label'
+                  }
+                }) }}
                 {{ form_widget(registrationForm.locale, {
                   attr: {
                     'data-registration-locale': true
@@ -136,7 +148,11 @@
                 {{ form_errors(registrationForm.locale) }}
             </div>
             <div class="form-group mb-2 text-start">
-                <label>{{ 'password'|trans }}</label>
+                {{ form_label(registrationForm.plainPassword, null, {
+                  label_attr: {
+                    class: 'form-label'
+                  }
+                }) }}
                 {{ form_widget(registrationForm.plainPassword) }}
                 {{ form_errors(registrationForm.plainPassword) }}
             </div>
@@ -153,7 +169,7 @@
 
           </div>
         </div>
-        <div class="text-center d-flex justify-content-center gap-4">
+        <div class="auth-links text-center d-flex justify-content-center gap-4">
             <a href="{{ path('app_login', {'_locale': app.request.locale}) }}">{{ 'registration.form.have_account'|trans }}</a>
         </div>
       </div>

@@ -13,7 +13,7 @@
 {% block content_body %}
 <div class="col-12 mt-5">
     <div class="d-flex align-items-center justify-content-between mb-3 page-header">
-        <h4 class="mb-0">{{ 'messageboard.title'|trans }}</h4>
+        <h1 class="h4 mb-0">{{ 'messageboard.title'|trans }}</h1>
         <form method="get" class="d-flex align-items-center gap-2">
             <label for="yearFilter" class="mb-0 text-nowrap d-none d-lg-inline">{{ 'filter.year'|trans }}</label>
             <select name="year" id="yearFilter" class="form-select form-select-sm" style="min-width: 9rem" onchange="this.form.submit()">
@@ -116,7 +116,7 @@
     {# New message form #}
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">{{ 'messageboard.new_message'|trans }}</h5>
+            <h2 class="card-title h5">{{ 'messageboard.new_message'|trans }}</h2>
             <div id="quill-editor" style="min-height: 120px;"></div>
             <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token('message_new') }}">

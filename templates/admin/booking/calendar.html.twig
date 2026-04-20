@@ -3,13 +3,17 @@
 {% block content_body %}
 <div class="col-xl-8 mt-5">
     <div class="d-flex align-items-center justify-content-between mb-3 page-header">
-        <h4 class="mb-0">{{ 'booking.calendar'|trans }}</h4>
+        <h1 class="h4 mb-0">{{ 'booking.calendar'|trans }}</h1>
         <button type="button" class="btn btn-outline-dark"
             onclick="location.href='{{ path('app_booking_new') }}';">{{ 'booking.new'|trans }} <span
                 class="fa fa-plus-circle"></span></button>
     </div>
     <div>
-        <div id="calendar-holder" data-events-url="{{ path('fc_load_events') }}" data-locale="{{ app.request.locale }}"></div>
+        <div id="calendar-holder"
+             data-events-url="{{ path('fc_load_events') }}"
+             data-locale="{{ app.request.locale }}"
+             data-prev-label="{{ 'tour.btn.prev'|trans }}"
+             data-next-label="{{ 'tour.btn.next'|trans }}"></div>
     </div>
 
     {# CalDAV subscription info #}
@@ -26,7 +30,7 @@
         </div>
         <div class="card-body">
             <p class="text-muted small mb-2">{{ 'booking.caldav.description'|trans }}</p>
-            <label class="form-label small fw-semibold mb-1">{{ 'booking.caldav.url_label'|trans }}</label>
+            <label class="form-label small fw-semibold mb-1" for="caldav-url">{{ 'booking.caldav.url_label'|trans }}</label>
             <div class="input-group">
                 <input type="text" class="form-control form-control-sm font-monospace" id="caldav-url"
                        value="{{ caldavUrl }}" readonly>
@@ -40,7 +44,7 @@
 
             <hr class="my-3">
             <p class="text-muted small mb-2">{{ 'booking.caldav.autodiscover_description'|trans }}</p>
-            <label class="form-label small fw-semibold mb-1">{{ 'booking.caldav.base_url_label'|trans }}</label>
+            <label class="form-label small fw-semibold mb-1" for="caldav-base-url">{{ 'booking.caldav.base_url_label'|trans }}</label>
             <div class="input-group">
                 {% set baseUrl = app.request.schemeAndHttpHost ~ '/' %}
                 <input type="text" class="form-control form-control-sm font-monospace" id="caldav-base-url"

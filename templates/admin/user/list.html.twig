@@ -2,13 +2,13 @@
 
 {% block content_body %}
 <div class="col-xl-12 mt-5">
-    <h4>{{ 'user.manage'|trans }}</h4>
+    <h1 class="h4">{{ 'user.manage'|trans }}</h1>
     <div>
         <div class="table-responsive">
             <table class="table">
                 <thead class="table-secondary">
                     <tr>
-                        <th></th>
+                        <th class="text-center">{{ 'user.profile.picture'|trans }}</th>
                         <th class="text-center">{{ 'user.user'|trans }}</th>
                         <th class="text-center">{{ 'email'|trans }}</th>
                         <th class="text-center">{{ 'user.calendar.color'|trans }}</th>
@@ -26,9 +26,9 @@
                         <tr>
                             <td>
                             {% if user.profilePicturePath|default %}
-                                <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="50" width="50">
+                                <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ user.profilePicturePath)|imagine_filter('profile_thumb') }}" alt="" height="50" width="50">
                             {% else %}
-                                <img class="rounded-circle" src="{{ asset('/build/static/default-user.png')|imagine_filter('profile_thumb') }}" height="50" width="50">
+                                <img class="rounded-circle" src="{{ asset('/build/static/default-user.png')|imagine_filter('profile_thumb') }}" alt="" height="50" width="50">
                             {% endif %}
                             </td>
                             <td class="align-middle text-center">{{ user.name }}</td>
@@ -61,7 +61,7 @@
     </div>
     {% if invitations|length >0 %}
     <div>
-        <h5>{{ 'invitation.pending'|trans }}</h5>
+        <h2 class="h5">{{ 'invitation.pending'|trans }}</h2>
         <div class="table-responsive">
             <table class="table">
                 <thead class="table-secondary">
@@ -101,7 +101,7 @@
     </div>
     {% endif %}
     <div>
-        <h5>{{ 'user.groups'|trans }}</h5>
+        <h2 class="h5">{{ 'user.groups'|trans }}</h2>
         <div class="table-responsive">
             <table class="table">
                 <thead class="table-secondary">

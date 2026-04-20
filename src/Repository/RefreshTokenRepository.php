@@ -19,10 +19,11 @@ class RefreshTokenRepository extends ServiceEntityRepository
 
     public function add(RefreshToken $entity, bool $flush = true): void
     {
-        $this->_em->persist($entity);
+        $em = $this->getEntityManager();
+        $em->persist($entity);
 
         if ($flush) {
-            $this->_em->flush();
+            $em->flush();
         }
     }
 

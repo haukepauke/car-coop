@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale|default('en') }}">
 
 <head>
     <meta charset="UTF-8">
@@ -24,15 +24,15 @@
                     <a class="navbar-brand" href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_car_show') : '#' }}">
                         {%if is_granted('IS_AUTHENTICATED_REMEMBERED') and car is defined %}
                         {% if car.profilePicturePath|default %}
-                        <img id="navbar-brand-img" src="{{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }}" alt="Logo" width="50"
+                        <img id="navbar-brand-img" src="{{ asset('/uploads/cars/' ~ car.getProfilePicturePath())|imagine_filter('profile_thumb') }}" alt="" width="50"
                             height="50" class="rounded-circle d-inline-block">
                         {% else %}
-                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
+                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="" width="50" height="50"
                             class="rounded-circle d-inline-block">
                         {% endif %}
                         <span id="navbar-brand-name">{{ car.name }}</span>
                         {% else %}
-                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="Logo" width="50" height="50"
+                        <img id="navbar-brand-img" src="{{ asset('./static/default-car.png') }}" alt="" width="50" height="50"
                             class="rounded-circle d-inline-block">
                         <span id="navbar-brand-name">Car Coop</span>
                         {% endif %}
@@ -84,10 +84,10 @@
                                     aria-expanded="false">
                                     {% if app.user.profilePicturePath|default %}
                                     <img class="rounded-circle"
-                                        src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="30"
+                                        src="{{ asset('/uploads/users/' ~ app.user.profilePicturePath)|imagine_filter('profile_thumb') }}" alt="" height="30"
                                         width="30">
                                     {% else %}
-                                    <img class="rounded-circle" src="{{ asset('./static/default-user.png') }}"
+                                    <img class="rounded-circle" src="{{ asset('./static/default-user.png') }}" alt=""
                                         height="30" width="30">
                                     {% endif %}{{ app.user.name }}
                                 </a>

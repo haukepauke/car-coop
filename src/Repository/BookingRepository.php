@@ -31,9 +31,10 @@ class BookingRepository extends ServiceEntityRepository
      */
     public function add(Booking $entity, bool $flush = true): void
     {
-        $this->_em->persist($entity);
+        $em = $this->getEntityManager();
+        $em->persist($entity);
         if ($flush) {
-            $this->_em->flush();
+            $em->flush();
         }
     }
 
@@ -43,9 +44,10 @@ class BookingRepository extends ServiceEntityRepository
      */
     public function remove(Booking $entity, bool $flush = true): void
     {
-        $this->_em->remove($entity);
+        $em = $this->getEntityManager();
+        $em->remove($entity);
         if ($flush) {
-            $this->_em->flush();
+            $em->flush();
         }
     }
 
