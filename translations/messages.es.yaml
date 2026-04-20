@@ -518,6 +518,28 @@ terms:
   agree: Acepto los <a href="https://car-coop.net/es/terms" target="_blank">Términos y condiciones</a>
   must:
     agree: Debes aceptar nuestras condiciones de uso.
+reset_password:
+  request:
+    intro: Introduce tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+    submit: Enviar correo de restablecimiento de contraseña
+  check_email:
+    info: Si existe una cuenta asociada a tu dirección de correo electrónico, acabamos de enviar un correo con un enlace para restablecer tu contraseña. Este enlace caducará en %expiration%.
+    try_again: Intentarlo de nuevo
+  reset:
+    submit: Restablecer contraseña
+  form:
+    email_not_blank: Introduce tu dirección de correo electrónico.
+    new_password: Nueva contraseña
+    repeat_password: Repite la contraseña
+    password_not_blank: Introduce una contraseña.
+    password_min: Tu contraseña debe tener al menos {{ limit }} caracteres.
+    password_mismatch: Los campos de la contraseña deben coincidir.
+  email:
+    subject: Tu solicitud de restablecimiento de contraseña
+    greeting: ¡Hola!
+    intro: Para restablecer tu contraseña de Car Coop, abre el siguiente enlace.
+    expiry: Este enlace caducará en %expiration%.
+    outro: ¡Saludos!
 to: a
 trips:
   comment: Comentarios

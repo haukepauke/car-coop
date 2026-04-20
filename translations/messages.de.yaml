@@ -519,6 +519,28 @@ terms:
   agree: Ich bin mit den <a href="https://car-coop.net/de/terms" target="_blank">Nutzungsbedingungen</a> einverstanden
   must:
     agree: Du musst unseren Nutzungsbedingungen zustimmen.
+reset_password:
+  request:
+    intro: Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines Passworts.
+    submit: E-Mail zum Zurücksetzen des Passworts senden
+  check_email:
+    info: Falls ein Konto zu deiner E-Mail-Adresse existiert, wurde soeben eine E-Mail mit einem Link zum Zurücksetzen deines Passworts versendet. Dieser Link läuft in %expiration% ab.
+    try_again: Erneut versuchen
+  reset:
+    submit: Passwort zurücksetzen
+  form:
+    email_not_blank: Bitte gib deine E-Mail-Adresse ein.
+    new_password: Neues Passwort
+    repeat_password: Passwort wiederholen
+    password_not_blank: Bitte gib ein Passwort ein.
+    password_min: Dein Passwort sollte mindestens {{ limit }} Zeichen lang sein.
+    password_mismatch: Die Passwortfelder müssen übereinstimmen.
+  email:
+    subject: Deine Anfrage zum Zurücksetzen des Passworts
+    greeting: Hallo!
+    intro: Um dein Passwort für Car Coop zurückzusetzen, öffne bitte den folgenden Link.
+    expiry: Dieser Link läuft in %expiration% ab.
+    outro: Viele Grüße!
 to: an
 trips:
   trips: Fahrten

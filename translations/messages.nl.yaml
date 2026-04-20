@@ -518,6 +518,28 @@ terms:
   agree: Ik ga akkoord met de <a href="/nl/terms" target="_blank">Algemene voorwaarden</a>
   must:
     agree: Je moet akkoord gaan met onze gebruiksvoorwaarden.
+reset_password:
+  request:
+    intro: Vul je e-mailadres in en we sturen je een link om je wachtwoord opnieuw in te stellen.
+    submit: E-mail voor wachtwoordherstel verzenden
+  check_email:
+    info: Als er een account bestaat dat overeenkomt met je e-mailadres, is er zojuist een e-mail verzonden met een link om je wachtwoord opnieuw in te stellen. Deze link verloopt over %expiration%.
+    try_again: Opnieuw proberen
+  reset:
+    submit: Wachtwoord opnieuw instellen
+  form:
+    email_not_blank: Vul je e-mailadres in.
+    new_password: Nieuw wachtwoord
+    repeat_password: Herhaal wachtwoord
+    password_not_blank: Vul een wachtwoord in.
+    password_min: Je wachtwoord moet minimaal {{ limit }} tekens bevatten.
+    password_mismatch: De wachtwoordvelden moeten overeenkomen.
+  email:
+    subject: Je aanvraag om je wachtwoord opnieuw in te stellen
+    greeting: Hallo!
+    intro: Gebruik de volgende link om je wachtwoord voor Car Coop opnieuw in te stellen.
+    expiry: Deze link verloopt over %expiration%.
+    outro: Groeten!
 to: aan
 trips:
   comment: Opmerkingen

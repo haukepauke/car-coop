@@ -23,8 +23,8 @@ test.describe('accessibility smoke checks', () => {
   test('public auth pages have no obvious axe violations', async ({ page }) => {
     await scanPage(page, '/en/login');
     await scanPage(page, '/en/register');
-    await scanPage(page, '/reset-password');
-    await scanPage(page, '/reset-password/check-email');
+    await scanPage(page, '/en/reset-password');
+    await scanPage(page, '/en/reset-password/check-email');
   });
 
   test('core authenticated pages have no obvious axe violations', async ({ page }) => {

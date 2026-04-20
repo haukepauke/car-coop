@@ -518,6 +518,28 @@ terms:
   agree: J'accepte les <a href="/fr/terms" target="_blank">Conditions d'utilisation</a>
   must:
     agree: Vous devez accepter nos conditions d'utilisation.
+reset_password:
+  request:
+    intro: Saisissez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+    submit: Envoyer l'e-mail de réinitialisation du mot de passe
+  check_email:
+    info: Si un compte correspondant à votre adresse e-mail existe, un e-mail contenant un lien pour réinitialiser votre mot de passe vient d'être envoyé. Ce lien expirera dans %expiration%.
+    try_again: Réessayer
+  reset:
+    submit: Réinitialiser le mot de passe
+  form:
+    email_not_blank: Veuillez saisir votre adresse e-mail.
+    new_password: Nouveau mot de passe
+    repeat_password: Répétez le mot de passe
+    password_not_blank: Veuillez saisir un mot de passe.
+    password_min: Votre mot de passe doit contenir au moins {{ limit }} caractères.
+    password_mismatch: Les champs du mot de passe doivent correspondre.
+  email:
+    subject: Votre demande de réinitialisation du mot de passe
+    greeting: Bonjour !
+    intro: Pour réinitialiser votre mot de passe Car Coop, veuillez ouvrir le lien suivant.
+    expiry: Ce lien expirera dans %expiration%.
+    outro: Cordialement !
 to: à
 trips:
   comment: Commentaires

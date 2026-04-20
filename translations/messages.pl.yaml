@@ -518,6 +518,28 @@ terms:
   agree: Akceptuję <a href="https://car-coop.net/en/terms" target="_blank">Regulamin</a>
   must:
     agree: Musisz zaakceptować nasze warunki użytkowania.
+reset_password:
+  request:
+    intro: Wpisz swój adres e-mail, a wyślemy Ci link do zresetowania hasła.
+    submit: Wyślij e-mail do resetowania hasła
+  check_email:
+    info: Jeśli istnieje konto powiązane z Twoim adresem e-mail, właśnie wysłaliśmy wiadomość z linkiem do zresetowania hasła. Link wygaśnie za %expiration%.
+    try_again: Spróbuj ponownie
+  reset:
+    submit: Zresetuj hasło
+  form:
+    email_not_blank: Wpisz adres e-mail.
+    new_password: Nowe hasło
+    repeat_password: Powtórz hasło
+    password_not_blank: Wpisz hasło.
+    password_min: Twoje hasło powinno mieć co najmniej {{ limit }} znaków.
+    password_mismatch: Pola hasła muszą być takie same.
+  email:
+    subject: Twoja prośba o zresetowanie hasła
+    greeting: Cześć!
+    intro: Aby zresetować hasło do Car Coop, otwórz poniższy link.
+    expiry: Ten link wygaśnie za %expiration%.
+    outro: Pozdrawiamy!
 to: do
 trips:
   comment: Komentarze
