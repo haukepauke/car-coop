@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
+use App\Service\RefreshTokenManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +31,7 @@ class ResetPasswordController extends AbstractController
         private ResetPasswordHelperInterface $resetPasswordHelper,
         private EntityManagerInterface $entityManager,
         private LoggerInterface $logger,
+        private readonly RefreshTokenManager $refreshTokenManager,
         private readonly string $mailerFromEmail,
         private readonly string $mailerFromName,
     ) {
@@ -126,6 +128,7 @@ class ResetPasswordController extends AbstractController
             // Encode(hash) the plain password, and set it.
             $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
             $this->entityManager->flush();
+            $this->refreshTokenManager->revokeAllForUser($user);
 
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();

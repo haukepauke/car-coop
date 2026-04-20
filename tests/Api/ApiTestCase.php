@@ -22,6 +22,7 @@ abstract class ApiTestCase extends BaseApiTestCase
     protected static int    $carId;
     protected static int    $userId;
     protected static string $token;
+    protected static string $refreshToken;
 
     // ── Fixture lifecycle ─────────────────────────────────────────────────────
 
@@ -62,9 +63,12 @@ abstract class ApiTestCase extends BaseApiTestCase
 
         $em->flush();
 
-        static::$carId  = $car->getId();
+        $auth = static::login(static::testEmail(), static::testPassword());
+
+        static::$carId = $car->getId();
         static::$userId = $user->getId();
-        static::$token  = static::login(static::testEmail(), static::testPassword());
+        static::$token = $auth['token'];
+        static::$refreshToken = $auth['refresh_token'];
     }
 
     public static function tearDownAfterClass(): void
@@ -81,21 +85,35 @@ abstract class ApiTestCase extends BaseApiTestCase
     protected static function userIri(): string      { return '/api/users/' . static::$userId; }
 
     /** Returns an HTTP client with the Bearer token pre-set. */
-    protected static function authClient(): Client
+    protected static function authClient(?string $token = null): Client
     {
         return static::createClient([], [
-            'headers' => ['Authorization' => 'Bearer ' . static::$token],
+            'headers' => ['Authorization' => 'Bearer ' . ($token ?? static::$token)],
         ]);
     }
 
-    /** Obtains a JWT token via POST /api/login. */
-    protected static function login(string $email, string $password): string
+    /** Obtains access and refresh tokens via POST /api/login. */
+    protected static function login(string $email, string $password, ?string $deviceName = null): array
     {
+        $payload = ['email' => $email, 'password' => $password];
+        if (null !== $deviceName) {
+            $payload['device_name'] = $deviceName;
+        }
+
         $response = static::createClient()->request('POST', '/api/login', [
-            'json' => ['email' => $email, 'password' => $password],
+            'json' => $payload,
         ]);
 
-        return $response->toArray()['token'];
+        return $response->toArray();
+    }
+
+    protected static function refresh(string $refreshToken): array
+    {
+        $response = static::createClient()->request('POST', '/api/token/refresh', [
+            'json' => ['refresh_token' => $refreshToken],
+        ]);
+
+        return $response->toArray();
     }
 
     protected static function em(): EntityManagerInterface

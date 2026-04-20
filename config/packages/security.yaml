@@ -53,6 +53,7 @@ security:
     access_control:
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }

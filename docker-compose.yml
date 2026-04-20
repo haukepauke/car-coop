@@ -11,7 +11,8 @@ services:
         networks:
             - backend
         depends_on:
-            - db 
+            db:
+                condition: service_healthy
     db:
         image: mariadb:10.4
         ports: 
@@ -23,6 +24,12 @@ services:
             MYSQL_ROOT_PASSWORD: carcoop
         volumes:
             - persistent:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 30s
         networks:
             - backend
     phpmyadmin:
@@ -40,7 +47,8 @@ services:
         networks:
             - backend
         depends_on:
-            - db 
+            db:
+                condition: service_healthy
     messenger:
         build: .
         command: php bin/console messenger:consume async --time-limit=10
@@ -53,7 +61,8 @@ services:
         networks:
             - backend
         depends_on:
-            - db
+            db:
+                condition: service_healthy
     mailhog:
         image: mailhog/mailhog
         ports:

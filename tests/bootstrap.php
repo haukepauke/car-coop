@@ -11,6 +11,12 @@ if (file_exists(dirname(__DIR__) . '/.env')) {
 }
 
 $testDatabase = dirname(__DIR__) . '/var/test.db';
+$testDatabaseDir = dirname($testDatabase);
+
+if (!is_dir($testDatabaseDir)) {
+    mkdir($testDatabaseDir, 0777, true);
+}
+
 if (file_exists($testDatabase)) {
     unlink($testDatabase);
 }
