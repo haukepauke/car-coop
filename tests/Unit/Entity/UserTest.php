@@ -104,6 +104,29 @@ class UserTest extends TestCase
         $this->assertSame('test@example.com', $user->getUserIdentifier());
     }
 
+    public function testThemePreferenceDefaultsToClassic(): void
+    {
+        $user = $this->makeUser();
+
+        $this->assertSame('classic', $user->getThemePreference());
+    }
+
+    public function testThemePreferenceCanBeChanged(): void
+    {
+        $user = $this->makeUser();
+        $user->setThemePreference('dark');
+
+        $this->assertSame('dark', $user->getThemePreference());
+    }
+
+    public function testThemePreferenceCanBeChangedToClassic(): void
+    {
+        $user = $this->makeUser();
+        $user->setThemePreference('classic');
+
+        $this->assertSame('classic', $user->getThemePreference());
+    }
+
     // ── getExpensesByPeriod() ─────────────────────────────────────────────────
 
     public function testGetExpensesByPeriodReturnsExpensesInRange(): void

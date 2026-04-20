@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const LOCALES = ['en', 'de', 'nl', 'fr', 'es', 'pl'];
+    public const THEMES = ['light', 'dark', 'classic'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -103,6 +104,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastLogin = null;
+
+    #[ORM\Column(type: 'string', length: 10)]
+    #[Assert\Choice(User::THEMES)]
+    private string $themePreference = 'classic';
 
     public function __construct()
     {
@@ -708,6 +713,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastLogin(\DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getThemePreference(): string
+    {
+        return $this->themePreference;
+    }
+
+    public function setThemePreference(string $themePreference): self
+    {
+        $this->themePreference = $themePreference;
 
         return $this;
     }

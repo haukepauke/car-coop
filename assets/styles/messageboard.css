@@ -1,3 +1,144 @@
+/* ── Message cards ─────────────────────────────────────────── */
+.message-card {
+    border-color: rgba(214, 167, 203, 0.38);
+}
+
+.message-card__header {
+    background: rgba(255, 255, 255, 0.78);
+    border-bottom-color: rgba(214, 167, 203, 0.32);
+}
+
+.message-card--sticky {
+    border-color: rgba(245, 158, 11, 0.45);
+}
+
+.message-card--sticky .message-card__header {
+    background: rgba(254, 243, 199, 0.58);
+}
+
+.message-card--broadcast {
+    border-color: rgba(94, 43, 168, 0.26);
+}
+
+.message-card--broadcast .message-card__header {
+    background: linear-gradient(135deg, rgba(198, 238, 255, 0.42), rgba(245, 181, 234, 0.26));
+}
+
+.message-origin-broadcast {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--cc-navy-dark);
+    font-weight: 700;
+}
+
+.message-origin-broadcast i {
+    color: var(--cc-primary-dark);
+}
+
+html[data-theme="dark"] .message-card__header {
+    background: rgba(36, 18, 44, 0.9);
+    border-bottom-color: rgba(158, 133, 154, 0.2);
+}
+
+html[data-theme="dark"] .message-card__header strong,
+html[data-theme="dark"] .message-card__header strong i {
+    color: var(--cc-text);
+}
+
+html[data-theme="dark"] .message-card--sticky .message-card__header {
+    background: rgba(102, 77, 3, 0.28);
+}
+
+html[data-theme="dark"] .message-card--broadcast .message-card__header {
+    background: linear-gradient(135deg, rgba(122, 29, 104, 0.36), rgba(22, 74, 99, 0.24));
+}
+
+html[data-theme="dark"] .message-card {
+    border-color: rgba(158, 133, 154, 0.28);
+    background-color: rgba(36, 18, 44, 0.94);
+}
+
+html[data-theme="dark"] .message-card .card-body,
+html[data-theme="dark"] .message-card .card-body p,
+html[data-theme="dark"] .message-card .card-body li,
+html[data-theme="dark"] .message-card .card-body strong,
+html[data-theme="dark"] .message-card .card-body em {
+    color: var(--cc-text);
+}
+
+html[data-theme="dark"] .message-card .card-body a {
+    color: var(--cc-accent);
+}
+
+html[data-theme="dark"] .message-origin-broadcast {
+    color: var(--cc-text);
+}
+
+html[data-theme="dark"] .message-origin-broadcast i {
+    color: var(--cc-accent);
+}
+
+html[data-theme="dark"] .ql-toolbar.ql-snow,
+html[data-theme="dark"] .ql-container.ql-snow {
+    border-color: rgba(158, 133, 154, 0.38);
+    background-color: rgba(23, 13, 30, 0.9);
+}
+
+html[data-theme="dark"] .ql-toolbar.ql-snow {
+    border-top-left-radius: var(--cc-radius);
+    border-top-right-radius: var(--cc-radius);
+}
+
+html[data-theme="dark"] .ql-container.ql-snow {
+    border-bottom-left-radius: var(--cc-radius);
+    border-bottom-right-radius: var(--cc-radius);
+}
+
+html[data-theme="dark"] .ql-editor {
+    color: var(--cc-text);
+}
+
+html[data-theme="dark"] .ql-editor.ql-blank::before {
+    color: var(--cc-text-muted);
+}
+
+html[data-theme="dark"] .ql-snow .ql-stroke {
+    stroke: var(--cc-text);
+}
+
+html[data-theme="dark"] .ql-snow .ql-fill {
+    fill: var(--cc-text);
+}
+
+html[data-theme="dark"] .ql-snow .ql-picker {
+    color: var(--cc-text);
+}
+
+html[data-theme="dark"] .ql-snow .ql-picker-options {
+    background-color: rgba(23, 13, 30, 0.98);
+    border-color: rgba(158, 133, 154, 0.38);
+}
+
+html[data-theme="dark"] .ql-snow .ql-picker-item:hover,
+html[data-theme="dark"] .ql-snow .ql-picker-item.ql-selected,
+html[data-theme="dark"] .ql-snow .ql-picker-label:hover,
+html[data-theme="dark"] .ql-snow .ql-picker-label.ql-active,
+html[data-theme="dark"] .ql-snow .ql-picker-label:hover .ql-stroke,
+html[data-theme="dark"] .ql-snow .ql-picker-label.ql-active .ql-stroke,
+html[data-theme="dark"] .ql-snow .ql-picker-item:hover .ql-stroke,
+html[data-theme="dark"] .ql-snow .ql-picker-item.ql-selected .ql-stroke,
+html[data-theme="dark"] .ql-snow button:hover .ql-stroke,
+html[data-theme="dark"] .ql-snow button.ql-active .ql-stroke {
+    color: var(--cc-accent);
+    stroke: var(--cc-accent);
+}
+
+html[data-theme="dark"] .ql-snow button:hover .ql-fill,
+html[data-theme="dark"] .ql-snow button.ql-active .ql-fill {
+    fill: var(--cc-accent);
+}
+
 /* ── Uploaded photo thumbnails in messages ─────────────────── */
 .message-photo-thumb {
     max-height: 120px;
@@ -33,10 +174,10 @@
 .photo-add-btn {
     width: 72px;
     height: 72px;
-    border: 2px dashed #adb5bd;
+    border: 2px dashed var(--cc-border-strong);
     border-radius: 6px;
-    background: transparent;
-    color: #6c757d;
+    background: rgba(255, 255, 255, 0.68);
+    color: var(--cc-text-muted);
     font-size: 1.6rem;
     line-height: 1;
     cursor: pointer;
@@ -48,8 +189,9 @@
 }
 
 .photo-add-btn:hover {
-    border-color: #495057;
-    color: #343a40;
+    border-color: var(--cc-primary-dark);
+    color: var(--cc-primary-dark);
+    background: rgba(245, 181, 234, 0.16);
 }
 
 /* ── Individual preview items ───────────────────────────────── */
@@ -75,7 +217,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #dc3545;
+    background: var(--cc-danger);
     color: #fff;
     border: none;
     font-size: 0.65rem;
@@ -88,5 +230,13 @@
 }
 
 .photo-preview-remove:hover {
-    background: #b02a37;
+    background: #8f1111;
+}
+
+html[data-theme="dark"] .photo-add-btn {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="dark"] .photo-add-btn:hover {
+    background: rgba(255, 120, 222, 0.12);
 }

@@ -48,7 +48,7 @@
                             <td class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
                             <td class="align-middle text-center">
                             {% if user.isActive() and user.id != app.user.id %}
-                                <a href='{{ path('app_user_delete', {user: user.id}) }}' class="btn btn-outline-danger">{{ 'user.retire.short'|trans }} <i class="fas fa-trash text-danger"></i></a>
+                                <a href='{{ path('app_user_delete', {user: user.id}) }}' class="btn btn-outline-danger">{{ 'user.retire.short'|trans }} <i class="fas fa-trash"></i></a>
                             {% endif %}
                             </td>
                     {% endfor %}
@@ -90,7 +90,7 @@
                                         <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </form>
-                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}' class="btn btn-outline-danger btn-sm" title="{{ 'delete'|trans }}" aria-label="{{ 'delete'|trans }}"><i class="fas fa-trash text-danger"></i></a>
+                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}' class="btn btn-outline-danger btn-sm" title="{{ 'delete'|trans }}" aria-label="{{ 'delete'|trans }}"><i class="fas fa-trash"></i></a>
                             {% endif %}
                             </td>
                         </tr>

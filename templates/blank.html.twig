@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale|default('en') }}">
+{% set currentTheme = is_granted('IS_AUTHENTICATED_REMEMBERED') and app.user ? app.user.themePreference : 'classic' %}
+<html lang="{{ app.request.locale|default('en') }}" data-theme="{{ currentTheme }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">

@@ -39,15 +39,15 @@
 
     {# Messages list #}
     {% for message in pager %}
-    <div class="card mb-3 {% if message.isBroadcast %}border-danger{% elseif message.isSticky %}border-warning{% endif %}">
-        <div class="card-header d-flex justify-content-between align-items-center {% if message.isSticky and not message.isBroadcast %}bg-warning bg-opacity-10{% endif %}">
+    <div class="card mb-3 message-card{% if message.isBroadcast %} message-card--broadcast{% elseif message.isSticky %} message-card--sticky{% endif %}">
+        <div class="card-header d-flex justify-content-between align-items-center message-card__header">
             <div class="d-flex align-items-center gap-2">
                 {% if message.isSticky and not message.isBroadcast %}
                 <i class="fa-solid fa-thumbtack text-warning"></i>
                 {% endif %}
                 <strong>
                     {% if message.isBroadcast %}
-                        <span class="text-danger"><i class="fa-solid fa-bullhorn"></i> {{ 'messageboard.server_admin'|trans }}:
+                        <span class="message-origin-broadcast"><i class="fa-solid fa-bullhorn"></i> {{ 'messageboard.server_admin'|trans }}:
                         {{ message.author ? message.author.name : 'ServerAdmin' }}</span>
                     {% elseif message.author %}
                         {{ message.author.name }}

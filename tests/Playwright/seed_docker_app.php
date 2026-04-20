@@ -25,6 +25,7 @@ $user = $em->getRepository(User::class)->findOneBy(['email' => 'a11y-user@test.l
 $user->setEmail('a11y-user@test.local');
 $user->setName('Accessibility User');
 $user->setLocale('en');
+$user->setThemePreference('classic');
 $user->setIsVerified(true);
 $user->setNotifiedOnEvents(false);
 $user->setNotifiedOnOwnEvents(false);

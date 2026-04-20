@@ -480,6 +480,11 @@ user:
   groups: Grupo de usuarios
   inactive: Inactivo
   locale: Idioma
+  theme:
+    label: Tema
+    light: Claro colorido
+    dark: Oscuro colorido
+    classic: Clásico
   logged:
     in:
       as: Conectado como

@@ -1,9 +1,67 @@
 a {
-    color: #000;
+    color: var(--cc-primary-dark);
 }
 
 a:hover {
-    color: #333;
+    color: var(--cc-navy-dark);
+}
+
+.fc {
+    --fc-border-color: rgba(214, 167, 203, 0.65);
+    --fc-page-bg-color: rgba(255, 255, 255, 0.92);
+    --fc-neutral-bg-color: rgba(245, 181, 234, 0.14);
+    --fc-neutral-text-color: var(--cc-text-muted);
+    --fc-button-bg-color: var(--cc-primary-dark);
+    --fc-button-border-color: var(--cc-primary-dark);
+    --fc-button-hover-bg-color: var(--cc-navy);
+    --fc-button-hover-border-color: var(--cc-navy);
+    --fc-button-active-bg-color: var(--cc-navy-dark);
+    --fc-button-active-border-color: var(--cc-navy-dark);
+    --fc-event-bg-color: var(--cc-primary-dark);
+    --fc-event-border-color: var(--cc-primary-dark);
+    --fc-today-bg-color: rgba(198, 238, 255, 0.28);
+}
+
+.fc .fc-toolbar-title {
+    color: var(--cc-text);
+    font-weight: 800;
+}
+
+.fc .fc-button:focus {
+    box-shadow: 0 0 0 3px rgba(212, 59, 184, 0.22) !important;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-color: rgba(214, 167, 203, 0.65);
+}
+
+html[data-theme="dark"] .fc {
+    --fc-border-color: rgba(158, 133, 154, 0.36);
+    --fc-page-bg-color: rgba(36, 18, 44, 0.94);
+    --fc-neutral-bg-color: rgba(255, 120, 222, 0.08);
+    --fc-neutral-text-color: var(--cc-text-muted);
+    --fc-button-bg-color: #7a1d68;
+    --fc-button-border-color: #7a1d68;
+    --fc-button-hover-bg-color: #59368a;
+    --fc-button-hover-border-color: #59368a;
+    --fc-button-active-bg-color: #41206f;
+    --fc-button-active-border-color: #41206f;
+    --fc-event-bg-color: #ff78de;
+    --fc-event-border-color: #ff78de;
+    --fc-event-text-color: #5b114c;
+    --fc-today-bg-color: rgba(120, 217, 255, 0.14);
+}
+
+html[data-theme="dark"] .fc .fc-toolbar-title,
+html[data-theme="dark"] .fc-theme-standard td,
+html[data-theme="dark"] .fc-theme-standard th {
+    color: var(--cc-text);
+}
+
+html[data-theme="dark"] .fc-theme-standard td,
+html[data-theme="dark"] .fc-theme-standard th {
+    border-color: rgba(158, 133, 154, 0.36);
 }
 
 @media (max-width: 991.98px) {

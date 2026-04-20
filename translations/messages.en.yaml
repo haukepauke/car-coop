@@ -481,6 +481,11 @@ user:
   groups: User group
   inactive: Inactive
   locale: Language
+  theme:
+    label: Theme
+    light: Colorful light
+    dark: Colorful dark
+    classic: Classic
   logged:
     in:
       as: Logged in as

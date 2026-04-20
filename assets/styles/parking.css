@@ -1,4 +1,11 @@
 #parking-map {
     height: 400px;
-    border-radius: 8px;
+    border-radius: 18px;
+    border: 1px solid rgba(214, 167, 203, 0.6);
+    box-shadow: 0 14px 34px rgba(94, 43, 168, 0.08);
+}
+
+html[data-theme="dark"] #parking-map {
+    border-color: rgba(158, 133, 154, 0.34);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
 }

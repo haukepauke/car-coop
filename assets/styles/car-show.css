@@ -92,6 +92,15 @@
     flex-shrink: 0;
 }
 
+html[data-theme="dark"] #tour-dismiss-btn {
+    color: var(--cc-text-muted) !important;
+}
+
+html[data-theme="dark"] #tour-dismiss-btn:hover,
+html[data-theme="dark"] #tour-dismiss-btn:focus {
+    color: var(--cc-text) !important;
+}
+
 /* ── Driver.js popover overrides ────────────────────────────────── */
 .driver-popover {
     background: var(--cc-surface) !important;

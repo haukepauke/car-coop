@@ -2,7 +2,7 @@
 
 {% block content_body %}
 <div class="col-xl-6 mt-5">
-    <h4>{{ 'user.profile.edit'| trans }}</h4>
+    <h1 class="h4">{{ 'user.profile.edit'| trans }}</h1>
 
     {{ form_start(userForm)}}
         {{ form_row(userForm.email) }}
@@ -14,6 +14,7 @@
         {% endif %}
         {{ form_row(userForm.name) }}
         {{ form_row(userForm.locale) }}
+        {{ form_row(userForm.themePreference) }}
         <div class="row">
             <div class="col-sm-3">
             {{ form_row(userForm.color) }}
@@ -24,11 +25,18 @@
 
         <div class="row">
             <div class="col-sm-9">
-            {{ form_row(userForm.picture) }}
+            {{ form_label(userForm.picture) }}
+            {{ form_widget(userForm.picture, {
+                attr: {
+                    'aria-label': userForm.picture.vars.label|trans,
+                    title: userForm.picture.vars.label|trans
+                }
+            }) }}
+            {{ form_errors(userForm.picture) }}
             </div>
              <div class="col-sm-3">
             {% if userForm.vars.data.profilePicturePath|default %}
-                <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ userForm.vars.data.profilePicturePath)|imagine_filter('profile_thumb') }}" height="100" width="100">
+                <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ userForm.vars.data.profilePicturePath)|imagine_filter('profile_thumb') }}" alt="" height="100" width="100">
             {% endif %}
             </div>
         </div>

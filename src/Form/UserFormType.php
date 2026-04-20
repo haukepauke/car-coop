@@ -46,6 +46,18 @@ class UserFormType extends AbstractType
                 ]
             )
             ->add(
+                'themePreference',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'user.theme.light' => 'light',
+                        'user.theme.dark' => 'dark',
+                        'user.theme.classic' => 'classic',
+                    ],
+                    'label' => 'user.theme.label',
+                ]
+            )
+            ->add(
                 'color',
                 ColorType::class,
                 [

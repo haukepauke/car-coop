@@ -481,6 +481,11 @@ user:
   groups: Benutzungsgruppen
   inactive: Inaktiv
   locale: Sprache
+  theme:
+    label: Design
+    light: Farbenfroh hell
+    dark: Farbenfroh dunkel
+    classic: Klassisch
   logged:
     in:
       as: Du bist eingeloggt als
