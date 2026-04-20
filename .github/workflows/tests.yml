@@ -68,6 +68,11 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
 
+      - name: Prepare writable Symfony var directory
+        run: |
+          mkdir -p var/cache var/log
+          chmod -R 777 var
+
       - name: Start docker test stack
         run: docker compose up -d --build db www
 
