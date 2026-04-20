@@ -364,10 +364,13 @@ fuel: Brandstof
 invitation:
   invite: Gebruiker uitnodigen
   invite_another: Nog een lid toevoegen
+  resend: Uitnodiging opnieuw versturen
   sent: "Uitnodigingen verstuurd naar: %emails%"
+  resent: "Uitnodiging opnieuw verstuurd naar %email%."
   already_pending: "Overgeslagen — uitnodiging al in behandeling voor: %emails%"
   deleted: Uitnodiging verwijderd.
   delete_not_allowed: Deze uitnodiging is aangemaakt door een andere gebruiker. Je kunt alleen uitnodigingen verwijderen die je zelf hebt aangemaakt.
+  resend_not_allowed: Deze uitnodiging is aangemaakt door een andere gebruiker. Je kunt alleen uitnodigingen opnieuw versturen die je zelf hebt aangemaakt.
   email:
     language: E-mailtaal
     subject: "Je bent uitgenodigd om voertuig te delen via Car Coop!"

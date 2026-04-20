@@ -365,10 +365,13 @@ fuel: Sprit
 invitation:
   invite: Benutzer*in einladen
   invite_another: Weitere Person hinzufügen
+  resend: Einladung erneut senden
   sent: "Einladungen gesendet an: %emails%"
+  resent: "Einladung erneut an %email% gesendet."
   already_pending: "Übersprungen — Einladung bereits ausstehend für: %emails%"
   deleted: Einladung gelöscht.
   delete_not_allowed: Diese Einladung wurde von einer anderen Person erstellt. Du kannst nur Einladungen löschen, die du selbst erstellt hast.
+  resend_not_allowed: Diese Einladung wurde von einer anderen Person erstellt. Du kannst nur Einladungen erneut senden, die du selbst erstellt hast.
   email:
     language: E-Mail-Sprache
     subject: "Du wurdest eingeladen, Car Coop beizutreten!"

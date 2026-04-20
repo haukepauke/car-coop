@@ -364,10 +364,13 @@ fuel: Combustible
 invitation:
   invite: Invitar usuario
   invite_another: Añadir otro miembro
+  resend: Reenviar invitación
   sent: "Invitaciones enviadas a: %emails%"
+  resent: "Invitación reenviada a %email%."
   already_pending: "Omitido — invitación ya pendiente para: %emails%"
   deleted: Invitación eliminada.
   delete_not_allowed: Esta invitación fue creada por otro usuario. Solo puedes eliminar las invitaciones que hayas creado tú mismo.
+  resend_not_allowed: Esta invitación fue creada por otro usuario. Solo puedes reenviar las invitaciones que hayas creado tú mismo.
   email:
     language: Idioma del correo electrónico
     subject: "¡Has sido invitado a compartir vehículo con Car Coop!"

@@ -364,10 +364,13 @@ fuel: Paliwo
 invitation:
   invite: Zaproś użytkownika
   invite_another: Dodaj kolejnego członka
+  resend: Wyślij zaproszenie ponownie
   sent: "Zaproszenia wysłane do: %emails%"
+  resent: "Zaproszenie wysłano ponownie do %email%."
   already_pending: "Pominięto — zaproszenie już oczekuje dla: %emails%"
   deleted: Zaproszenie usunięte.
   delete_not_allowed: To zaproszenie zostało utworzone przez innego użytkownika. Możesz usuwać tylko zaproszenia, które sam utworzyłeś.
+  resend_not_allowed: To zaproszenie zostało utworzone przez innego użytkownika. Możesz ponownie wysyłać tylko zaproszenia, które sam utworzyłeś.
   email:
     language: Język wiadomości e-mail
     subject: "Zostałeś zaproszony do wspólnego korzystania z pojazdu w Car Coop!"

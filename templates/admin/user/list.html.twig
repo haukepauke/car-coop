@@ -84,7 +84,13 @@
                             <td class="align-middle text-center">{{ invitation.createdBy.name }}</td>
                             <td class="align-middle text-center">
                             {% if app.user.email == invitation.createdBy.email %}
-                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}'><i class="fas fa-trash text-danger"></i></a>
+                                <form method="post" action="{{ path('app_invite_resend', {invite: invitation.id}) }}" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('invite_resend_' ~ invitation.id) }}">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm" title="{{ 'invitation.resend'|trans }}" aria-label="{{ 'invitation.resend'|trans }}">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </form>
+                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}' class="btn btn-outline-danger btn-sm"><i class="fas fa-trash text-danger"></i></a>
                             {% endif %}
                             </td>
                         </tr>

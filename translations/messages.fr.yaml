@@ -364,10 +364,13 @@ fuel: Carburant
 invitation:
   invite: Inviter un utilisateur
   invite_another: Ajouter un autre membre
+  resend: Renvoyer l'invitation
   sent: "Invitations envoyées à : %emails%"
+  resent: "Invitation renvoyée à %email%."
   already_pending: "Ignoré — invitation déjà en attente pour : %emails%"
   deleted: Invitation supprimée.
   delete_not_allowed: Cette invitation a été créée par un autre utilisateur. Vous ne pouvez supprimer que les invitations que vous avez créées vous-même.
+  resend_not_allowed: Cette invitation a été créée par un autre utilisateur. Vous ne pouvez renvoyer que les invitations que vous avez créées vous-même.
   email:
     language: Langue de l'e-mail
     subject: "Vous avez été invité à partager un véhicule avec Car Coop !"

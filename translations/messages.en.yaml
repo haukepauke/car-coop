@@ -365,10 +365,13 @@ fuel: Fuel
 invitation:
   invite: Invite user
   invite_another: Add another member
+  resend: Resend invitation
   sent: "Invitations sent to: %emails%"
+  resent: "Invitation resent to %email%."
   already_pending: "Skipped — invitation already pending for: %emails%"
   deleted: Invitation deleted.
   delete_not_allowed: This invitation was created by another user. You can only delete invitations you created yourself.
+  resend_not_allowed: This invitation was created by another user. You can only resend invitations you created yourself.
   email:
     language: Email language
     subject: "You have been invited to join vehicle sharing with Car Coop!"
