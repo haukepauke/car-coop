@@ -219,7 +219,7 @@
                     {{ 'trips.cost_calculator.open'|trans }}
                     {% if calculatorCar is not null %} - {{ calculatorCar.name }}{% endif %}
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'close'|trans }}"></button>
             </div>
             <div class="modal-body" id="tripCostCalculatorModalBody" data-current-action="{{ path('app_car_estimate_trip_costs', {car: calculatorCar.id}) }}">
                 {% include 'admin/trip/_cost_calculator_form.html.twig' %}

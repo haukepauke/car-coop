@@ -58,7 +58,7 @@
                         <td class="text-center">{{ trip.costs|format_currency(car.currency, locale=app.user.locale)}}</td>
                         <td class="text-center">{{ trip.comment }}</td>
                         <td class="text-center">
-                            <a href='{{ path('app_trip_edit', {trip: trip.id}) }}' class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
+                            <a href='{{ path('app_trip_edit', {trip: trip.id}) }}' class="btn btn-outline-primary" title="{{ 'edit'|trans }}" aria-label="{{ 'edit'|trans }}"><i class="fas fa-edit"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

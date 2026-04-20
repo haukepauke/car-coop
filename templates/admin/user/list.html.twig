@@ -90,7 +90,7 @@
                                         <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </form>
-                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}' class="btn btn-outline-danger btn-sm"><i class="fas fa-trash text-danger"></i></a>
+                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}' class="btn btn-outline-danger btn-sm" title="{{ 'delete'|trans }}" aria-label="{{ 'delete'|trans }}"><i class="fas fa-trash text-danger"></i></a>
                             {% endif %}
                             </td>
                         </tr>
@@ -139,7 +139,7 @@
                             </td>
                             <td class="align-middle text-center">
                             {% if usergroup.isActive() %}
-                                <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}' class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
+                                <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}' class="btn btn-outline-primary" title="{{ 'edit'|trans }}" aria-label="{{ 'edit'|trans }}"><i class="fas fa-edit"></i></a>
                             {% endif %}
                             </td>
                         </tr>

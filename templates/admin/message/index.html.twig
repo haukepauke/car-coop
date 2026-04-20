@@ -32,7 +32,7 @@
         {% for msg in flashes %}
             <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
                 {{ msg|trans }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'close'|trans }}"></button>
             </div>
         {% endfor %}
     {% endfor %}
@@ -62,7 +62,7 @@
                 {# Sticky toggle — any user #}
                 <form method="post" action="{{ path('app_message_toggle_sticky', {id: message.id}) }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('message_sticky_' ~ message.id) }}">
-                    <button type="submit" class="btn btn-sm {% if message.isSticky %}btn-warning{% else %}btn-outline-secondary{% endif %}" title="{{ 'messageboard.toggle_sticky'|trans }}">
+                    <button type="submit" class="btn btn-sm {% if message.isSticky %}btn-warning{% else %}btn-outline-secondary{% endif %}" title="{{ 'messageboard.toggle_sticky'|trans }}" aria-label="{{ 'messageboard.toggle_sticky'|trans }}">
                         <i class="fa-solid fa-thumbtack"></i>
                     </button>
                 </form>
@@ -70,6 +70,7 @@
                 {% if message.author == app.user or car.isAdminUser(app.user) %}
                 <button type="button" class="btn btn-sm btn-outline-danger js-confirm-delete"
                         title="{{ 'messageboard.delete'|trans }}"
+                        aria-label="{{ 'messageboard.delete'|trans }}"
                         data-action="{{ path('app_message_delete', {id: message.id}) }}"
                         data-token="{{ csrf_token('message_delete_' ~ message.id) }}"
                         data-message="{{ 'messageboard.delete_confirm'|trans }}">
@@ -122,7 +123,7 @@
                 <input type="hidden" name="content" id="message-content">
                 <input type="file" name="photos[]" id="message-photos" accept="image/*" multiple class="d-none">
                 <div id="photo-preview-area" class="photo-upload-area" title="{{ 'messageboard.photo_hint'|trans }}">
-                    <button type="button" id="photo-add-btn" class="photo-add-btn" title="{{ 'messageboard.attach_photos'|trans }}">
+                    <button type="button" id="photo-add-btn" class="photo-add-btn" title="{{ 'messageboard.attach_photos'|trans }}" aria-label="{{ 'messageboard.attach_photos'|trans }}">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
@@ -159,7 +160,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ 'confirm_delete_title'|trans }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'close'|trans }}"></button>
             </div>
             <div class="modal-body" id="confirmModalBody"></div>
             <div class="modal-footer">

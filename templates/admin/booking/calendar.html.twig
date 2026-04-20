@@ -31,7 +31,9 @@
                 <input type="text" class="form-control form-control-sm font-monospace" id="caldav-url"
                        value="{{ caldavUrl }}" readonly>
                 <button class="btn btn-outline-secondary btn-sm js-copy-caldav" type="button"
-                        data-url="{{ caldavUrl }}">
+                        data-url="{{ caldavUrl }}"
+                        title="{{ 'booking.caldav.copy'|trans }}"
+                        aria-label="{{ 'booking.caldav.copy'|trans }}">
                     <i class="fa-regular fa-copy"></i>
                 </button>
             </div>
@@ -44,7 +46,9 @@
                 <input type="text" class="form-control form-control-sm font-monospace" id="caldav-base-url"
                        value="{{ baseUrl }}" readonly>
                 <button class="btn btn-outline-secondary btn-sm js-copy-text" type="button"
-                        data-target="caldav-base-url">
+                        data-target="caldav-base-url"
+                        title="{{ 'booking.caldav.copy'|trans }}"
+                        aria-label="{{ 'booking.caldav.copy'|trans }}">
                     <i class="fa-regular fa-copy"></i>
                 </button>
             </div>

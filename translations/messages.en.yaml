@@ -582,6 +582,8 @@ sharing:
   is:
     caring: Sharing is caring
 delete: Delete
+edit: Edit
+close: Close
 transport: Transport
 vacation: Vacation
 superadmin:
