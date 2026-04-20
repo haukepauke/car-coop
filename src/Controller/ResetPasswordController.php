@@ -16,16 +16,24 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-#[Route('/reset-password')]
+#[Route(
+    '/{_locale}/reset-password',
+    requirements: [
+        '_locale' => 'en|de|nl|fr|es|pl',
+    ],
+)]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
+
+    private const DEFAULT_LOCALE = 'en';
 
     public function __construct(
         private ResetPasswordHelperInterface $resetPasswordHelper,
@@ -48,13 +56,13 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->isBotSubmission($request, $form)) {
-                return $this->redirectToRoute('app_login');
+                return $this->redirectToRoute('app_login', ['_locale' => $request->getLocale()]);
             }
 
             /** @var string $email */
             $email = $form->get('email')->getData();
 
-            return $this->processSendingPasswordResetEmail($email, $mailer, $translator);
+            return $this->processSendingPasswordResetEmail($email, $request->getLocale(), $mailer, $translator);
         }
 
         $request->getSession()->set('reset_password_form_at', time());
@@ -92,7 +100,7 @@ class ResetPasswordController extends AbstractController
             // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
             $this->storeTokenInSession($token);
 
-            return $this->redirectToRoute('app_reset_password');
+            return $this->redirectToRoute('app_reset_password', ['_locale' => $request->getLocale()]);
         }
 
         $token = $this->getTokenFromSession();
@@ -111,7 +119,7 @@ class ResetPasswordController extends AbstractController
                 $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
             ));
 
-            return $this->redirectToRoute('app_forgot_password_request');
+            return $this->redirectToRoute('app_forgot_password_request', ['_locale' => $request->getLocale()]);
         }
 
         // The token is valid; allow the user to change their password.
@@ -133,7 +141,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_login', ['_locale' => $request->getLocale()]);
         }
 
         return $this->render('reset_password/reset.html.twig', [
@@ -155,16 +163,19 @@ class ResetPasswordController extends AbstractController
         return false;
     }
 
-    private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer, TranslatorInterface $translator): RedirectResponse
+    private function processSendingPasswordResetEmail(string $emailFormData, string $locale, MailerInterface $mailer, TranslatorInterface $translator): RedirectResponse
     {
+        $requestLocale = $this->normalizeLocale($locale);
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
             'email' => $emailFormData,
         ]);
 
         // Do not reveal whether a user account was found or not.
         if (!$user) {
-            return $this->redirectToRoute('app_check_email');
+            return $this->redirectToRoute('app_check_email', ['_locale' => $requestLocale]);
         }
+
+        $emailLocale = $this->normalizeLocale($user->getLocale() ?: $requestLocale);
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
@@ -179,16 +190,22 @@ class ResetPasswordController extends AbstractController
             //     $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
             // ));
 
-            return $this->redirectToRoute('app_check_email');
+            return $this->redirectToRoute('app_check_email', ['_locale' => $requestLocale]);
         }
 
         $email = (new TemplatedEmail())
             ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
             ->to((string) $user->getEmail())
-            ->subject('Your password reset request')
+            ->subject($translator->trans('reset_password.email.subject', [], null, $emailLocale))
+            ->locale($emailLocale)
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
+                'resetPasswordLocale' => $emailLocale,
+                'resetPasswordUrl' => $this->generateUrl('app_reset_password', [
+                    '_locale' => $emailLocale,
+                    'token' => $resetToken->getToken(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
             ])
         ;
 
@@ -197,6 +214,13 @@ class ResetPasswordController extends AbstractController
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
 
-        return $this->redirectToRoute('app_check_email');
+        return $this->redirectToRoute('app_check_email', ['_locale' => $requestLocale]);
+    }
+
+    private function normalizeLocale(?string $locale): string
+    {
+        return \in_array($locale, ['en', 'de', 'nl', 'fr', 'es', 'pl'], true)
+            ? $locale
+            : self::DEFAULT_LOCALE;
     }
 }

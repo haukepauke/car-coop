@@ -14,12 +14,13 @@
             <h1 class="h4 mb-3">{{ 'registration.check_email.title'|trans }}</h1>
 
             <p class="mb-1">
-                If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-                This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                {{ 'reset_password.check_email.info'|trans({
+                    '%expiration%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')
+                }) }}
             </p>
             <p class="text-muted small mb-3">{{ 'registration.check_email.spam_hint'|trans }}</p>
 
-            <a href="{{ path('app_forgot_password_request') }}" class="btn btn-dark btn-lg btn-block w-100 mb-3">Try again</a>
+            <a href="{{ path('app_forgot_password_request') }}" class="btn btn-dark btn-lg btn-block w-100 mb-3">{{ 'reset_password.check_email.try_again'|trans }}</a>
 
             <div class="auth-links text-center">
               <a href="{{ path('app_login') }}" class="small">{{ 'registration.check_email.login_link'|trans }}</a>

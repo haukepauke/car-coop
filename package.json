@@ -1,0 +1,11 @@
+{
+  "name": "car-coop",
+  "private": true,
+  "scripts": {
+    "a11y:test": "playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.54.2"
+  }
+}
