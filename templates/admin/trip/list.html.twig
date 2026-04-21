@@ -6,7 +6,7 @@
         <h1 class="h4 mb-0">{{ 'trips.logbook'|trans }}</h1>
         <div class="d-flex align-items-center gap-2">
             <button type="button" class="btn btn-outline-dark" onclick="location.href='{{ path('app_trip_new') }}';">{{ 'trips.add.new'|trans }} <span class="fa fa-plus-circle"></span></button>
-            <form method="get" class="d-flex align-items-center gap-2">
+            <form method="get" class="d-flex align-items-center gap-2 mobile-filter-form">
                 <label for="userFilter" class="mb-0 text-nowrap d-none d-lg-inline">{{ 'filter.user'|trans }}</label>
                 <select name="user" id="userFilter" class="form-select form-select-sm" style="min-width: 10rem" onchange="this.form.submit()">
                     <option value="">{{ 'filter.all_users'|trans }}</option>
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table mobile-data-table">
             <thead class="table-secondary">
                 <tr>
                     <th class="text-center">{{ 'user.user'|trans }}</th>
@@ -43,21 +43,21 @@
             <tbody>
                 {% for trip in pager %}
                     <tr>
-                        <td class="text-center">
+                        <td class="text-center" data-label="{{ 'user.user'|trans }}">
                             {% for user in trip.users %}{{ user.name }}{% if not loop.last %}, {% endif %}{% endfor %}
                             {% if trip.users|length > 1 or trip.users|first != trip.editor %}
                                 <br/><span class="small">({{ 'author'|trans }}: {{ trip.editor.name }})</span>
                             {% endif %}
                         </td>
-                        <td class="text-center">{{ trip.startDate|date('d.m.Y') }}</td>
-                        <td class="text-center">{{ trip.endDate|date('d.m.Y') }}</td>
-                        <td class="text-center">{{ trip.startMileage|number_format(0, ',', '.') }}</td>
-                        <td class="text-center">{{ trip.endMileAge|number_format(0, ',', '.') }}</td>
-                        <td class="text-center">{{ trip.mileage|number_format(0, ',', '.') }}</td>
-                        <td class="text-center">{{ trip.type|trans }}</td>
-                        <td class="text-center">{{ trip.costs|format_currency(car.currency, locale=app.user.locale)}}</td>
-                        <td class="text-center">{{ trip.comment }}</td>
-                        <td class="text-center">
+                        <td class="text-center" data-label="{{ 'date.start'|trans }}">{{ trip.startDate|date('d.m.Y') }}</td>
+                        <td class="text-center" data-label="{{ 'date.end'|trans }}">{{ trip.endDate|date('d.m.Y') }}</td>
+                        <td class="text-center" data-label="{{ 'start'|trans }} {{ car.milageUnit }}">{{ trip.startMileage|number_format(0, ',', '.') }}</td>
+                        <td class="text-center" data-label="{{ 'end'|trans }} {{ car.milageUnit }}">{{ trip.endMileAge|number_format(0, ',', '.') }}</td>
+                        <td class="text-center" data-label="{{ car.milageUnit }} {{ 'trips.driven'|trans }}">{{ trip.mileage|number_format(0, ',', '.') }}</td>
+                        <td class="text-center" data-label="{{ 'trips.type'|trans }}">{{ trip.type|trans }}</td>
+                        <td class="text-center" data-label="{{ 'costs'|trans }}">{{ trip.costs|format_currency(car.currency, locale=app.user.locale)}}</td>
+                        <td class="text-center" data-label="{{ 'comment'|trans }}">{{ trip.comment }}</td>
+                        <td class="text-center table-actions-cell" data-label="{{ 'actions'|trans }}">
                             <a href='{{ path('app_trip_edit', {trip: trip.id}) }}' class="btn btn-outline-primary" title="{{ 'edit'|trans }}" aria-label="{{ 'edit'|trans }}"><i class="fas fa-edit"></i></a>
                         </td>
                     </tr>
@@ -73,6 +73,12 @@
                 </tr>
             </tfoot>
         </table>
+    </div>
+    <div class="mobile-table-total d-lg-none mb-3">
+        <div class="mobile-table-total__label">{{ 'filter.total'|trans }}</div>
+        <div class="mobile-table-total__value">
+            {{ totals.mileage|number_format(0, ',', '.') }} {{ car.milageUnit }} · {{ totals.costs|format_currency(car.currency, locale=app.user.locale) }}
+        </div>
     </div>
     {% if pager.haveToPaginate %}
     <div class="d-flex justify-content-center mb-3">

@@ -19,13 +19,13 @@
     {% if usergroup.users|length == 0 %}
         <p class="text-muted">{{ 'user.group.no_members'|trans }}</p>
     {% else %}
-        <table class="table table-sm align-middle">
+        <table class="table table-sm align-middle mobile-data-table">
             <tbody>
             {% for member in usergroup.users %}
             <tr>
-                <td>{{ member.name }}</td>
+                <td data-label="{{ 'user.user'|trans }}">{{ member.name }}</td>
                 {% if otherGroups|length > 0 %}
-                <td>
+                <td data-label="{{ 'actions'|trans }}" class="table-actions-cell">
                     <form method="post" action="{{ path('app_usergroup_move_user', {usergroup: usergroup.id}) }}" class="d-flex gap-2 align-items-center justify-content-end">
                         <input type="hidden" name="_token" value="{{ csrf_token('move_user_' ~ usergroup.id) }}">
                         <input type="hidden" name="user_id" value="{{ member.id }}">

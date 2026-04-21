@@ -5,7 +5,7 @@
     <h1 class="h4">{{ 'user.manage'|trans }}</h1>
     <div>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table mobile-data-table">
                 <thead class="table-secondary">
                     <tr>
                         <th class="text-center">{{ 'user.profile.picture'|trans }}</th>
@@ -24,29 +24,29 @@
                 <tbody>
                     {% for user in users %}
                         <tr>
-                            <td>
+                            <td data-label="{{ 'user.profile.picture'|trans }}">
                             {% if user.profilePicturePath|default %}
                                 <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ user.profilePicturePath)|imagine_filter('profile_thumb') }}" alt="" height="50" width="50">
                             {% else %}
                                 <img class="rounded-circle" src="{{ asset('/build/static/default-user.png')|imagine_filter('profile_thumb') }}" alt="" height="50" width="50">
                             {% endif %}
                             </td>
-                            <td class="align-middle text-center">{{ user.name }}</td>
-                            <td class="align-middle text-center">{{ user.email }}</td>
-                            <td class="align-middle text-center"><i class="fas fa-circle" style="color: {{ user.color }}"></i></td>
-                            <td class="align-middle text-center">{{ user.getTripMileage(car)|number_format(0, ',', '.') }}</td>
-                            <td class="align-middle text-center">{{ user.getMoneySpent(car)|format_currency(car.currency, locale=app.user.locale) }}
-                            <td class="align-middle text-center">{{ user.getBalance(car)|format_currency(car.currency, locale=app.user.locale) }}</td>
-                            <td class="align-middle text-center">
+                            <td data-label="{{ 'user.user'|trans }}" class="align-middle text-center">{{ user.name }}</td>
+                            <td data-label="{{ 'email'|trans }}" class="align-middle text-center">{{ user.email }}</td>
+                            <td data-label="{{ 'user.calendar.color'|trans }}" class="align-middle text-center"><i class="fas fa-circle" style="color: {{ user.color }}"></i></td>
+                            <td data-label="{{ car.milageUnit ~ ' ' ~ ('user.driven'|trans) }}" class="align-middle text-center">{{ user.getTripMileage(car)|number_format(0, ',', '.') }}</td>
+                            <td data-label="{{ 'money.spent'|trans }}" class="align-middle text-center">{{ user.getMoneySpent(car)|format_currency(car.currency, locale=app.user.locale) }}</td>
+                            <td data-label="{{ 'money.balance'|trans }}" class="align-middle text-center">{{ user.getBalance(car)|format_currency(car.currency, locale=app.user.locale) }}</td>
+                            <td data-label="{{ 'user.status'|trans }}" class="align-middle text-center">
                             {% if user.isActive() %}
                                 {{ 'user.active'|trans }}
                             {% else %}
                                 {{ 'user.inactive'|trans }}
                             {% endif%}
                             </td>
-                            <td class="align-middle text-center">{{ user.firstLogin ? user.firstLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
-                            <td class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
-                            <td class="align-middle text-center">
+                            <td data-label="{{ 'user.first_login'|trans }}" class="align-middle text-center">{{ user.firstLogin ? user.firstLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
+                            <td data-label="{{ 'user.last_login'|trans }}" class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
+                            <td data-label="{{ 'actions'|trans }}" class="align-middle text-center table-actions-cell">
                             {% if user.isActive() and user.id != app.user.id %}
                                 <a href='{{ path('app_user_delete', {user: user.id}) }}' class="btn btn-outline-danger">{{ 'user.retire.short'|trans }} <i class="fas fa-trash"></i></a>
                             {% endif %}
@@ -63,7 +63,7 @@
     <div>
         <h2 class="h5">{{ 'invitation.pending'|trans }}</h2>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table mobile-data-table">
                 <thead class="table-secondary">
                     <tr>
                         <th class="text-center">{{ 'date.date'|trans }}</th>
@@ -77,12 +77,12 @@
                 <tbody>
                     {% for invitation in invitations %}
                         <tr>
-                            <td class="align-middle text-center">{{ invitation.createdAt|date('d.m.Y') }}</td>
-                            <td class="align-middle text-center">{{ invitation.email }}</td>
-                            <td class="align-middle text-center">{{ invitation.userType }}</td>
-                            <td class="align-middle text-center">{{ invitation.status }}
-                            <td class="align-middle text-center">{{ invitation.createdBy.name }}</td>
-                            <td class="align-middle text-center">
+                            <td data-label="{{ 'date.date'|trans }}" class="align-middle text-center">{{ invitation.createdAt|date('d.m.Y') }}</td>
+                            <td data-label="{{ 'email'|trans }}" class="align-middle text-center">{{ invitation.email }}</td>
+                            <td data-label="{{ 'user.type'|trans }}" class="align-middle text-center">{{ invitation.userType }}</td>
+                            <td data-label="{{ 'invitation.status'|trans }}" class="align-middle text-center">{{ invitation.status }}</td>
+                            <td data-label="{{ 'invitation.invited.by'|trans }}" class="align-middle text-center">{{ invitation.createdBy.name }}</td>
+                            <td data-label="{{ 'actions'|trans }}" class="align-middle text-center table-actions-cell">
                             {% if app.user.email == invitation.createdBy.email %}
                                 <form method="post" action="{{ path('app_invite_resend', {invite: invitation.id}) }}" class="d-inline">
                                     <input type="hidden" name="_token" value="{{ csrf_token('invite_resend_' ~ invitation.id) }}">
@@ -103,7 +103,7 @@
     <div>
         <h2 class="h5">{{ 'user.groups'|trans }}</h2>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table mobile-data-table">
                 <thead class="table-secondary">
                     <tr>
                         <th class="text-center">{{ 'name'|trans }}</th>
@@ -117,27 +117,27 @@
                 <tbody>
                     {% for usergroup in usergroups %}
                         <tr>
-                            <td class="align-middle text-center">{{ usergroup.name }}</td>
-                            <td class="align-middle text-center">{{ usergroup.pricePerUnit|format_currency(car.currency, locale=app.user.locale) }}</td>
-                            <td class="align-middle text-center">
+                            <td data-label="{{ 'name'|trans }}" class="align-middle text-center">{{ usergroup.name }}</td>
+                            <td data-label="{{ 'price.per'|trans ~ ' ' ~ car.milageUnit }}" class="align-middle text-center">{{ usergroup.pricePerUnit|format_currency(car.currency, locale=app.user.locale) }}</td>
+                            <td data-label="{{ 'user.group.admin'|trans }}" class="align-middle text-center">
                                 {% if usergroup.admin %}
                                     {{ 'yes'|trans }}
                                 {% else %}
                                     {{ 'no'|trans }}
                                 {% endif %}
                             </td>
-                            <td class="align-middle text-center">
+                            <td data-label="{{ 'user.group.occasional_use'|trans }}" class="align-middle text-center">
                                 {% if usergroup.occasionalUse %}
                                     {{ 'yes'|trans }}
                                 {% else %}
                                     {{ 'no'|trans }}
                                 {% endif %}
                             </td>
-                            <td class="align-middle text-center">{% for member in usergroup.users %}
+                            <td data-label="{{ 'members'|trans }}" class="align-middle text-center">{% for member in usergroup.users %}
                                     {{ member.name }} {% if not loop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
-                            <td class="align-middle text-center">
+                            <td data-label="{{ 'actions'|trans }}" class="align-middle text-center table-actions-cell">
                             {% if usergroup.isActive() %}
                                 <a href='{{ path('app_usergroup_edit', {usergroup: usergroup.id}) }}' class="btn btn-outline-primary" title="{{ 'edit'|trans }}" aria-label="{{ 'edit'|trans }}"><i class="fas fa-edit"></i></a>
                             {% endif %}

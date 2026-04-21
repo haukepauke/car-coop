@@ -41,7 +41,7 @@
     {# ── Cars ─────────────────────────────────────────────────────────────── #}
     <h5 class="mt-4">{{ 'superadmin.cars'|trans }}</h5>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table mobile-data-table">
             <thead class="table-secondary">
                 <tr>
                     <th class="text-center">{{ 'name'|trans }}</th>
@@ -52,21 +52,21 @@
             <tbody>
                 {% for car in cars %}
                 <tr>
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'name'|trans }}" class="align-middle text-center">
                         {% if car.profilePicturePath|default %}
                             <img class="rounded-circle me-2" src="{{ asset('/uploads/cars/' ~ car.profilePicturePath) }}" height="30" width="30">
                         {% endif %}
                         {{ car.name }}
                     </td>
 
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'superadmin.members'|trans }}" class="align-middle text-center">
                         {% for user in car.users %}
                             {{ user.name }}{% if not loop.last %}, {% endif %}
                         {% else %}
                             -
                         {% endfor %}
                     </td>
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'actions'|trans }}" class="align-middle text-center table-actions-cell">
                         <button type="button" class="btn btn-outline-danger btn-sm js-confirm-delete"
                                 data-action="{{ path('app_superadmin_car_delete', {id: car.id}) }}"
                                 data-token="{{ csrf_token('superadmin_car_delete_' ~ car.id) }}"
@@ -85,7 +85,7 @@
     {# ── Users ────────────────────────────────────────────────────────────── #}
     <h5 class="mt-4">{{ 'superadmin.users'|trans }}</h5>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table mobile-data-table">
             <thead class="table-secondary">
                 <tr>
                     <th></th>
@@ -103,44 +103,44 @@
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td class="align-middle">
+                    <td data-label="{{ 'user.profile.picture'|trans }}" class="align-middle">
                         {% if user.profilePicturePath|default %}
                             <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="40" width="40">
                         {% else %}
                             <img class="rounded-circle" src="{{ asset('./static/default-user.png') }}" height="40" width="40">
                         {% endif %}
                     </td>
-                    <td class="align-middle text-center">{{ user.name }}</td>
-                    <td class="align-middle text-center">{{ user.email }}</td>
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'user.user'|trans }}" class="align-middle text-center">{{ user.name }}</td>
+                    <td data-label="{{ 'email'|trans }}" class="align-middle text-center">{{ user.email }}</td>
+                    <td data-label="{{ 'user.verified'|trans }}" class="align-middle text-center">
                         {% if user.isVerified %}
                             <i class="fas fa-check text-success"></i>
                         {% else %}
                             <i class="fas fa-times text-danger"></i>
                         {% endif %}
                     </td>
-                    <td class="align-middle text-center">{{ user.firstLogin ? user.firstLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
-                    <td class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'user.first_login'|trans }}" class="align-middle text-center">{{ user.firstLogin ? user.firstLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
+                    <td data-label="{{ 'user.last_login'|trans }}" class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
+                    <td data-label="{{ 'superadmin.cars'|trans }}" class="align-middle text-center">
                         {% for car in user.cars %}
                             {{ car.name }}{% if not loop.last %}, {% endif %}
                         {% else %}
                             -
                         {% endfor %}
                     </td>
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'user.status'|trans }}" class="align-middle text-center">
                         {% if user.isActive() %}
                             <span class="badge bg-success">{{ 'user.active'|trans }}</span>
                         {% else %}
                             <span class="badge bg-secondary">{{ 'user.inactive'|trans }}</span>
                         {% endif %}
                     </td>
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'superadmin.roles'|trans }}" class="align-middle text-center">
                         {% for role in user.roles %}
                             <span class="badge bg-dark">{{ role }}</span>
                         {% endfor %}
                     </td>
-                    <td class="align-middle text-center">
+                    <td data-label="{{ 'actions'|trans }}" class="align-middle text-center table-actions-cell">
                         {% if user.id != app.user.id %}
                         <button type="button" class="btn btn-outline-danger btn-sm js-confirm-delete"
                                 data-action="{{ path('app_superadmin_user_delete', {id: user.id}) }}"

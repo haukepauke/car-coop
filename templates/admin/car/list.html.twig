@@ -6,7 +6,7 @@
     Create <span class="fa fa-plus-circle"></span>
     </a>
     <h4>All Cars</h4>
-    <table class="table">
+    <table class="table mobile-data-table">
           <thead class="table-secondary">
             <tr>
                 <th>{{ 'car.form.name'|trans }}</th>
@@ -23,15 +23,15 @@
         <tbody>
             {% for car in cars %}
                 <tr>
-                    <td>{{ car.name }}</td>
-                    <td>{{ car.licensePlate }}</td>
-                    <td>{{ car.mileage }}</td>
-                    <td>{{ car.milageUnit }}</td>
-                    <td>{{ car.make }}</td>
-                    <td>{{ car.vendor }}</td>
-                    <td>{{ car.fuelType ? ('car.form.fueltype.' ~ car.fuelType)|trans : '—' }}</td>
-                    <td>{{ car.fuelConsumption100 ? car.fuelConsumption100|number_format(1, '.', ',') ~ ' l/100' ~ car.milageUnit : '—' }}</td>
-                    <td>
+                    <td data-label="{{ 'car.form.name'|trans }}">{{ car.name }}</td>
+                    <td data-label="{{ 'car.form.licenseplate'|trans }}">{{ car.licensePlate }}</td>
+                    <td data-label="{{ 'car.mileage'|trans }}">{{ car.mileage }}</td>
+                    <td data-label="{{ 'car.form.mileageunit'|trans }}">{{ car.milageUnit }}</td>
+                    <td data-label="{{ 'car.form.make'|trans }}">{{ car.make }}</td>
+                    <td data-label="{{ 'car.form.vendor'|trans }}">{{ car.vendor }}</td>
+                    <td data-label="{{ 'car.form.fueltype'|trans }}">{{ car.fuelType ? ('car.form.fueltype.' ~ car.fuelType)|trans : '—' }}</td>
+                    <td data-label="{{ 'car.form.fuelconsumption100'|trans }}">{{ car.fuelConsumption100 ? car.fuelConsumption100|number_format(1, '.', ',') ~ ' l/100' ~ car.milageUnit : '—' }}</td>
+                    <td class="table-actions-cell" data-label="{{ 'actions'|trans }}">
                         <button type="link" class="btn btn-outline-dark" onclick="location.href='{{ path('app_car_show',  {car: car.id}) }}';">Show car <span class="fa-solid fa-car"></span></button>
                         <button type="link" class="btn btn-outline-dark" onclick="location.href='{{ path('app_car_edit',  {car: car.id}) }}';">Edit car <span class="fas fa-edit"></span></button>
                     </td>

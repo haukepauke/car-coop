@@ -163,7 +163,7 @@
                             <div class="col"><h3>{{ 'car.bookings.next'|trans }}</h3></div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table mobile-data-table">
                                     <thead>
                                         <tr>
                                             <th scope="col">{{ 'date.start'|trans }}</th>
@@ -176,11 +176,11 @@
                                     <tbody>
                                     {% for booking in carData.bookings %}
                                         <tr>
-                                            <td>{{ booking.getStartDate()|date("d.m.Y") }}</td>
-                                            <td>{{ booking.getEndDate()|date("d.m.Y") }}</td>
-                                            <td>{{ booking.getUser().getName() }}</td>
-                                            <td>{{ booking.getTitle() }}</td>
-                                            <td>{{ booking.getStatus()|trans }}</td>
+                                            <td data-label="{{ 'date.start'|trans }}">{{ booking.getStartDate()|date("d.m.Y") }}</td>
+                                            <td data-label="{{ 'date.end'|trans }}">{{ booking.getEndDate()|date("d.m.Y") }}</td>
+                                            <td data-label="{{ 'user.user'|trans }}">{{ booking.getUser().getName() }}</td>
+                                            <td data-label="{{ 'booking.form.title'|trans }}">{{ booking.getTitle() }}</td>
+                                            <td data-label="{{ 'booking.form.status'|trans }}">{{ booking.getStatus()|trans }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

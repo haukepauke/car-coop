@@ -6,7 +6,7 @@
         <h1 class="h4 mb-0">{{ 'payments.payments'|trans }}</h1>
         <div class="d-flex align-items-center gap-2">
             <button type="button" class="btn btn-outline-dark" onclick="location.href='{{ path('app_payment_new') }}';">{{ 'payments.add.new'|trans }} <span class="fa fa-plus-circle"></span></button>
-            <form method="get" class="d-flex align-items-center gap-2">
+            <form method="get" class="d-flex align-items-center gap-2 mobile-filter-form">
                 <label for="yearFilter" class="mb-0 text-nowrap d-none d-lg-inline">{{ 'filter.year'|trans }}</label>
                 <select name="year" id="yearFilter" class="form-select form-select-sm" style="min-width: 9rem" onchange="this.form.submit()">
                     <option value="">{{ 'filter.all_years'|trans }}</option>
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table mobile-data-table">
             <thead class="table-secondary">
                 <tr>
                     <th class="text-center">{{ 'date.date'|trans }}</th>
@@ -33,13 +33,13 @@
             <tbody>
                 {% for payment in pager %}
                     <tr>
-                        <td class="text-center">{{ payment.date|date('d.m.Y') }}</td>
-                        <td class="text-center">{{ payment.fromUser.name }}</td>
-                        <td class="text-center">{{ payment.toUser.name }}</td>
-                        <td class="text-center">{{ payment.amount|format_currency(car.currency, locale=app.user.locale)}}</td>
-                        <td class="text-center">{{ payment.type|trans }}</td>
-                        <td class="text-center">{{ payment.comment }}</td>
-                        <td class="text-center">
+                        <td class="text-center" data-label="{{ 'date.date'|trans }}">{{ payment.date|date('d.m.Y') }}</td>
+                        <td class="text-center" data-label="{{ 'from'|trans }}">{{ payment.fromUser.name }}</td>
+                        <td class="text-center" data-label="{{ 'to'|trans }}">{{ payment.toUser.name }}</td>
+                        <td class="text-center" data-label="{{ 'amount'|trans }}">{{ payment.amount|format_currency(car.currency, locale=app.user.locale)}}</td>
+                        <td class="text-center" data-label="{{ 'payments.type'|trans }}">{{ payment.type|trans }}</td>
+                        <td class="text-center" data-label="{{ 'comment'|trans }}">{{ payment.comment }}</td>
+                        <td class="text-center table-actions-cell" data-label="{{ 'actions'|trans }}">
                             <a href='{{ path('app_payment_edit', {payment: payment.id}) }}' class="btn btn-outline-primary" title="{{ 'edit'|trans }}" aria-label="{{ 'edit'|trans }}"><i class="fas fa-edit"></i></a>
                         </td>
                     </tr>
@@ -53,6 +53,10 @@
                 </tr>
             </tfoot>
         </table>
+    </div>
+    <div class="mobile-table-total d-lg-none mb-3">
+        <div class="mobile-table-total__label">{{ 'filter.total'|trans }}</div>
+        <div class="mobile-table-total__value">{{ total|format_currency(car.currency, locale=app.user.locale) }}</div>
     </div>
     {% if pager.haveToPaginate %}
     <div class="d-flex justify-content-center mb-3">
