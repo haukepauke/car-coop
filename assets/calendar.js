@@ -13,6 +13,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     let { eventsUrl, locale, prevLabel, nextLabel } = calendarEl.dataset;
+    const mobileMediaQuery = window.matchMedia("(max-width: 991.98px)");
+    const mobileViews = new Set(["dayGridMonth", "listMonth"]);
+    const desktopHeaderToolbar = {
+      left: "prev,next today",
+      center: "title",
+      right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+    };
+    const mobileHeaderToolbar = {
+      left: "prev,next",
+      center: "title",
+      right: "dayGridMonth,listMonth",
+    };
 
     const applyNavigationAccessibility = () => {
       const buttonConfigs = [
@@ -36,6 +48,20 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     };
 
+    const applyResponsiveCalendarLayout = (calendarInstance) => {
+      const isMobile = mobileMediaQuery.matches;
+
+      calendarInstance.setOption("headerToolbar", isMobile ? mobileHeaderToolbar : desktopHeaderToolbar);
+      calendarInstance.setOption("navLinks", !isMobile);
+      calendarInstance.setOption("dayMaxEventRows", isMobile ? 2 : true);
+
+      if (isMobile && !mobileViews.has(calendarInstance.view.type)) {
+        calendarInstance.changeView("dayGridMonth");
+      }
+
+      applyNavigationAccessibility();
+    };
+
     let calendar = new Calendar(calendarEl, {
       locales: allLocales,
       locale: locale,
@@ -52,18 +78,16 @@ document.addEventListener("DOMContentLoaded", () => {
           },
         },
       ],
-      headerToolbar: {
-        left: "prev,next today",
-        center: "title",
-        right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-      },
+      headerToolbar: mobileMediaQuery.matches ? mobileHeaderToolbar : desktopHeaderToolbar,
       initialView: "dayGridMonth",
-      navLinks: true, // can click day/week names to navigate views
+      navLinks: !mobileMediaQuery.matches, // can click day/week names to navigate views
       plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ],
       timeZone: "UTC",
+      dayMaxEventRows: mobileMediaQuery.matches ? 2 : true,
       datesSet: applyNavigationAccessibility,
+      windowResize: () => applyResponsiveCalendarLayout(calendar),
     });
   
     calendar.render();
-    applyNavigationAccessibility();
-}); 
+    applyResponsiveCalendarLayout(calendar);
+});

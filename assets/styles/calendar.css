@@ -65,20 +65,73 @@ html[data-theme="dark"] .fc-theme-standard th {
 }
 
 @media (max-width: 991.98px) {
-    /* Toolbar title (month name) */
-    .fc .fc-toolbar-title {
-        font-size: 1rem;
+    .fc .fc-header-toolbar {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
     }
 
-    /* Prev/next/today buttons */
+    .fc .fc-toolbar-chunk {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .fc .fc-toolbar-chunk:last-child {
+        justify-content: stretch;
+    }
+
+    .fc .fc-toolbar-chunk:last-child .fc-button-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .fc .fc-toolbar-chunk:last-child .fc-button-group .fc-button {
+        margin-left: 0 !important;
+        border-radius: 0.7rem !important;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.05rem;
+        text-align: center;
+    }
+
     .fc .fc-button {
         font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
+        padding: 0.4rem 0.65rem;
     }
 
-    /* View-switch buttons (month/week/day) */
-    .fc .fc-button-group .fc-button {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.4rem;
+    .fc .fc-daygrid-day-frame {
+        min-height: 4.75rem;
+    }
+
+    .fc .fc-daygrid-day-number {
+        padding: 0.35rem 0.45rem;
+        font-weight: 700;
+    }
+
+    .fc .fc-daygrid-event {
+        margin: 0.1rem 0.3rem;
+        border-radius: 0.55rem;
+        font-size: 0.72rem;
+    }
+
+    .fc .fc-list-day-cushion {
+        background: var(--fc-neutral-bg-color);
+        padding: 0.55rem 0.75rem;
+    }
+
+    .fc .fc-list-event-time {
+        white-space: nowrap;
+        color: var(--cc-text-muted);
+        font-size: 0.78rem;
+    }
+
+    .fc .fc-list-event-title a {
+        font-weight: 600;
     }
 }
