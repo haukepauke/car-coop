@@ -131,6 +131,7 @@ parking:
   recorded_at: Vastgelegd op
   recorded_by: door
   navigate_to_vehicle: Navigeer naar het voertuig
+  map_loading: Kaart wordt geladen...
   click_to_set: Klik ergens op de kaart om een nieuwe parkeerlocatie in te stellen. De markering kan worden versleept om de positie nauwkeurig af te stellen.
   save_location: Parkeerlocatie opslaan
 actions: Acties

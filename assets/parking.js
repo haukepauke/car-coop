@@ -2,6 +2,7 @@ import L from 'leaflet';
 
 const mapEl = document.getElementById('parking-map');
 if (mapEl) {
+const mapShell = mapEl.closest('.parking-map-shell');
 
 // Fix marker icon broken by ES module bundling
 delete L.Icon.Default.prototype._getIconUrl;
@@ -23,10 +24,34 @@ const zoom        = hasLocation ? 17 : 13;
 const map = L.map('parking-map').setView([defaultLat, defaultLng], zoom);
 let clickMarker = null;
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+
+function setMapLoading(isLoading) {
+    if (!mapShell) {
+        return;
+    }
+
+    mapShell.classList.toggle('is-loading', isLoading);
+}
+
+tileLayer.on('loading', function () {
+    setMapLoading(true);
+});
+
+tileLayer.on('load', function () {
+    setMapLoading(false);
+});
+
+tileLayer.on('tileerror', function () {
+    setMapLoading(false);
+});
+
+requestAnimationFrame(function () {
+    map.invalidateSize();
+});
 
 if (hasLocation) {
     clickMarker = L.marker([defaultLat, defaultLng], { draggable: true })

@@ -1,11 +1,57 @@
+.parking-map-shell {
+    position: relative;
+}
+
 #parking-map {
     height: 400px;
     border-radius: 18px;
     border: 1px solid rgba(214, 167, 203, 0.6);
     box-shadow: 0 14px 34px rgba(94, 43, 168, 0.08);
+    background:
+        linear-gradient(135deg, rgba(245, 181, 234, 0.18), rgba(198, 238, 255, 0.16)),
+        #fdf7fc;
+}
+
+.parking-map-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.parking-map-shell.is-loading .parking-map-loading {
+    opacity: 1;
+}
+
+.parking-map-loading__card {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(214, 167, 203, 0.5);
+    box-shadow: 0 8px 20px rgba(49, 16, 95, 0.12);
+    color: var(--cc-text);
+    font-size: 0.95rem;
 }
 
 html[data-theme="dark"] #parking-map {
     border-color: rgba(158, 133, 154, 0.34);
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+    background:
+        linear-gradient(135deg, rgba(122, 29, 104, 0.18), rgba(22, 74, 99, 0.14)),
+        rgba(23, 13, 30, 0.96);
+}
+
+html[data-theme="dark"] .parking-map-loading__card {
+    background: rgba(36, 18, 44, 0.92);
+    border-color: rgba(158, 133, 154, 0.34);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+    color: var(--cc-text);
 }

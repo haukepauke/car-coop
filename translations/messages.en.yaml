@@ -132,6 +132,7 @@ parking:
   recorded_at: Recorded at
   recorded_by: by
   navigate_to_vehicle: Navigate to the vehicle
+  map_loading: Loading map...
   click_to_set: Click anywhere on the map to set a new parking location. The marker can be dragged to fine-tune the position.
   save_location: Save parking location
 actions: Actions

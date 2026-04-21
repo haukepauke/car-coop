@@ -31,20 +31,28 @@
         <div id="parking-location-status" class="form-text text-muted mt-2"></div>
     </div>
 
-    <div id="parking-map"
-         role="region"
-         aria-label="{{ 'parking.title'|trans }}"
-         data-lat="{{ location.latitude ?? '' }}"
-         data-lng="{{ location.longitude ?? '' }}"
-         data-label="{{ car.name }}"
-         data-save-url="{{ path('app_parking_save') }}"
-         data-csrf-token="{{ csrf_token('parking_save') }}"
-         data-marker-icon="{{ asset('vendor/leaflet/dist/images/marker-icon.png') }}"
-         data-locating-label="{{ 'parking.locating'|trans }}"
-         data-location-captured-label="{{ 'parking.location_captured'|trans }}"
-         data-location-error-label="{{ 'parking.location_error'|trans }}"
-         data-geolocation-unavailable-label="{{ 'parking.geolocation_unavailable'|trans }}"
-         ></div>
+    <div class="parking-map-shell is-loading">
+        <div id="parking-map"
+             role="region"
+             aria-label="{{ 'parking.title'|trans }}"
+             data-lat="{{ location.latitude ?? '' }}"
+             data-lng="{{ location.longitude ?? '' }}"
+             data-label="{{ car.name }}"
+             data-save-url="{{ path('app_parking_save') }}"
+             data-csrf-token="{{ csrf_token('parking_save') }}"
+             data-marker-icon="{{ asset('vendor/leaflet/dist/images/marker-icon.png') }}"
+             data-locating-label="{{ 'parking.locating'|trans }}"
+             data-location-captured-label="{{ 'parking.location_captured'|trans }}"
+             data-location-error-label="{{ 'parking.location_error'|trans }}"
+             data-geolocation-unavailable-label="{{ 'parking.geolocation_unavailable'|trans }}"
+             ></div>
+        <div class="parking-map-loading" aria-hidden="true">
+            <div class="parking-map-loading__card">
+                <div class="spinner-border spinner-border-sm" role="status"></div>
+                <span>{{ 'parking.map_loading'|trans }}</span>
+            </div>
+        </div>
+    </div>
 
     <div class="d-flex flex-column flex-lg-row gap-2 mt-3">
         <a id="parking-navigate-btn"

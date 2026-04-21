@@ -131,6 +131,7 @@ parking:
   recorded_at: Registrado el
   recorded_by: por
   navigate_to_vehicle: Navegar hasta el vehículo
+  map_loading: Cargando mapa...
   click_to_set: Haz clic en cualquier punto del mapa para establecer una nueva ubicación de aparcamiento. El marcador se puede arrastrar para ajustar la posición.
   save_location: Guardar ubicación de aparcamiento
 actions: Acciones

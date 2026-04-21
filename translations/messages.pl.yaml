@@ -131,6 +131,7 @@ parking:
   recorded_at: Zarejestrowano o
   recorded_by: przez
   navigate_to_vehicle: Nawiguj do pojazdu
+  map_loading: Ładowanie mapy...
   click_to_set: Kliknij dowolne miejsce na mapie, aby ustawić nowe miejsce parkingowe. Znacznik można przeciągnąć, aby precyzyjnie dostosować pozycję.
   save_location: Zapisz miejsce parkingowe
 actions: Akcje

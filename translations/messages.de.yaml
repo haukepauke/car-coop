@@ -132,6 +132,7 @@ parking:
   recorded_at: Erfasst am
   recorded_by: von
   navigate_to_vehicle: Zum Fahrzeug navigieren
+  map_loading: Karte wird geladen...
   click_to_set: Klicke auf die Karte, um eine neue Parkposition festzulegen. Der Marker kann zur Feinabstimmung verschoben werden.
   save_location: Parkposition speichern
 actions: Aktionen
