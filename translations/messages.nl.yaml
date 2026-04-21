@@ -220,11 +220,12 @@ car:
       title: "Aanpassing prijs per %unit%"
       actual: "Werkelijke kosten per %unit% op basis van alle geregistreerde uitgaven en ritten: %actual% €/%unit%"
       balanced: "De prijs per %unit% lijkt goed gekalibreerd — geen aanpassing nodig (onbalans < 5% van totale uitgaven)."
-      increase: "Het totale saldo is positief, wat betekent dat geregistreerde uitgaven meer zijn dan wat via ritkosten is geïnd. Overweeg alle prijzen met %percent%%% te verhogen om de lopende kosten beter te dekken."
-      decrease: "Het totale saldo is negatief, wat betekent dat er meer is geïnd via ritkosten dan er aan uitgaven was. Overweeg alle prijzen met %percent%%% te verlagen."
+      increase: "Het tarief van de groep %group% is nu %current% €/%unit% en zou moeten stijgen naar ongeveer %suggested% €/%unit% (%percent%%%). Het gezamenlijke saldo van de reguliere rijdersgroepen is %balance%."
+      decrease: "Het tarief van de groep %group% is nu %current% €/%unit% en zou moeten dalen naar ongeveer %suggested% €/%unit% (%percent%%%). Het gezamenlijke saldo van de reguliere rijdersgroepen is %balance%."
       current_rates: Huidige tarieven per gebruikersgroep (voorgesteld nieuw tarief in vet)
-      accept: Voorstel accepteren
+      accept_all: Alle voorgestelde prijzen accepteren
       accepted: Prijs per eenheid succesvol bijgewerkt.
+      accept_none: Er was geen huidig voorstel voor een prijsaanpassing beschikbaar.
       edit_hint: "Om de wijziging toe te passen, ga naar Beheer → Gebruikers beheren → bewerk de gebruikersgroepen."
   form:
     help:

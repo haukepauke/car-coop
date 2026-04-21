@@ -220,11 +220,12 @@ car:
       title: "Ajustement du prix par %unit%"
       actual: "Coût réel par %unit% basé sur toutes les dépenses et les trajets enregistrés : %actual% €/%unit%"
       balanced: "Le prix par %unit% semble bien étalonné — aucun ajustement nécessaire (déséquilibre < 5% des dépenses totales)."
-      increase: "Le solde total est positif, ce qui signifie que les dépenses enregistrées dépassent ce qui a été collecté via les coûts de trajet. Envisagez d'augmenter tous les prix de %percent%%% pour mieux couvrir les frais courants."
-      decrease: "Le solde total est négatif, ce qui signifie que plus a été collecté via les coûts de trajet que ce qui a été dépensé. Envisagez de réduire tous les prix de %percent%%%."
+      increase: "Le tarif du groupe %group% est actuellement de %current% €/%unit% et devrait être relevé à environ %suggested% €/%unit% (%percent%%%). Le solde cumulé des groupes de conducteurs réguliers est de %balance%."
+      decrease: "Le tarif du groupe %group% est actuellement de %current% €/%unit% et devrait être abaissé à environ %suggested% €/%unit% (%percent%%%). Le solde cumulé des groupes de conducteurs réguliers est de %balance%."
       current_rates: Tarifs actuels par groupe d'utilisateurs (nouveau tarif suggéré en gras)
-      accept: Accepter la proposition
+      accept_all: Accepter tous les tarifs proposés
       accepted: Prix par unité mis à jour avec succès.
+      accept_none: Aucune proposition actuelle d'ajustement de prix n'était disponible.
       edit_hint: "Pour appliquer la modification, allez dans Administration → Gérer les utilisateurs → modifier les groupes d'utilisateurs."
   form:
     help:

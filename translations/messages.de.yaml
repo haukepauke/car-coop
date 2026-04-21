@@ -221,11 +221,12 @@ car:
       title: "Preisanpassung pro %unit%"
       actual: "Tatsächliche Kosten pro %unit% auf Basis aller erfassten Ausgaben und Fahrten: %actual% €/%unit%"
       balanced: "Der Preis pro %unit% scheint gut kalibriert – keine Anpassung nötig (Ungleichgewicht < 5% der Gesamtausgaben)."
-      increase: "Der Gesamtsaldo ist positiv: Die erfassten Ausgaben übersteigen die eingenommenen Fahrtkosten. Erwäge, alle Preise um %percent%%% zu erhöhen, um die laufenden Kosten besser zu decken."
-      decrease: "Der Gesamtsaldo ist negativ: Durch Fahrtkosten wurden mehr Einnahmen erzielt als Ausgaben angefallen sind. Erwäge, alle Preise um %percent%%% zu senken."
+      increase: "Der Preis der Gruppe %group% liegt derzeit bei %current% €/%unit% und sollte auf etwa %suggested% €/%unit% angehoben werden (%percent%%%). Der gemeinsame Saldo der regulären Fahrgruppen beträgt %balance%."
+      decrease: "Der Preis der Gruppe %group% liegt derzeit bei %current% €/%unit% und sollte auf etwa %suggested% €/%unit% gesenkt werden (%percent%%%). Der gemeinsame Saldo der regulären Fahrgruppen beträgt %balance%."
       current_rates: Aktuelle Preise pro Benutzergruppe (empfohlener neuer Preis fett)
-      accept: Vorschlag übernehmen
+      accept_all: Alle vorgeschlagenen Preise übernehmen
       accepted: Preis pro Einheit erfolgreich aktualisiert.
+      accept_none: Es gab keine aktuelle Preisanpassung zum Übernehmen.
       edit_hint: "Um die Änderung zu übernehmen, gehe zu Admin → Benutzer*innen verwalten → Benutzergruppen bearbeiten."
   form:
     help:

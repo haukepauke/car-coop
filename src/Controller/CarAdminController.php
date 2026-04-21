@@ -324,20 +324,51 @@ class CarAdminController extends AbstractController
         ));
     }
 
-    #[Route('/admin/car/review/accept-price/{userType}', name: 'app_car_review_accept_price', methods: ['POST'])]
-    public function acceptPrice(UserType $userType, Request $request, EntityManagerInterface $em, MessageBusInterface $bus, TranslatorInterface $translator): Response
+    #[Route('/admin/car/review/accept-prices', name: 'app_car_review_accept_prices', methods: ['POST'])]
+    public function acceptPrices(
+        ActiveCarService $activeCarService,
+        CarReviewService $reviewService,
+        Request $request,
+        EntityManagerInterface $em,
+        MessageBusInterface $bus,
+        TranslatorInterface $translator
+    ): Response
     {
-        if (!$this->isCsrfTokenValid('accept_price_' . $userType->getId(), $request->request->get('_token'))) {
+        if (!$this->isCsrfTokenValid('accept_review_prices', $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $suggested = (float) $request->request->get('suggested');
-        if ($suggested > 0) {
+        $car = $activeCarService->getActiveCar();
+        $priceAdjustment = $reviewService->computePriceAdjustment($car);
+        if ($priceAdjustment === null) {
+            $this->addFlash('info', $translator->trans('car.review.price.accept_none'));
+
+            return $this->redirectToRoute('app_car_review');
+        }
+
+        $updatedUserTypes = [];
+        foreach ($priceAdjustment['userTypes'] as $entry) {
+            $userType = $entry['userType'];
+            $suggested = (float) $entry['suggested'];
+            if ($suggested <= 0 || abs($suggested - $userType->getPricePerUnit()) < 0.01) {
+                continue;
+            }
+
             $oldPrice = $userType->getPricePerUnit();
             $userType->setPricePerUnit($suggested);
+            $updatedUserTypes[] = [$userType, $oldPrice, $suggested];
+        }
+
+        if ($updatedUserTypes !== []) {
             $em->flush();
-            $bus->dispatch(new PricePerUnitChangedEvent($userType->getId(), $oldPrice, $suggested));
+
+            foreach ($updatedUserTypes as [$userType, $oldPrice, $suggested]) {
+                $bus->dispatch(new PricePerUnitChangedEvent($userType->getId(), $oldPrice, $suggested));
+            }
+
             $this->addFlash('success', $translator->trans('car.review.price.accepted'));
+        } else {
+            $this->addFlash('info', $translator->trans('car.review.price.accept_none'));
         }
 
         return $this->redirectToRoute('app_car_review');

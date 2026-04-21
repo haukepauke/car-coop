@@ -220,11 +220,12 @@ car:
       title: "Korekta ceny za %unit%"
       actual: "Rzeczywisty koszt za %unit% na podstawie wszystkich zarejestrowanych wydatków i przejazdów: %actual% €/%unit%"
       balanced: "Cena za %unit% wydaje się dobrze skalibrowana — korekta nie jest potrzebna (nierównowaga < 5% całkowitych wydatków)."
-      increase: "Całkowite saldo jest dodatnie, co oznacza, że zarejestrowane wydatki przekraczają to, co zostało pobrane w kosztach przejazdów. Rozważ podniesienie wszystkich cen o %percent%%%, aby lepiej pokryć bieżące koszty."
-      decrease: "Całkowite saldo jest ujemne, co oznacza, że w kosztach przejazdów pobrano więcej niż wydano na wydatki. Rozważ obniżenie wszystkich cen o %percent%%%."
+      increase: "Stawka grupy %group% wynosi obecnie %current% €/%unit% i powinna wzrosnąć do około %suggested% €/%unit% (%percent%%%). Łączne saldo regularnych grup kierowców wynosi %balance%."
+      decrease: "Stawka grupy %group% wynosi obecnie %current% €/%unit% i powinna spaść do około %suggested% €/%unit% (%percent%%%). Łączne saldo regularnych grup kierowców wynosi %balance%."
       current_rates: Aktualne stawki dla grup użytkowników (sugerowana nowa stawka pogrubiona)
-      accept: Zaakceptuj propozycję
+      accept_all: Zaakceptuj wszystkie proponowane ceny
       accepted: Cena za jednostkę zaktualizowana pomyślnie.
+      accept_none: Nie było dostępnej bieżącej propozycji korekty ceny.
       edit_hint: "Aby zastosować zmianę, przejdź do Administracja → Zarządzaj użytkownikami → edytuj grupy użytkowników."
   form:
     help:

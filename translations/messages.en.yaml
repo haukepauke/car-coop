@@ -221,11 +221,12 @@ car:
       title: "Price per %unit% adjustment"
       actual: "Actual cost per %unit% based on all recorded expenses and trips: %actual% €/%unit%"
       balanced: "The price per %unit% appears well calibrated — no adjustment needed (imbalance < 5% of total expenses)."
-      increase: "The total balance is positive, meaning recorded expenses exceed what has been collected through trip costs. Consider raising all prices by %percent%%% to better cover running costs."
-      decrease: "The total balance is negative, meaning more has been collected through trip costs than was spent on expenses. Consider lowering all prices by %percent%%%."
+      increase: "The %group% rate is currently %current% €/%unit% and should be raised to about %suggested% €/%unit% (%percent%%%). The combined balance of regular driver groups is %balance%."
+      decrease: "The %group% rate is currently %current% €/%unit% and should be lowered to about %suggested% €/%unit% (%percent%%%). The combined balance of regular driver groups is %balance%."
       current_rates: Current rates per user group (suggested new rate in bold)
-      accept: Accept proposal
+      accept_all: Accept all proposed price changes
       accepted: Price per unit updated successfully.
+      accept_none: No current price adjustment proposal was available.
       edit_hint: "To apply the change, go to Admin → Manage users → edit the user groups."
   form:
     help:

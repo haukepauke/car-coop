@@ -3,11 +3,13 @@
 namespace App\Service;
 
 use App\Entity\Car;
+use App\Entity\UserType;
 
 class CarReviewService
 {
     private const ALL_TIME_START = '2000-01-01';
     private const ALL_TIME_END   = '2099-12-31';
+    private const PRICE_ADJUSTMENT_THRESHOLD = 0.05;
 
     /**
      * Build the full review data array for a car.
@@ -32,7 +34,7 @@ class CarReviewService
             'balance' => round($u->getBalance($car), 2),
         ], $users);
 
-        $paymentProposals  = $this->computePaymentProposals($userBalances);
+        $paymentProposals  = $this->computePaymentProposals($this->buildUserBalances($this->getRegularUsers($car), $car));
         $totalBalance      = round(array_sum(array_column($userBalances, 'balance')), 2);
         $actualCostPerUnit = $car->getCalculatedCosts($allTimeStart, $allTimeEnd);
         $priceAdjustment   = $this->computePriceAdjustment($car, $actualCostPerUnit);
@@ -124,55 +126,204 @@ class CarReviewService
     /**
      * Compute a price-per-unit adjustment proposal, or null if no adjustment is needed.
      *
-     * No proposal is made when the average price of non-occasional user types is already
-     * within 5 % of the actual cost per unit.
+     * The proposal is derived from the current balances and driven mileage of users in active
+     * non-occasional driver groups. A common additive delta is applied to all active priced
+     * groups so occasional-group gaps stay unchanged.
      *
-     * The adjustment percentage is derived from regular (non-occasional-use) user types only,
-     * then applied uniformly to all active user types. Suggested prices are rounded up to
-     * 2 decimal places.
+     * No proposal is made when the current regular-group prices are already within 5 % of the
+     * needed level.
      *
      * @return array<string, mixed>|null
      */
-    public function computePriceAdjustment(Car $car, float $actualCostPerUnit): ?array
+    public function computePriceAdjustment(Car $car, ?float $actualCostPerUnit = null): ?array
     {
-        if ($actualCostPerUnit <= 0) {
+        $regularUserTypes = $this->getRegularPricedUserTypes($car);
+        if (count($regularUserTypes) === 0) {
             return null;
         }
 
-        $activeUserTypes = array_values(array_filter(
-            $car->getUserTypes()->toArray(),
-            fn($ut) => $ut->isActive() && $ut->getPricePerUnit() > 0
-        ));
+        $crewUserType = $this->getCrewUserType($regularUserTypes);
+        if ($crewUserType === null) {
+            return null;
+        }
 
+        $activeUserTypes = $this->getActivePricedUserTypes($car);
         if (count($activeUserTypes) === 0) {
             return null;
         }
 
-        // Use only non-occasional user types to determine the adjustment percentage,
-        // since occasional-use groups drive very few km and would skew the calculation.
-        $regularUserTypes = array_values(array_filter($activeUserTypes, fn($ut) => !$ut->isOccasionalUse()));
-        $typesForAvg      = count($regularUserTypes) > 0 ? $regularUserTypes : $activeUserTypes;
-        $avgCurrentPrice  = array_sum(array_map(fn($ut) => $ut->getPricePerUnit(), $typesForAvg)) / count($typesForAvg);
-
-        // Suppress proposal when current prices are already within 5 % of actual cost
-        if ($avgCurrentPrice > 0 && abs($actualCostPerUnit - $avgCurrentPrice) / $avgCurrentPrice <= 0.05) {
+        $regularUsers = $this->getRegularUsers($car);
+        if (count($regularUsers) < 2) {
             return null;
         }
 
-        $adjustmentFactor = $avgCurrentPrice > 0 ? $actualCostPerUnit / $avgCurrentPrice : 1;
+        $actualCostPerUnit ??= $this->getAllTimeActualCostPerUnit($car);
+        if ($actualCostPerUnit <= 0) {
+            return null;
+        }
 
-        $userTypesWithSuggested = array_map(fn($ut) => [
-            'userType'  => $ut,
-            'current'   => $ut->getPricePerUnit(),
-            'suggested' => ceil($ut->getPricePerUnit() * $adjustmentFactor * 100) / 100,
-        ], $activeUserTypes);
+        $crewCurrentPrice = $crewUserType->getPricePerUnit();
+        if ($crewCurrentPrice <= 0) {
+            return null;
+        }
 
-        $direction = $actualCostPerUnit > $avgCurrentPrice ? 'increase' : 'decrease';
+        $regularBalanceTotal = $this->getRegularUsersTotalBalance($car, $regularUsers);
+        $regularMileageTotal = $this->getRegularUsersTotalMileage($car, $regularUsers);
+        if ($regularMileageTotal <= 0) {
+            return null;
+        }
+
+        $crewSuggestedPrice = max(0.0, $actualCostPerUnit + ($regularBalanceTotal / $regularMileageTotal));
+        if (abs($crewSuggestedPrice - $crewCurrentPrice) / $crewCurrentPrice <= self::PRICE_ADJUSTMENT_THRESHOLD) {
+            return null;
+        }
+
+        $deltaPerUnit = $crewSuggestedPrice - $crewCurrentPrice;
+
+        $userTypesWithSuggested = array_map(function ($ut) use ($deltaPerUnit) {
+            $suggested = $this->roundSuggestedPrice($ut->getPricePerUnit() + $deltaPerUnit, $deltaPerUnit);
+
+            return [
+                'userType'  => $ut,
+                'current'   => $ut->getPricePerUnit(),
+                'suggested' => $suggested,
+            ];
+        }, $activeUserTypes);
+
+        $hasMeaningfulChange = count(array_filter(
+            $userTypesWithSuggested,
+            fn(array $entry) => abs($entry['suggested'] - $entry['current']) >= 0.01
+        )) > 0;
+        if (!$hasMeaningfulChange) {
+            return null;
+        }
+
+        $direction = $deltaPerUnit > 0 ? 'increase' : 'decrease';
 
         return [
-            'direction'        => $direction,
-            'adjustmentPercent' => round(($adjustmentFactor - 1) * 100, 1),
-            'userTypes'        => $userTypesWithSuggested,
+            'direction' => $direction,
+            'adjustmentPercent' => round((($crewSuggestedPrice / $crewCurrentPrice) - 1) * 100, 1),
+            'crewUserType' => $crewUserType,
+            'crewCurrent' => $crewCurrentPrice,
+            'crewSuggested' => $this->roundSuggestedPrice($crewSuggestedPrice, $deltaPerUnit),
+            'regularBalanceTotal' => round($regularBalanceTotal, 2),
+            'userTypes' => $userTypesWithSuggested,
         ];
+    }
+
+    /**
+     * @param array<\App\Entity\User> $users
+     * @return array<array{user: \App\Entity\User, balance: float}>
+     */
+    private function buildUserBalances(array $users, Car $car): array
+    {
+        return array_map(fn($user) => [
+            'user' => $user,
+            'balance' => round($user->getBalance($car), 2),
+        ], $users);
+    }
+
+    /**
+     * @return array<\App\Entity\UserType>
+     */
+    private function getActivePricedUserTypes(Car $car): array
+    {
+        return array_values(array_filter(
+            $car->getUserTypes()->toArray(),
+            fn($ut) => $ut->isActive() && $ut->getPricePerUnit() > 0
+        ));
+    }
+
+    /**
+     * @return array<\App\Entity\UserType>
+     */
+    private function getRegularPricedUserTypes(Car $car): array
+    {
+        return array_values(array_filter(
+            $this->getActivePricedUserTypes($car),
+            fn($ut) => !$ut->isOccasionalUse()
+        ));
+    }
+
+    /**
+     * @return array<\App\Entity\User>
+     */
+    private function getRegularUsers(Car $car): array
+    {
+        $usersById = [];
+
+        foreach ($car->getUserTypes() as $userType) {
+            if (!$userType->isActive() || $userType->isOccasionalUse()) {
+                continue;
+            }
+
+            foreach ($userType->getUsers() as $user) {
+                if ($user->isActive() && $user->getId() !== null) {
+                    $usersById[$user->getId()] = $user;
+                }
+            }
+        }
+
+        return array_values($usersById);
+    }
+
+    /**
+     * @param array<\App\Entity\User> $users
+     */
+    private function getRegularUsersTotalMileage(Car $car, array $users): int
+    {
+        return (int) array_sum(array_map(
+            fn($user) => $user->getTripMileage($car),
+            $users
+        ));
+    }
+
+    /**
+     * @param array<\App\Entity\User> $users
+     */
+    private function getRegularUsersTotalBalance(Car $car, array $users): float
+    {
+        return array_sum(array_map(
+            fn($user) => $user->getBalance($car),
+            $users
+        ));
+    }
+
+    private function getAllTimeActualCostPerUnit(Car $car): float
+    {
+        return $car->getCalculatedCosts(
+            new \DateTime(self::ALL_TIME_START),
+            new \DateTime(self::ALL_TIME_END)
+        );
+    }
+
+    /**
+     * @param array<UserType> $regularUserTypes
+     */
+    private function getCrewUserType(array $regularUserTypes): ?UserType
+    {
+        foreach ($regularUserTypes as $userType) {
+            if ($userType->getName() === 'Crew') {
+                return $userType;
+            }
+        }
+
+        return $regularUserTypes[0] ?? null;
+    }
+
+    private function roundSuggestedPrice(float $value, float $deltaPerUnit): float
+    {
+        $value = max(0.0, $value);
+        $scaled = round($value * 100, 6);
+
+        if ($deltaPerUnit > 0) {
+            return ceil($scaled) / 100;
+        }
+
+        if ($deltaPerUnit < 0) {
+            return floor($scaled) / 100;
+        }
+
+        return round($value, 2);
     }
 }

@@ -21,7 +21,7 @@ class CarReviewServiceTest extends TestCase
 
     private function setId(object $entity, int $id): void
     {
-        $prop = new \ReflectionProperty($entity, 'id');
+        $prop = new \ReflectionProperty(User::class, 'id');
         $prop->setValue($entity, $id);
     }
 
@@ -36,12 +36,50 @@ class CarReviewServiceTest extends TestCase
         return $user;
     }
 
+    private function makeMeasuredUser(int $id, Car $car, float $balance, int $mileage, string $name = ''): User
+    {
+        /** @var User&\PHPUnit\Framework\MockObject\MockObject $user */
+        $user = $this->getMockBuilder(User::class)
+            ->onlyMethods(['getBalance', 'getTripMileage', 'isActive'])
+            ->getMock();
+
+        $user->setEmail("user{$id}@test.com");
+        $user->setName($name ?: "User {$id}");
+        $user->setLocale('en');
+        $user->setPassword('hashed');
+        $this->setId($user, $id);
+
+        $user->method('getBalance')
+            ->willReturnCallback(fn(Car $requestedCar): float => $requestedCar === $car ? $balance : 0.0);
+        $user->method('getTripMileage')
+            ->willReturnCallback(fn(...$args): int => ($args[0] ?? null) === $car ? $mileage : 0);
+        $user->method('isActive')
+            ->willReturn(true);
+
+        return $user;
+    }
+
     private function makeCar(): Car
     {
         $car = new Car();
         $car->setName('Test Car');
         $car->setMileage(0);
         $car->setMilageUnit('km');
+        return $car;
+    }
+
+    private function makeCarWithActualCost(float $actualCostPerUnit): Car
+    {
+        /** @var Car&\PHPUnit\Framework\MockObject\MockObject $car */
+        $car = $this->getMockBuilder(Car::class)
+            ->onlyMethods(['getCalculatedCosts'])
+            ->getMock();
+
+        $car->setName('Test Car');
+        $car->setMileage(0);
+        $car->setMilageUnit('km');
+        $car->method('getCalculatedCosts')->willReturn($actualCostPerUnit);
+
         return $car;
     }
 
@@ -221,200 +259,135 @@ class CarReviewServiceTest extends TestCase
         }
     }
 
-    // ── computePriceAdjustment – no adjustment needed ─────────────────────────
+    // ── buildReviewData / computePriceAdjustment ─────────────────────────────
 
-    public function testReturnsNullWhenActualCostIsZero(): void
+    public function testBuildReviewDataOnlyProposesPaymentsBetweenRegularUsers(): void
     {
         $car = $this->makeCar();
-        $ut  = $this->makeUserType($car, 0.30);
-        $car->addUserType($ut);
+        $regular = $this->makeUserType($car, 0.30, true, false);
+        $occasional = $this->makeUserType($car, 0.55, true, true);
+        $car->addUserType($regular);
+        $car->addUserType($occasional);
 
-        $result = $this->service->computePriceAdjustment($car, 0.0);
+        $userA = $this->makeMeasuredUser(1, $car, 60.0, 100, 'Alice');
+        $userB = $this->makeMeasuredUser(2, $car, -60.0, 100, 'Bob');
+        $guest = $this->makeMeasuredUser(3, $car, 100.0, 0, 'Guest');
+        $regular->addUser($userA);
+        $regular->addUser($userB);
+        $occasional->addUser($guest);
 
-        $this->assertNull($result);
+        $review = $this->service->buildReviewData($car);
+
+        $this->assertCount(3, $review['userBalances']);
+        $this->assertCount(1, $review['paymentProposals']);
+        $this->assertSame(2, $review['paymentProposals'][0]['from']->getId());
+        $this->assertSame(1, $review['paymentProposals'][0]['to']->getId());
     }
 
-    public function testReturnsNullWhenNoActiveUserTypes(): void
+    public function testReturnsNullWhenNoRegularPricedUserTypesExist(): void
     {
         $car = $this->makeCar();
-        // inactive user type
-        $ut = $this->makeUserType($car, 0.30, false);
-        $car->addUserType($ut);
+        $guest = $this->makeUserType($car, 0.20, true, true);
+        $guest->addUser($this->makeMeasuredUser(1, $car, 10.0, 100));
+        $car->addUserType($guest);
 
-        $result = $this->service->computePriceAdjustment($car, 0.35);
-
-        $this->assertNull($result);
+        $this->assertNull($this->service->computePriceAdjustment($car));
     }
 
-    public function testReturnsNullWhenPriceWithinFivePercent(): void
+    public function testReturnsNullWhenCurrentRegularPricesAreAlreadyCloseToNeeded(): void
     {
-        $car = $this->makeCar();
-        $ut  = $this->makeUserType($car, 0.30);
-        $car->addUserType($ut);
+        $car = $this->makeCarWithActualCost(0.30);
+        $regular = $this->makeUserType($car, 0.30, true, false);
+        $car->addUserType($regular);
 
-        // 0.30 * 1.04 = 0.312, within 5 % of 0.30
-        $result = $this->service->computePriceAdjustment($car, 0.312);
+        $regular->addUser($this->makeMeasuredUser(1, $car, 0.5, 100));
+        $regular->addUser($this->makeMeasuredUser(2, $car, -0.5, 300));
 
-        $this->assertNull($result);
+        $this->assertNull($this->service->computePriceAdjustment($car));
     }
 
-    public function testReturnsNullWhenPriceClearlyWithinFivePercent(): void
+    public function testSuggestsIncreaseFromRegularUserBalancesAndMileage(): void
     {
-        $car = $this->makeCar();
-        $ut  = $this->makeUserType($car, 0.30);
-        $car->addUserType($ut);
+        $car = $this->makeCarWithActualCost(0.34);
+        $regularA = $this->makeUserType($car, 0.30, true, false);
+        $regularA->setName('Crew');
+        $regularB = $this->makeUserType($car, 0.40, true, false);
+        $regularB->setName('Supporters');
+        $occasional = $this->makeUserType($car, 0.55, true, true);
+        $occasional->setName('Guests');
+        $car->addUserType($regularA);
+        $car->addUserType($regularB);
+        $car->addUserType($occasional);
 
-        // 4 % above current price → still within 5 % threshold
-        $result = $this->service->computePriceAdjustment($car, 0.312);
+        $regularA->addUser($this->makeMeasuredUser(1, $car, 20.0, 100));
+        $regularA->addUser($this->makeMeasuredUser(2, $car, 10.0, 200));
+        $regularB->addUser($this->makeMeasuredUser(3, $car, 0.0, 300));
+        $occasional->addUser($this->makeMeasuredUser(4, $car, 999.0, 9999));
 
-        $this->assertNull($result);
-    }
-
-    // ── computePriceAdjustment – increase ────────────────────────────────────
-
-    public function testSuggestsIncreaseWhenActualCostIsHigher(): void
-    {
-        $car = $this->makeCar();
-        $ut  = $this->makeUserType($car, 0.30);
-        $car->addUserType($ut);
-
-        // 0.36 / 0.30 = 1.20 → 20 % increase
-        $result = $this->service->computePriceAdjustment($car, 0.36);
+        $result = $this->service->computePriceAdjustment($car);
 
         $this->assertNotNull($result);
         $this->assertSame('increase', $result['direction']);
-        $this->assertEquals(20.0, $result['adjustmentPercent']);
+        $this->assertSame('Crew', $result['crewUserType']->getName());
+        $this->assertEquals(30.0, $result['adjustmentPercent']);
+        $this->assertSame(30.0, $result['regularBalanceTotal']);
+        $this->assertSame(0.39, $result['crewSuggested']);
+        $this->assertSame([0.39, 0.49, 0.64], array_map(fn($entry) => $entry['suggested'], $result['userTypes']));
     }
 
-    public function testSuggestedPriceIsCeiledToTwoDecimals(): void
+    public function testSuggestsDecreaseAndKeepsOccasionalGapConstant(): void
     {
-        $car = $this->makeCar();
-        $ut  = $this->makeUserType($car, 0.30);
-        $car->addUserType($ut);
+        $car = $this->makeCarWithActualCost(0.34);
+        $regularA = $this->makeUserType($car, 0.36, true, false);
+        $regularA->setName('Crew');
+        $regularB = $this->makeUserType($car, 0.46, true, false);
+        $occasional = $this->makeUserType($car, 0.61, true, true);
+        $car->addUserType($regularA);
+        $car->addUserType($regularB);
+        $car->addUserType($occasional);
 
-        // factor = 0.37 / 0.30 = 1.2333...
-        // suggested = ceil(0.30 * 1.2333... * 100) / 100 = ceil(37.0) / 100 = 0.37
-        $result = $this->service->computePriceAdjustment($car, 0.37);
+        $regularA->addUser($this->makeMeasuredUser(1, $car, -10.0, 100));
+        $regularA->addUser($this->makeMeasuredUser(2, $car, -5.0, 200));
+        $regularB->addUser($this->makeMeasuredUser(3, $car, 0.0, 300));
 
-        $this->assertNotNull($result);
-        $entry = $result['userTypes'][0];
-        $this->assertGreaterThanOrEqual($entry['current'], $entry['suggested']);
-        // Must be exactly 2 decimal places
-        $this->assertSame(round($entry['suggested'], 2), $entry['suggested']);
-    }
-
-    // ── computePriceAdjustment – decrease ────────────────────────────────────
-
-    public function testSuggestsDecreaseWhenActualCostIsLower(): void
-    {
-        $car = $this->makeCar();
-        $ut  = $this->makeUserType($car, 0.30);
-        $car->addUserType($ut);
-
-        // 0.24 / 0.30 = 0.80 → -20 %
-        $result = $this->service->computePriceAdjustment($car, 0.24);
+        $result = $this->service->computePriceAdjustment($car);
 
         $this->assertNotNull($result);
         $this->assertSame('decrease', $result['direction']);
-        $this->assertEquals(-20.0, $result['adjustmentPercent']);
+        $this->assertSame('Crew', $result['crewUserType']->getName());
+        $this->assertEquals(-12.5, $result['adjustmentPercent']);
+        $this->assertSame(-15.0, $result['regularBalanceTotal']);
+        $this->assertSame(0.31, $result['crewSuggested']);
+
+        $suggestedByCurrentPrice = [];
+        foreach ($result['userTypes'] as $entry) {
+            $suggestedByCurrentPrice[(string) $entry['current']] = $entry['suggested'];
+        }
+
+        $this->assertSame(0.31, $suggestedByCurrentPrice['0.36']);
+        $this->assertSame(0.41, $suggestedByCurrentPrice['0.46']);
+        $this->assertSame(0.56, $suggestedByCurrentPrice['0.61']);
+        $this->assertEqualsWithDelta(
+            0.25,
+            $suggestedByCurrentPrice['0.61'] - $suggestedByCurrentPrice['0.36'],
+            0.001
+        );
     }
 
-    // ── computePriceAdjustment – occasional use groups ────────────────────────
-
-    public function testOccasionalUseGroupExcludedFromAverageCalculation(): void
+    public function testAcceptedPriceDoesNotImmediatelyTriggerAnotherProposal(): void
     {
-        $car     = $this->makeCar();
-        $regular = $this->makeUserType($car, 0.30, true, false);
-        $regular->setName('Members');
-        $guest   = $this->makeUserType($car, 0.10, true, true);  // very low price
-        $guest->setName('Guests');
-        $car->addUserType($regular);
-        $car->addUserType($guest);
+        $car = $this->makeCarWithActualCost(0.34);
+        $regularA = $this->makeUserType($car, 0.39, true, false);
+        $regularA->setName('Crew');
+        $regularB = $this->makeUserType($car, 0.49, true, false);
+        $car->addUserType($regularA);
+        $car->addUserType($regularB);
 
-        // If guests were included, avg = (0.30 + 0.10) / 2 = 0.20
-        // factor would be 0.36 / 0.20 = 1.80 → 80 %
-        // With guests excluded, avg = 0.30, factor = 0.36 / 0.30 = 1.20 → 20 %
-        $result = $this->service->computePriceAdjustment($car, 0.36);
+        $regularA->addUser($this->makeMeasuredUser(1, $car, 20.0, 100));
+        $regularA->addUser($this->makeMeasuredUser(2, $car, 10.0, 200));
+        $regularB->addUser($this->makeMeasuredUser(3, $car, 0.0, 300));
 
-        $this->assertNotNull($result);
-        $this->assertEquals(20.0, $result['adjustmentPercent']);
+        $this->assertNull($this->service->computePriceAdjustment($car));
     }
 
-    public function testOccasionalUseGroupStillReceivesSuggestedPrice(): void
-    {
-        $car     = $this->makeCar();
-        $regular = $this->makeUserType($car, 0.30, true, false);
-        $regular->setName('Members');
-        $guest   = $this->makeUserType($car, 0.10, true, true);
-        $guest->setName('Guests');
-        $car->addUserType($regular);
-        $car->addUserType($guest);
-
-        // factor = 0.36 / 0.30 = 1.20
-        // guest suggested = ceil(0.10 * 1.20 * 100) / 100 = ceil(12) / 100 = 0.12
-        $result = $this->service->computePriceAdjustment($car, 0.36);
-
-        $this->assertNotNull($result);
-        $this->assertCount(2, $result['userTypes']);
-
-        $guestEntry   = array_values(array_filter($result['userTypes'], fn($e) => $e['userType']->isOccasionalUse()))[0];
-        $regularEntry = array_values(array_filter($result['userTypes'], fn($e) => !$e['userType']->isOccasionalUse()))[0];
-
-        $this->assertEquals(0.12, $guestEntry['suggested']);
-        $this->assertEquals(0.36, $regularEntry['suggested']);
-    }
-
-    public function testFallsBackToAllTypesWhenAllAreOccasional(): void
-    {
-        $car   = $this->makeCar();
-        $guest = $this->makeUserType($car, 0.20, true, true);
-        $car->addUserType($guest);
-
-        // No regular types → falls back to all types for avg
-        $result = $this->service->computePriceAdjustment($car, 0.24);
-
-        // 0.24 / 0.20 = 1.20 → 20 % increase (> 5 %)
-        $this->assertNotNull($result);
-        $this->assertSame('increase', $result['direction']);
-    }
-
-    // ── computePriceAdjustment – multiple user types ──────────────────────────
-
-    public function testMultipleRegularTypesUseAveragePriceForFactor(): void
-    {
-        $car = $this->makeCar();
-        $ut1 = $this->makeUserType($car, 0.20);
-        $ut1->setName('Basic');
-        $ut2 = $this->makeUserType($car, 0.40);
-        $ut2->setName('Premium');
-        $car->addUserType($ut1);
-        $car->addUserType($ut2);
-
-        // avg = (0.20 + 0.40) / 2 = 0.30; actual = 0.36 → factor = 1.20
-        $result = $this->service->computePriceAdjustment($car, 0.36);
-
-        $this->assertNotNull($result);
-        $this->assertEquals(20.0, $result['adjustmentPercent']);
-
-        $amounts = array_column($result['userTypes'], 'suggested');
-        // Basic: ceil(0.20 * 1.20 * 100) / 100 = ceil(24) / 100 = 0.24
-        // Premium: ceil(0.40 * 1.20 * 100) / 100 = ceil(48) / 100 = 0.48
-        $this->assertContains(0.24, $amounts);
-        $this->assertContains(0.48, $amounts);
-    }
-
-    public function testInactiveUserTypesIgnoredInPriceAdjustment(): void
-    {
-        $car    = $this->makeCar();
-        $active = $this->makeUserType($car, 0.30, true);
-        $inactive = $this->makeUserType($car, 5.00, false); // would massively skew avg if included
-        $car->addUserType($active);
-        $car->addUserType($inactive);
-
-        $result = $this->service->computePriceAdjustment($car, 0.36);
-
-        $this->assertNotNull($result);
-        $this->assertCount(1, $result['userTypes']);
-        $this->assertEquals(20.0, $result['adjustmentPercent']);
-    }
 }
