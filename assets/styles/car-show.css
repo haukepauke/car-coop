@@ -93,12 +93,25 @@
 }
 
 html[data-theme="dark"] #tour-dismiss-btn {
-    color: var(--cc-text-muted) !important;
+    color: #d6bed2 !important;
 }
 
 html[data-theme="dark"] #tour-dismiss-btn:hover,
 html[data-theme="dark"] #tour-dismiss-btn:focus {
-    color: var(--cc-text) !important;
+    color: #f5dff1 !important;
+}
+
+html[data-theme="dark"] #tour-start-btn {
+    color: #f5dff1 !important;
+    border-color: rgba(158, 133, 154, 0.34) !important;
+    background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+html[data-theme="dark"] #tour-start-btn:hover,
+html[data-theme="dark"] #tour-start-btn:focus {
+    background: linear-gradient(135deg, #7a1d68, #59368a) !important;
+    border-color: #7a1d68 !important;
+    color: #fff !important;
 }
 
 /* ── Driver.js popover overrides ────────────────────────────────── */

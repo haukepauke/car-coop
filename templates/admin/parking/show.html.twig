@@ -22,6 +22,15 @@
 
     <p class="text-muted">{{ 'parking.click_to_set'|trans }}</p>
 
+    <div class="d-lg-none mb-3">
+        <button type="button"
+                id="parking-current-location-btn"
+                class="btn btn-outline-dark w-100">
+            <i class="fa-solid fa-location-crosshairs me-2"></i>{{ 'parking.use_current_location'|trans }}
+        </button>
+        <div id="parking-location-status" class="form-text text-muted mt-2"></div>
+    </div>
+
     <div id="parking-map"
          role="region"
          aria-label="{{ 'parking.title'|trans }}"
@@ -31,15 +40,27 @@
          data-save-url="{{ path('app_parking_save') }}"
          data-csrf-token="{{ csrf_token('parking_save') }}"
          data-marker-icon="{{ asset('vendor/leaflet/dist/images/marker-icon.png') }}"
+         data-locating-label="{{ 'parking.locating'|trans }}"
+         data-location-captured-label="{{ 'parking.location_captured'|trans }}"
+         data-location-error-label="{{ 'parking.location_error'|trans }}"
+         data-geolocation-unavailable-label="{{ 'parking.geolocation_unavailable'|trans }}"
          ></div>
 
-    <form id="parking-save-form" method="post" action="{{ path('app_parking_save') }}" class="mt-3">
+    <div class="d-flex flex-column flex-lg-row gap-2 mt-3">
+        <a id="parking-navigate-btn"
+           href="#"
+           class="btn btn-outline-primary{% if not location %} d-none{% endif %}">
+            <i class="fa-solid fa-route me-2"></i>{{ 'parking.navigate_to_vehicle'|trans }}
+        </a>
+
+        <form id="parking-save-form" method="post" action="{{ path('app_parking_save') }}">
         <input type="hidden" name="_token" value="{{ csrf_token('parking_save') }}">
         <input type="hidden" name="lat" id="parking-save-lat">
         <input type="hidden" name="lng" id="parking-save-lng">
         <button type="submit" id="parking-save-btn" class="btn btn-outline-dark d-none">
             {{ 'parking.save_location'|trans }}
         </button>
-    </form>
+        </form>
+    </div>
 </div>
 {% endblock %}

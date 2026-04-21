@@ -122,6 +122,7 @@ messageboard:
 parking:
   title: Miejsce parkingowe
   add_current_location: Dodaj bieżącą lokalizację jako miejsce parkingowe
+  use_current_location: Użyj bieżącej lokalizacji
   geolocation_unavailable: Geolokalizacja nie jest obsługiwana przez Twoją przeglądarkę.
   locating: Określanie Twojej lokalizacji...
   location_captured: Lokalizacja zapisana.
@@ -129,6 +130,7 @@ parking:
   no_location: Nie zarejestrowano jeszcze żadnego miejsca parkingowego.
   recorded_at: Zarejestrowano o
   recorded_by: przez
+  navigate_to_vehicle: Nawiguj do pojazdu
   click_to_set: Kliknij dowolne miejsce na mapie, aby ustawić nowe miejsce parkingowe. Znacznik można przeciągnąć, aby precyzyjnie dostosować pozycję.
   save_location: Zapisz miejsce parkingowe
 actions: Akcje

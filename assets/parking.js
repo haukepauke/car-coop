@@ -21,6 +21,7 @@ const defaultLng  = hasLocation ? parseFloat(mapEl.dataset.lng) : -0.09;
 const zoom        = hasLocation ? 17 : 13;
 
 const map = L.map('parking-map').setView([defaultLat, defaultLng], zoom);
+let clickMarker = null;
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -28,21 +29,61 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 if (hasLocation) {
-    L.marker([defaultLat, defaultLng])
+    clickMarker = L.marker([defaultLat, defaultLng], { draggable: true })
         .addTo(map)
         .bindPopup(label)
         .openPopup();
+
+    clickMarker.on('dragend', function () {
+        const pos = clickMarker.getLatLng();
+        latInput.value = pos.lat;
+        lngInput.value = pos.lng;
+        saveBtn.classList.remove('d-none');
+    });
 }
 
 const saveBtn  = document.getElementById('parking-save-btn');
 const latInput = document.getElementById('parking-save-lat');
 const lngInput = document.getElementById('parking-save-lng');
+const currentLocationBtn = document.getElementById('parking-current-location-btn');
+const statusEl = document.getElementById('parking-location-status');
+const navigateBtn = document.getElementById('parking-navigate-btn');
 
-let clickMarker = null;
+function updateStatus(message, tone = 'muted') {
+    if (!statusEl) {
+        return;
+    }
 
-map.on('click', function (e) {
-    const { lat, lng } = e.latlng;
+    statusEl.textContent = message;
+    statusEl.classList.remove('text-muted', 'text-success', 'text-danger');
+    statusEl.classList.add(`text-${tone}`);
+}
 
+function buildNavigationUrl(lat, lng) {
+    const userAgent = navigator.userAgent || '';
+    const encodedDestination = `${lat},${lng}`;
+
+    if (/iPhone|iPad|iPod/i.test(userAgent)) {
+        return `https://maps.apple.com/?daddr=${encodedDestination}&dirflg=d`;
+    }
+
+    if (/Android/i.test(userAgent)) {
+        return `google.navigation:q=${encodedDestination}`;
+    }
+
+    return `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=%3B${encodedDestination}`;
+}
+
+function updateNavigationLink(lat, lng) {
+    if (!navigateBtn) {
+        return;
+    }
+
+    navigateBtn.href = buildNavigationUrl(lat, lng);
+    navigateBtn.classList.remove('d-none');
+}
+
+function setParkingMarker(lat, lng) {
     if (clickMarker) {
         clickMarker.setLatLng([lat, lng]);
     } else {
@@ -57,5 +98,43 @@ map.on('click', function (e) {
     latInput.value = lat;
     lngInput.value = lng;
     saveBtn.classList.remove('d-none');
+    updateNavigationLink(lat, lng);
+}
+
+if (hasLocation) {
+    updateNavigationLink(defaultLat, defaultLng);
+}
+
+map.on('click', function (e) {
+    const { lat, lng } = e.latlng;
+    setParkingMarker(lat, lng);
 });
+
+if (currentLocationBtn) {
+    currentLocationBtn.addEventListener('click', function () {
+        if (!navigator.geolocation) {
+            updateStatus(mapEl.dataset.geolocationUnavailableLabel, 'danger');
+            return;
+        }
+
+        currentLocationBtn.disabled = true;
+        updateStatus(mapEl.dataset.locatingLabel);
+
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                const { latitude, longitude } = pos.coords;
+
+                map.setView([latitude, longitude], Math.max(map.getZoom(), 17));
+                setParkingMarker(latitude, longitude);
+                updateStatus(mapEl.dataset.locationCapturedLabel, 'success');
+                document.getElementById('parking-save-form').submit();
+            },
+            function () {
+                updateStatus(mapEl.dataset.locationErrorLabel, 'danger');
+                currentLocationBtn.disabled = false;
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    });
+}
 }

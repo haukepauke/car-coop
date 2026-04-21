@@ -122,6 +122,11 @@ html[data-theme="classic"] .auth-shell {
     background: #ddd;
 }
 
+html[data-theme="classic"] .auth-links a,
+html[data-theme="classic"] .form-check-label a {
+    color: var(--cc-navy-dark);
+}
+
 .auth-links a {
     color: var(--cc-primary-dark);
     font-weight: 600;
@@ -419,7 +424,7 @@ html[data-theme="dark"] .btn-outline-dark:focus {
 }
 
 html[data-theme="dark"] .btn-outline-dark {
-    color: var(--cc-text);
+    color: #f5dff1;
     border-color: rgba(158, 133, 154, 0.34);
     background-color: rgba(255, 255, 255, 0.04);
 }
@@ -461,6 +466,10 @@ html[data-theme="dark"] .btn-outline-danger:hover {
 
 html[data-theme="dark"] .btn-warning {
     color: #3b2400;
+}
+
+html[data-theme="dark"] .btn-link.text-muted {
+    color: #d6bed2 !important;
 }
 
 html[data-theme="classic"] .btn-dark,
@@ -506,8 +515,8 @@ html[data-theme="classic"] .btn-outline-secondary:hover {
 }
 
 html[data-theme="classic"] .btn-outline-danger {
-    color: var(--cc-danger);
-    border-color: #fecaca;
+    color: #b91c1c;
+    border-color: #b91c1c;
 }
 
 html[data-theme="classic"] .btn-outline-danger:hover {

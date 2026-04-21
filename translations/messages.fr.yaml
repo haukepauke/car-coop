@@ -122,6 +122,7 @@ messageboard:
 parking:
   title: Lieu de stationnement
   add_current_location: Ajouter la position actuelle comme lieu de stationnement
+  use_current_location: Utiliser la position actuelle
   geolocation_unavailable: La géolocalisation n'est pas prise en charge par votre navigateur.
   locating: Détermination de votre position...
   location_captured: Position enregistrée.
@@ -129,6 +130,7 @@ parking:
   no_location: Aucun lieu de stationnement enregistré pour l'instant.
   recorded_at: Enregistré le
   recorded_by: par
+  navigate_to_vehicle: Naviguer vers le véhicule
   click_to_set: Cliquez n'importe où sur la carte pour définir un nouveau lieu de stationnement. Le marqueur peut être déplacé pour affiner la position.
   save_location: Enregistrer le lieu de stationnement
 actions: Actions

@@ -122,6 +122,7 @@ messageboard:
 parking:
   title: Parkeerlocatie
   add_current_location: Huidige locatie als parkeerlocatie instellen
+  use_current_location: Huidige locatie gebruiken
   geolocation_unavailable: Geolocatie wordt niet ondersteund door je browser.
   locating: Locatie bepalen...
   location_captured: Locatie vastgelegd.
@@ -129,6 +130,7 @@ parking:
   no_location: Nog geen parkeerlocatie vastgelegd.
   recorded_at: Vastgelegd op
   recorded_by: door
+  navigate_to_vehicle: Navigeer naar het voertuig
   click_to_set: Klik ergens op de kaart om een nieuwe parkeerlocatie in te stellen. De markering kan worden versleept om de positie nauwkeurig af te stellen.
   save_location: Parkeerlocatie opslaan
 actions: Acties

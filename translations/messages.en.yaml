@@ -123,6 +123,7 @@ messageboard:
 parking:
   title: Parking location
   add_current_location: Add current location as parking location
+  use_current_location: Use current location
   geolocation_unavailable: Geolocation is not supported by your browser.
   locating: Determining your location...
   location_captured: Location captured.
@@ -130,6 +131,7 @@ parking:
   no_location: No parking location recorded yet.
   recorded_at: Recorded at
   recorded_by: by
+  navigate_to_vehicle: Navigate to the vehicle
   click_to_set: Click anywhere on the map to set a new parking location. The marker can be dragged to fine-tune the position.
   save_location: Save parking location
 actions: Actions
