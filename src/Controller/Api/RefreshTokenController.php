@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Service\RefreshTokenManager;
+use App\Service\RefreshTokenService;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RefreshTokenController extends AbstractController
 {
     public function __construct(
-        private readonly RefreshTokenManager $refreshTokenManager,
+        private readonly RefreshTokenService $refreshTokenService,
         private readonly JWTTokenManagerInterface $jwtTokenManager,
         private readonly int $accessTokenTtl,
         private readonly int $refreshTokenTtl,
@@ -34,7 +34,7 @@ class RefreshTokenController extends AbstractController
             return $this->json(['message' => 'Missing refresh_token.'], Response::HTTP_BAD_REQUEST);
         }
 
-        $issuedRefreshToken = $this->refreshTokenManager->refresh($refreshToken);
+        $issuedRefreshToken = $this->refreshTokenService->refresh($refreshToken);
         if (null === $issuedRefreshToken) {
             return $this->json(['message' => 'Invalid refresh token.'], Response::HTTP_UNAUTHORIZED);
         }

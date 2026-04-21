@@ -5,14 +5,15 @@ namespace App\Service;
 use App\Entity\RefreshToken;
 use App\Entity\User;
 use App\Repository\RefreshTokenRepository;
+use App\ValueObject\IssuedRefreshToken;
 use Doctrine\ORM\EntityManagerInterface;
 
-class RefreshTokenManager
+class RefreshTokenService
 {
     public function __construct(
         private readonly RefreshTokenRepository $refreshTokenRepository,
-        private readonly RefreshTokenHasher $refreshTokenHasher,
         private readonly EntityManagerInterface $entityManager,
+        private readonly string $kernelSecret,
         private readonly int $refreshTokenTtl,
     ) {
     }
@@ -80,7 +81,7 @@ class RefreshTokenManager
         $plainTextToken = $this->generatePlainTextToken();
         $refreshToken = new RefreshToken(
             $user,
-            $this->refreshTokenHasher->hash($plainTextToken),
+            $this->hashToken($plainTextToken),
             $now,
             $now->modify(sprintf('+%d seconds', $this->refreshTokenTtl)),
             $deviceName,
@@ -99,13 +100,18 @@ class RefreshTokenManager
         }
 
         return $this->refreshTokenRepository->findOneByTokenHash(
-            $this->refreshTokenHasher->hash($plainTextToken)
+            $this->hashToken($plainTextToken)
         );
     }
 
     private function generatePlainTextToken(): string
     {
         return rtrim(strtr(base64_encode(random_bytes(48)), '+/', '-_'), '=');
+    }
+
+    private function hashToken(string $token): string
+    {
+        return hash_hmac('sha256', $token, $this->kernelSecret);
     }
 
     private function normalizeDeviceName(?string $deviceName): ?string

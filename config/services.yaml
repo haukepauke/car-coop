@@ -34,6 +34,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/ValueObject/'
 
     App\EventSubscriber\CalendarSubscriber:
 

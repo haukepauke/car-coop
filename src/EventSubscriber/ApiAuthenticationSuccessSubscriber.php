@@ -3,7 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Entity\User;
-use App\Service\RefreshTokenManager;
+use App\Service\RefreshTokenService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ApiAuthenticationSuccessSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly RefreshTokenManager $refreshTokenManager,
+        private readonly RefreshTokenService $refreshTokenService,
         private readonly RequestStack $requestStack,
         private readonly int $accessTokenTtl,
         private readonly int $refreshTokenTtl,
@@ -40,7 +40,7 @@ class ApiAuthenticationSuccessSubscriber implements EventSubscriberInterface
             ? $payload['device_name']
             : null;
 
-        $issuedRefreshToken = $this->refreshTokenManager->create($user, $deviceName);
+        $issuedRefreshToken = $this->refreshTokenService->create($user, $deviceName);
 
         $event->setData([
             'token' => (string) ($event->getData()['token'] ?? ''),

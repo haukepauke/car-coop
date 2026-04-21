@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\ValueObject;
 
 use App\Entity\RefreshToken;
 

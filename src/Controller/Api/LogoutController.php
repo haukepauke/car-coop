@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Service\RefreshTokenManager;
+use App\Service\RefreshTokenService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class LogoutController extends AbstractController
 {
     public function __construct(
-        private readonly RefreshTokenManager $refreshTokenManager,
+        private readonly RefreshTokenService $refreshTokenService,
     ) {
     }
 
@@ -32,7 +32,7 @@ class LogoutController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        if (!$user instanceof User || !$this->refreshTokenManager->revoke($refreshToken, $user)) {
+        if (!$user instanceof User || !$this->refreshTokenService->revoke($refreshToken, $user)) {
             return $this->json(['message' => 'Invalid refresh token.'], Response::HTTP_UNAUTHORIZED);
         }
 
