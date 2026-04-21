@@ -7,10 +7,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!banner || !configElement) return;
 
     const config = JSON.parse(configElement.textContent);
+    const root = document.documentElement;
+    const mobilePopoverRevealDelayMs = 1000;
+    let popoverRevealTimer = null;
 
     banner.classList.remove('d-none');
 
     const mobile = () => window.innerWidth < 992;
+
+    function clearPopoverRevealTimer() {
+        if (popoverRevealTimer !== null) {
+            window.clearTimeout(popoverRevealTimer);
+            popoverRevealTimer = null;
+        }
+    }
+
+    function showTourPopoverImmediately() {
+        clearPopoverRevealTimer();
+        root.classList.remove('tour-popover-pending');
+        root.classList.remove('tour-no-highlight');
+        root.classList.add('tour-popover-visible');
+    }
+
+    function scheduleTourPopoverReveal(hasHighlight) {
+        clearPopoverRevealTimer();
+        root.classList.toggle('tour-no-highlight', !hasHighlight);
+
+        if (!mobile()) {
+            showTourPopoverImmediately();
+            return;
+        }
+
+        root.classList.remove('tour-popover-visible');
+        root.classList.add('tour-popover-pending');
+
+        popoverRevealTimer = window.setTimeout(() => {
+            popoverRevealTimer = null;
+            root.classList.add('tour-popover-visible');
+        }, mobilePopoverRevealDelayMs);
+    }
 
     function buildSteps() {
         return config.steps.flatMap((stepConfig) => {
@@ -31,7 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 popover: {
                     title: stepConfig.title,
                     description: stepConfig.description,
-                    side: stepConfig.side ?? (mobile() ? 'top' : 'bottom'),
+                    side: mobile()
+                        ? (stepConfig.mobileSide ?? stepConfig.side ?? 'top')
+                        : (stepConfig.desktopSide ?? stepConfig.side ?? 'bottom'),
                 },
             }];
         });
@@ -58,13 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
         banner.classList.add('d-none');
 
         const driverObj = driver({
+            smoothScroll: true,
             showProgress: true,
             progressText: config.progressText,
             nextBtnText: config.nextLabel,
             prevBtnText: config.prevLabel,
             doneBtnText: config.doneLabel,
             steps: buildSteps(),
-            onDestroyed: () => banner.classList.remove('d-none'),
+            onHighlightStarted: (element) => scheduleTourPopoverReveal(Boolean(element)),
+            onDestroyed: () => {
+                showTourPopoverImmediately();
+                banner.classList.remove('d-none');
+            },
         });
 
         driverObj.drive();

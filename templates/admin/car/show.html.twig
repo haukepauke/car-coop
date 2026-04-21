@@ -2,7 +2,7 @@
 
 {% block content_body %}
 <div class="mt-5">
-    <div class="container-fluid">
+    <div class="container-fluid" id="tour-overview">
         <h1 class="visually-hidden">{{ car ? car.name : 'car.data'|trans }}</h1>
 
         {# ── Guided tour banner ── #}
@@ -20,11 +20,13 @@
             hideToken: csrf_token('hide_tour_' ~ app.user.id),
             steps: [
                 {
+                    element: '#tour-overview',
                     title: 'tour.welcome.title'|trans,
                     description: 'tour.welcome.desc'|trans({'%carImage%': asset('./static/default-car.png')}),
+                    side: 'bottom',
                 },
                 {
-                    element: '.accordion-button',
+                    element: '#tour-car-data',
                     title: 'tour.car.title'|trans,
                     description: 'tour.car.desc'|trans,
                     side: 'bottom',
@@ -33,25 +35,8 @@
                     element: '#tour-car-actions',
                     title: 'tour.actions.title'|trans,
                     description: 'tour.actions.desc'|trans,
-                    side: 'bottom',
-                },
-                {
-                    element: '.stat-grid',
-                    title: 'tour.stats.title'|trans,
-                    description: 'tour.stats.desc'|trans,
-                    side: 'top',
-                },
-                {
-                    element: '#tour-bookings',
-                    title: 'tour.bookings.title'|trans,
-                    description: 'tour.bookings.desc'|trans,
-                    side: 'top',
-                },
-                {
-                    element: '.chart-grid',
-                    title: 'tour.charts.title'|trans,
-                    description: 'tour.charts.desc'|trans,
-                    side: 'top',
+                    desktopSide: 'left',
+                    mobileSide: 'bottom',
                 },
                 {
                     desktopElement: '#nav-messages',
@@ -154,9 +139,10 @@
                     <div class="accordion-body">
 
                         {# ── Car data ── #}
-                        <div class="d-flex justify-content-between align-items-center mb-3 page-header">
+                        <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3 page-header" {% if isActive %}id="tour-car-data"{% endif %}>
                             <h3 class="mb-0">{{ 'car.data'|trans }}</h3>
-                            <div class="d-flex gap-2" id="tour-car-actions">
+                            <div class="d-flex gap-2" {% if isActive %}id="tour-car-actions"{% endif %}>
                                 <button type="button"
                                         class="btn btn-outline-secondary btn-sm js-trip-cost-estimate"
                                         data-bs-toggle="modal"
@@ -227,10 +213,11 @@
                             </div>
                             {% endif %}
                         </div>
+                        </div>
 
                         {# ── Next bookings ── #}
                         {% if carData.bookings|length > 0 %}
-                        <div class="row pt-4" id="tour-bookings">
+                        <div class="row pt-4" {% if isActive %}id="tour-bookings"{% endif %}>
                             <div class="col"><h3>{{ 'car.bookings.next'|trans }}</h3></div>
                         </div>
                         <div class="table-responsive">
