@@ -107,7 +107,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 10)]
     #[Assert\Choice(User::THEMES)]
-    private string $themePreference = 'classic';
+    private string $themePreference = 'light';
+
+    #[ORM\Column]
+    private bool $showWelcomeTour = true;
 
     public function __construct()
     {
@@ -725,6 +728,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setThemePreference(string $themePreference): self
     {
         $this->themePreference = $themePreference;
+
+        return $this;
+    }
+
+    public function isShowWelcomeTour(): bool
+    {
+        return $this->showWelcomeTour;
+    }
+
+    public function setShowWelcomeTour(bool $showWelcomeTour): self
+    {
+        $this->showWelcomeTour = $showWelcomeTour;
 
         return $this;
     }

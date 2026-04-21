@@ -43,4 +43,27 @@ final class UserProfileScenarioTest extends ScenarioTestCase
         self::assertSame('classic', $this->reloadUser('classic-theme-scenario@test.local')->getThemePreference());
         self::assertStringContainsString('data-theme="classic"', (string) $this->client->getResponse()->getContent());
     }
+
+    public function testUserCanExplicitlyHideWelcomeTour(): void
+    {
+        $user = $this->createUser('tour-hide-scenario@test.local');
+        $this->createCarMembership($user);
+
+        $this->loginThroughForm('tour-hide-scenario@test.local', 'ScenarioPass123!');
+        $this->followRedirectChain();
+
+        $crawler = $this->client->request('GET', '/admin/car/show');
+        self::assertStringContainsString('id="tour-banner"', (string) $this->client->getResponse()->getContent());
+
+        $config = json_decode($crawler->filterXPath('//*[@id="tour-config"]')->text(), true, 512, JSON_THROW_ON_ERROR);
+        $this->client->request('POST', '/admin/user/tour/hide', [
+            '_token' => $config['hideToken'],
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertFalse($this->reloadUser('tour-hide-scenario@test.local')->isShowWelcomeTour());
+
+        $this->client->request('GET', '/admin/car/show');
+        self::assertStringNotContainsString('id="tour-banner"', (string) $this->client->getResponse()->getContent());
+    }
 }

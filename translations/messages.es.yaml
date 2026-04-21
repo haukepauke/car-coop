@@ -1,49 +1,105 @@
 tour:
   banner:
-    title: "¿Eres nuevo? ¡Haz un recorrido rápido!"
-    desc: "Te guiaremos por las funciones principales de Car Coop."
+    title: "Comprende cómo funciona vuestro grupo de coche compartido"
+    desc: "Puedes iniciar el recorrido otra vez en cualquier momento. Oculta este recordatorio solo cuando realmente ya no lo necesites."
     start: Iniciar recorrido
-    dismiss: No me interesa
+    hide: Ocultar este recordatorio
   welcome:
     title: "¡Bienvenido a Car Coop!"
-    desc: "Este breve recorrido te presentará las funciones más importantes. Puedes omitirlo en cualquier momento."
+    desc: |
+      <img src="%carImage%" alt="">
+      <p>Car Coop sigue una idea sencilla: <strong>un vehículo compartido debe ser transparente, justo y fácil de organizar en conjunto</strong>.</p>
+      <p>Para lograrlo, las personas de un grupo registran tanto su uso del vehículo como sus aportaciones económicas:</p>
+      <ul>
+        <li><strong>Los trayectos</strong> registran quién condujo y cuánto recorrió.</li>
+        <li><strong>Los gastos</strong> registran combustible, reparaciones, seguros y otros costes compartidos.</li>
+        <li><strong>Los pagos</strong> equilibran los saldos entre los miembros.</li>
+      </ul>
+      <p>Así se genera un saldo continuo para cada miembro. El grupo puede ver en todo momento quién ya ha asumido mucho, quién ha contribuido menos hasta ahora y qué precio por kilómetro sería justo y económicamente razonable.</p>
   car:
     title: Tu vehículo
-    desc: "Cada panel muestra un vehículo. Haz clic en la cabecera para expandirlo y ver todos los detalles."
+    desc: |
+      <p>Cada vehículo tiene aquí su propia sección. Es posible compartir más de un vehículo.</p>
+      <p>Allí Car Coop reúne toda la información relevante: usuarios, costes, reservas, estadísticas y detalles operativos.</p>
+  actions:
+    title: Herramientas importantes
+    desc: |
+      <p>Estos tres botones ofrecen acceso rápido a funciones importantes del vehículo.</p>
+      <ul>
+        <li><strong>Calculadora de costes</strong>: estima el coste de un trayecto planificado a partir del precio por kilómetro y de la distancia estimada del trayecto. Sobre todo al principio, esto ayuda a hacerse una idea del coste de un viaje.</li>
+        <li><strong>Análisis</strong>: abre el análisis de costes del vehículo y muestra propuestas para pagos de compensación y cambios en el precio por kilómetro. Esta función tiene más sentido cuando ya habéis registrado algunos trayectos. Cuantas más entradas haya, más útil será el análisis.</li>
+        <li><strong>Exportar PDF</strong>: crea un resumen en PDF de todos los datos relacionados con este vehículo, como trayectos, gastos, pagos, etc. Útil para archivar o para revisar todo juntos alrededor de la mesa de la cocina.</li>
+      </ul>
   stats:
     title: Datos del vehículo
-    desc: "Los datos clave del vehículo — matrícula, kilometraje, distancia anual, costes, tipo de combustible y consumo — se muestran aquí como tarjetas."
+    desc: |
+      <p>Estas tarjetas resumen los indicadores actuales del vehículo y del grupo de uso compartido.</p>
+      <ul>
+        <li><strong>El kilometraje</strong> y <strong>la distancia anual</strong> muestran cuán intensamente se utiliza el coche.</li>
+        <li><strong>Los costes anuales</strong> y <strong>el coste calculado por kilómetro</strong> muestran cuánto cuesta realmente el vehículo.</li>
+        <li>Estos valores sirven de base para comprobar si los precios de los grupos de usuarios siguen siendo justos y económicamente razonables.</li>
+      </ul>
   bookings:
     title: Próximas reservas
-    desc: "Las próximas reservas programadas se listan aquí para que siempre sepas cuándo está disponible el vehículo."
+    desc: |
+      <p>El calendario de reservas permite reservar el vehículo para periodos concretos.</p>
+      <p>Responde a la pregunta <strong>“¿Quién tiene el coche y cuándo?”</strong> y hace que el uso del vehículo sea previsible para todos.</p>
   charts:
     title: Estadísticas
-    desc: "Estos gráficos muestran la distancia recorrida y el balance entre los miembros a lo largo del tiempo."
+    desc: |
+      <p>Los gráficos convierten los datos cotidianos en una visión a largo plazo para el grupo.</p>
+      <ul>
+        <li><strong>El gráfico de distancia</strong> muestra quién ha recorrido cuánto con el vehículo.</li>
+        <li><strong>El gráfico de saldo</strong> muestra si algunos usuarios se están desviando demasiado hacia positivo o negativo.</li>
+      </ul>
+      <p>Así podéis ver cuándo son útiles los pagos de compensación o los ajustes de precio.</p>
   nav:
     messages:
       title: Tablón de mensajes
-      desc: "Comparte noticias, preguntas o actualizaciones con todos los miembros de tu cooperativa de vehículos."
+      desc: "<p>El tablón es el espacio de comunicación compartido de vuestro grupo de coche compartido.</p><p>Aquí podéis compartir avisos de reparación, acuerdos, recordatorios e información organizativa.</p>"
     calendar:
       title: Calendario de reservas
-      desc: "Consulta cuándo está reservado el vehículo y resérvalo para tus propios viajes."
+      desc: "<p>El calendario de reservas permite al grupo planificar el uso compartido.</p><p>Aquí veis la disponibilidad del vehículo, lo reserváis y evitáis solapamientos entre reservas.</p>"
     trips:
       title: Trayectos
-      desc: "Registra cada trayecto que realices — distancia, fecha y propósito. Esta es la base para el cálculo de costes."
+      desc: |
+        <p>Los trayectos son el libro de trayectos del grupo.</p>
+        <p>Las distancias recorridas reparten los costes compartidos del vehículo entre los distintos miembros.</p>
+        <p>Al final del trayecto lo registráis aquí con el kilometraje final, la fecha y el tipo de trayecto. Algunos tipos son de pago y otros gratuitos. Un trayecto al taller, por ejemplo, normalmente debería ser gratuito porque beneficia a todo el grupo. Cómo reguláis los trayectos gratuitos y de pago queda, por supuesto, en manos de vuestra propia comunidad.</p>
+        <p>Si habéis creado distintos grupos de uso, podéis acordar un precio por kilómetro distinto para cada uno. Esto puede tener sentido, por ejemplo, si las personas que solo conducen muy rara vez y no participan en el mantenimiento del vehículo deberían pagar un precio más alto. O si las personas con ingresos más bajos deberían pagar un precio por kilómetro menor que aquellas con ingresos más altos.</p>
+        <p>El coste de un trayecto se registra como deuda en vuestra cuenta. Los gastos que tuvisteis durante el trayecto, por ejemplo al repostar, se descuentan de esa deuda una vez que se registran en gastos.</p>
     expenses:
       title: Gastos
-      desc: "Registra combustible, reparaciones y otros costes. Estos se descuentan de los costes calculados de tus trayectos."
+      desc: |
+        <p>Los gastos son el libro de aportaciones.</p>
+        <p>Quien paga combustible, mantenimiento, neumáticos u otros costes compartidos recibe ese aporte acreditado de nuevo en su cuenta.</p>
+        <p>Debéis hablar dentro del grupo sobre qué gastos son deducibles. El combustible, el aceite y el líquido limpiaparabrisas son evidentes. Si también lo es un ambientador con olor a coche nuevo, eso ya puede dar pie a una discusión.</p>
     payments:
       title: Pagos
-      desc: "Registra las transferencias de dinero entre miembros para saldar los saldos pendientes."
+      desc: |
+        <p>Los pagos equilibran los saldos entre los miembros.</p>
+        <p>Si se acumulan saldos positivos o negativos más grandes, podéis documentar aquí los pagos de compensación.</p>
+        <p>Si alguien del grupo entrega o transfiere dinero a otra persona para equilibrar las cuentas, simplemente se registra aquí.</p>
     parking:
       title: Ubicación de aparcamiento
-      desc: "Consulta en un mapa dónde está aparcado el vehículo actualmente y actualiza la ubicación cuando lo aparques."
+      desc: |
+        <p>La página de aparcamiento resuelve el último problema práctico de compartir: ¿dónde está el coche ahora mismo?</p>
+        <p>Desde allí podéis navegar hasta el vehículo y guardar vosotros mismos la posición actual cuando termináis un trayecto.</p>
+        <p>Así la siguiente persona encuentra el coche sin mensajes adicionales.</p>
+        <p><strong>¡No os olvidéis de hacerlo al final del trayecto!</strong> Probablemente le ahorrará algo de estrés a la siguiente persona usuaria.</p>
+        <p>Nota: en el smartphone, Car Coop utiliza el sistema de localización del teléfono para guardar la posición. Si eso no funciona, podéis fijar y guardar la posición manualmente en el mapa.</p>
     admin:
       title: Administración
-      desc: "Añade o gestiona vehículos y controla quién tiene acceso a la cooperativa."
+      desc: |
+        <p>En el área de administración mantenéis las reglas de vuestro grupo de coche compartido.</p>
+        <p>Allí gestionáis miembros, grupos de usuarios, precios por kilómetro, invitaciones para nuevos usuarios y otros ajustes básicos.</p>
+        <p>Si personas abandonan el grupo, podéis desactivar allí sus cuentas. Los registros de trayectos y gastos permanecen intactos.</p>
+        <p>Car Coop tiene un concepto de administración muy abierto: cualquier miembro del grupo puede hacer cambios. Os corresponde a vosotros acordar si todas las personas están de acuerdo con esos cambios. Car Coop no puede ni quiere asumir esa responsabilidad por vosotros.</p>
     user:
       title: Tu perfil
-      desc: "Edita tus datos personales o cierra sesión desde aquí."
+      desc: |
+        <p>En el perfil gestionas idioma, diseño, notificaciones y ajustes personales.</p>
+        <p>Si quieres, también puedes volver a activar allí el recordatorio del recorrido más adelante.</p>
   progress: "{{current}} de {{total}}"
   btn:
     next: Siguiente
@@ -492,6 +548,8 @@ user:
     light: Claro colorido
     dark: Oscuro colorido
     classic: Clásico
+  tour:
+    show: Mostrar el recordatorio del recorrido de bienvenida en la página del vehículo
   logged:
     in:
       as: Conectado como

@@ -18,6 +18,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -220,6 +221,23 @@ class UserAdminController extends AbstractController
                 'userForm' => $form->createView(),
             ]
         );
+    }
+
+    #[Route('/admin/user/tour/hide', name: 'app_user_tour_hide', methods: ['POST'])]
+    public function hideTour(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$this->isCsrfTokenValid('hide_tour_' . $user->getId(), (string) $request->request->get('_token'))) {
+            return $this->json(['message' => 'Invalid CSRF token.'], Response::HTTP_FORBIDDEN);
+        }
+
+        $user->setShowWelcomeTour(false);
+        $em->persist($user);
+        $em->flush();
+
+        return $this->json(['status' => 'ok']);
     }
 
     #[Route('/admin/user/delete-account', name: 'app_user_delete_account_confirm', methods: ['GET'])]

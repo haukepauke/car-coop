@@ -1,49 +1,105 @@
 tour:
   banner:
-    title: "Nouveau ici ? Faites un tour rapide !"
-    desc: "Nous vous présenterons les fonctionnalités clés de Car Coop."
+    title: "Comprenez comment fonctionne votre coopérative d’autopartage"
+    desc: "Vous pouvez relancer la visite à tout moment. Masquez ce rappel seulement lorsque vous n’en avez vraiment plus besoin."
     start: Commencer la visite
-    dismiss: Pas intéressé
+    hide: Masquer ce rappel
   welcome:
     title: "Bienvenue sur Car Coop !"
-    desc: "Cette courte visite vous présentera les fonctionnalités les plus importantes. Vous pouvez la passer à tout moment."
+    desc: |
+      <img src="%carImage%" alt="">
+      <p>Car Coop repose sur une idée simple : <strong>un véhicule partagé doit rester transparent, équitable et facile à organiser ensemble</strong>.</p>
+      <p>Pour cela, les membres d’un groupe enregistrent à la fois leur utilisation du véhicule et leurs contributions financières :</p>
+      <ul>
+        <li><strong>Les trajets</strong> indiquent qui a roulé et sur quelle distance.</li>
+        <li><strong>Les dépenses</strong> enregistrent le carburant, les réparations, les assurances et les autres coûts partagés.</li>
+        <li><strong>Les paiements</strong> équilibrent les soldes entre les membres.</li>
+      </ul>
+      <p>Il en résulte un solde courant pour chaque membre. Le groupe peut ainsi voir à tout moment qui a déjà beaucoup supporté, qui a encore peu contribué et quel prix au kilomètre serait actuellement juste et économiquement pertinent.</p>
   car:
     title: Votre véhicule
-    desc: "Chaque panneau affiche un véhicule. Cliquez sur l'en-tête pour le développer et voir tous les détails."
+    desc: |
+      <p>Chaque véhicule possède ici sa propre section. Il est possible de partager plus d’un véhicule.</p>
+      <p>Car Coop y regroupe toutes les informations pertinentes : utilisateurs, coûts, réservations, statistiques et détails opérationnels.</p>
+  actions:
+    title: Outils importants
+    desc: |
+      <p>Ces trois boutons donnent un accès rapide à des fonctions importantes du véhicule.</p>
+      <ul>
+        <li><strong>Calculateur de coûts</strong> : estime le coût d’un trajet prévu à partir du prix au kilomètre et de la distance estimée du trajet. Cela aide surtout au début à se faire une idée du coût d’un trajet.</li>
+        <li><strong>Analyse</strong> : ouvre l’analyse des coûts du véhicule et affiche des propositions de paiements d’équilibrage et de modifications du prix au kilomètre. Cette fonction devient vraiment utile lorsque vous avez déjà enregistré quelques trajets. Plus il y a de données, plus l’analyse est pertinente.</li>
+        <li><strong>Export PDF</strong> : crée un résumé PDF de toutes les données liées à ce véhicule, comme les trajets, les dépenses, les paiements, etc. Pratique pour archiver ou pour faire un point ensemble autour de la table de cuisine.</li>
+      </ul>
   stats:
     title: Données du véhicule
-    desc: "Les informations clés sur le véhicule — plaque d'immatriculation, kilométrage, distance annuelle, coûts, type de carburant et consommation — sont affichées ici sous forme de cartes."
+    desc: |
+      <p>Ces cartes résument les indicateurs actuels du véhicule et du groupe de partage.</p>
+      <ul>
+        <li><strong>Le kilométrage</strong> et <strong>la distance annuelle</strong> montrent à quel point la voiture est utilisée.</li>
+        <li><strong>Les coûts annuels</strong> et <strong>le coût calculé par kilomètre</strong> montrent ce que le véhicule coûte réellement.</li>
+        <li>Ces valeurs servent de base pour vérifier si les prix des groupes d’utilisateurs restent équitables et économiquement pertinents.</li>
+      </ul>
   bookings:
     title: Réservations à venir
-    desc: "Les prochaines réservations planifiées sont listées ici afin que vous sachiez toujours quand le véhicule est disponible."
+    desc: |
+      <p>Le calendrier de réservation permet de réserver le véhicule pour des périodes précises.</p>
+      <p>Il répond à la question <strong>« Qui a la voiture, et quand ? »</strong> et rend l’utilisation du véhicule prévisible pour tout le monde.</p>
   charts:
     title: Statistiques
-    desc: "Ces graphiques montrent la distance parcourue et l'équilibre entre les membres au fil du temps."
+    desc: |
+      <p>Les graphiques transforment les données du quotidien en compréhension à long terme pour le groupe.</p>
+      <ul>
+        <li><strong>Le graphique des distances</strong> montre qui a roulé combien avec le véhicule.</li>
+        <li><strong>Le graphique des soldes</strong> montre si certains utilisateurs dérivent trop dans le positif ou le négatif.</li>
+      </ul>
+      <p>Vous voyez ainsi quand des paiements d’équilibrage ou des ajustements de prix deviennent utiles.</p>
   nav:
     messages:
       title: Tableau d'affichage
-      desc: "Partagez des nouvelles, des questions ou des mises à jour avec tous les membres de votre coopérative de véhicules."
+      desc: "<p>Le tableau d’affichage est l’espace de communication commun de votre groupe d’autopartage.</p><p>Vous pouvez y partager des informations sur des réparations, des accords, des rappels ou l’organisation du groupe.</p>"
     calendar:
       title: Calendrier des réservations
-      desc: "Consultez quand le véhicule est réservé et réservez-le pour vos propres trajets."
+      desc: "<p>Le calendrier des réservations permet au groupe de planifier l’usage partagé.</p><p>Vous y voyez les disponibilités du véhicule, le réservez et évitez les chevauchements de réservations.</p>"
     trips:
       title: Trajets
-      desc: "Enregistrez chaque trajet — distance, date et motif. C'est la base du calcul des coûts."
+      desc: |
+        <p>Les trajets constituent le journal des trajets du groupe.</p>
+        <p>Les distances parcourues répartissent les coûts partagés du véhicule entre les différents membres.</p>
+        <p>À la fin d’un trajet, saisissez-le ici avec le kilométrage de fin, la date et le type de trajet. Certains types de trajets sont payants, d’autres gratuits. Un trajet vers le garage devrait par exemple généralement être gratuit, car il sert l’intérêt de tout le groupe. La manière d’organiser les trajets payants et gratuits reste toutefois à votre propre discrétion.</p>
+        <p>Si vous avez créé différents groupes d’usage, vous pouvez convenir d’un prix au kilomètre distinct pour chacun d’eux. Cela peut être utile, par exemple, si des personnes qui roulent très rarement et ne participent pas à l’entretien du véhicule doivent payer un prix au kilomètre plus élevé. Ou si des personnes ayant un revenu plus faible doivent payer un prix inférieur à celles ayant un revenu plus élevé.</p>
+        <p>Le coût d’un trajet est inscrit comme dette sur votre compte. Les dépenses engagées pendant le trajet, par exemple pour le carburant, sont déduites de cette dette dès qu’elles sont enregistrées dans les dépenses.</p>
     expenses:
       title: Dépenses
-      desc: "Enregistrez le carburant, les réparations et autres coûts. Ceux-ci sont déduits des coûts calculés de vos trajets."
+      desc: |
+        <p>Les dépenses constituent le registre des contributions.</p>
+        <p>Quiconque paie le carburant, l’entretien, les pneus ou d’autres coûts partagés voit cette contribution recréditée sur son compte.</p>
+        <p>Les dépenses remboursables doivent être discutées au sein du groupe. Le carburant, l’huile et le liquide lave-glace vont de soi. En revanche, savoir si un sapin désodorisant senteur voiture neuve est remboursable peut prêter à débat.</p>
     payments:
       title: Paiements
-      desc: "Suivez les transferts d'argent entre membres pour régler les soldes impayés."
+      desc: |
+        <p>Les paiements équilibrent les soldes entre les membres.</p>
+        <p>Lorsque des crédits ou dettes plus importants s’accumulent, vous pouvez documenter ici les paiements d’équilibrage.</p>
+        <p>Chaque fois qu’une personne du groupe remet ou vire de l’argent à une autre pour équilibrer les comptes, il suffit de l’enregistrer ici.</p>
     parking:
       title: Lieu de stationnement
-      desc: "Consultez où le véhicule est actuellement garé sur une carte et mettez à jour la localisation lorsque vous le garez."
+      desc: |
+        <p>La page de stationnement résout le dernier problème pratique du partage : où se trouve la voiture en ce moment ?</p>
+        <p>Vous pouvez vous faire guider jusqu’au véhicule depuis cette page et enregistrer vous-même la position actuelle lorsque vous terminez un trajet.</p>
+        <p>La personne suivante retrouve ainsi la voiture sans échange supplémentaire.</p>
+        <p><strong>N’oubliez pas cela à la fin de votre trajet !</strong> Cela évitera probablement un peu de stress à la personne suivante.</p>
+        <p>Remarque : sur smartphone, Car Coop utilise le système de localisation du téléphone pour enregistrer la position. Si cela ne fonctionne pas, vous pouvez définir et enregistrer manuellement la position sur la carte.</p>
     admin:
       title: Administration
-      desc: "Ajoutez ou gérez des véhicules et contrôlez qui a accès à la coopérative."
+      desc: |
+        <p>La zone d’administration vous permet de maintenir les règles de votre groupe d’autopartage.</p>
+        <p>Vous y gérez les membres, les groupes d’utilisateurs, les prix au kilomètre, les invitations pour de nouveaux utilisateurs et d’autres réglages de base.</p>
+        <p>Si des personnes quittent le groupe, vous pouvez y désactiver leurs comptes. Les enregistrements de trajets et de dépenses restent conservés.</p>
+        <p>Car Coop suit un concept d’administration très ouvert : chaque membre du groupe peut effectuer des modifications. C’est à vous de vous mettre d’accord pour savoir si tout le monde est d’accord avec ces changements. Car Coop ne peut ni ne veut prendre cette responsabilité à votre place.</p>
     user:
       title: Votre profil
-      desc: "Modifiez vos informations personnelles ou déconnectez-vous depuis ici."
+      desc: |
+        <p>Dans votre profil, vous gérez la langue, le thème, les notifications et vos préférences personnelles.</p>
+        <p>Si vous le souhaitez, vous pouvez également y réactiver plus tard le rappel de la visite.</p>
   progress: "{{current}} sur {{total}}"
   btn:
     next: Suivant
@@ -492,6 +548,8 @@ user:
     light: Clair coloré
     dark: Sombre coloré
     classic: Classique
+  tour:
+    show: Afficher le rappel de la visite d’accueil sur la page du véhicule
   logged:
     in:
       as: Connecté en tant que

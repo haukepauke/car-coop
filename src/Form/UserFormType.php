@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -55,6 +56,14 @@ class UserFormType extends AbstractType
                         'user.theme.classic' => 'classic',
                     ],
                     'label' => 'user.theme.label',
+                ]
+            )
+            ->add(
+                'showWelcomeTour',
+                CheckboxType::class,
+                [
+                    'label' => 'user.tour.show',
+                    'required' => false,
                 ]
             )
             ->add(

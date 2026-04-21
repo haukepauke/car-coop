@@ -229,6 +229,19 @@ class CarAdminController extends AbstractController
 
         $carPanels = [];
         foreach ($cars as $carObj) {
+            $balanceOverview = array_map(
+                static fn($member) => [
+                    'user' => $member,
+                    'balance' => round($member->getBalance($carObj), 2),
+                ],
+                $carObj->getActiveUsers()->toArray()
+            );
+
+            usort(
+                $balanceOverview,
+                static fn(array $left, array $right) => $right['balance'] <=> $left['balance']
+            );
+
             $carPanels[] = [
                 'car'                           => $carObj,
                 'bookings'                      => $bookingRepo->findByCar(new \DateTime(), $lastDayOfYear, $carObj, 3),
@@ -237,8 +250,9 @@ class CarAdminController extends AbstractController
                 'moneySpentFuel'                => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear, 'fuel'),
                 'calculatedCostsPerUnit'        => $carObj->getCalculatedCosts($firstDayOfYear, $lastDayOfYear),
                 'calculatedCostsPerUnitAllYears' => $carObj->getCalculatedCosts($allTimeStart, $allTimeEnd),
-                'distanceChart'          => $charts->getDistanceDrivenByUserChart($carObj, $firstDayOfYear, $lastDayOfYear),
-                'balanceChart'           => $charts->getUserBalanceChart($carObj, $firstDayOfYear, $lastDayOfYear),
+                'distanceChart'                => $charts->getDistanceDrivenByUserChart($carObj, $firstDayOfYear, $lastDayOfYear),
+                'balanceChart'                 => $charts->getUserBalanceChart($carObj, $firstDayOfYear, $lastDayOfYear),
+                'balanceOverview'              => $balanceOverview,
             ];
         }
 

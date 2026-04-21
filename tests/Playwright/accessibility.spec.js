@@ -9,7 +9,7 @@ const login = async (page) => {
   await expect(page).toHaveURL(/\/admin\/car\/show$/);
 };
 
-const scanPage = async (page, path, theme = 'classic') => {
+const scanPage = async (page, path, theme = 'light') => {
   await page.goto(path);
   await page.evaluate((selectedTheme) => {
     document.documentElement.dataset.theme = selectedTheme;

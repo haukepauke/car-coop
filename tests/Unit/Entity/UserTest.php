@@ -104,11 +104,11 @@ class UserTest extends TestCase
         $this->assertSame('test@example.com', $user->getUserIdentifier());
     }
 
-    public function testThemePreferenceDefaultsToClassic(): void
+    public function testThemePreferenceDefaultsToLight(): void
     {
         $user = $this->makeUser();
 
-        $this->assertSame('classic', $user->getThemePreference());
+        $this->assertSame('light', $user->getThemePreference());
     }
 
     public function testThemePreferenceCanBeChanged(): void
@@ -125,6 +125,21 @@ class UserTest extends TestCase
         $user->setThemePreference('classic');
 
         $this->assertSame('classic', $user->getThemePreference());
+    }
+
+    public function testWelcomeTourIsShownByDefault(): void
+    {
+        $user = $this->makeUser();
+
+        $this->assertTrue($user->isShowWelcomeTour());
+    }
+
+    public function testWelcomeTourCanBeHidden(): void
+    {
+        $user = $this->makeUser();
+        $user->setShowWelcomeTour(false);
+
+        $this->assertFalse($user->isShowWelcomeTour());
     }
 
     // ── getExpensesByPeriod() ─────────────────────────────────────────────────

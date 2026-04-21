@@ -58,6 +58,85 @@
     .statistics-section { display: none; }
 }
 
+.statistics-mobile-section {
+    margin-top: 0.25rem;
+}
+
+.mobile-balance-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: min(60vh, 30rem);
+    overflow-y: auto;
+    padding-right: 0.15rem;
+}
+
+.mobile-balance-overview__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+    padding: 0.85rem 1rem;
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    box-shadow: var(--cc-shadow-sm);
+}
+
+.mobile-balance-overview__user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.mobile-balance-overview__avatar {
+    flex-shrink: 0;
+}
+
+.mobile-balance-overview__identity {
+    min-width: 0;
+}
+
+.mobile-balance-overview__name {
+    display: block;
+    color: var(--cc-text);
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.mobile-balance-overview__amount {
+    flex-shrink: 0;
+    font-weight: 800;
+    text-align: right;
+}
+
+.mobile-balance-overview__amount.is-positive {
+    color: var(--bs-success-text-emphasis, #146c43);
+}
+
+.mobile-balance-overview__amount.is-negative {
+    color: var(--bs-danger-text-emphasis, #b02a37);
+}
+
+html[data-theme="dark"] .mobile-balance-overview__item {
+    background: var(--cc-surface);
+    border-color: var(--cc-border);
+}
+
+html[data-theme="dark"] .mobile-balance-overview__amount.is-positive {
+    color: #8ee6b2;
+}
+
+html[data-theme="dark"] .mobile-balance-overview__amount.is-negative {
+    color: #ff9cb3;
+}
+
+html[data-theme="classic"] .mobile-balance-overview__item {
+    background: var(--cc-surface);
+    border-color: var(--cc-border);
+}
+
 /* ── Tour banner ────────────────────────────────────────────────── */
 .tour-banner {
     display: flex;
@@ -90,14 +169,15 @@
     align-items: center;
     gap: 0.5rem;
     flex-shrink: 0;
+    flex-wrap: wrap;
 }
 
-html[data-theme="dark"] #tour-dismiss-btn {
+html[data-theme="dark"] #tour-hide-btn {
     color: #d6bed2 !important;
 }
 
-html[data-theme="dark"] #tour-dismiss-btn:hover,
-html[data-theme="dark"] #tour-dismiss-btn:focus {
+html[data-theme="dark"] #tour-hide-btn:hover,
+html[data-theme="dark"] #tour-hide-btn:focus {
     color: #f5dff1 !important;
 }
 
@@ -120,22 +200,52 @@ html[data-theme="dark"] #tour-start-btn:focus {
     border: 1.5px solid var(--cc-border) !important;
     border-radius: var(--cc-radius-lg) !important;
     box-shadow: var(--cc-shadow-md) !important;
-    padding: 1.2rem 1.4rem 1rem !important;
-    min-width: 260px;
-    max-width: 340px;
+    padding: 1.5rem 1.7rem 1.2rem !important;
+    width: min(52rem, calc(100vw - 3rem)) !important;
+    min-width: min(34rem, calc(100vw - 3rem)) !important;
+    max-width: min(52rem, calc(100vw - 3rem)) !important;
 }
 
 .driver-popover-title {
     color: var(--cc-accent-dark) !important;
-    font-size: 1rem !important;
-    font-weight: 700 !important;
-    margin-bottom: 0.4rem !important;
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 0.65rem !important;
 }
 
 .driver-popover-description {
     color: var(--cc-text) !important;
-    font-size: 0.875rem !important;
-    line-height: 1.5 !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+}
+
+.driver-popover-description p:last-child,
+.driver-popover-description ul:last-child,
+.driver-popover-description ol:last-child {
+    margin-bottom: 0 !important;
+}
+
+.driver-popover-description img {
+    display: block;
+    max-width: min(12rem, 100%);
+    height: auto;
+    margin: 0 auto 1rem;
+    border-radius: 1rem;
+    box-shadow: var(--cc-shadow-sm);
+}
+
+.driver-popover-description ul,
+.driver-popover-description ol {
+    padding-left: 1.15rem;
+    margin: 0.75rem 0;
+}
+
+@media (max-width: 991.98px) {
+    .driver-popover {
+        width: min(100vw - 1.5rem, 32rem) !important;
+        min-width: min(100vw - 1.5rem, 20rem) !important;
+        max-width: min(100vw - 1.5rem, 32rem) !important;
+    }
 }
 
 /* Arrow pointing toward the highlighted element */

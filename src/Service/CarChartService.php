@@ -151,7 +151,7 @@ class CarChartService
     private function getThemePalette(): array
     {
         $user = $this->security->getUser();
-        $theme = $user instanceof User ? $user->getThemePreference() : 'classic';
+        $theme = $user instanceof User ? $user->getThemePreference() : 'light';
 
         return match ($theme) {
             'dark' => [

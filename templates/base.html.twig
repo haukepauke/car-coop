@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% set currentTheme = is_granted('IS_AUTHENTICATED_REMEMBERED') and app.user ? app.user.themePreference : 'classic' %}
+{% set currentTheme = is_granted('IS_AUTHENTICATED_REMEMBERED') and app.user ? app.user.themePreference : 'light' %}
 <html lang="{{ app.request.locale|default('en') }}" data-theme="{{ currentTheme }}">
 
 <head>

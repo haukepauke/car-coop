@@ -1,50 +1,106 @@
 
 tour:
   banner:
-    title: "New here? Take a quick tour!"
-    desc: "We'll walk you through the key features of Car Coop."
+    title: "Understand how your car coop works"
+    desc: "Take the tour again anytime. Hide this reminder only when you no longer need it."
     start: Start tour
-    dismiss: Not interested
+    hide: Hide this reminder
   welcome:
     title: "Welcome to Car Coop!"
-    desc: "This short tour will introduce you to the most important features. You can skip it at any time."
+    desc: |
+      <img src="%carImage%" alt="">
+      <p>Car Coop is built around a simple idea: <strong>a shared vehicle should stay transparent, fair, and easy to organize together</strong>.</p>
+      <p>To make that work, the members of a group record both their vehicle usage and their financial contributions:</p>
+      <ul>
+        <li><strong>Trips</strong> record who drove and how far.</li>
+        <li><strong>Expenses</strong> record fuel, repairs, insurance, and other shared costs.</li>
+        <li><strong>Payments</strong> settle balances between members.</li>
+      </ul>
+      <p>The result is a running balance for each member, so the group can always see who has already carried a lot, who has contributed less so far, and what a fair and economically sensible kilometer price would be.</p>
   car:
     title: Your vehicle
-    desc: "Each panel shows one vehicle. Click the header to expand it and see all details."
+    desc: |
+      <p>Each vehicle has its own section here. It is possible to share more than one vehicle.</p>
+      <p>Car Coop bundles all relevant information there: users, costs, bookings, statistics, and operational details.</p>
+  actions:
+    title: Key tools
+    desc: |
+      <p>These three buttons give quick access to important vehicle functions.</p>
+      <ul>
+        <li><strong>Cost calculator</strong>: estimates the cost of a planned trip based on the kilometer price and the estimated distance of the trip. Especially at the beginning, this helps you get a feeling for what a trip will cost.</li>
+        <li><strong>Review</strong>: opens the vehicle cost analysis and shows suggestions for balancing payments and kilometer-price changes. This becomes most useful once you already have some trips recorded. The more entries you have, the more meaningful the analysis becomes.</li>
+        <li><strong>PDF export</strong>: creates a PDF summary of all data for this vehicle, including trips, expenses, payments, and more. Useful for filing away or for reviewing things together around the kitchen table.</li>
+      </ul>
   stats:
     title: Vehicle data
-    desc: "Key facts about the vehicle — license plate, mileage, annual distance, costs, fuel type and consumption — are shown as cards here."
+    desc: |
+      <p>These cards summarize the current key figures for the vehicle and the sharing group.</p>
+      <ul>
+        <li><strong>Mileage</strong> and <strong>season distance</strong> show how intensely the car is being used.</li>
+        <li><strong>Season spending</strong> and <strong>calculated cost per kilometer</strong> show what the car really costs.</li>
+        <li>These values are the basis for checking whether the user-group prices are still fair and economically sensible.</li>
+      </ul>
   bookings:
     title: Upcoming bookings
-    desc: "The next scheduled bookings are listed here so you always know when the vehicle is available."
+    desc: |
+      <p>The booking calendar allows members to reserve the vehicle for specific time periods.</p>
+      <p>It answers the practical question <strong>“Who has the car, and when?”</strong> and makes vehicle use reliably plannable for everyone.</p>
   charts:
     title: Statistics
-    desc: "These charts show the distance driven and the balance between members over time."
+    desc: |
+      <p>The charts translate everyday usage into long-term cooperative insight.</p>
+      <ul>
+        <li><strong>The distance chart</strong> shows who has driven how much with the vehicle.</li>
+        <li><strong>The balance chart</strong> shows whether individual users are drifting too far into credit or debt.</li>
+      </ul>
+      <p>That helps your group decide when payment settlements or price adjustments are needed.</p>
   nav:
     messages:
       title: Message board
-      desc: "Share news, questions or updates with all members of your vehicle cooperative."
+      desc: "<p>The message board is the shared communication space of your car-sharing group.</p><p>Use it to share repair notes, agreements, reminders, and organizational information.</p>"
     calendar:
       title: Booking calendar
-      desc: "See when the vehicle is booked and reserve it for your own trips."
+      desc: "<p>The booking calendar allows the group to plan shared usage.</p><p>Here you can see vehicle availability, reserve the vehicle, and avoid overlapping bookings.</p>"
     trips:
       title: Trips
-      desc: "Log every trip you take — distance, date and purpose. This is the basis for cost calculation."
+      desc: |
+        <p>Trips are the trip log of the group.</p>
+        <p>The distances driven distribute the shared vehicle costs across individual members.</p>
+        <p>At the end of a trip, enter it here together with the ending odometer reading, the date, and the type of trip. Some trip types are charged, others are free. A workshop trip, for example, should usually be free because it benefits everyone in the group. How you handle charged and free trips is still up to your own community.</p>
+        <p>If you have created different usage groups, you can agree on a separate kilometer price for each one. That can make sense, for example, if people who only drive very rarely and do not help with maintaining the vehicle should pay a higher kilometer price. Or if people with lower incomes should pay a lower kilometer price than those with higher incomes.</p>
+        <p>The cost of a trip is recorded in your account as debt. Expenses you had during the trip, such as fuel, are deducted from that debt once you record them under expenses.</p>
     expenses:
       title: Expenses
-      desc: "Record fuel, repairs and other costs. These are subtracted from the calculated costs of your trips."
+      desc: |
+        <p>Expenses are the contribution ledger.</p>
+        <p>When someone pays for fuel, maintenance, tires, or other shared costs, that contribution is credited back to their account.</p>
+        <p>You should agree within the group which expenses are reimbursable. Fuel, oil, and windshield washer fluid are obvious examples. Whether a pine-tree air freshener with “new car smell” should count is something you can argue about among yourselves.</p>
     payments:
       title: Payments
-      desc: "Track money transfers between members to settle outstanding balances."
+      desc: |
+        <p>Payments settle balances between members.</p>
+        <p>If larger credits or debts build up, you can document the balancing payments here.</p>
+        <p>Whenever one person in the group gives or transfers money to another person to even out account balances, simply enter it here.</p>
     parking:
       title: Parking location
-      desc: "See where the vehicle is currently parked on a map, and update the location when you park it."
+      desc: |
+        <p>The parking page solves the last practical problem of sharing: where is the car right now?</p>
+        <p>You can navigate to the vehicle from there and store the current parking position yourself when you finish a trip.</p>
+        <p>That way the next person can find the car without extra back-and-forth.</p>
+        <p><strong>Do not forget this at the end of your trip!</strong> It will probably save the next user a bit of stress.</p>
+        <p>Note: On a smartphone, Car Coop uses the phone’s location services to save the position. If that does not work, you can set and save the position manually on the map.</p>
     admin:
       title: Administration
-      desc: "Add or manage vehicles and control who has access to the cooperative."
+      desc: |
+        <p>The administration area is where you maintain the rules of your sharing group.</p>
+        <p>There you manage members, user groups, kilometer prices, invitations for new users, and other basic settings.</p>
+        <p>If people leave your group, you can deactivate their accounts there. Their trip and expense records remain intact.</p>
+        <p>Car Coop has a very open administration concept: every member of the group can make changes. It is up to you to agree with each other on whether everyone is okay with those changes. Car Coop cannot and should not take that responsibility away from you.</p>
     user:
       title: Your profile
-      desc: "Edit your personal details or log out from here."
+      desc: |
+        <p>Your profile lets you manage language, design, notifications, and personal settings.</p>
+        <p>If you want, you can also reactivate the tour reminder there later.</p>
   progress: "{{current}} of {{total}}"
   btn:
     next: Next
@@ -493,6 +549,8 @@ user:
     light: Colorful light
     dark: Colorful dark
     classic: Classic
+  tour:
+    show: Show the welcome tour reminder on the car overview page
   logged:
     in:
       as: Logged in as

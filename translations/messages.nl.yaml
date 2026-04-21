@@ -1,49 +1,105 @@
 tour:
   banner:
-    title: "Nieuw hier? Volg een snelle rondleiding!"
-    desc: "We laten je de belangrijkste functies van Car Coop zien."
+    title: "Begrijp hoe jullie autodeelgroep werkt"
+    desc: "Je kunt de rondleiding altijd opnieuw starten. Verberg deze herinnering pas wanneer je haar echt niet meer nodig hebt."
     start: Rondleiding starten
-    dismiss: Niet geïnteresseerd
+    hide: Deze hint verbergen
   welcome:
     title: "Welkom bij Car Coop!"
-    desc: "Deze korte rondleiding stelt je voor aan de belangrijkste functies. Je kunt hem op elk moment overslaan."
+    desc: |
+      <img src="%carImage%" alt="">
+      <p>Car Coop volgt een eenvoudig idee: <strong>een gedeeld voertuig moet transparant, eerlijk en gemakkelijk samen te organiseren zijn</strong>.</p>
+      <p>Daarvoor registreren de leden van een groep zowel hun voertuiggebruik als hun financiële bijdragen:</p>
+      <ul>
+        <li><strong>Ritten</strong> leggen vast wie reed en hoe ver.</li>
+        <li><strong>Uitgaven</strong> leggen brandstof, reparaties, verzekeringen en andere gedeelde kosten vast.</li>
+        <li><strong>Betalingen</strong> vereffenen saldi tussen leden.</li>
+      </ul>
+      <p>Zo ontstaat voor elk lid een lopend saldo. De groep kan altijd zien wie al veel gedragen heeft, wie nog minder heeft bijgedragen en welke kilometerprijs op dit moment eerlijk en economisch zinvol zou zijn.</p>
   car:
     title: Jouw voertuig
-    desc: "Elk paneel toont één voertuig. Klik op de koptekst om het uit te vouwen en alle details te zien."
+    desc: |
+      <p>Elk voertuig heeft hier zijn eigen gedeelte. Het is mogelijk om meer dan één voertuig te delen.</p>
+      <p>Daar bundelt Car Coop alle relevante informatie: gebruikers, kosten, boekingen, statistieken en operationele details.</p>
+  actions:
+    title: Belangrijke hulpmiddelen
+    desc: |
+      <p>Deze drie knoppen geven snel toegang tot belangrijke functies voor het voertuig.</p>
+      <ul>
+        <li><strong>Kostencalculator</strong>: schat de kosten van een geplande rit op basis van de kilometerprijs en de geschatte afstand van de rit. Vooral in het begin helpt dit om gevoel te krijgen voor de kosten van een rit.</li>
+        <li><strong>Analyse</strong>: opent de kostenanalyse van het voertuig en toont voorstellen voor vereffeningsbetalingen en wijzigingen van de kilometerprijs. Deze functie wordt pas echt zinvol als er al een aantal ritten zijn geregistreerd. Hoe meer gegevens, hoe nuttiger de analyse.</li>
+        <li><strong>PDF-export</strong>: maakt een PDF-samenvatting van alle gegevens van dit voertuig, zoals ritten, uitgaven en betalingen. Handig om te archiveren of samen aan de keukentafel te bekijken.</li>
+      </ul>
   stats:
     title: Voertuiggegevens
-    desc: "Belangrijke informatie over het voertuig — kenteken, kilometerstand, jaarlijkse afstand, kosten, brandstoftype en verbruik — worden hier als kaarten weergegeven."
+    desc: |
+      <p>Deze kaarten vatten de actuele kerncijfers van het voertuig en de deelgroep samen.</p>
+      <ul>
+        <li><strong>Kilometerstand</strong> en <strong>jaarlijkse afstand</strong> tonen hoe intensief de auto wordt gebruikt.</li>
+        <li><strong>Jaarlijkse kosten</strong> en <strong>berekende kosten per kilometer</strong> tonen wat het voertuig werkelijk kost.</li>
+        <li>Deze waarden vormen de basis om te beoordelen of de prijzen van de gebruikersgroepen nog eerlijk en economisch zinvol zijn.</li>
+      </ul>
   bookings:
     title: Aankomende boekingen
-    desc: "De volgende geplande boekingen worden hier weergegeven, zodat je altijd weet wanneer het voertuig beschikbaar is."
+    desc: |
+      <p>De boekingskalender maakt het mogelijk om het voertuig voor bepaalde periodes te reserveren.</p>
+      <p>Hij beantwoordt de vraag <strong>“Wie heeft de auto wanneer?”</strong> en maakt het gebruik voor iedereen betrouwbaar planbaar.</p>
   charts:
     title: Statistieken
-    desc: "Deze grafieken tonen de gereden afstand en het saldo tussen leden over de tijd."
+    desc: |
+      <p>De grafieken maken van dagelijkse gegevens langetermijninzichten voor de groep.</p>
+      <ul>
+        <li><strong>De afstandsgrafiek</strong> toont wie hoeveel met het voertuig onderweg was.</li>
+        <li><strong>De saldografiek</strong> toont of individuele gebruikers bijvoorbeeld te ver in de plus of min raken.</li>
+      </ul>
+      <p>Zo zie je wanneer vereffeningsbetalingen of prijsaanpassingen zinvol worden.</p>
   nav:
     messages:
       title: Prikbord
-      desc: "Deel nieuws, vragen of updates met alle leden van jouw voertuigcoöperatie."
+      desc: "<p>Het prikbord is de gedeelde communicatieruimte van jullie autodeelgroep.</p><p>Hier kunnen jullie reparatiemeldingen, afspraken, herinneringen en organisatorische informatie delen.</p>"
     calendar:
       title: Boekingskalender
-      desc: "Bekijk wanneer het voertuig geboekt is en reserveer het voor je eigen ritten."
+      desc: "<p>De boekingskalender helpt de groep om het gedeelde gebruik te plannen.</p><p>Hier zie je de beschikbaarheid van het voertuig, reserveer je het en vermijd je overlappende boekingen.</p>"
     trips:
       title: Ritten
-      desc: "Registreer elke rit die je maakt — afstand, datum en doel. Dit is de basis voor de kostenberekening."
+      desc: |
+        <p>Ritten vormen het rittenboek van de groep.</p>
+        <p>De gereden afstanden verdelen de gedeelde voertuigkosten over de afzonderlijke leden.</p>
+        <p>Aan het einde van een rit voer je die hier in met de eindkilometerstand, de datum en het type rit. Sommige rittypes zijn betalend, andere gratis. Een rit naar de garage zou bijvoorbeeld meestal gratis moeten zijn omdat die in het belang van iedereen is. Hoe jullie omgaan met betalende en gratis ritten, blijft uiteraard aan jullie groep zelf.</p>
+        <p>Als jullie verschillende gebruiksgroepen hebben aangemaakt, kunnen jullie voor elke groep een aparte kilometerprijs afspreken. Dat kan bijvoorbeeld zinvol zijn als mensen die maar heel zelden rijden en niet bijdragen aan het onderhoud van het voertuig een hogere kilometerprijs zouden moeten betalen. Of als mensen met een lager inkomen een lagere kilometerprijs zouden moeten betalen dan mensen met een hoger inkomen.</p>
+        <p>De kosten van een rit worden in je account als schuld geregistreerd. Uitgaven die je tijdens de rit had, bijvoorbeeld voor brandstof, worden van die schuld afgetrokken zodra je ze onder uitgaven hebt ingevoerd.</p>
     expenses:
       title: Uitgaven
-      desc: "Registreer brandstof, reparaties en andere kosten. Deze worden afgetrokken van de berekende kosten van je ritten."
+      desc: |
+        <p>Uitgaven vormen het bijdragenlogboek.</p>
+        <p>Wie betaalt voor brandstof, onderhoud, banden of andere gedeelde kosten, krijgt die bijdrage weer op zijn of haar account gecrediteerd.</p>
+        <p>Welke uitgaven aftrekbaar zijn, moeten jullie als groep bespreken. Brandstof, olie en ruitensproeiervloeistof zijn duidelijk. Of een dennenboom-luchtverfrisser met “nieuw auto”-geur ook meegeteld moet worden, daar kunnen jullie over discussiëren.</p>
     payments:
       title: Betalingen
-      desc: "Houd geldoverdrachten tussen leden bij om openstaande saldi te vereffenen."
+      desc: |
+        <p>Betalingen vereffenen de saldi tussen leden.</p>
+        <p>Als grotere positieve of negatieve saldi ontstaan, kunnen jullie de vereffeningsbetalingen hier documenteren.</p>
+        <p>Wanneer iemand in de groep geld aan een andere persoon geeft of overmaakt om rekeningsaldi gelijk te trekken, vul je dat gewoon hier in.</p>
     parking:
       title: Parkeerlocatie
-      desc: "Bekijk waar het voertuig momenteel geparkeerd staat op een kaart en werk de locatie bij wanneer je het parkeert."
+      desc: |
+        <p>De parkeerpagina lost het laatste praktische deelprobleem op: waar staat de auto nu precies?</p>
+        <p>Je kunt je van daaruit naar het voertuig laten navigeren en zelf de actuele parkeerpositie opslaan wanneer je je rit beëindigt.</p>
+        <p>Zo vindt de volgende persoon de auto zonder extra heen-en-weer berichten.</p>
+        <p><strong>Vergeet dit niet aan het einde van je rit!</strong> Het bespaart de volgende gebruiker waarschijnlijk wat stress.</p>
+        <p>Opmerking: Op een smartphone gebruikt Car Coop het locatiesysteem van je telefoon om de positie op te slaan. Als dat niet werkt, kun je de positie handmatig op de kaart zetten en opslaan.</p>
     admin:
       title: Beheer
-      desc: "Voeg voertuigen toe of beheer ze en bepaal wie toegang heeft tot de coöperatie."
+      desc: |
+        <p>In het beheer onderhoud je de regels van jullie autodeelgroep.</p>
+        <p>Daar beheer je leden, gebruikersgroepen, kilometerprijzen, uitnodigingen voor nieuwe gebruikers en andere basisinstellingen.</p>
+        <p>Als mensen de groep verlaten, kun je hun accounts daar deactiveren. De rit- en uitgavenregistraties blijven daarbij behouden.</p>
+        <p>Car Coop heeft een heel open beheerconcept: elk lid van de groep kan wijzigingen aanbrengen. Het is aan jullie om onderling af te spreken of iedereen akkoord is met die wijzigingen. Car Coop kan en wil die verantwoordelijkheid niet van jullie overnemen.</p>
     user:
       title: Jouw profiel
-      desc: "Bewerk je persoonlijke gegevens of log hier uit."
+      desc: |
+        <p>In je profiel beheer je taal, ontwerp, meldingen en persoonlijke instellingen.</p>
+        <p>Als je wilt, kun je daar later ook de rondleidingsherinnering weer activeren.</p>
   progress: "{{current}} van {{total}}"
   btn:
     next: Volgende
@@ -492,6 +548,8 @@ user:
     light: Kleurrijk licht
     dark: Kleurrijk donker
     classic: Klassiek
+  tour:
+    show: Toon de herinnering aan de welkomsttour op de voertuigpagina
   logged:
     in:
       as: Ingelogd als

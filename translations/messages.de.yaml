@@ -1,50 +1,117 @@
 
 tour:
   banner:
-    title: "Zum ersten Mal hier? Mach eine kurze Tour!"
-    desc: "Wir zeigen dir die wichtigsten Funktionen von Car Coop."
+    title: "Verstehe, wie eure Fahrgemeinschaft funktioniert"
+    desc: "Du kannst die Tour jederzeit erneut starten. Blende diesen Hinweis erst aus, wenn du ihn wirklich nicht mehr brauchst."
     start: Tour starten
-    dismiss: Nicht interessiert
+    hide: Hinweis ausblenden
   welcome:
     title: "Willkommen bei Car Coop!"
-    desc: "Diese kurze Tour stellt dir die wichtigsten Funktionen vor. Du kannst sie jederzeit überspringen."
+    desc: |
+      <img src="%carImage%" alt="">
+      <p>Car Coop folgt einer einfachen Idee: <strong>Ein gemeinsam genutztes Fahrzeug soll transparent, fair und leicht zusammen organisierbar sein</strong>.</p>
+      <p>Dafür erfassen die Mitglieder einer Gruppe sowohl ihre Fahrzeugnutzung als auch ihre finanziellen Aufwendungen:</p>
+      <ul>
+        <li><strong>Fahrten</strong> dokumentieren, wer wie weit gefahren ist.</li>
+        <li><strong>Ausgaben</strong> dokumentieren Tanken, Reparaturen, Versicherungen und andere gemeinsame Kosten.</li>
+        <li><strong>Zahlungen</strong> gleichen Salden zwischen Mitgliedern aus.</li>
+      </ul>
+      <p>So entsteht für jedes Mitglied ein laufender Saldo. Die Gruppe sieht jederzeit, wer viel getragen hat, wer noch wenig beigetragen hat und welcher Kilometerpreis aktuell fair und ökonomisch sinnvoll wäre.</p>
   car:
     title: Dein Fahrzeug
-    desc: "Jede Karte zeigt ein Fahrzeug. Klicke auf die Kopfzeile, um sie aufzuklappen und alle Details zu sehen."
+    desc: |
+      <p>Jedes Fahrzeug hat hier seinen eigenen Bereich. Es ist möglich mehr als ein Fahrzeug zu teilen.</p>
+      <p>Dort bündelt Car Coop alle relevanten Informationen: Nutzende, Kosten, Buchungen, Statistiken und betriebliche Details.</p>
+  actions:
+    title: Wichtige Werkzeuge
+    desc: |
+      <p>Diese drei Buttons geben euch schnellen Zugriff auf wichtige Funktionen für das Fahrzeug.</p>
+      <ul>
+        <li><strong>Kostenrechner</strong>: Schätzt die Kosten einer geplanten Fahrt anhand des Kilometerpreises und der geschätzten Entfernung der Fahrt. Das soll euch gerade am Anfang helfen eine Idee über die Kosten einer Fahrt zu bekommen.</li>
+        <li><strong>Auswertung</strong>: Öffnet die Kostenanalyse des Fahrzeugs und zeigt Vorschläge für Ausgleichszahlungen und Kilometerpreis-Änderungen. Diese Funktion macht erst richtig Sinn, wenn ihr schon einige Fahrten hinter euch habt. Je mehr Einträge desto genauer ist die Analyse.</li>
+        <li><strong>PDF-Export</strong>: Erstellt eine PDF-Zusammenfassung aller Daten zu diesem Fahrzeug (Fahrten, Ausgaben, Zahlungen, etc.). Zum Abheften oder für gemeinsame Auswertungen am Küchentisch.</li>
+      </ul>
   stats:
     title: Fahrzeugdaten
-    desc: "Wichtige Daten zum Fahrzeug – Kennzeichen, Kilometerstand, Jahreskilometer, Kosten, Kraftstoffart und -verbrauch – sind hier als Karten dargestellt."
+    desc: |
+      <p>Diese Karten fassen die aktuellen Kennzahlen des Fahrzeugs und der Fahrgemeinschaft zusammen.</p>
+      <ul>
+        <li><strong>Kilometerstand</strong> und <strong>Jahresfahrleistung</strong> zeigen, wie intensiv das Auto genutzt wird.</li>
+        <li><strong>Jahreskosten</strong> und <strong>berechnete Kosten pro Kilometer</strong> zeigen, was das Fahrzeug tatsächlich kostet.</li>
+        <li>Diese Werte sind die Grundlage dafür, ob die Preise der Nutzungsgruppen noch fair und ökonomisch sinnvoll sind.</li>
+      </ul>
   bookings:
     title: Nächste Buchungen
-    desc: "Die nächsten geplanten Buchungen sind hier aufgelistet, damit du immer weißt, wann das Fahrzeug verfügbar ist."
+    desc: |
+      <p>Der Buchungskalender erlaubt es das Fahrzeug für Zeiträume zu reservieren.</p>
+      <p>Er beantwortet die Frage <strong>„Wer hat das Auto wann?“</strong> und machen die Fahrzeugnutzung so für alle verlässlich planbar.</p>
   charts:
     title: Statistiken
-    desc: "Diese Diagramme zeigen die zurückgelegte Strecke und den Saldo zwischen den Mitgliedern über die Zeit."
+    desc: |
+      <p>Die Diagramme machen aus Alltagsdaten langfristige Einsichten für die Gruppe.</p>
+      <ul>
+        <li><strong>Das Fahrleistungsdiagramm</strong> zeigt, wer wieviel mit dem Fahrzeug unterwegs war.</li>
+        <li><strong>Das Saldodiagramm</strong> zeigt, ob einzelne Nutzende z.B. zu stark ins Plus oder Minus geraten.</li>
+      </ul>
+      <p>So erkennt ihr, wann Ausgleichszahlungen oder Preisänderungen sinnvoll werden.</p>
   nav:
     messages:
       title: Pinnwand
-      desc: "Teile Neuigkeiten, Fragen oder Informationen mit allen Mitgliedern der Fahrgemeinschaft."
+      desc: "<p>Die Pinnwand ist der gemeinsame Kommunikationsraum eurer Fahrgemeinschaft.</p><p>Hier könnt ihr Reparaturhinweise, Absprachen, Erinnerungen und organisatorische Informationen teilen.</p>"
     calendar:
       title: Buchungskalender
-      desc: "Sieh, wann das Fahrzeug gebucht ist, und reserviere es für deine eigenen Fahrten."
+      desc: "<p>Der Buchungskalender erlaubt der Gemeinschaft die gemeinsame Nutzung zu planen.</p><p>Hier seht ihr die Verfügbarkeiten des Fahrzeugs, reserviert das Fahrzeug und vermeidet dabei Überschneidungen bei den Buchungen.</p>"
     trips:
       title: Fahrten
-      desc: "Erfasse jede Fahrt mit Distanz, Datum und Zweck. Das ist die Grundlage für die Kostenberechnung."
+      desc: |
+        <p>Fahrten sind das Fahrtenbuch der Gemeinschaft.</p>
+        <p>Die gefahrenen Strecken verteilen die gemeinsamen Kosten des Fahrzeugs auf die einzelne Mitglieder.</p>
+        <p>Am Ende eurer Fahrt tragt ihr sie hier ein mit dem Endkilometerstand, dem Datum und der Art der Fahrt. Manche Fahrtarten sind dabei kostenpflichtig,
+        manche kostenlos. Fahrten in die Werkstatt z.B. sollte in der Regel kostenlos sein, da sie im Interesse aller in der Gemeinschaft sind. Wie ihr den 
+        Umgang mit kostenpflichtigen und kostenlosen Fahrten regelt, bleibt aber natürlich eurer Gemeinschaft überlassen.</p>
+        <p>Wenn ihr unterschiedlich Nutzungsgruppen angelegt habt, könnt ihr für jede Nutzungsgruppe einen eigenen Kilometerpreis vereinbaren. Das kann z.B. 
+        sinnvoll sein, wenn ihr für Menschen die nur sehr selten fahren und sich nicht am Erhalt des Fahrzeugs beteiligen einen 
+        höheren Kilometerpreis für sinnvoll haltet. Oder wenn Menschen mit niedrigerem Einkommen einen niedrigeren Kilometerpreis
+        zahlen sollen als solche mit höherem Einkommen.</p>
+        <p>Die Kosten für eine Fahrt werden in eurem Konto als "Schulden" vermerkt. Ausgaben die ihr während der Fahrt hattet (z.B. fürs Tanken) werden von 
+        diesen Schulden abgezogen wenn ihr sie bei den Ausgaben eingetragen habt.</p>
     expenses:
       title: Ausgaben
-      desc: "Trage Kraftstoff, Reparaturen und andere Kosten ein. Diese werden von den errechneten Kosten für Deine Fahrten abgezogen."
+      desc: |
+        <p>Ausgaben sind das Beitragsbuch.</p>
+        <p>Wer für Tanken, Wartung, Reifen oder andere gemeinsame Kosten aufkommt, bekommt diesen Beitrag auf seinem Konto wieder gutgeschrieben.</p>
+        <p>Welche Ausgaben abzugsfähig sind müsst ihr in der Gemeinschaft besprechen. Tanken, Öl und Scheibenwischwasser z.B. sollten klar sein. Ob der 
+        Duftbaum mit Neuwagengeruch auch abzugsfähig ist, darüber könnt ihr euch streiten.</p>
     payments:
       title: Zahlungen
-      desc: "Verfolge Geldtransfers zwischen den Mitgliedern, um offene Salden auszugleichen."
+      desc: |
+        <p>Zahlungen gleichen die Salden zwischen den Mitgliedern aus.</p>
+        <p>Wenn sich größere Plus- oder Minusstände aufbauen, könnt ihr die Ausgleichszahlungen hier dokumentieren.</p>
+        <p>Wenn jemand einer anderen Person in der Gruppe Geld gibt oder überweist um Kontostände auszugleichen, tragt es einfach hier ein.</p>
+
     parking:
       title: Parkposition
-      desc: "Sieh auf einer Karte, wo das Fahrzeug gerade steht, und aktualisiere den Standort nach dem Parken."
+      desc: |
+        <p>Die Parkseite löst das letzte praktische Problem des Teilens: Wo steht das Auto gerade?</p>
+        <p>Ihr könnt euch dort zum Fahrzeug navigieren lassen und selbst die aktuelle Parkposition des Fahrzeugs speichern wenn ihr eure Fahrt beendet habt.</p>
+        <p>So findet die nächste Person das Fahrzeug ohne zusätzliche Rückfragen.</p>
+        <p><strong>Vergesst das am Ende eurer Fahrt nicht!</strong> Das erspart der nächten Nutzer:in wahrscheinlich etwas Stress.<p>
+        <p>Hinweis: Mit dem Smartphone nutzt Car Coop das Ortungssystem eures Smartphones um die Position zu speichern. Wenn das nicht funktioniert könnt ihr 
+        manuell auf der Karte die Position des Fahrzeugs setzen und speichern</p>
     admin:
       title: Administration
-      desc: "Fahrzeuge hinzufügen oder verwalten und den Zugang zur Fahrgemeinschaft steuern."
+      desc: |
+        <p>Im Administrationsbereich pflegt ihr die Regeln eurer Fahrgemeinschaft.</p>
+        <p>Dort verwaltet ihr Mitglieder, Nutzungsgruppen, Kilometerpreise, Einladungen für neue Nutzende und weitere Grundeinstellungen.</p>
+        <p>Wenn Menschen aus eurer Gemeinschaft ausscheiden, könnt ihr ihre Accounts dort deaktivieren. Die Fahrtenbuch- und Ausgabeneinträge bleiben dabei 
+        erhalten</p>
+        <p>Car Coop hat ein sehr offenes Administrationkonzept: Jedes Mitglied der Gruppe kann Änderungen vornehmen. Für das Absprechen ob alle mit den 
+        Änderungen einverstanden sind, seit ihr verantwortlich. Das kann und will euch Car Coop nicht abnehmen.</p>
     user:
       title: Dein Profil
-      desc: "Persönliche Daten bearbeiten oder hier abmelden."
+      desc: | 
+        <p>Im Profil verwaltest du Sprache, Design, Benachrichtigungen und persönliche Einstellungen.</p>
+        <p>Wenn du möchtest, kannst du den Tour-Hinweis später hier auch wieder aktivieren.</p>
   progress: "{{current}} von {{total}}"
   btn:
     next: Weiter
@@ -493,6 +560,8 @@ user:
     light: Farbenfroh hell
     dark: Farbenfroh dunkel
     classic: Klassisch
+  tour:
+    show: Hinweis auf die Willkommenstour auf der Fahrzeugübersicht anzeigen
   logged:
     in:
       as: Du bist eingeloggt als

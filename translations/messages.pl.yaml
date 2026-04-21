@@ -1,49 +1,105 @@
 tour:
   banner:
-    title: "Jesteś tu nowy? Zrób krótkie wprowadzenie!"
-    desc: "Przeprowadzimy Cię przez najważniejsze funkcje Car Coop."
+    title: "Zrozum, jak działa wasza grupa współdzielenia auta"
+    desc: "Możesz uruchomić samouczek ponownie w dowolnym momencie. Ukryj to przypomnienie dopiero wtedy, gdy naprawdę nie będzie już potrzebne."
     start: Rozpocznij wprowadzenie
-    dismiss: Nie jestem zainteresowany
+    hide: Ukryj to przypomnienie
   welcome:
     title: "Witaj w Car Coop!"
-    desc: "To krótkie wprowadzenie zapozna Cię z najważniejszymi funkcjami. Możesz je pominąć w dowolnym momencie."
+    desc: |
+      <img src="%carImage%" alt="">
+      <p>Car Coop opiera się na prostym założeniu: <strong>współdzielony pojazd powinien być przejrzysty, sprawiedliwy i łatwy do wspólnego zorganizowania</strong>.</p>
+      <p>Dlatego członkowie grupy zapisują zarówno sposób korzystania z pojazdu, jak i swoje wkłady finansowe:</p>
+      <ul>
+        <li><strong>Przejazdy</strong> pokazują, kto jechał i jak daleko.</li>
+        <li><strong>Wydatki</strong> obejmują paliwo, naprawy, ubezpieczenia i inne wspólne koszty.</li>
+        <li><strong>Płatności</strong> wyrównują salda między członkami.</li>
+      </ul>
+      <p>Dzięki temu dla każdego członka powstaje bieżące saldo. Grupa może w każdej chwili zobaczyć, kto już poniósł dużo kosztów, kto wniósł dotąd mniej i jaka stawka za kilometr byłaby obecnie uczciwa i ekonomicznie sensowna.</p>
   car:
     title: Twój pojazd
-    desc: "Każdy panel przedstawia jeden pojazd. Kliknij nagłówek, aby go rozwinąć i zobaczyć wszystkie szczegóły."
+    desc: |
+      <p>Każdy pojazd ma tutaj własną sekcję. Możliwe jest współdzielenie więcej niż jednego pojazdu.</p>
+      <p>Car Coop gromadzi tam wszystkie istotne informacje: użytkowników, koszty, rezerwacje, statystyki i szczegóły operacyjne.</p>
+  actions:
+    title: Ważne narzędzia
+    desc: |
+      <p>Te trzy przyciski dają szybki dostęp do ważnych funkcji związanych z pojazdem.</p>
+      <ul>
+        <li><strong>Kalkulator kosztów</strong>: szacuje koszt planowanego przejazdu na podstawie ceny za kilometr i przewidywanej długości trasy. Zwłaszcza na początku pomaga to zorientować się, ile może kosztować przejazd.</li>
+        <li><strong>Analiza</strong>: otwiera analizę kosztów pojazdu i pokazuje propozycje płatności wyrównawczych oraz zmian cen za kilometr. Ta funkcja ma największy sens wtedy, gdy macie już zapisanych kilka przejazdów. Im więcej wpisów, tym trafniejsza analiza.</li>
+        <li><strong>Eksport PDF</strong>: tworzy podsumowanie PDF wszystkich danych dotyczących tego pojazdu, takich jak przejazdy, wydatki, płatności itd. Przydatne do archiwizacji albo do wspólnego omawiania przy kuchennym stole.</li>
+      </ul>
   stats:
     title: Dane pojazdu
-    desc: "Kluczowe informacje o pojeździe — tablica rejestracyjna, przebieg, roczny dystans, koszty, rodzaj paliwa i zużycie — są wyświetlane tutaj jako karty."
+    desc: |
+      <p>Te karty podsumowują aktualne wskaźniki pojazdu i grupy współdzielenia.</p>
+      <ul>
+        <li><strong>Przebieg</strong> i <strong>roczny dystans</strong> pokazują, jak intensywnie auto jest używane.</li>
+        <li><strong>Roczne koszty</strong> i <strong>obliczony koszt na kilometr</strong> pokazują, ile pojazd naprawdę kosztuje.</li>
+        <li>Te wartości stanowią podstawę do oceny, czy ceny dla grup użytkowników są nadal sprawiedliwe i ekonomicznie uzasadnione.</li>
+      </ul>
   bookings:
     title: Nadchodzące rezerwacje
-    desc: "Tutaj wyświetlane są następne zaplanowane rezerwacje, dzięki czemu zawsze wiesz, kiedy pojazd jest dostępny."
+    desc: |
+      <p>Kalendarz rezerwacji pozwala rezerwować pojazd na określone okresy.</p>
+      <p>Odpowiada na pytanie <strong>„Kto ma samochód i kiedy?”</strong> i sprawia, że korzystanie z auta da się niezawodnie zaplanować dla wszystkich.</p>
   charts:
     title: Statystyki
-    desc: "Te wykresy pokazują przebyty dystans oraz bilans między członkami w czasie."
+    desc: |
+      <p>Wykresy zamieniają codzienne dane w długoterminowe wnioski dla grupy.</p>
+      <ul>
+        <li><strong>Wykres dystansu</strong> pokazuje, kto ile jeździł pojazdem.</li>
+        <li><strong>Wykres salda</strong> pokazuje, czy poszczególni użytkownicy nie odchylają się zbyt mocno na plus lub minus.</li>
+      </ul>
+      <p>Dzięki temu łatwiej zauważyć, kiedy potrzebne są płatności wyrównawcze lub zmiany cen.</p>
   nav:
     messages:
       title: Tablica ogłoszeń
-      desc: "Udostępniaj wiadomości, pytania lub aktualizacje wszystkim członkom swojej spółdzielni samochodowej."
+      desc: "<p>Tablica ogłoszeń to wspólna przestrzeń komunikacyjna waszej grupy współdzielenia auta.</p><p>Możecie tam zamieszczać informacje o naprawach, ustalenia, przypomnienia i wiadomości organizacyjne.</p>"
     calendar:
       title: Kalendarz rezerwacji
-      desc: "Sprawdź, kiedy pojazd jest zarezerwowany i zarezerwuj go na własne przejazdy."
+      desc: "<p>Kalendarz rezerwacji pozwala grupie planować wspólne korzystanie z pojazdu.</p><p>Tutaj widzicie dostępność pojazdu, rezerwujecie go i unikacie nakładających się rezerwacji.</p>"
     trips:
       title: Przejazdy
-      desc: "Rejestruj każdy przejazd — dystans, datę i cel. To jest podstawa do obliczania kosztów."
+      desc: |
+        <p>Przejazdy są dziennikiem przejazdów grupy.</p>
+        <p>Przejechane odległości rozdzielają wspólne koszty pojazdu pomiędzy poszczególnych członków.</p>
+        <p>Po zakończeniu przejazdu wpisujecie go tutaj wraz z końcowym stanem licznika, datą i rodzajem przejazdu. Niektóre rodzaje przejazdów są płatne, inne bezpłatne. Przejazd do warsztatu powinien na przykład zazwyczaj być bezpłatny, bo leży w interesie całej grupy. To jednak od waszej społeczności zależy, jak uregulujecie przejazdy płatne i bezpłatne.</p>
+        <p>Jeśli utworzyliście różne grupy użytkowania, możecie ustalić odrębną cenę za kilometr dla każdej z nich. Może to mieć sens na przykład wtedy, gdy osoby jeżdżące bardzo rzadko i nieuczestniczące w utrzymaniu pojazdu powinny płacić wyższą stawkę. Albo gdy osoby o niższych dochodach mają płacić mniej za kilometr niż osoby o wyższych dochodach.</p>
+        <p>Koszt przejazdu jest zapisywany na waszym koncie jako dług. Wydatki poniesione w trakcie przejazdu, na przykład na paliwo, są odejmowane od tego długu, gdy zapiszecie je w wydatkach.</p>
     expenses:
       title: Wydatki
-      desc: "Zapisuj koszty paliwa, napraw i inne wydatki. Są one odejmowane od obliczonych kosztów Twoich przejazdów."
+      desc: |
+        <p>Wydatki są księgą wkładów finansowych.</p>
+        <p>Kto płaci za paliwo, serwis, opony lub inne wspólne koszty, otrzymuje ten wkład z powrotem zapisany na swoim koncie.</p>
+        <p>To, które wydatki podlegają rozliczeniu, musicie ustalić wspólnie. Paliwo, olej i płyn do spryskiwaczy to oczywiste przykłady. Czy odświeżacz powietrza o zapachu nowego auta też powinien się liczyć, to już może być temat do dyskusji.</p>
     payments:
       title: Płatności
-      desc: "Śledź transfery pieniężne między członkami w celu rozliczenia zaległych sald."
+      desc: |
+        <p>Płatności wyrównują salda między członkami.</p>
+        <p>Jeśli narastają większe nadwyżki lub niedobory, możecie tutaj dokumentować płatności wyrównawcze.</p>
+        <p>Za każdym razem, gdy ktoś w grupie przekazuje lub przelewa pieniądze innej osobie, by wyrównać stany kont, po prostu wpisujecie to tutaj.</p>
     parking:
       title: Miejsce parkingowe
-      desc: "Sprawdź na mapie, gdzie aktualnie zaparkowany jest pojazd, i zaktualizuj lokalizację po zaparkowaniu."
+      desc: |
+        <p>Strona parkingu rozwiązuje ostatni praktyczny problem współdzielenia: gdzie dokładnie stoi teraz samochód?</p>
+        <p>Możecie stamtąd uruchomić nawigację do pojazdu i samodzielnie zapisać aktualną pozycję po zakończeniu przejazdu.</p>
+        <p>Dzięki temu kolejna osoba znajdzie auto bez dodatkowych wiadomości.</p>
+        <p><strong>Nie zapomnijcie o tym na końcu przejazdu!</strong> Prawdopodobnie oszczędzi to kolejnej osobie trochę stresu.</p>
+        <p>Uwaga: na smartfonie Car Coop korzysta z systemu lokalizacji telefonu, aby zapisać pozycję. Jeśli to nie działa, możecie ustawić i zapisać pozycję ręcznie na mapie.</p>
     admin:
       title: Administracja
-      desc: "Dodawaj pojazdy lub zarządzaj nimi oraz kontroluj, kto ma dostęp do spółdzielni."
+      desc: |
+        <p>W obszarze administracji utrzymujecie zasady działania waszej grupy współdzielenia auta.</p>
+        <p>Tam zarządzacie członkami, grupami użytkowników, cenami za kilometr, zaproszeniami dla nowych użytkowników i innymi podstawowymi ustawieniami.</p>
+        <p>Jeśli ktoś opuszcza grupę, możecie tam dezaktywować jego konto. Wpisy dotyczące przejazdów i wydatków pozostają zachowane.</p>
+        <p>Car Coop ma bardzo otwartą koncepcję administracji: każda osoba w grupie może wprowadzać zmiany. To wy musicie ustalić między sobą, czy wszyscy zgadzają się na te zmiany. Car Coop nie może i nie chce brać tej odpowiedzialności za was.</p>
     user:
       title: Twój profil
-      desc: "Edytuj swoje dane osobowe lub wyloguj się stąd."
+      desc: |
+        <p>W profilu zarządzasz językiem, motywem, powiadomieniami i ustawieniami osobistymi.</p>
+        <p>Jeśli chcesz, możesz tam później ponownie włączyć przypomnienie o samouczku.</p>
   progress: "{{current}} z {{total}}"
   btn:
     next: Dalej
@@ -492,6 +548,8 @@ user:
     light: Kolorowy jasny
     dark: Kolorowy ciemny
     classic: Klasyczny
+  tour:
+    show: Pokazuj przypomnienie o samouczku na stronie pojazdu
   logged:
     in:
       as: Zalogowany jako
