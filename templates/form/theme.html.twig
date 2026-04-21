@@ -1,5 +1,10 @@
 {% use 'bootstrap_4_layout.html.twig' %}
 
+{% block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-select')|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed %}
+
 {% block form_errors -%}
     {% if errors|length > 0 -%}
         <div class="invalid-feedback d-block">
