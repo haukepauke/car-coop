@@ -142,6 +142,9 @@ banktransfer: Transferencia bancaria
 booking:
   bookings: Reservas
   new: Nueva reserva
+  overlap:
+    inline: "Advertencia: este periodo se solapa con %count% reserva(s) existente(s)."
+    flash: "La reserva se guardó, pero se solapa con %count% reserva(s) existente(s)."
   caldav:
     title: Suscribirse al calendario
     description: "Añade este calendario a tu aplicación de calendario (Apple Calendar, Thunderbird, etc.) para ver las reservas y crear nuevas directamente desde tu dispositivo."

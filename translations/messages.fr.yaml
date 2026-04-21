@@ -142,6 +142,9 @@ banktransfer: Virement bancaire
 booking:
   bookings: Réservations
   new: Nouvelle réservation
+  overlap:
+    inline: "Attention : cette période chevauche %count% réservation(s) existante(s)."
+    flash: "La réservation a été enregistrée, mais elle chevauche %count% réservation(s) existante(s)."
   caldav:
     title: S'abonner au calendrier
     description: "Ajoutez ce calendrier à votre application de calendrier (Apple Agenda, Thunderbird, etc.) pour voir les réservations et en créer de nouvelles directement depuis votre appareil."

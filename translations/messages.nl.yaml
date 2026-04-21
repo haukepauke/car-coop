@@ -142,6 +142,9 @@ banktransfer: Bankoverschrijving
 booking:
   bookings: Boekingen
   new: Nieuwe boeking
+  overlap:
+    inline: "Waarschuwing: deze periode overlapt met %count% bestaande boeking(en)."
+    flash: "De boeking is opgeslagen, maar overlapt met %count% bestaande boeking(en)."
   caldav:
     title: Abonneren op kalender
     description: "Voeg deze kalender toe aan je kalender-app (Apple Agenda, Thunderbird, enz.) om boekingen te zien en nieuwe boekingen rechtstreeks vanaf je apparaat te maken."

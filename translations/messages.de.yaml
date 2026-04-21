@@ -143,6 +143,9 @@ banktransfer: Überweisung
 booking:
   bookings: Buchungen
   new: Neue Buchung
+  overlap:
+    inline: "Warnung: Dieser Zeitraum überschneidet sich mit %count% bestehenden Buchung(en)."
+    flash: "Die Buchung wurde gespeichert, überschneidet sich aber mit %count% bestehenden Buchung(en)."
   caldav:
     title: Kalender abonnieren
     description: "Füge diesen Kalender in deiner Kalender-App (Apple Calendar, Thunderbird, etc.) hinzu, um Buchungen zu sehen und direkt von deinem Gerät neue zu erstellen."

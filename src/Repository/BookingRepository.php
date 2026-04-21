@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Booking;
 use App\Entity\Car;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -72,5 +73,29 @@ class BookingRepository extends ServiceEntityRepository
             ->addOrderBy('b.id', 'DESC')
             ->setMaxResults($limit)
         ;
+    }
+
+    /**
+     * @return Booking[]
+     */
+    public function findOverlappingBookings(Car $car, DateTimeInterface $startDate, DateTimeInterface $endDate, ?Booking $exclude = null): array
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->andWhere('b.car = :car')
+            ->andWhere('b.startDate < :endDate')
+            ->andWhere('b.endDate > :startDate')
+            ->setParameter('car', $car)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->orderBy('b.startDate', 'ASC')
+            ->addOrderBy('b.id', 'ASC');
+
+        if ($exclude?->getId() !== null) {
+            $qb
+                ->andWhere('b.id != :excludeId')
+                ->setParameter('excludeId', $exclude->getId());
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

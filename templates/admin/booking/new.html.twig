@@ -4,6 +4,23 @@
 <div class="col-xl-6 mt-5">
     <h4>{{ 'booking.new'|trans }}</h4>
 
+    {% if overlappingBookings is not empty %}
+    <div class="alert alert-warning">
+        <p class="mb-2">{{ 'booking.overlap.inline'|trans({'%count%': overlappingBookings|length}) }}</p>
+        <ul class="mb-0">
+            {% for overlap in overlappingBookings %}
+            <li>
+                {{ overlap.startDate|date('Y-m-d H:i') }} – {{ overlap.endDate|date('Y-m-d H:i') }}
+                · {{ overlap.user.name }}
+                {% if overlap.title %}
+                    · {{ overlap.title }}
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     {{ form_start(bookingForm)}}
         {{ form_widget(bookingForm) }}
 

@@ -34,7 +34,13 @@ class BookingAdminController extends AbstractController
     }
 
     #[Route('/admin/booking/new', name: 'app_booking_new')]
-    public function new(Request $request, BookingService $bookingService, ActiveCarService $activeCarService, TranslatorInterface $translator): Response
+    public function new(
+        Request $request,
+        BookingService $bookingService,
+        ActiveCarService $activeCarService,
+        BookingRepository $bookingRepository,
+        TranslatorInterface $translator
+    ): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -55,8 +61,14 @@ class BookingAdminController extends AbstractController
         );
 
         $form->handleRequest($request);
+        $overlappingBookings = $this->findOverlappingBookings($booking, $bookingRepository);
         if ($form->isSubmitted() && $form->isValid()) {
             $bookingService->createBooking($form->getData());
+            if ($overlappingBookings !== []) {
+                $this->addFlash('warning', $translator->trans('booking.overlap.flash', [
+                    '%count%' => count($overlappingBookings),
+                ]));
+            }
             $this->addFlash('success', $translator->trans('booking.created'));
 
             return $this->redirectToRoute('app_booking_show');
@@ -69,6 +81,7 @@ class BookingAdminController extends AbstractController
                 'bookingForm' => $form->createView(),
                 'car' => $car,
                 'user' => $user,
+                'overlappingBookings' => $overlappingBookings,
             ]
         );
     }
@@ -86,10 +99,16 @@ class BookingAdminController extends AbstractController
         );
 
         $form->handleRequest($request);
+        $overlappingBookings = $this->findOverlappingBookings($booking, $bookingRepo);
         if ($form->isSubmitted() && $form->isValid()) {
             $booking = $form->getData();
             $booking->setEditor($this->getUser());
             $bookingService->updateBooking($booking);
+            if ($overlappingBookings !== []) {
+                $this->addFlash('warning', $translator->trans('booking.overlap.flash', [
+                    '%count%' => count($overlappingBookings),
+                ]));
+            }
             $this->addFlash('success', $translator->trans('booking.updated'));
 
             return $this->redirectToRoute('app_booking_show');
@@ -102,6 +121,7 @@ class BookingAdminController extends AbstractController
                 'bookingForm' => $form->createView(),
                 'booking' => $booking,
                 'car' => $car,
+                'overlappingBookings' => $overlappingBookings,
             ]
         );
     }
@@ -121,5 +141,22 @@ class BookingAdminController extends AbstractController
         $this->addFlash('success', $translator->trans('booking.deleted'));
 
         return $this->redirectToRoute('app_booking_show');
+    }
+
+    /**
+     * @return Booking[]
+     */
+    private function findOverlappingBookings(Booking $booking, BookingRepository $bookingRepository): array
+    {
+        if ($booking->getCar() === null || $booking->getStartDate() === null || $booking->getEndDate() === null) {
+            return [];
+        }
+
+        return $bookingRepository->findOverlappingBookings(
+            $booking->getCar(),
+            $booking->getStartDate(),
+            $booking->getEndDate(),
+            $booking
+        );
     }
 }

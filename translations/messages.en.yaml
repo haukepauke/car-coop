@@ -143,6 +143,9 @@ banktransfer: Bank transfer
 booking:
   bookings: Bookings
   new: New Booking
+  overlap:
+    inline: "Warning: this period overlaps with %count% existing booking(s)."
+    flash: "The booking was saved, but it overlaps with %count% existing booking(s)."
   caldav:
     title: Subscribe to calendar
     description: "Add this calendar to your calendar app (Apple Calendar, Thunderbird, etc.) to see bookings and create new ones directly from your device."

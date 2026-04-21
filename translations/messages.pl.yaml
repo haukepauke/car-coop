@@ -142,6 +142,9 @@ banktransfer: Przelew bankowy
 booking:
   bookings: Rezerwacje
   new: Nowa rezerwacja
+  overlap:
+    inline: "Ostrzeżenie: ten termin nakłada się na %count% istniejącą(e) rezerwację(e)."
+    flash: "Rezerwacja została zapisana, ale nakłada się na %count% istniejącą(e) rezerwację(e)."
   caldav:
     title: Subskrybuj kalendarz
     description: "Dodaj ten kalendarz do swojej aplikacji kalendarza (Apple Calendar, Thunderbird itp.), aby widzieć rezerwacje i tworzyć nowe bezpośrednio ze swojego urządzenia."
