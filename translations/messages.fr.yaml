@@ -167,12 +167,12 @@ messageboard:
   toggle_sticky: Épingler/désépingler le message
   delete: Supprimer le message
   delete_confirm: Vraiment supprimer ce message ?
-  attach_photos: Joindre des photos
-  photo_hint: Vous pouvez sélectionner plusieurs images. Maximum 4 Mo par photo.
+  attach_photos: Joindre des fichiers
+  photo_hint: Vous pouvez sélectionner plusieurs fichiers JPG, PNG, GIF ou PDF. Maximum 4 Mo par fichier.
   photo: Photo
-  photo_too_large: Une ou plusieurs photos dépassent la taille maximale autorisée de 4 Mo et n'ont pas été téléchargées.
-  photo_invalid_type: Un ou plusieurs fichiers ne sont pas des fichiers image valides et n'ont pas été téléchargés.
-  photo_upload_failed: Une ou plusieurs photos n'ont pas pu être enregistrées sur le serveur.
+  photo_too_large: Un ou plusieurs fichiers dépassent la taille maximale autorisée de 4 Mo et n'ont pas été téléchargés.
+  photo_invalid_type: Un ou plusieurs fichiers ne sont pas des fichiers JPG, PNG, GIF ou PDF valides et n'ont pas été téléchargés.
+  photo_upload_failed: Une ou plusieurs pièces jointes n'ont pas pu être enregistrées sur le serveur.
   download_photo: Télécharger
   close: Fermer
 parking:

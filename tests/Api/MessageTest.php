@@ -7,6 +7,7 @@ use App\Entity\Message;
 class MessageTest extends ApiTestCase
 {
     protected static int $messageId;
+    protected static string $attachmentFilename = 'manual.pdf';
 
     public static function setUpBeforeClass(): void
     {
@@ -20,8 +21,15 @@ class MessageTest extends ApiTestCase
         $message->setCar($car);
         $message->setAuthor($user);
         $message->setContent('Hello from the test suite!');
+        $message->setPhotos([static::$attachmentFilename]);
         $em->persist($message);
         $em->flush();
+
+        $attachmentDirectory = static::getContainer()->getParameter('message_attachment_directory') . '/messages';
+        if (!is_dir($attachmentDirectory)) {
+            mkdir($attachmentDirectory, 0777, true);
+        }
+        file_put_contents($attachmentDirectory . '/' . static::$attachmentFilename, "%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF");
 
         static::$messageId = $message->getId();
     }
@@ -51,7 +59,27 @@ class MessageTest extends ApiTestCase
         $this->assertSame(static::$messageId, $data['id']);
         $this->assertSame('Hello from the test suite!', $data['content']);
         $this->assertArrayHasKey('createdAt', $data);
+        $this->assertSame([
+            '/api/messages/' . static::$messageId . '/attachments/' . rawurlencode(static::$attachmentFilename),
+        ], $data['attachmentUrls']);
         $this->assertFalse($data['isSticky']);
+    }
+
+    public function testAttachmentDownloadReturns200ForAuthorizedUser(): void
+    {
+        $client = static::authClient();
+        $client->request('GET', '/api/messages/' . static::$messageId . '/attachments/' . rawurlencode(static::$attachmentFilename));
+
+        $this->assertResponseIsSuccessful();
+        $headers = $client->getResponse()->getHeaders(false);
+        $this->assertSame('application/pdf', $headers['content-type'][0] ?? null);
+        $this->assertStringContainsString('inline', $headers['content-disposition'][0] ?? '');
+    }
+
+    public function testAttachmentDownloadUnauthenticatedReturns401(): void
+    {
+        static::createClient()->request('GET', '/api/messages/' . static::$messageId . '/attachments/' . rawurlencode(static::$attachmentFilename));
+        $this->assertResponseStatusCodeSame(401);
     }
 
     public function testGetCollectionUnauthenticatedReturns401(): void

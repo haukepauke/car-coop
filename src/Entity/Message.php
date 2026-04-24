@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
                                 'properties' => [
                                     'car'     => ['type' => 'integer', 'description' => 'Car ID'],
                                     'content' => ['type' => 'string'],
-                                    'photos'  => ['type' => 'array', 'items' => ['type' => 'string', 'format' => 'binary']],
+                                    'photos'  => ['type' => 'array', 'items' => ['type' => 'string', 'format' => 'binary'], 'description' => 'JPG, PNG, GIF, or PDF attachments'],
                                 ],
                             ],
                         ],
@@ -164,6 +164,24 @@ class Message
     {
         $this->photos = $photos ?: null;
         return $this;
+    }
+
+    public function hasPhoto(string $filename): bool
+    {
+        return in_array($filename, $this->getPhotos(), true);
+    }
+
+    #[Groups(['message:read'])]
+    public function getAttachmentUrls(): array
+    {
+        if ($this->id === null) {
+            return [];
+        }
+
+        return array_map(
+            fn(string $filename) => sprintf('/api/messages/%d/attachments/%s', $this->id, rawurlencode($filename)),
+            $this->getPhotos(),
+        );
     }
 
     public function isBroadcast(): bool

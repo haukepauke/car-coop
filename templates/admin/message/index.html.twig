@@ -90,12 +90,25 @@
                 {% if message.photos %}
                 <div class="d-flex flex-wrap gap-2 mt-2">
                     {% for photo in message.photos %}
-                    <img src="{{ asset('uploads/messages/' ~ photo) }}"
+                    {% set attachmentUrl = path('app_message_attachment_show', {message: message.id, filename: photo}) %}
+                    {% set attachmentExt = photo|split('.')|last|lower %}
+                    {% if attachmentExt == 'pdf' %}
+                    <a href="{{ attachmentUrl }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="message-attachment-card"
+                       download="{{ photo }}">
+                        <span class="message-attachment-card__icon"><i class="fa-regular fa-file-pdf"></i></span>
+                        <span class="message-attachment-card__name">{{ photo }}</span>
+                    </a>
+                    {% else %}
+                    <img src="{{ attachmentUrl }}"
                          alt="{{ 'messageboard.photo'|trans }}"
                          class="message-photo-thumb"
-                         data-photo-url="{{ asset('uploads/messages/' ~ photo) }}"
+                         data-photo-url="{{ attachmentUrl }}"
                          data-photo-name="{{ photo }}"
                          onclick="openPhotoModal(this)">
+                    {% endif %}
                     {% endfor %}
                 </div>
                 {% endif %}
@@ -121,12 +134,13 @@
             <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token('message_new') }}">
                 <input type="hidden" name="content" id="message-content">
-                <input type="file" name="photos[]" id="message-photos" accept="image/*" multiple class="d-none">
+                <input type="file" name="photos[]" id="message-photos" accept=".jpg,.jpeg,.png,.gif,.pdf,image/jpeg,image/png,image/gif,application/pdf" multiple class="d-none">
                 <div id="photo-preview-area" class="photo-upload-area" title="{{ 'messageboard.photo_hint'|trans }}">
                     <button type="button" id="photo-add-btn" class="photo-add-btn" title="{{ 'messageboard.attach_photos'|trans }}" aria-label="{{ 'messageboard.attach_photos'|trans }}">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
+                <p class="form-text mt-2 mb-0">{{ 'messageboard.photo_hint'|trans }}</p>
                 <button type="submit" class="btn btn-outline-dark mt-2">{{ 'messageboard.post'|trans }}</button>
             </form>
         </div>

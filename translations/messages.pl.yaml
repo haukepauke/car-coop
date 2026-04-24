@@ -167,12 +167,12 @@ messageboard:
   toggle_sticky: Przypnij/odepnij wiadomość
   delete: Usuń wiadomość
   delete_confirm: Czy na pewno chcesz usunąć tę wiadomość?
-  attach_photos: Załącz zdjęcia
-  photo_hint: Możesz wybrać wiele zdjęć. Maksymalnie 4 MB na zdjęcie.
+  attach_photos: Załącz pliki
+  photo_hint: Możesz wybrać wiele plików JPG, PNG, GIF lub PDF. Maksymalnie 4 MB na plik.
   photo: Zdjęcie
-  photo_too_large: Jedno lub więcej zdjęć przekracza maksymalny dozwolony rozmiar 4 MB i nie zostały przesłane.
-  photo_invalid_type: Jeden lub więcej plików nie jest prawidłowym plikiem graficznym i nie zostały przesłane.
-  photo_upload_failed: Nie udało się zapisać jednego lub więcej zdjęć na serwerze.
+  photo_too_large: Jeden lub więcej plików przekracza maksymalny dozwolony rozmiar 4 MB i nie zostały przesłane.
+  photo_invalid_type: Jeden lub więcej plików nie jest prawidłowym plikiem JPG, PNG, GIF lub PDF i nie zostały przesłane.
+  photo_upload_failed: Nie udało się zapisać jednego lub więcej załączników na serwerze.
   download_photo: Pobierz
   close: Zamknij
 parking:

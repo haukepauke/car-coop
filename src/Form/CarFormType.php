@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Car;
 use App\Service\CurrencyService;
+use App\Service\FileUploaderService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -12,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 
 class CarFormType extends AbstractType
 {
@@ -119,8 +120,7 @@ class CarFormType extends AbstractType
             );
         }
 
-        $builder->
-add(
+        $builder->add(
                 'picture',
                 FileType::class,
                 [
@@ -128,24 +128,20 @@ add(
                     'mapped' => false,
                     'required' => false,
                     'constraints' => [
-                        new File(
+                        new Image(
                             [
                                 'maxSize' => '4096k',
-                                'mimeTypes' => [
-                                    'image/jpeg',
-                                    'image/png',
-                                    'image/gif',
-                                ],
+                                'mimeTypes' => array_keys(FileUploaderService::ALLOWED_RASTER_MIME_TYPES),
                                 'mimeTypesMessage' => 'car.form.help.profile.picture',
                             ]
                         ),
                     ],
                     'attr' => [
                         'class' => 'form-control',
+                        'accept' => '.jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif',
                     ],
                 ]
-            )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

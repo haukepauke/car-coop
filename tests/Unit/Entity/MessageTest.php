@@ -47,6 +47,30 @@ class MessageTest extends TestCase
         $this->assertSame([], $message->getPhotos());
     }
 
+    public function testHasPhotoMatchesStoredFilename(): void
+    {
+        $message = new Message();
+        $message->setPhotos(['photo1.jpg', 'manual.pdf']);
+
+        $this->assertTrue($message->hasPhoto('manual.pdf'));
+        $this->assertFalse($message->hasPhoto('missing.jpg'));
+    }
+
+    public function testGetAttachmentUrlsReturnsApiPaths(): void
+    {
+        $message = new Message();
+        $message->setPhotos(['manual.pdf', 'photo1.jpg']);
+
+        $reflection = new \ReflectionProperty(Message::class, 'id');
+        $reflection->setAccessible(true);
+        $reflection->setValue($message, 42);
+
+        $this->assertSame([
+            '/api/messages/42/attachments/manual.pdf',
+            '/api/messages/42/attachments/photo1.jpg',
+        ], $message->getAttachmentUrls());
+    }
+
     // ── getSystemData() ───────────────────────────────────────────────────────
 
     public function testGetSystemDataReturnsNullForUserMessage(): void

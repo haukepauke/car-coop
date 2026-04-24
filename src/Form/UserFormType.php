@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Service\FileUploaderService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -10,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 
 class UserFormType extends AbstractType
 {
@@ -81,20 +82,17 @@ class UserFormType extends AbstractType
                     'mapped' => false,
                     'required' => false,
                     'constraints' => [
-                        new File(
+                        new Image(
                             [
                                 'maxSize' => '4096k',
-                                'mimeTypes' => [
-                                    'image/jpeg',
-                                    'image/png',
-                                    'image/gif',
-                                ],
+                                'mimeTypes' => array_keys(FileUploaderService::ALLOWED_RASTER_MIME_TYPES),
                                 'mimeTypesMessage' => 'Please upload a Jpeg, PNG or GIF image file',
                             ]
                         ),
                     ],
                     'attr' => [
                         'class' => 'form-control',
+                        'accept' => '.jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif',
                     ],
                 ]
             )->add(

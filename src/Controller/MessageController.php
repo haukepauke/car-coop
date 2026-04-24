@@ -71,7 +71,7 @@ class MessageController extends AbstractController
         $user = $this->getUser();
         $car  = $activeCarService->getActiveCar();
 
-        $uploadDir = $uploader->getTargetDirectory() . '/' . self::PHOTO_FOLDER;
+        $uploadDir = $uploader->getMessageAttachmentDirectory(self::PHOTO_FOLDER);
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -86,17 +86,25 @@ class MessageController extends AbstractController
                 $this->addFlash('warning', $translator->trans('messageboard.photo_too_large'));
                 continue;
             }
-            $mimeType = $file->getMimeType() ?? $file->getClientMimeType();
-            if (!str_starts_with((string) $mimeType, 'image/')) {
+            if (!$uploader->isAllowedMessageAttachment($file)) {
                 $this->addFlash('warning', $translator->trans('messageboard.photo_invalid_type'));
                 continue;
             }
-            $filename = $uploader->upload($file, self::PHOTO_FOLDER);
+            try {
+                $filename = $uploader->uploadMessageAttachment($file, self::PHOTO_FOLDER);
+            } catch (\RuntimeException) {
+                $this->addFlash('warning', $translator->trans('messageboard.photo_upload_failed'));
+                continue;
+            }
             if (file_exists($uploadDir . '/' . $filename)) {
                 $photoFilenames[] = $filename;
             } else {
                 $this->addFlash('warning', $translator->trans('messageboard.photo_upload_failed'));
             }
+        }
+
+        if (($content === '' || $content === '<p><br></p>') && $photoFilenames === []) {
+            return $this->redirectToRoute('app_message_board');
         }
 
         $message = new Message();
@@ -147,10 +155,7 @@ class MessageController extends AbstractController
         }
 
         foreach ($message->getPhotos() as $filename) {
-            $path = $uploader->getTargetDirectory() . '/' . self::PHOTO_FOLDER . '/' . $filename;
-            if (file_exists($path)) {
-                unlink($path);
-            }
+            $uploader->deleteMessageAttachment($filename, self::PHOTO_FOLDER);
         }
 
         $em->remove($message);

@@ -23,12 +23,7 @@ class MessageDeleteProcessor implements ProcessorInterface
     {
         if ($data instanceof Message) {
             foreach ($data->getPhotos() as $filename) {
-                $path = $this->uploader->getTargetDirectory()
-                    . '/' . self::PHOTO_FOLDER
-                    . '/' . $filename;
-                if (file_exists($path)) {
-                    unlink($path);
-                }
+                $this->uploader->deleteMessageAttachment($filename, self::PHOTO_FOLDER);
             }
         }
 

@@ -12,15 +12,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Handles POST /api/messages as multipart/form-data so photos can be
+ * Handles POST /api/messages as multipart/form-data so attachments can be
  * uploaded together with the message text.
  *
  * Expected form fields:
  *   car      – integer car ID
  *   content  – string (may be empty when photos are provided)
- *   photos[] – one or more image files (optional)
+ *   photos[] – one or more JPG, PNG, GIF, or PDF files (optional)
  */
 class MessageApiCreateController extends AbstractController
 {
@@ -63,11 +64,11 @@ class MessageApiCreateController extends AbstractController
         $uploadedFiles = array_filter($uploadedFiles);
 
         if ($content === '' && empty($uploadedFiles)) {
-            throw new BadRequestHttpException('Message must contain text or at least one photo.');
+            throw new BadRequestHttpException('Message must contain text or at least one attachment.');
         }
 
-        // ── Handle photo uploads ──────────────────────────────────────────────
-        $uploadDir = $this->uploader->getTargetDirectory() . '/' . self::PHOTO_FOLDER;
+        // ── Handle attachment uploads ─────────────────────────────────────────
+        $uploadDir = $this->uploader->getMessageAttachmentDirectory(self::PHOTO_FOLDER);
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -80,14 +81,21 @@ class MessageApiCreateController extends AbstractController
             if ($file->getSize() > self::MAX_PHOTO_SIZE) {
                 continue; // skip oversized files silently; app should pre-validate
             }
-            $mimeType = $file->getMimeType() ?? $file->getClientMimeType();
-            if (!str_starts_with((string) $mimeType, 'image/')) {
+            if (!$this->uploader->isAllowedMessageAttachment($file)) {
                 continue;
             }
-            $filename = $this->uploader->upload($file, self::PHOTO_FOLDER);
+            try {
+                $filename = $this->uploader->uploadMessageAttachment($file, self::PHOTO_FOLDER);
+            } catch (\RuntimeException) {
+                return $this->json(['message' => 'Attachment upload failed.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
             if (file_exists($uploadDir . '/' . $filename)) {
                 $photoFilenames[] = $filename;
             }
+        }
+
+        if ($content === '' && $photoFilenames === []) {
+            return $this->json(['message' => 'Message must contain text or at least one saved attachment.'], Response::HTTP_BAD_REQUEST);
         }
 
         // ── Persist ───────────────────────────────────────────────────────────

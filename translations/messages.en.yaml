@@ -168,12 +168,12 @@ messageboard:
   toggle_sticky: Pin/unpin message
   delete: Delete message
   delete_confirm: Really delete this message?
-  attach_photos: Attach photos
-  photo_hint: You can select multiple images. Maximum 4 MB per photo.
+  attach_photos: Attach files
+  photo_hint: You can select multiple JPG, PNG, GIF, or PDF files. Maximum 4 MB per file.
   photo: Photo
-  photo_too_large: One or more photos exceed the maximum allowed size of 4 MB and were not uploaded.
-  photo_invalid_type: One or more files are not valid image files and were not uploaded.
-  photo_upload_failed: One or more photos could not be saved on the server.
+  photo_too_large: One or more files exceed the maximum allowed size of 4 MB and were not uploaded.
+  photo_invalid_type: One or more files are not valid JPG, PNG, GIF, or PDF files and were not uploaded.
+  photo_upload_failed: One or more attachments could not be saved on the server.
   download_photo: Download
   close: Close
 parking:

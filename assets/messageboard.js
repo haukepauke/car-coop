@@ -21,7 +21,7 @@ if (editorEl) {
     });
 }
 
-// ── Photo upload UI ──────────────────────────────────────────
+// ── Attachment upload UI ─────────────────────────────────────
 const fileInput   = document.getElementById('message-photos');
 const previewArea = document.getElementById('photo-preview-area');
 const addBtn      = document.getElementById('photo-add-btn');
@@ -52,10 +52,23 @@ if (fileInput && previewArea && addBtn) {
             const item = document.createElement('div');
             item.className = 'photo-preview-item';
 
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.alt = file.name;
-            img.onload = () => URL.revokeObjectURL(img.src);
+            const extension = file.name.split('.').pop()?.toLowerCase() ?? '';
+
+            let previewNode;
+            if (extension === 'pdf') {
+                const badge = document.createElement('div');
+                badge.className = 'photo-preview-file';
+                badge.innerHTML = '<i class="fa-regular fa-file-pdf"></i>';
+                badge.title = file.name;
+                previewNode = badge;
+            } else {
+                const objectUrl = URL.createObjectURL(file);
+                const img = document.createElement('img');
+                img.src = objectUrl;
+                img.alt = file.name;
+                img.onload = () => URL.revokeObjectURL(objectUrl);
+                previewNode = img;
+            }
 
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
@@ -70,7 +83,7 @@ if (fileInput && previewArea && addBtn) {
                 renderPreviews();
             });
 
-            item.appendChild(img);
+            item.appendChild(previewNode);
             item.appendChild(removeBtn);
             previewArea.insertBefore(item, addBtn);
         });

@@ -167,12 +167,12 @@ messageboard:
   toggle_sticky: Bericht vastpinnen/losmaken
   delete: Bericht verwijderen
   delete_confirm: Dit bericht echt verwijderen?
-  attach_photos: Foto's bijvoegen
-  photo_hint: Je kunt meerdere afbeeldingen selecteren. Maximaal 4 MB per foto.
+  attach_photos: Bestanden bijvoegen
+  photo_hint: Je kunt meerdere JPG-, PNG-, GIF- of PDF-bestanden selecteren. Maximaal 4 MB per bestand.
   photo: Foto
-  photo_too_large: Een of meer foto's overschrijden de maximale toegestane grootte van 4 MB en zijn niet geüpload.
-  photo_invalid_type: Een of meer bestanden zijn geen geldige afbeeldingsbestanden en zijn niet geüpload.
-  photo_upload_failed: Een of meer foto's konden niet worden opgeslagen op de server.
+  photo_too_large: Een of meer bestanden overschrijden de maximale toegestane grootte van 4 MB en zijn niet geüpload.
+  photo_invalid_type: Een of meer bestanden zijn geen geldige JPG-, PNG-, GIF- of PDF-bestanden en zijn niet geüpload.
+  photo_upload_failed: Een of meer bijlagen konden niet worden opgeslagen op de server.
   download_photo: Downloaden
   close: Sluiten
 parking:

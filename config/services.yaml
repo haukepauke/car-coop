@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     car_picture_directory: '%kernel.project_dir%/public/uploads'
+    message_attachment_directory: '%kernel.project_dir%/var/uploads'
     app.supported_locales: ['en', 'de', 'nl', 'fr', 'es', 'pl']
     app.mailer_from_email: '%env(MAILER_FROM_EMAIL)%'
     app.mailer_from_name: '%env(MAILER_FROM_NAME)%'
@@ -43,6 +44,7 @@ services:
     App\Service\FileUploaderService:
         arguments:
             $targetDirectory: '%car_picture_directory%'
+            $messageAttachmentDirectory: '%message_attachment_directory%'
 
     App\MessageHandler\Event\InformUserWhenTripAdded:
         arguments:

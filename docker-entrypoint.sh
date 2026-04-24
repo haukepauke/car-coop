@@ -17,6 +17,10 @@ if [ ! -f config/jwt/private.pem ]; then
     php bin/console lexik:jwt:generate-keypair --no-interaction
 fi
 
+# ── Ensure writable runtime upload directories ────────────────────────────────
+mkdir -p var/uploads/messages
+chmod -R 0777 var/uploads
+
 # ── Run migrations ────────────────────────────────────────────────────────────
 php bin/console doctrine:migrations:migrate \
     --no-interaction \
