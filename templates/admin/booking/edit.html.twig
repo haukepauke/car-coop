@@ -21,15 +21,16 @@
     </div>
     {% endif %}
 
-    {{ form_start(bookingForm)}}
+    {{ form_start(bookingForm) }}
         {{ form_widget(bookingForm) }}
+    {{ form_end(bookingForm, {'render_rest': false}) }}
 
-        <button type="submit" class="btn btn-outline-dark my-3">{{ 'booking.update'|trans }}</button>
-    {{ form_end(bookingForm) }}
-
-    <form method="post" action="{{ path('app_booking_delete',  {booking: booking.id}) }}" class="d-inline">
-        <input type="hidden" name="_token" value="{{ csrf_token('booking_delete_' ~ booking.id) }}">
-        <button type="submit" class="btn btn-outline-danger my-3">{{ 'booking.delete'|trans }} <i class="fas fa-trash"></i></button>
-    </form>
+    <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+        <button type="submit" form="{{ bookingForm.vars.id }}" class="btn btn-outline-dark">{{ 'booking.update'|trans }}</button>
+        <form method="post" action="{{ path('app_booking_delete',  {booking: booking.id}) }}" class="d-inline">
+            <input type="hidden" name="_token" value="{{ csrf_token('booking_delete_' ~ booking.id) }}">
+            <button type="submit" class="btn btn-outline-danger">{{ 'booking.delete'|trans }} <i class="fas fa-trash"></i></button>
+        </form>
+    </div>
 </div>
 {% endblock %}

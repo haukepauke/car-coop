@@ -4,15 +4,16 @@
 <div class="col-xl-6 mt-5">
     <h4>{{ 'expenses.edit.for'|trans }}</h4>
 
-    {{ form_start(expenseForm)}}
+    {{ form_start(expenseForm) }}
         {{ form_widget(expenseForm) }}
+    {{ form_end(expenseForm, {'render_rest': false}) }}
 
-        <button type="submit" class="btn btn-outline-dark my-3">{{ 'expenses.edit.update'|trans }}</button>
-    {{ form_end(expenseForm) }}
-
-    <form method="post" action="{{ path('app_expense_delete', {expense: expense.id}) }}" class="d-inline">
-        <input type="hidden" name="_token" value="{{ csrf_token('expense_delete_' ~ expense.id) }}">
-        <button type="submit" class="btn btn-outline-danger my-3">{{ 'expenses.delete'|trans }} <i class="fas fa-trash text-danger"></i></button>
-    </form>
+    <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+        <button type="submit" form="{{ expenseForm.vars.id }}" class="btn btn-outline-dark">{{ 'expenses.edit.update'|trans }}</button>
+        <form method="post" action="{{ path('app_expense_delete', {expense: expense.id}) }}" class="d-inline">
+            <input type="hidden" name="_token" value="{{ csrf_token('expense_delete_' ~ expense.id) }}">
+            <button type="submit" class="btn btn-outline-danger">{{ 'expenses.delete'|trans }} <i class="fas fa-trash text-danger"></i></button>
+        </form>
+    </div>
 </div>
 {% endblock %}

@@ -6,17 +6,19 @@
 
     {{ form_start(usergroupForm) }}
         {{ form_widget(usergroupForm) }}
-        <button type="submit" class="btn btn-outline-dark my-3">{{ 'user.group.save'|trans }}</button>
-    {{ form_end(usergroupForm) }}
+    {{ form_end(usergroupForm, {'render_rest': false}) }}
 
-    {% if usergroup.users|length == 0 and not usergroup.isFixed() %}
-        <form method="post" action="{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}" class="d-inline">
-            <input type="hidden" name="_token" value="{{ csrf_token('usergroup_delete_' ~ usergroup.id) }}">
-            <button type="submit" class="btn btn-outline-danger my-3">
-                {{ 'user.group.delete'|trans }} <i class="fas fa-trash text-danger"></i>
-            </button>
-        </form>
-    {% endif %}
+    <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+        <button type="submit" form="{{ usergroupForm.vars.id }}" class="btn btn-outline-dark">{{ 'user.group.save'|trans }}</button>
+        {% if usergroup.users|length == 0 and not usergroup.isFixed() %}
+            <form method="post" action="{{ path('app_usergroup_delete', {usergroup: usergroup.id}) }}" class="d-inline">
+                <input type="hidden" name="_token" value="{{ csrf_token('usergroup_delete_' ~ usergroup.id) }}">
+                <button type="submit" class="btn btn-outline-danger">
+                    {{ 'user.group.delete'|trans }} <i class="fas fa-trash text-danger"></i>
+                </button>
+            </form>
+        {% endif %}
+    </div>
 
     {# ── Members ─────────────────────────────────────────────────────────── #}
     <h5 class="mt-4">{{ 'user.users'|trans }}</h5>
