@@ -205,7 +205,7 @@ parking:
 actions: Aktionen
 admin: Administration
 amount: Betrag
-author: Autor*in
+author: Autor:in
 banktransfer: Überweisung
 booking:
   bookings: Buchungen
@@ -280,7 +280,7 @@ car:
     intro: "Die folgende Analyse basiert auf allen bisher erfassten Daten. Stelle sicher, dass alle Fahrten und Ausgaben eingetragen sind, bevor du diese Vorschläge umsetzt."
     balances:
       title: Aktuelle Salden
-      info: "Positiver Saldo = Benutzer*in hat mehr eingezahlt als ihren Anteil (bekommt Geld). Negativer Saldo = Benutzer*in hat mehr genutzt als bezahlt (schuldet Geld)."
+      info: "Positiver Saldo = Benutzer:in hat mehr eingezahlt als ihren Anteil (bekommt Geld). Negativer Saldo = Benutzer:in hat mehr genutzt als bezahlt (schuldet Geld)."
       total: Gesamt
     payments:
       title: Vorgeschlagene Zahlungen zum Ausgleich der Salden
@@ -297,7 +297,7 @@ car:
       accept_all: Alle vorgeschlagenen Preise übernehmen
       accepted: Preis pro Einheit erfolgreich aktualisiert.
       accept_none: Es gab keine aktuelle Preisanpassung zum Übernehmen.
-      edit_hint: "Um die Änderung zu übernehmen, gehe zu Admin → Benutzer*innen verwalten → Benutzergruppen bearbeiten."
+      edit_hint: "Um die Änderung zu übernehmen, gehe zu Admin → Benutzer:innen verwalten → Benutzergruppen bearbeiten."
   form:
     help:
       name: Wähle einen guten Namen für Dein Fahrzeug
@@ -437,7 +437,7 @@ fixed: Steht fest
 from: von
 fuel: Sprit
 invitation:
-  invite: Benutzer*in einladen
+  invite: Benutzer:in einladen
   invite_another: Weitere Person hinzufügen
   resend: Einladung erneut senden
   sent: "Einladungen gesendet an: %emails%"
@@ -465,7 +465,7 @@ invitation:
   pending: Offene Einladungen
   onboarding:
     title: Mitglieder einladen
-    description: "Dein Fahrzeug wurde eingerichtet! Lade andere Mitglieder ein, es zu teilen. Du kannst diesen Schritt überspringen und Mitglieder später über Administration → Benutzer*innen verwalten einladen."
+    description: "Dein Fahrzeug wurde eingerichtet! Lade andere Mitglieder ein, es zu teilen. Du kannst diesen Schritt überspringen und Mitglieder später über Administration → Benutzer:innen verwalten einladen."
     submit: Einladungen senden
     invite_another: Weiteres Mitglied hinzufügen
     skip: Überspringen
@@ -478,12 +478,12 @@ charging: Laden
 members: Mitglieder
 mileage:
   per:
-    user: Zurückgelegte Entfernung pro Benutzer*in
+    user: Zurückgelegte Entfernung pro Benutzer:in
 money:
   balance: Kontostand
   spent: Geld ausgegeben
   user:
-    balance: Kontostand pro Benutzer*in
+    balance: Kontostand pro Benutzer:in
 no: Nein
 other: Anderes
 other_free: Anderes (kostenlos)
@@ -521,8 +521,8 @@ user:
   active: Aktiv
   retire:
     short: Deaktivieren
-  user: Benutzer*in
-  users: Benutzer*innen
+  user: Benutzer:in
+  users: Benutzer:innen
   calendar:
     color: Kalenderfarbe
   driven: gefahren
@@ -534,7 +534,7 @@ user:
     group: Benutzungsgruppe
     new: Neue Gruppe
     name: Gruppenname
-    admin: Administrator*in
+    admin: Administrator:in
     occasional_use: Gelegentliche Nutzung
     delete: Gruppe löschen
     edit: Benutzergruppe bearbeiten
@@ -544,7 +544,7 @@ user:
     user_moved: Mitglied in neue Gruppe verschoben.
     help:
       name: Wähle einen einprägsamen Namen für die Gruppe!
-      admin: Sind Benutzer*innen dieser Gruppe Administrato*innen?
+      admin: Sind Benutzer:innen dieser Gruppe Administrator:innen?
       occasional_use: Mitglieder dieser Gruppe nutzen das Fahrzeug nur gelegentlich (z. B. Gäste).
     error:
       orphaned_users: Speichern nicht möglich — ein oder mehrere Mitglieder wären danach in keiner Gruppe mehr. Bitte weise sie zuerst einer anderen Gruppe zu.
@@ -569,9 +569,9 @@ user:
   first_login: Erste Anmeldung
   last_login: Letzte Anmeldung
   logout: Ausloggen
-  manage: Benutzer*innen verwalten
+  manage: Benutzer:innen verwalten
   name: Name
-  of: Benutzer*innen von
+  of: Benutzer:innen von
   profile:
     edit: Profil bearbeiten
     update: Profil aktualisieren
@@ -584,11 +584,11 @@ user:
       warning: "Möchtest Du Dein Konto wirklich löschen? Falls Du Fahrten, Ausgaben oder Zahlungen erfasst hast, wird Dein Konto stattdessen deaktiviert und anonymisiert."
       confirm_button: Konto löschen
       cancel: Abbrechen
-    not_allowed: Du darfst diese Benutzer*in nicht löschen.
-    has_entries: Benutzer*in hat Einträge. Löschen nicht möglich. Stattdessen deaktiviert.
+    not_allowed: Du darfst diese Benutzer:in nicht löschen.
+    has_entries: Benutzer:in hat Einträge. Löschen nicht möglich. Stattdessen deaktiviert.
   register: Registrieren
   updated: Profil aktualisiert.
-  deleted: Benutzer*in gelöscht.
+  deleted: Benutzer:in gelöscht.
   already_logged_in: Du bist bereits angemeldet.
   status: Status
   type: Gruppe
@@ -692,26 +692,26 @@ vacation: Urlaub
 superadmin:
   title: Super Admin
   cars: Fahrzeuge
-  users: Benutzer*innen
+  users: Benutzer:innen
   members: Mitglieder
   roles: Rollen
   no_cars: Keine Fahrzeuge registriert.
-  no_users: Keine Benutzer*innen gefunden.
-  user_deleted: Benutzer*in gelöscht.
-  user_deactivated: Benutzer*in hat Einträge und wurde statt gelöscht deaktiviert.
+  no_users: Keine Benutzer:innen gefunden.
+  user_deleted: Benutzer:in gelöscht.
+  user_deactivated: Benutzer:in hat Einträge und wurde statt gelöscht deaktiviert.
   car_deleted: Fahrzeug gelöscht.
   cannot_delete_self: Du kannst deinen eigenen Account nicht löschen.
   confirm_delete_car: "Fahrzeug \"%name%\" löschen? Alle zugehörigen Fahrten, Ausgaben und Buchungen werden ebenfalls gelöscht."
-  confirm_delete_user: "Benutzer*in \"%name%\" löschen?"
+  confirm_delete_user: "Benutzer:in \"%name%\" löschen?"
   broadcast:
     title: Nachricht an alle senden
-    description: "Eine Nachricht auf allen Pinnwänden des Servers posten und per E-Mail an alle Benutzer*innen senden."
+    description: "Eine Nachricht auf allen Pinnwänden des Servers posten und per E-Mail an alle Benutzer:innen senden."
     subject: Betreff
     content: Nachricht
-    submit: An alle Benutzer*innen senden
+    submit: An alle Benutzer:innen senden
     sent: "Nachricht gesendet – auf allen Pinnwänden gepostet und für den E-Mail-Versand eingereiht."
     error_empty: "Betreff und Nachrichtentext sind erforderlich."
-    confirm: "Diese Nachricht an alle Benutzer*innen auf dem Server senden?"
+    confirm: "Diese Nachricht an alle Benutzer:innen auf dem Server senden?"
 yes: Ja
 cancel: Abbrechen
 confirm_delete_title: Löschen bestätigen
