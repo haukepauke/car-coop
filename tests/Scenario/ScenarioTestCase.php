@@ -161,7 +161,6 @@ abstract class ScenarioTestCase extends WebTestCase
 
         return $crawler;
     }
-
     protected function reloadUser(string $email): User
     {
         $user = $this->em()->getRepository(User::class)->findOneBy(['email' => $email]);

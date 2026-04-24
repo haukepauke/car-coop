@@ -8,6 +8,7 @@ use App\Form\UserTypeFormType;
 use App\Message\Event\PricePerUnitChangedEvent;
 use App\Repository\UserRepository;
 use App\Repository\UserTypeRepository;
+use App\Service\ActiveCarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserGroupAdminController extends AbstractController
 {
+    use ActiveCarScopeTrait;
+
     #[Route('/admin/usergroup/new', name: 'app_usergroup_new')]
     public function new(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
     {
@@ -50,8 +53,10 @@ class UserGroupAdminController extends AbstractController
     }
 
     #[Route('/admin/usergroup/edit/{usergroup}', name: 'app_usergroup_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, UserType $usergroup, MessageBusInterface $bus, TranslatorInterface $translator): Response
+    public function edit(EntityManagerInterface $em, Request $request, UserType $usergroup, MessageBusInterface $bus, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $usergroup->getCar());
+
         if (!$usergroup->isActive()) {
             throw $this->createAccessDeniedException();
         }
@@ -98,7 +103,10 @@ class UserGroupAdminController extends AbstractController
         UserTypeRepository $userTypeRepository,
         EntityManagerInterface $em,
         TranslatorInterface $translator,
+        ActiveCarService $activeCarService,
     ): Response {
+        $this->denyUnlessActiveCarScope($activeCarService, $usergroup->getCar());
+
         $car = $usergroup->getCar();
 
         if (!$this->isCsrfTokenValid('move_user_' . $usergroup->getId(), $request->request->get('_token'))) {
@@ -127,8 +135,10 @@ class UserGroupAdminController extends AbstractController
     }
 
     #[Route('/admin/usergroup/delete/{usergroup}', name: 'app_usergroup_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, UserType $usergroup, TranslatorInterface $translator): Response
+    public function delete(Request $request, EntityManagerInterface $em, UserType $usergroup, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $usergroup->getCar());
+
         $car = $usergroup->getCar();
 
         if (!$this->isCsrfTokenValid('usergroup_delete_' . $usergroup->getId(), $request->request->get('_token'))) {

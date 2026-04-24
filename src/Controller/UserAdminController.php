@@ -28,6 +28,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserAdminController extends AbstractController
 {
+    use ActiveCarScopeTrait;
+
     public function __construct(private readonly InvitationMailerService $invitationMailer)
     {
     }
@@ -149,7 +151,10 @@ class UserAdminController extends AbstractController
         MessageBusInterface $messageBus,
         UserRepository $userRepo,
         TranslatorInterface $translator,
+        ActiveCarService $activeCarService,
     ): Response {
+        $this->denyUnlessActiveCarScope($activeCarService, $invite->getUserType()->getCar());
+
         if (!$this->isCsrfTokenValid('invite_resend_' . $invite->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
@@ -280,8 +285,10 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete', methods: ['POST'])]
-    public function deleteInvite(Request $request, EntityManagerInterface $em, Invitation $invite, TranslatorInterface $translator): Response
+    public function deleteInvite(Request $request, EntityManagerInterface $em, Invitation $invite, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $invite->getUserType()->getCar());
+
         if (!$this->isCsrfTokenValid('invite_delete_' . $invite->getId(), $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
@@ -310,7 +317,7 @@ class UserAdminController extends AbstractController
         MessageBusInterface $messageBus,
         TranslatorInterface $translator,
     ): Response {
-        $activeCar = $activeCarService->getActiveCar();
+        $activeCar = $this->denyUnlessUserBelongsToActiveCar($activeCarService, $user);
 
         if (!$this->isCsrfTokenValid('user_delete_' . $user->getId(), $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
@@ -321,7 +328,7 @@ class UserAdminController extends AbstractController
         // Do not allow to delete users of other cars and do not allow to delete yourself
         /** @var \App\Entity\User $currentUser */
         $currentUser = $this->getUser();
-        if ($activeCar !== $user->getCar() || $currentUser->getId() === $user->getId()) {
+        if ($currentUser->getId() === $user->getId()) {
             $this->addFlash('error', $translator->trans('user.delete.not_allowed'));
 
             return $this->redirectToRoute('app_user_list');

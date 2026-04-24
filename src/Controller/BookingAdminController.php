@@ -16,6 +16,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BookingAdminController extends AbstractController
 {
+    use ActiveCarScopeTrait;
+
     #[Route('/admin/booking', name: 'app_booking_show')]
     public function index(ActiveCarService $activeCarService): Response
     {
@@ -87,9 +89,10 @@ class BookingAdminController extends AbstractController
     }
 
     #[Route('/admin/booking/edit/{booking}', name: 'app_booking_edit')]
-    public function edit(Request $request, BookingRepository $bookingRepo, BookingService $bookingService, TranslatorInterface $translator, $booking): Response
+    public function edit(Request $request, BookingRepository $bookingRepo, BookingService $bookingService, TranslatorInterface $translator, ActiveCarService $activeCarService, $booking): Response
     {
         $booking = $bookingRepo->find($booking);
+        $this->denyUnlessActiveCarScope($activeCarService, $booking->getCar());
         $car = $booking->getCar();
 
         $form = $this->createForm(
@@ -127,9 +130,10 @@ class BookingAdminController extends AbstractController
     }
 
     #[Route('/admin/booking/delete/{booking}', name: 'app_booking_delete', methods: ['POST'])]
-    public function delete(Request $request, BookingRepository $bookingRepo, BookingService $bookingService, TranslatorInterface $translator, $booking): Response
+    public function delete(Request $request, BookingRepository $bookingRepo, BookingService $bookingService, TranslatorInterface $translator, ActiveCarService $activeCarService, $booking): Response
     {
         $booking = $bookingRepo->find($booking);
+        $this->denyUnlessActiveCarScope($activeCarService, $booking->getCar());
 
         if (!$this->isCsrfTokenValid('booking_delete_' . $booking->getId(), $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));

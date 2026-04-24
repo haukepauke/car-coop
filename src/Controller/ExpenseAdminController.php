@@ -17,6 +17,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExpenseAdminController extends AbstractController
 {
+    use ActiveCarScopeTrait;
+
     #[Route('/admin/expense/list/{page<\d+>}', name: 'app_expense_list')]
     public function list(ExpenseRepository $expRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
@@ -85,8 +87,10 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/edit/{expense}', name: 'app_expense_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, Expense $expense, TranslatorInterface $translator): Response
+    public function edit(EntityManagerInterface $em, Request $request, Expense $expense, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $expense->getCar());
+
         $car = $expense->getCar();
         $form = $this->createForm(
             ExpenseFormType::class, 
@@ -117,8 +121,10 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/delete/{expense}', name: 'app_expense_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, Expense $expense, TranslatorInterface $translator): Response
+    public function delete(Request $request, EntityManagerInterface $em, Expense $expense, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $expense->getCar());
+
         if (!$this->isCsrfTokenValid('expense_delete_' . $expense->getId(), $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 

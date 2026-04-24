@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CalDAV\AuthBackend;
 use App\CalDAV\CalendarBackend;
 use App\CalDAV\PrincipalBackend;
+use Psr\Log\LoggerInterface;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
@@ -21,6 +22,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CalDavController extends AbstractController
 {
+    public function __construct(private readonly LoggerInterface $logger)
+    {
+    }
+
     #[Route('/.well-known/caldav', name: 'app_caldav_wellknown')]
     public function wellKnown(): Response
     {
@@ -106,9 +111,14 @@ class CalDavController extends AbstractController
             }
             $sabreResponse->setBody($e->getMessage());
         } catch (\Throwable $e) {
-            // Catch any other PHP error/exception and return 500 instead of crashing.
+            // Log internal failures, but do not leak implementation details to DAV clients.
+            $this->logger->error('Unexpected CalDAV error', [
+                'exception' => $e,
+                'method' => $request->getMethod(),
+                'path' => $request->getRequestUri(),
+            ]);
             $sabreResponse->setStatus(500);
-            $sabreResponse->setBody($e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            $sabreResponse->setBody(Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR]);
         }
 
         // Bridge Sabre response → Symfony response

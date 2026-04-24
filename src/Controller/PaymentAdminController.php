@@ -19,6 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PaymentAdminController extends AbstractController
 {
+    use ActiveCarScopeTrait;
+
     #[Route('/admin/payment/list/{page<\d+>}', name: 'app_payment_list')]
     public function list(PaymentRepository $payRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
@@ -85,8 +87,10 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/edit/{payment}', name: 'app_payment_edit')]
-    public function edit(Request $request, PaymentService $paymentService, Payment $payment, TranslatorInterface $translator): Response
+    public function edit(Request $request, PaymentService $paymentService, Payment $payment, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $payment->getCar());
+
         $car = $payment->getCar();
         $form = $this->createForm(
             PaymentFormType::class,
@@ -118,8 +122,10 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/delete/{payment}', name: 'app_payment_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, Payment $payment, TranslatorInterface $translator): Response
+    public function delete(Request $request, EntityManagerInterface $em, Payment $payment, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $payment->getCar());
+
         if (!$this->isCsrfTokenValid('payment_delete_' . $payment->getId(), $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 

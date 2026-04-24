@@ -18,6 +18,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MessageController extends AbstractController
 {
+    use ActiveCarScopeTrait;
+
     private const MAX_PHOTO_SIZE = 4 * 1024 * 1024; // 4 MB
     private const PHOTO_FOLDER = 'messages';
 
@@ -122,8 +124,10 @@ class MessageController extends AbstractController
     }
 
     #[Route('/admin/messages/{id}/sticky', name: 'app_message_toggle_sticky', methods: ['POST'])]
-    public function toggleSticky(Message $message, Request $request, EntityManagerInterface $em): Response
+    public function toggleSticky(Message $message, Request $request, EntityManagerInterface $em, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $message->getCar());
+
         if (!$this->isCsrfTokenValid('message_sticky_' . $message->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
@@ -142,6 +146,8 @@ class MessageController extends AbstractController
         ActiveCarService $activeCarService,
         FileUploaderService $uploader,
     ): Response {
+        $this->denyUnlessActiveCarScope($activeCarService, $message->getCar());
+
         if (!$this->isCsrfTokenValid('message_delete_' . $message->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }

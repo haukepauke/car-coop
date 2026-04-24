@@ -20,6 +20,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TripAdminController extends AbstractController
 {
+    use ActiveCarScopeTrait;
+
     #[Route('/admin/trip/list/{page<\d+>}', name: 'app_trip_list')]
     public function list(TripRepository $tripsRepo, ActiveCarService $activeCarService, Request $request, int $page = 1)
     {
@@ -102,8 +104,10 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/edit/{trip}', name: 'app_trip_edit')]
-    public function edit(TripService $tripService, TripRepository $tripRepo, Request $request, Trip $trip, TranslatorInterface $translator): Response
+    public function edit(TripService $tripService, TripRepository $tripRepo, Request $request, Trip $trip, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $trip->getCar());
+
         $car  = $trip->getCar();
         $form = $this->createForm(
             TripFormType::class,
@@ -137,8 +141,10 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/split/{trip}', name: 'app_trip_split')]
-    public function split(TripService $tripService, TripRepository $tripRepo, Request $request, Trip $trip, TranslatorInterface $translator): Response
+    public function split(TripService $tripService, TripRepository $tripRepo, Request $request, Trip $trip, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $trip->getCar());
+
         if ($trip->getMileage() <= 1) {
             $this->addFlash('error', $translator->trans('trips.split.not_possible'));
             return $this->redirectToRoute('app_trip_edit', ['trip' => $trip->getId()]);
@@ -196,8 +202,10 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, TripRepository $tripRepo, Trip $trip, TranslatorInterface $translator): Response
+    public function delete(Request $request, EntityManagerInterface $em, TripRepository $tripRepo, Trip $trip, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
+        $this->denyUnlessActiveCarScope($activeCarService, $trip->getCar());
+
         if (!$this->isCsrfTokenValid('trip_delete_' . $trip->getId(), $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
