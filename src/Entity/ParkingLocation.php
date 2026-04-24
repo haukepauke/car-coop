@@ -28,6 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Put(
             security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
+            securityPostDenormalize: 'object.getCar().hasUser(user)',
             processor: ParkingLocationStateProcessor::class,
         ),
     ],

@@ -124,6 +124,25 @@ class ExpenseTest extends ApiTestCase
         $this->assertEquals(12.0, $data['amount']);
     }
 
+    public function testPutCannotReassignExpenseToAnotherCar(): void
+    {
+        static::authClient()->request('PUT', $this->expenseIri(), [
+            'json' => [
+                'type'   => 'other',
+                'name'   => 'Parking fee',
+                'amount' => 12.00,
+                'date'   => '2024-03-15',
+                'car'    => static::otherCarIri(),
+                'user'   => static::userIri(),
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+        $expense = static::em()->getRepository(Expense::class)->find(static::$expenseId);
+        $this->assertInstanceOf(Expense::class, $expense);
+        $this->assertSame(static::$carId, $expense->getCar()?->getId());
+    }
+
     // ── DELETE ────────────────────────────────────────────────────────────────
 
     public function testDeleteExpense(): void

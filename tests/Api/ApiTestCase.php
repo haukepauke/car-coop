@@ -20,6 +20,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 abstract class ApiTestCase extends BaseApiTestCase
 {
     protected static int    $carId;
+    protected static int    $otherCarId;
+    protected static int    $otherUserId;
     protected static int    $userId;
     protected static string $token;
     protected static string $refreshToken;
@@ -61,11 +63,36 @@ abstract class ApiTestCase extends BaseApiTestCase
         $group->addUser($user);
         $em->persist($group);
 
+        $otherCar = new Car();
+        $otherCar->setName('Other Test Car');
+        $otherCar->setMileage(20000);
+        $otherCar->setMilageUnit('km');
+        $em->persist($otherCar);
+
+        $otherUser = new User();
+        $otherUser->setEmail(static::otherTestEmail());
+        $otherUser->setName('Other API Test User');
+        $otherUser->setLocale('en');
+        $otherUser->setIsVerified(true);
+        $otherUser->setNotifiedOnEvents(false);
+        $otherUser->setNotifiedOnOwnEvents(false);
+        $otherUser->setPassword($hasher->hashPassword($otherUser, static::testPassword()));
+        $em->persist($otherUser);
+
+        $otherGroup = new UserType();
+        $otherGroup->setName('Other Members');
+        $otherGroup->setPricePerUnit(0.2);
+        $otherGroup->setCar($otherCar);
+        $otherGroup->addUser($otherUser);
+        $em->persist($otherGroup);
+
         $em->flush();
 
         $auth = static::login(static::testEmail(), static::testPassword());
 
         static::$carId = $car->getId();
+        static::$otherCarId = $otherCar->getId();
+        static::$otherUserId = $otherUser->getId();
         static::$userId = $user->getId();
         static::$token = $auth['token'];
         static::$refreshToken = $auth['refresh_token'];
@@ -80,9 +107,12 @@ abstract class ApiTestCase extends BaseApiTestCase
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     protected static function testEmail(): string    { return 'api-test@test.local'; }
+    protected static function otherTestEmail(): string { return 'api-test-other@test.local'; }
     protected static function testPassword(): string { return 'Test1234!'; }
     protected static function carIri(): string       { return '/api/cars/'  . static::$carId; }
+    protected static function otherCarIri(): string  { return '/api/cars/'  . static::$otherCarId; }
     protected static function userIri(): string      { return '/api/users/' . static::$userId; }
+    protected static function otherUserIri(): string { return '/api/users/' . static::$otherUserId; }
 
     /** Returns an HTTP client with the Bearer token pre-set. */
     protected static function authClient(?string $token = null): Client
@@ -127,26 +157,25 @@ abstract class ApiTestCase extends BaseApiTestCase
     {
         $em->clear();
 
-        $user = $em->getRepository(User::class)->findOneBy(['email' => static::testEmail()]);
-        if (!$user) {
-            return;
-        }
+        foreach ([static::testEmail(), static::otherTestEmail()] as $email) {
+            $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+            if (!$user) {
+                continue;
+            }
 
-        // Detach from all user types so the ManyToMany join rows are cleared.
-        foreach ($user->getUserTypes() as $ut) {
-            $ut->removeUser($user);
-        }
-        $em->flush();
+            foreach ($user->getUserTypes() as $ut) {
+                $ut->removeUser($user);
+            }
+            $em->flush();
 
-        // Deleting the car cascades to trips, bookings, expenses, payments,
-        // parking locations and messages (orphanRemoval / onDelete CASCADE).
-        $car = $user->getCar();
-        if ($car) {
-            $em->remove($car);
+            $car = $user->getCar();
+            if ($car) {
+                $em->remove($car);
+                $em->flush();
+            }
+
+            $em->remove($user);
             $em->flush();
         }
-
-        $em->remove($user);
-        $em->flush();
     }
 }

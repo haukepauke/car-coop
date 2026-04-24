@@ -127,6 +127,26 @@ class TripTest extends ApiTestCase
         $this->assertSame('service_free', $data['type']);
     }
 
+    public function testPutCannotReassignTripToAnotherCar(): void
+    {
+        static::authClient()->request('PUT', $this->tripIri(), [
+            'json' => [
+                'startMileage' => 10000,
+                'endMileage'   => 10500,
+                'startDate'    => '2024-01-01',
+                'endDate'      => '2024-01-10',
+                'type'         => 'service_free',
+                'car'          => static::otherCarIri(),
+                'users'        => [static::userIri()],
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+        $trip = static::em()->getRepository(Trip::class)->find(static::$tripId);
+        $this->assertInstanceOf(Trip::class, $trip);
+        $this->assertSame(static::$carId, $trip->getCar()?->getId());
+    }
+
     // ── DELETE ────────────────────────────────────────────────────────────────
 
     public function testDeleteTrip(): void

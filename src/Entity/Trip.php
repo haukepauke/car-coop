@@ -33,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Put(
             security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
+            securityPostDenormalize: 'object.getCar().hasUser(user)',
             processor: TripStateProcessor::class,
         ),
         new Delete(security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)'),

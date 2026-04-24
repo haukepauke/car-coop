@@ -112,6 +112,22 @@ class ParkingLocationTest extends ApiTestCase
         $this->assertSame(10.0153, $data['longitude']);
     }
 
+    public function testPutCannotReassignLocationToAnotherCar(): void
+    {
+        static::authClient()->request('PUT', $this->parkingIri(), [
+            'json' => [
+                'latitude'  => 53.5753,
+                'longitude' => 10.0153,
+                'car'       => static::otherCarIri(),
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+        $parking = static::em()->getRepository(ParkingLocation::class)->find(static::$parkingId);
+        $this->assertInstanceOf(ParkingLocation::class, $parking);
+        $this->assertSame(static::$carId, $parking->getCar()->getId());
+    }
+
     // ── DELETE (not supported) ────────────────────────────────────────────────
 
     public function testDeleteReturns405(): void

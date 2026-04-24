@@ -171,6 +171,25 @@ class PaymentTest extends ApiTestCase
         $this->assertEquals(30.0, $data['amount']);
     }
 
+    public function testPutCannotReassignPaymentToAnotherCar(): void
+    {
+        static::authClient()->request('PUT', $this->paymentIri(), [
+            'json' => [
+                'date'     => '2024-05-15',
+                'amount'   => 30.00,
+                'type'     => 'paypal',
+                'fromUser' => static::userIri(),
+                'toUser'   => static::user2Iri(),
+                'car'      => static::otherCarIri(),
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+        $payment = static::em()->getRepository(Payment::class)->find(static::$paymentId);
+        $this->assertInstanceOf(Payment::class, $payment);
+        $this->assertSame(static::$carId, $payment->getCar()?->getId());
+    }
+
     // ── DELETE ────────────────────────────────────────────────────────────────
 
     public function testDeletePayment(): void

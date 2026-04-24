@@ -129,6 +129,28 @@ class BookingTest extends ApiTestCase
         $this->assertSame('Updated title', $data['title']);
     }
 
+    public function testPutCannotReassignBookingToAnotherCar(): void
+    {
+        $start = (new \DateTime('+30 days'))->format(\DateTime::ATOM);
+        $end   = (new \DateTime('+40 days'))->format(\DateTime::ATOM);
+
+        static::authClient()->request('PUT', $this->bookingIri(), [
+            'json' => [
+                'startDate' => $start,
+                'endDate'   => $end,
+                'status'    => 'maybe',
+                'title'     => 'Updated title',
+                'car'       => static::otherCarIri(),
+                'user'      => static::userIri(),
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+        $booking = static::em()->getRepository(Booking::class)->find(static::$bookingId);
+        $this->assertInstanceOf(Booking::class, $booking);
+        $this->assertSame(static::$carId, $booking->getCar()?->getId());
+    }
+
     // ── DELETE ────────────────────────────────────────────────────────────────
 
     public function testDeleteBooking(): void
