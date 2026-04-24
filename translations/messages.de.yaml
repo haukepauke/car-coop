@@ -449,11 +449,11 @@ invitation:
   email:
     language: E-Mail-Sprache
     subject: "Du wurdest eingeladen, Car Coop beizutreten!"
-    greeting: "Hi! %inviter% (%inviter_email%) hat dich eingeladen, die Fahrgemeinschaft %car% bei Car Coop beizutreten!"
+    greeting: "Hi! %inviter% (%inviter_email%) hat dich eingeladen, der Fahrgemeinschaft %car% bei Car Coop beizutreten!"
     description: "Car Coop ist eine gemeinnützige Carsharing-Plattform, mit der du ein Fahrzeug mit Freunden, Kolleginnen oder Mitstreitern teilen kannst. Sie hilft dir, Buchungen zu verwalten und die laufenden Kosten im Blick zu behalten."
     register: "Klicke auf den folgenden Link, um dich zu registrieren:"
     register_link: Bei Car Coop registrieren
-    existing_user: "Du hast bereits ein Car Coop-Konto. Klicke auf den Link unten, um die Einladung anzunehmen und dem Fahrzeug beizutreten:"
+    existing_user: "Du hast bereits ein Car Coop-Konto. Klicke auf den Link unten, um die Einladung anzunehmen und der Nutzungsgruppe beizutreten:"
     accept_link: Einladung annehmen
     cheers: Viele Grüße!
   accepted: "Du bist erfolgreich %car% beigetreten."
