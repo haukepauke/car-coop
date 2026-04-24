@@ -126,10 +126,16 @@ class BookingAdminController extends AbstractController
         );
     }
 
-    #[Route('/admin/booking/delete/{booking}', name: 'app_booking_delete')]
-    public function delete(BookingRepository $bookingRepo, BookingService $bookingService, TranslatorInterface $translator, $booking)
+    #[Route('/admin/booking/delete/{booking}', name: 'app_booking_delete', methods: ['POST'])]
+    public function delete(Request $request, BookingRepository $bookingRepo, BookingService $bookingService, TranslatorInterface $translator, $booking): Response
     {
         $booking = $bookingRepo->find($booking);
+
+        if (!$this->isCsrfTokenValid('booking_delete_' . $booking->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
+
+            return $this->redirectToRoute('app_booking_edit', ['booking' => $booking->getId()]);
+        }
 
         if ($this->getUser() !== $booking->getUser()) {
             $this->addFlash('error', $translator->trans('booking.delete_not_allowed'));

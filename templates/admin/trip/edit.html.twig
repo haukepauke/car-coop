@@ -11,9 +11,13 @@
         {% if trip.mileage > 1 %}
         <a href="{{ path('app_trip_split', {trip: trip.id}) }}" class="btn btn-outline-secondary my-3">{{ 'trips.split'|trans }} <i class="fas fa-scissors"></i></a>
         {% endif %}
-        {% if canDelete %}
-        <a href="{{ path('app_trip_delete', {trip: trip.id}) }}" class="btn btn-outline-danger my-3">{{ 'trips.delete'|trans }} <i class="fas fa-trash"></i></a>
-        {% endif %}
     {{ form_end(tripForm) }}
+
+    {% if canDelete %}
+    <form method="post" action="{{ path('app_trip_delete', {trip: trip.id}) }}" class="d-inline">
+        <input type="hidden" name="_token" value="{{ csrf_token('trip_delete_' ~ trip.id) }}">
+        <button type="submit" class="btn btn-outline-danger my-3">{{ 'trips.delete'|trans }} <i class="fas fa-trash"></i></button>
+    </form>
+    {% endif %}
 </div>
 {% endblock %}

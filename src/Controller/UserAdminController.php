@@ -279,11 +279,19 @@ class UserAdminController extends AbstractController
         return $this->redirectToRoute('app_logout');
     }
 
-    #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete')]
-    public function deleteInvite(EntityManagerInterface $em, Invitation $invite, TranslatorInterface $translator): Response
+    #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete', methods: ['POST'])]
+    public function deleteInvite(Request $request, EntityManagerInterface $em, Invitation $invite, TranslatorInterface $translator): Response
     {
+        if (!$this->isCsrfTokenValid('invite_delete_' . $invite->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
+
+            return $this->redirectToRoute('app_user_list');
+        }
+
         if ($this->getUser() !== $invite->getCreatedBy()) {
             $this->addFlash('error', $translator->trans('invitation.delete_not_allowed'));
+
+            return $this->redirectToRoute('app_user_list');
         }
 
         $em->remove($invite);
@@ -293,8 +301,9 @@ class UserAdminController extends AbstractController
 
         return $this->redirectToRoute('app_user_list');
     }
-    #[Route('/admin/user/delete/{user}', name: 'app_user_delete')]
+    #[Route('/admin/user/delete/{user}', name: 'app_user_delete', methods: ['POST'])]
     public function deleteUser(
+        Request $request,
         EntityManagerInterface $em,
         User $user,
         ActiveCarService $activeCarService,
@@ -302,11 +311,20 @@ class UserAdminController extends AbstractController
         TranslatorInterface $translator,
     ): Response {
         $activeCar = $activeCarService->getActiveCar();
+
+        if (!$this->isCsrfTokenValid('user_delete_' . $user->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
+
+            return $this->redirectToRoute('app_user_list');
+        }
+
         // Do not allow to delete users of other cars and do not allow to delete yourself
         /** @var \App\Entity\User $currentUser */
         $currentUser = $this->getUser();
         if ($activeCar !== $user->getCar() || $currentUser->getId() === $user->getId()) {
             $this->addFlash('error', $translator->trans('user.delete.not_allowed'));
+
+            return $this->redirectToRoute('app_user_list');
         }
 
         // Capture data before deactivation/deletion changes or removes it

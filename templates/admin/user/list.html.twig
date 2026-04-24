@@ -48,7 +48,10 @@
                             <td data-label="{{ 'user.last_login'|trans }}" class="align-middle text-center">{{ user.lastLogin ? user.lastLogin|format_datetime(locale=app.request.locale) : '-' }}</td>
                             <td data-label="{{ 'actions'|trans }}" class="align-middle text-center table-actions-cell">
                             {% if user.isActive() and user.id != app.user.id %}
-                                <a href='{{ path('app_user_delete', {user: user.id}) }}' class="btn btn-outline-danger">{{ 'user.retire.short'|trans }} <i class="fas fa-trash"></i></a>
+                                <form method="post" action="{{ path('app_user_delete', {user: user.id}) }}" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('user_delete_' ~ user.id) }}">
+                                    <button type="submit" class="btn btn-outline-danger">{{ 'user.retire.short'|trans }} <i class="fas fa-trash"></i></button>
+                                </form>
                             {% endif %}
                             </td>
                     {% endfor %}
@@ -90,7 +93,10 @@
                                         <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </form>
-                                <a href='{{ path('app_invite_delete', {invite: invitation.id}) }}' class="btn btn-outline-danger btn-sm" title="{{ 'delete'|trans }}" aria-label="{{ 'delete'|trans }}"><i class="fas fa-trash"></i></a>
+                                <form method="post" action="{{ path('app_invite_delete', {invite: invitation.id}) }}" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('invite_delete_' ~ invitation.id) }}">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="{{ 'delete'|trans }}" aria-label="{{ 'delete'|trans }}"><i class="fas fa-trash"></i></button>
+                                </form>
                             {% endif %}
                             </td>
                         </tr>

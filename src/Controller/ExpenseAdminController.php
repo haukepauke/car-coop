@@ -116,9 +116,15 @@ class ExpenseAdminController extends AbstractController
         );
     }
 
-    #[Route('/admin/expense/delete/{expense}', name: 'app_expense_delete')]
-    public function delete(EntityManagerInterface $em, Expense $expense, TranslatorInterface $translator)
+    #[Route('/admin/expense/delete/{expense}', name: 'app_expense_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $em, Expense $expense, TranslatorInterface $translator): Response
     {
+        if (!$this->isCsrfTokenValid('expense_delete_' . $expense->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
+
+            return $this->redirectToRoute('app_expense_edit', ['expense' => $expense->getId()]);
+        }
+
         if ($this->getUser() !== $expense->getEditor()) {
             $this->addFlash('error', $translator->trans('expenses.delete_not_allowed'));
 

@@ -126,10 +126,16 @@ class UserGroupAdminController extends AbstractController
         return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
     }
 
-    #[Route('/admin/usergroup/delete/{usergroup}', name: 'app_usergroup_delete')]
-    public function delete(EntityManagerInterface $em, UserType $usergroup, TranslatorInterface $translator)
+    #[Route('/admin/usergroup/delete/{usergroup}', name: 'app_usergroup_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $em, UserType $usergroup, TranslatorInterface $translator): Response
     {
         $car = $usergroup->getCar();
+
+        if (!$this->isCsrfTokenValid('usergroup_delete_' . $usergroup->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
+
+            return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
+        }
 
         // only allow to delete groups without users
         if (0 === count($usergroup->getUsers()) && !$usergroup->isFixed()) {

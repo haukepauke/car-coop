@@ -117,9 +117,15 @@ class PaymentAdminController extends AbstractController
         return $this->redirectToRoute('app_payment_list');
     }
 
-    #[Route('/admin/payment/delete/{payment}', name: 'app_payment_delete')]
-    public function delete(EntityManagerInterface $em, Payment $payment, TranslatorInterface $translator)
+    #[Route('/admin/payment/delete/{payment}', name: 'app_payment_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $em, Payment $payment, TranslatorInterface $translator): Response
     {
+        if (!$this->isCsrfTokenValid('payment_delete_' . $payment->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
+
+            return $this->redirectToRoute('app_payment_edit', ['payment' => $payment->getId()]);
+        }
+
         /** @var User $user */
         $user = $this->getUser();
         if ($payment->getFromUser() !== $user && $payment->getToUser() !== $user) {

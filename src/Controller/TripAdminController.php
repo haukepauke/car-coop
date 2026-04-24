@@ -195,9 +195,15 @@ class TripAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete')]
-    public function delete(EntityManagerInterface $em, TripRepository $tripRepo, Trip $trip, TranslatorInterface $translator)
+    #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $em, TripRepository $tripRepo, Trip $trip, TranslatorInterface $translator): Response
     {
+        if (!$this->isCsrfTokenValid('trip_delete_' . $trip->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('error.csrf_invalid'));
+
+            return $this->redirectToRoute('app_trip_edit', ['trip' => $trip->getId()]);
+        }
+
         $car      = $trip->getCar();
         $lastTrip = $tripRepo->findLastByEndMileage($car);
 

@@ -25,7 +25,11 @@
         {{ form_widget(bookingForm) }}
 
         <button type="submit" class="btn btn-outline-dark my-3">{{ 'booking.update'|trans }}</button>
-        <button type="link" class="btn btn-outline-danger my-3" onclick="location.href='{{ path('app_booking_delete',  {booking: booking.id}) }}';return false;">{{ 'booking.delete'|trans }} <i class="fas fa-trash"></i></button>
     {{ form_end(bookingForm) }}
+
+    <form method="post" action="{{ path('app_booking_delete',  {booking: booking.id}) }}" class="d-inline">
+        <input type="hidden" name="_token" value="{{ csrf_token('booking_delete_' ~ booking.id) }}">
+        <button type="submit" class="btn btn-outline-danger my-3">{{ 'booking.delete'|trans }} <i class="fas fa-trash"></i></button>
+    </form>
 </div>
 {% endblock %}
