@@ -4,7 +4,7 @@
 <div class="col-xl-6 mt-5">
     <h4>{{ 'payments.edit.for'|trans }}</h4>
 
-    {{ form_start(paymentForm) }}
+    {{ form_start(paymentForm, { attr: { id: paymentForm.vars.id } }) }}
         {{ form_widget(paymentForm) }}
     {{ form_end(paymentForm, {'render_rest': false}) }}
 

@@ -4,7 +4,7 @@
 <div class="col-xl-6 mt-5">
     <h4>{{ 'expenses.edit.for'|trans }}</h4>
 
-    {{ form_start(expenseForm) }}
+    {{ form_start(expenseForm, { attr: { id: expenseForm.vars.id } }) }}
         {{ form_widget(expenseForm) }}
     {{ form_end(expenseForm, {'render_rest': false}) }}
 

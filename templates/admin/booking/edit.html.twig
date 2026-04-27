@@ -21,7 +21,7 @@
     </div>
     {% endif %}
 
-    {{ form_start(bookingForm) }}
+    {{ form_start(bookingForm, { attr: { id: bookingForm.vars.id } }) }}
         {{ form_widget(bookingForm) }}
     {{ form_end(bookingForm, {'render_rest': false}) }}
 

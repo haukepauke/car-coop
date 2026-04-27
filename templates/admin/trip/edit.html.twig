@@ -4,7 +4,7 @@
 <div class="col-xl-6 mt-5">
     <h4>{{ 'trips.edit.with'|trans }}</h4>
 
-    {{ form_start(tripForm) }}
+    {{ form_start(tripForm, { attr: { id: tripForm.vars.id } }) }}
         {{ form_widget(tripForm) }}
     {{ form_end(tripForm, {'render_rest': false}) }}
 
