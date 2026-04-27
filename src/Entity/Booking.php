@@ -26,11 +26,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             security: 'is_granted("ROLE_USER")',
             securityPostDenormalize: 'object.getCar().hasUser(user)',
+            validationContext: ['groups' => ['Default', 'booking:create']],
             processor: BookingStateProcessor::class,
         ),
         new Put(
             security: 'is_granted("ROLE_USER") and object.getCar().hasUser(user)',
             securityPostDenormalize: 'object.getCar().hasUser(user)',
+            validationContext: ['groups' => ['Default', 'booking:update']],
             processor: BookingStateProcessor::class,
         ),
         new Delete(
@@ -53,7 +55,7 @@ class Booking
     private $id;
 
     #[ORM\Column(type: 'datetime')]
-    #[Assert\GreaterThan(value: 'today', message: 'booking.not_in_past')]
+    #[Assert\GreaterThan(value: 'today', message: 'booking.not_in_past', groups: ['booking:create'])]
     #[Groups(['booking:read', 'booking:write'])]
     private $startDate;
 

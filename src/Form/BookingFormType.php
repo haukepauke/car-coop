@@ -18,12 +18,14 @@ class BookingFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $readOnly = $options['read_only'];
 
         $builder
             ->add(
                 'startDate',
                 null,
                 [
+                    'disabled' => $readOnly,
                     'widget' => 'single_text',
                     'label' => 'booking.form.startdate',
                 ]
@@ -32,6 +34,7 @@ class BookingFormType extends AbstractType
                 'endDate',
                 null,
                 [
+                    'disabled' => $readOnly,
                     'widget' => 'single_text',
                     'label' => 'booking.form.enddate',
                 ]
@@ -40,6 +43,7 @@ class BookingFormType extends AbstractType
                 'title',
                 TextType::class,
                 [
+                    'disabled' => $readOnly,
                     'required' => false,
                     'label' => 'booking.form.title',
                 ]
@@ -48,6 +52,7 @@ class BookingFormType extends AbstractType
                 'status',
                 ChoiceType::class,
                 [
+                    'disabled' => $readOnly,
                     'choices' => [
                         'Fixed!' => 'fixed',
                         'Maybe?' => 'maybe',
@@ -59,6 +64,7 @@ class BookingFormType extends AbstractType
                 'user',
                 EntityType::class,
                 [
+                    'disabled' => $readOnly,
                     'class' => User::class,
                     'query_builder' => function (EntityRepository $er) use ($options) {
                         return $er->createQueryBuilder('u')
@@ -80,7 +86,9 @@ class BookingFormType extends AbstractType
             'data_class' => Booking::class,
             'car' => null,
             'user' => null,
+            'read_only' => false,
         ]);
+        $resolver->setAllowedTypes('read_only', 'bool');
     }
 
    

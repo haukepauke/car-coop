@@ -58,7 +58,8 @@ class BookingAdminController extends AbstractController
             $booking,
             [
                 'car' => $car,
-                'user' => $user
+                'user' => $user,
+                'validation_groups' => ['Default', 'booking:create'],
             ]
         );
 
@@ -94,11 +95,20 @@ class BookingAdminController extends AbstractController
         $booking = $bookingRepo->find($booking);
         $this->denyUnlessActiveCarScope($activeCarService, $booking->getCar());
         $car = $booking->getCar();
+        $isPastBooking = $booking->getEndDate() < new \DateTimeImmutable();
+
+        if ($isPastBooking && $request->isMethod('POST')) {
+            return $this->redirectToRoute('app_booking_edit', ['booking' => $booking->getId()]);
+        }
 
         $form = $this->createForm(
             BookingFormType::class,
             $booking,
-            ['car' => $car]
+            [
+                'car' => $car,
+                'read_only' => $isPastBooking,
+                'validation_groups' => ['Default', 'booking:update'],
+            ]
         );
 
         $form->handleRequest($request);
@@ -125,6 +135,7 @@ class BookingAdminController extends AbstractController
                 'booking' => $booking,
                 'car' => $car,
                 'overlappingBookings' => $overlappingBookings,
+                'isPastBooking' => $isPastBooking,
             ]
         );
     }

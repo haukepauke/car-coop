@@ -26,7 +26,9 @@
     {{ form_end(bookingForm, {'render_rest': false}) }}
 
     <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+        {% if not isPastBooking %}
         <button type="submit" form="{{ bookingForm.vars.id }}" class="btn btn-outline-dark">{{ 'booking.update'|trans }}</button>
+        {% endif %}
         <form method="post" action="{{ path('app_booking_delete',  {booking: booking.id}) }}" class="d-inline">
             <input type="hidden" name="_token" value="{{ csrf_token('booking_delete_' ~ booking.id) }}">
             <button type="submit" class="btn btn-outline-danger">{{ 'booking.delete'|trans }} <i class="fas fa-trash"></i></button>
