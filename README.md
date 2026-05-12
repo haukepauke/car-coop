@@ -61,7 +61,7 @@ Open `.env` and set at minimum:
 | `DB_PASSWORD` | Strong password for the application database user |
 | `DB_ROOT_PASSWORD` | Strong password for the MariaDB root account |
 | `HTTP_PORT` | Host port to expose (default: `80`) |
-| `MAILER_DSN` | SMTP connection string, or `null://null` to disable outgoing email |
+| `MAILER_DSN` | SMTP connection string, or `null://null` to disable outgoing email. Add `?local_domain=car-coop.net` to use a proper SMTP hostname |
 | `MAILER_FROM_EMAIL` | Sender address for emails sent by the application |
 | `APP_HOMEPAGE_URL` | Public URL of your instance |
 
