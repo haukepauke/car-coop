@@ -9,12 +9,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import './styles/app.css';
+import './photo-upload-widget.js';
+import './photo-modal.js';
 
 import 'bootstrap';
 
 // start the Stimulus application
 import './bootstrap.js';
-
-
 
 

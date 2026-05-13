@@ -28,6 +28,10 @@ return [
         'path' => './assets/messageboard.js',
         'entrypoint' => true,
     ],
+    'photo-upload-widget' => [
+        'path' => './assets/photo-upload-widget.js',
+        'entrypoint' => true,
+    ],
     'tour' => [
         'path' => './assets/tour.js',
         'entrypoint' => true,

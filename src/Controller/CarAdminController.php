@@ -244,6 +244,8 @@ class CarAdminController extends AbstractController
 
             $carPanels[] = [
                 'car'                           => $carObj,
+                'handbook'                      => $carObj->getHandbook(),
+                'canManageHandbook'             => $carObj->canManageHandbook($user),
                 'bookings'                      => $bookingRepo->findByCar(new \DateTime(), $lastDayOfYear, $carObj, 3),
                 'distanceTravelled'             => $carObj->getDistanceTravelled($firstDayOfYear, $lastDayOfYear),
                 'moneySpent'                    => $carObj->getMoneySpent($firstDayOfYear, $lastDayOfYear),

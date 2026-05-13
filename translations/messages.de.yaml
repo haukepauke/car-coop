@@ -712,6 +712,53 @@ superadmin:
     sent: "Nachricht gesendet – auf allen Pinnwänden gepostet und für den E-Mail-Versand eingereiht."
     error_empty: "Betreff und Nachrichtentext sind erforderlich."
     confirm: "Diese Nachricht an alle Benutzer:innen auf dem Server senden?"
+handbook:
+  title: Handbuch
+  open: Handbuch
+  create: Handbuch erstellen
+  edit: Handbuch bearbeiten
+  save: Handbuch speichern
+  delete_confirm: Dieses Handbuch wirklich löschen?
+  created: Handbuch erstellt.
+  updated: Handbuch aktualisiert.
+  deleted: Handbuch gelöscht.
+  empty: Für dieses Fahrzeug wurde noch kein Handbuch erstellt.
+  no_permission: Gelegenheitsnutzer:innen können das Handbuch ansehen, aber nicht erstellen, bearbeiten oder löschen.
+  first_time_hint: Das Eingabefeld startet mit ein paar Markdown-Beispielen. Du kannst sie jederzeit überschreiben oder löschen.
+  last_updated: "Zuletzt aktualisiert: %date%"
+  photo_hint: Du kannst mehrere JPG-, PNG- oder GIF-Bilder hochladen. Neue Uploads werden unten als Markdown-Bilder angehängt. Maximale Dateigröße 4 MB pro Datei.
+  photo_too_large: Ein oder mehrere Bilder überschreiten die maximale Dateigröße von 4 MB und wurden nicht hochgeladen.
+  photo_invalid_type: Eine oder mehrere Dateien sind keine gültigen JPG-, PNG- oder GIF-Bilder und wurden nicht hochgeladen.
+  photo_upload_failed: Ein oder mehrere Bilder konnten nicht auf dem Server gespeichert werden.
+  form:
+    content: Markdown-Inhalt
+    photos: Fotos hinzufügen
+  example_markdown: |
+    # Kurzueberblick
+
+    Schreibe hier alles hinein, was alle vor der Nutzung des Fahrzeugs wissen sollten.
+
+    ## Vor der Fahrt
+
+    - Pruefe, ob das Auto getankt oder geladen werden muss.
+    - Lege den Schluessel wieder an den ueblichen Platz zurueck.
+    - Melde neue Schaeden oder Probleme an die Gruppe.
+
+    ## Wichtige Details
+
+    **Parkplatz:** Trage hier den ueblichen Stellplatz ein.
+
+    **Tankkarte / Ladekarte:** Notiere, wo sie liegt.
+
+    ## Gut zu wissen
+
+    1. Beschreibe besondere Startschritte, falls es welche gibt.
+    2. Erklaere Reinigungs- oder Rueckgaberegeln.
+    3. Hinterlasse Kontaktdaten fuer dringende Rueckfragen.
+
+    > Tipp: Hochgeladene Fotos werden unten als Markdown-Bilder angehaengt und koennen danach frei verschoben werden.
+
+    ![Beispielfoto](/pfad/zum/foto.jpg)
 yes: Ja
 cancel: Abbrechen
 confirm_delete_title: Löschen bestätigen

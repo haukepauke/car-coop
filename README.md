@@ -16,6 +16,7 @@ The app can assist you with finding the right rate per kilometer/mile after you'
 * **📊 Statistics** — view overall usage and cost statistics for the vehicle
 * **📍 Parking location** — share the current parking spot with other users, including a map view
 * **💬 Message board** — post updates and notes about the vehicle for all members to see
+* **📖 Handbook** — create a one-page handbook for the vehicle with all the information that might be useful for usage
 * **🔄 Calendar sync** — sync bookings with any CalDAV-compatible calendar app (DAVx⁵, Apple Calendar, Thunderbird …) — see [docs/caldav.md](docs/caldav.md)
 * **🧩 REST API** — control the application programmatically, e.g. from a smartphone app
 * **🌍 Available languages** - english, german, french, spanish, dutch and polish 

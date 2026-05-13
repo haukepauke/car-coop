@@ -7,6 +7,7 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Booking;
 use App\Entity\Car;
+use App\Entity\CarHandbook;
 use App\Entity\Expense;
 use App\Entity\Message;
 use App\Entity\Payment;
@@ -25,6 +26,7 @@ class CarScopedQueryExtension implements QueryCollectionExtensionInterface
     private const CAR_RELATED = [
         Trip::class,
         Booking::class,
+        CarHandbook::class,
         Expense::class,
         Payment::class,
         ParkingLocation::class,

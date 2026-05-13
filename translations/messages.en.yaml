@@ -701,6 +701,53 @@ superadmin:
     sent: "Broadcast sent — message posted to all boards and queued for email delivery."
     error_empty: "Subject and message text are required."
     confirm: "Send this message to all users on the server?"
+handbook:
+  title: Handbook
+  open: Handbook
+  create: Create handbook
+  edit: Edit handbook
+  save: Save handbook
+  delete_confirm: Really delete this handbook?
+  created: Handbook created.
+  updated: Handbook updated.
+  deleted: Handbook deleted.
+  empty: No handbook has been created for this car yet.
+  no_permission: Occasional users can view the handbook, but they cannot create, edit, or delete it.
+  first_time_hint: The editor starts with a few markdown examples. You can overwrite or delete them at any time.
+  last_updated: "Last updated %date%"
+  photo_hint: You can upload multiple JPG, PNG, or GIF images. New uploads are appended to the markdown as image elements. Maximum 4 MB per file.
+  photo_too_large: One or more images exceed the maximum allowed size of 4 MB and were not uploaded.
+  photo_invalid_type: One or more files are not valid JPG, PNG, or GIF images and were not uploaded.
+  photo_upload_failed: One or more images could not be saved on the server.
+  form:
+    content: Markdown content
+    photos: Add photos
+  example_markdown: |
+    # Quick overview
+
+    Write down the things everyone should know before taking the car.
+
+    ## Before driving
+
+    - Check whether the car needs fuel or charging.
+    - Make sure the key goes back to its usual place.
+    - Report any new damage or problems to the group.
+
+    ## Important details
+
+    **Parking spot:** Add the usual parking location here.
+
+    **Fuel card / charging card:** Note where it is stored.
+
+    ## Good to know
+
+    1. Describe special startup steps if there are any.
+    2. Add cleaning or return rules.
+    3. Add contact details for urgent issues.
+
+    > Tip: uploaded photos are appended below as markdown images, and you can move them around afterward.
+
+    ![Example photo](/path/to/photo.jpg)
 yes: Yes
 cancel: Cancel
 confirm_delete_title: Confirm deletion

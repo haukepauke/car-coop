@@ -97,6 +97,9 @@ class Car
     #[Groups(['car:read'])]
     private string $currency = 'EUR';
 
+    #[ORM\OneToOne(mappedBy: 'car', targetEntity: CarHandbook::class, orphanRemoval: true)]
+    private ?CarHandbook $handbook = null;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
@@ -318,6 +321,24 @@ class Car
     }
 
     /**
+     * Returns true if the user belongs to an active, non-occasional user group of this car.
+     */
+    public function canManageHandbook(User $user): bool
+    {
+        foreach ($this->userTypes as $userType) {
+            if (
+                $userType->isActive()
+                && !$userType->isOccasionalUse()
+                && $userType->getUsers()->contains($user)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
@@ -372,6 +393,22 @@ class Car
             if ($booking->getCar() === $this) {
                 $booking->setCar(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getHandbook(): ?CarHandbook
+    {
+        return $this->handbook;
+    }
+
+    public function setHandbook(?CarHandbook $handbook): self
+    {
+        $this->handbook = $handbook;
+
+        if ($handbook !== null && $handbook->getCar() !== $this) {
+            $handbook->setCar($this);
         }
 
         return $this;

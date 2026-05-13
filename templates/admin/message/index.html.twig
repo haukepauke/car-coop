@@ -104,10 +104,9 @@
                     {% else %}
                     <img src="{{ attachmentUrl }}"
                          alt="{{ 'messageboard.photo'|trans }}"
-                         class="message-photo-thumb"
+                         class="message-photo-thumb js-photo-modal-trigger"
                          data-photo-url="{{ attachmentUrl }}"
-                         data-photo-name="{{ photo }}"
-                         onclick="openPhotoModal(this)">
+                         data-photo-name="{{ photo }}">
                     {% endif %}
                     {% endfor %}
                 </div>
@@ -134,11 +133,27 @@
             <form id="message-form" method="post" action="{{ path('app_message_new') }}" class="mt-2" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token('message_new') }}">
                 <input type="hidden" name="content" id="message-content">
-                <input type="file" name="photos[]" id="message-photos" accept=".jpg,.jpeg,.png,.gif,.pdf,image/jpeg,image/png,image/gif,application/pdf" multiple class="d-none">
-                <div id="photo-preview-area" class="photo-upload-area" title="{{ 'messageboard.photo_hint'|trans }}">
-                    <button type="button" id="photo-add-btn" class="photo-add-btn" title="{{ 'messageboard.attach_photos'|trans }}" aria-label="{{ 'messageboard.attach_photos'|trans }}">
+                <div id="photo-preview-area"
+                     class="photo-upload-area"
+                     title="{{ 'messageboard.photo_hint'|trans }}"
+                     data-photo-upload-widget
+                     data-photo-upload-input="#message-photos"
+                     data-photo-upload-button="#photo-add-btn">
+                    <div id="photo-add-btn"
+                         class="photo-add-btn"
+                         title="{{ 'messageboard.attach_photos'|trans }}"
+                         aria-label="{{ 'messageboard.attach_photos'|trans }}"
+                         role="button"
+                         tabindex="0">
+                        <input type="file"
+                               name="photos[]"
+                               id="message-photos"
+                               accept=".jpg,.jpeg,.png,.gif,.pdf,image/jpeg,image/png,image/gif,application/pdf"
+                               multiple
+                               class="photo-add-input"
+                               aria-label="{{ 'messageboard.attach_photos'|trans }}">
                         <i class="fa-solid fa-plus"></i>
-                    </button>
+                    </div>
                 </div>
                 <p class="form-text mt-2 mb-0">{{ 'messageboard.photo_hint'|trans }}</p>
                 <button type="submit" class="btn btn-outline-dark mt-2">{{ 'messageboard.post'|trans }}</button>
@@ -148,25 +163,7 @@
 </div>
 
 {# Fullscreen photo modal #}
-<div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content bg-dark">
-            <div class="modal-header border-0 pb-1">
-                <div class="d-flex gap-2 ms-auto">
-                    <a id="photoDownloadBtn" href="#" download class="btn btn-sm btn-outline-light">
-                        <i class="fa-solid fa-download"></i> {{ 'messageboard.download_photo'|trans }}
-                    </a>
-                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">
-                        <i class="fa-solid fa-xmark"></i> {{ 'messageboard.close'|trans }}
-                    </button>
-                </div>
-            </div>
-            <div class="modal-body pt-0 text-center">
-                <img id="photoModalImg" src="" alt="">
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'common/_photo_modal.html.twig' %}
 
 {# ── Shared confirm modal ──────────────────────────────────────────────────── #}
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">

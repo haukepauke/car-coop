@@ -38,7 +38,7 @@ class CarTest extends TestCase
         return $car;
     }
 
-    private function makeUserType(Car $car, bool $active = true, bool $admin = false): UserType
+    private function makeUserType(Car $car, bool $active = true, bool $admin = false, bool $occasionalUse = false): UserType
     {
         $ut = new UserType();
         $ut->setName('Members');
@@ -46,6 +46,7 @@ class CarTest extends TestCase
         $ut->setCar($car);
         $ut->setActive($active);
         $ut->setAdmin($admin);
+        $ut->setOccasionalUse($occasionalUse);
         return $ut;
     }
 
@@ -116,6 +117,41 @@ class CarTest extends TestCase
         $car->addUserType($ut);
 
         $this->assertFalse($car->isAdminUser($visitor));
+    }
+
+    // ── canManageHandbook() ──────────────────────────────────────────────────
+
+    public function testCanManageHandbookReturnsTrueForActiveNonOccasionalMember(): void
+    {
+        $car = $this->makeCar();
+        $user = $this->makeUser(1);
+        $userType = $this->makeUserType($car, true, false, false);
+        $userType->addUser($user);
+        $car->addUserType($userType);
+
+        $this->assertTrue($car->canManageHandbook($user));
+    }
+
+    public function testCanManageHandbookReturnsFalseForOccasionalUser(): void
+    {
+        $car = $this->makeCar();
+        $user = $this->makeUser(1);
+        $userType = $this->makeUserType($car, true, false, true);
+        $userType->addUser($user);
+        $car->addUserType($userType);
+
+        $this->assertFalse($car->canManageHandbook($user));
+    }
+
+    public function testCanManageHandbookReturnsFalseForInactiveUserGroup(): void
+    {
+        $car = $this->makeCar();
+        $user = $this->makeUser(1);
+        $userType = $this->makeUserType($car, false, false, false);
+        $userType->addUser($user);
+        $car->addUserType($userType);
+
+        $this->assertFalse($car->canManageHandbook($user));
     }
 
     // ── getUsers() ────────────────────────────────────────────────────────────

@@ -143,6 +143,9 @@
                         <div class="d-flex justify-content-between align-items-center mb-3 page-header" {% if isActive %}id="tour-car-data"{% endif %}>
                             <h3 class="mb-0">{{ 'car.data'|trans }}</h3>
                             <div class="d-flex gap-2" {% if isActive %}id="tour-car-actions"{% endif %}>
+                                <a href="{{ path('app_car_handbook_show', {car: carData.car.id}) }}" class="btn btn-outline-dark btn-sm">
+                                    {{ carData.handbook ? 'handbook.open'|trans : 'handbook.create'|trans }}
+                                </a>
                                 <button type="button"
                                         class="btn btn-outline-secondary btn-sm js-trip-cost-estimate"
                                         data-bs-toggle="modal"

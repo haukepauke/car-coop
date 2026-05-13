@@ -700,6 +700,31 @@ superadmin:
     sent: "Difusión enviada — mensaje publicado en todos los tablones y en cola para entrega por correo electrónico."
     error_empty: "El asunto y el texto del mensaje son obligatorios."
     confirm: "¿Enviar este mensaje a todos los usuarios del servidor?"
+handbook:
+  title: Handbook
+  open: Handbook
+  create: Create handbook
+  edit: Edit handbook
+  save: Save handbook
+  delete_confirm: Really delete this handbook?
+  created: Handbook created.
+  updated: Handbook updated.
+  deleted: Handbook deleted.
+  empty: No handbook has been created for this car yet.
+  no_permission: Occasional users can view the handbook, but they cannot create, edit, or delete it.
+  first_time_hint: The editor starts with a few markdown examples. You can overwrite or delete them at any time.
+  last_updated: "Last updated %date%"
+  photo_hint: You can upload multiple JPG, PNG, or GIF images. New uploads are appended to the markdown as image elements. Maximum 4 MB per file.
+  photo_too_large: One or more images exceed the maximum allowed size of 4 MB and were not uploaded.
+  photo_invalid_type: One or more files are not valid JPG, PNG, or GIF images and were not uploaded.
+  photo_upload_failed: One or more images could not be saved on the server.
+  form:
+    content: Markdown content
+    photos: Add photos
+  example_markdown: |
+    # Quick overview
+
+    Write down the things everyone should know before taking the car.
 yes: Sí
 cancel: Cancelar
 confirm_delete_title: Confirmar eliminación

@@ -17,6 +17,14 @@ framework:
     php_errors:
         log: true
 
+    html_sanitizer:
+        sanitizers:
+            handbook:
+                allow_safe_elements: true
+                allow_elements:
+                    img: ['src', 'alt', 'title']
+                allow_relative_medias: true
+
 when@test:
     framework:
         test: true

@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'handbook.title'|trans }} – {{ car.name }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('styles/messageboard.css') }}">
+{% endblock %}
+
+{% block content_body %}
+<div class="col-12 mt-5">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 page-header">
+        <div>
+            <h1 class="h4 mb-0">{{ 'handbook.title'|trans }}</h1>
+            <p class="text-muted mb-0">{{ car.name }}</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ path('app_car_show') }}" class="btn btn-outline-secondary btn-sm">{{ 'car.data'|trans }}</a>
+            {% if handbook and not showEditor and canManageHandbook %}
+                <a href="{{ path('app_car_handbook_edit', {car: car.id}) }}" class="btn btn-outline-primary btn-sm">{{ 'edit'|trans }}</a>
+                <form method="post" action="{{ path('app_car_handbook_delete', {car: car.id}) }}" onsubmit="return confirm('{{ 'handbook.delete_confirm'|trans }}');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('handbook_delete_' ~ car.id) }}">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">{{ 'delete'|trans }}</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if showEditor and handbookForm %}
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h5 card-title">{{ handbook and handbook.id ? 'handbook.edit'|trans : 'handbook.create'|trans }}</h2>
+                {% if not handbook.id %}
+                    <p class="text-muted small">{{ 'handbook.first_time_hint'|trans }}</p>
+                {% endif %}
+                {{ form_start(handbookForm, {attr: {enctype: 'multipart/form-data'}}) }}
+                    {{ form_row(handbookForm.content) }}
+                    <div class="mb-3">
+                        {{ form_label(handbookForm.photos) }}
+                        <div id="photo-preview-area"
+                             class="photo-upload-area"
+                             title="{{ 'handbook.photo_hint'|trans }}"
+                             data-photo-upload-widget
+                             data-photo-upload-input="#message-photos"
+                             data-photo-upload-button="#photo-add-btn"
+                             data-photo-upload-markdown-target="#{{ handbookForm.content.vars.id }}"
+                             data-photo-upload-token-container="#photo-token-fields"
+                             data-photo-upload-token-field-name="photoTokens[]">
+                            <div id="photo-add-btn"
+                                 class="photo-add-btn"
+                                 title="{{ 'handbook.form.photos'|trans }}"
+                                 aria-label="{{ 'handbook.form.photos'|trans }}"
+                                 role="button"
+                                 tabindex="0">
+                                <input type="file"
+                                       name="{{ handbookForm.photos.vars.full_name }}"
+                                       id="message-photos"
+                                       accept=".jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif"
+                                       multiple
+                                       class="photo-add-input"
+                                       aria-label="{{ 'handbook.form.photos'|trans }}">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                        </div>
+                        <div id="photo-token-fields"></div>
+                        {% do handbookForm.photos.setRendered() %}
+                        {{ form_help(handbookForm.photos) }}
+                        {{ form_errors(handbookForm.photos) }}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-outline-dark">{{ 'handbook.save'|trans }}</button>
+                        {% if handbook and handbook.id %}
+                            <a href="{{ path('app_car_handbook_show', {car: car.id}) }}" class="btn btn-outline-secondary">{{ 'cancel'|trans }}</a>
+                        {% else %}
+                            <a href="{{ path('app_car_show') }}" class="btn btn-outline-secondary">{{ 'cancel'|trans }}</a>
+                        {% endif %}
+                    </div>
+                {{ form_end(handbookForm) }}
+            </div>
+        </div>
+    {% elseif handbook %}
+        <div class="card">
+            <div class="card-body">
+                <p class="text-muted small">{{ 'handbook.last_updated'|trans({'%date%': handbook.updatedAt|format_datetime('medium', 'short', locale=app.user.locale)}) }}</p>
+                <div class="handbook-markdown">{{ handbook.content|markdown_to_html|sanitize_html('handbook') }}</div>
+            </div>
+        </div>
+        {% include 'common/_photo_modal.html.twig' %}
+    {% else %}
+        <div class="card">
+            <div class="card-body">
+                <p class="mb-2">{{ 'handbook.empty'|trans }}</p>
+                {% if canManageHandbook %}
+                    <a href="{{ path('app_car_handbook_edit', {car: car.id}) }}" class="btn btn-outline-dark btn-sm">{{ 'handbook.create'|trans }}</a>
+                {% else %}
+                    <p class="text-muted small mb-0">{{ 'handbook.no_permission'|trans }}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

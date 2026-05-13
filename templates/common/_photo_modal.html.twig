@@ -1,0 +1,19 @@
+<div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0 pb-1">
+                <div class="d-flex gap-2 ms-auto">
+                    <a id="photoDownloadBtn" href="#" download class="btn btn-sm btn-outline-light">
+                        <i class="fa-solid fa-download"></i> {{ 'messageboard.download_photo'|trans }}
+                    </a>
+                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark"></i> {{ 'messageboard.close'|trans }}
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body pt-0 text-center">
+                <img id="photoModalImg" src="" alt="">
+            </div>
+        </div>
+    </div>
+</div>

@@ -140,7 +140,8 @@ html[data-theme="dark"] .ql-snow button.ql-active .ql-fill {
 }
 
 /* ── Uploaded photo thumbnails in messages ─────────────────── */
-.message-photo-thumb {
+.message-photo-thumb,
+.handbook-markdown img {
     max-height: 120px;
     max-width: 160px;
     object-fit: cover;
@@ -149,7 +150,8 @@ html[data-theme="dark"] .ql-snow button.ql-active .ql-fill {
     transition: opacity 0.15s;
 }
 
-.message-photo-thumb:hover {
+.message-photo-thumb:hover,
+.handbook-markdown img:hover {
     opacity: 0.85;
 }
 
@@ -200,6 +202,7 @@ html[data-theme="dark"] .ql-snow button.ql-active .ql-fill {
     align-items: center;
     gap: 8px;
     margin-top: 10px;
+    position: relative;
 }
 
 .photo-add-btn {
@@ -217,12 +220,24 @@ html[data-theme="dark"] .ql-snow button.ql-active .ql-fill {
     justify-content: center;
     transition: border-color 0.15s, color 0.15s;
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .photo-add-btn:hover {
     border-color: var(--cc-primary-dark);
     color: var(--cc-primary-dark);
     background: rgba(245, 181, 234, 0.16);
+}
+
+.photo-add-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
 }
 
 /* ── Individual preview items ───────────────────────────────── */
