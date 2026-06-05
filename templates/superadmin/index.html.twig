@@ -107,7 +107,7 @@
                         {% if user.profilePicturePath|default %}
                             <img class="rounded-circle" src="{{ asset('/uploads/users/' ~ user.profilePicturePath)|imagine_filter('profile_thumb') }}" height="40" width="40">
                         {% else %}
-                            <img class="rounded-circle" src="{{ asset('./static/default-user.png') }}" height="40" width="40">
+                            <img class="rounded-circle" src="{{ asset('static/default-user.png') }}" height="40" width="40">
                         {% endif %}
                     </td>
                     <td data-label="{{ 'user.user'|trans }}" class="align-middle text-center">{{ user.name }}</td>
