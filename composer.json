@@ -7,7 +7,7 @@
         "php": "^8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "api-platform/core": "^4.3",
+        "api-platform/core": "4.3.5",
         "babdev/pagerfanta-bundle": "^4.0",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
