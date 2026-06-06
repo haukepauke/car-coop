@@ -24,8 +24,9 @@ tour:
   actions:
     title: Belangrijke hulpmiddelen
     desc: |
-      <p>Deze drie knoppen geven snel toegang tot belangrijke functies voor het voertuig.</p>
+      <p>Deze knoppen geven snel toegang tot belangrijke functies voor het voertuig.</p>
       <ul>
+        <li><strong>Handboek</strong>: als dat nog niet is gebeurd, kun je hier een handboek voor het voertuig aanmaken waarin je alles samenvat wat belangrijk is voor het gebruik van het voertuig.</li>
         <li><strong>Kostencalculator</strong>: schat de kosten van een geplande rit op basis van de kilometerprijs en de geschatte afstand van de rit. Vooral in het begin helpt dit om gevoel te krijgen voor de kosten van een rit.</li>
         <li><strong>Analyse</strong>: opent de kostenanalyse van het voertuig en toont voorstellen voor vereffeningsbetalingen en wijzigingen van de kilometerprijs. Deze functie wordt pas echt zinvol als er al een aantal ritten zijn geregistreerd. Hoe meer gegevens, hoe nuttiger de analyse.</li>
         <li><strong>PDF-export</strong>: maakt een PDF-samenvatting van alle gegevens van dit voertuig, zoals ritten, uitgaven en betalingen. Handig om te archiveren of samen aan de keukentafel te bekijken.</li>
@@ -701,30 +702,52 @@ superadmin:
     error_empty: "Onderwerp en berichttekst zijn verplicht."
     confirm: "Dit bericht naar alle gebruikers op de server sturen?"
 handbook:
-  title: Handbook
-  open: Handbook
-  create: Create handbook
-  edit: Edit handbook
-  save: Save handbook
-  delete_confirm: Really delete this handbook?
-  created: Handbook created.
-  updated: Handbook updated.
-  deleted: Handbook deleted.
-  empty: No handbook has been created for this car yet.
-  no_permission: Occasional users can view the handbook, but they cannot create, edit, or delete it.
-  first_time_hint: The editor starts with a few markdown examples. You can overwrite or delete them at any time.
-  last_updated: "Last updated %date%"
-  photo_hint: You can upload multiple JPG, PNG, or GIF images. New uploads are appended to the markdown as image elements. Maximum 4 MB per file.
-  photo_too_large: One or more images exceed the maximum allowed size of 4 MB and were not uploaded.
-  photo_invalid_type: One or more files are not valid JPG, PNG, or GIF images and were not uploaded.
-  photo_upload_failed: One or more images could not be saved on the server.
+  title: Handboek
+  open: Handboek
+  create: Handboek maken
+  edit: Handboek bewerken
+  save: Handboek opslaan
+  delete_confirm: Dit handboek echt verwijderen?
+  created: Handboek gemaakt.
+  updated: Handboek bijgewerkt.
+  deleted: Handboek verwijderd.
+  empty: Voor dit voertuig is nog geen handboek aangemaakt.
+  no_permission: Occasionele gebruikers kunnen het handboek bekijken, maar niet aanmaken, bewerken of verwijderen.
+  first_time_hint: De editor start met een paar Markdown-voorbeelden. Je kunt ze op elk moment overschrijven of verwijderen.
+  last_updated: "Laatst bijgewerkt: %date%"
+  photo_hint: Je kunt meerdere JPG-, PNG- of GIF-afbeeldingen uploaden. Nieuwe uploads worden onderaan toegevoegd als Markdown-afbeeldingen. Maximale bestandsgrootte 4 MB per bestand.
+  photo_too_large: Een of meer afbeeldingen overschrijden de maximale bestandsgrootte van 4 MB en zijn niet geüpload.
+  photo_invalid_type: Een of meer bestanden zijn geen geldige JPG-, PNG- of GIF-afbeeldingen en zijn niet geüpload.
+  photo_upload_failed: Een of meer afbeeldingen konden niet op de server worden opgeslagen.
   form:
-    content: Markdown content
-    photos: Add photos
+    content: Markdown-inhoud
+    photos: Foto's toevoegen
   example_markdown: |
-    # Quick overview
+    # Kort overzicht
 
-    Write down the things everyone should know before taking the car.
+    Schrijf hier alles op wat iedereen moet weten voordat hij of zij het voertuig gebruikt.
+
+    ## Voor vertrek
+
+    - Controleer of de auto brandstof nodig heeft of moet worden opgeladen.
+    - Zorg ervoor dat de sleutel teruggaat naar de gebruikelijke plek.
+    - Meld nieuwe schade of problemen aan de groep.
+
+    ## Belangrijke details
+
+    **Parkeerplek:** Noteer hier de gebruikelijke parkeerplaats.
+
+    **Tankpas / laadpas:** Noteer waar die wordt bewaard.
+
+    ## Goed om te weten
+
+    1. Beschrijf bijzondere startstappen als die er zijn.
+    2. Voeg schoonmaak- of inleverregels toe.
+    3. Laat contactgegevens achter voor dringende vragen.
+
+    > Tip: geüploade foto's worden hieronder toegevoegd als Markdown-afbeeldingen, en je kunt ze daarna vrij verplaatsen.
+
+    ![Voorbeeldfoto](/pad/naar/foto.jpg)
 yes: Ja
 cancel: Annuleren
 confirm_delete_title: Verwijdering bevestigen

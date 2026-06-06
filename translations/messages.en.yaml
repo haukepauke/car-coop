@@ -25,8 +25,9 @@ tour:
   actions:
     title: Key tools
     desc: |
-      <p>These three buttons give quick access to important vehicle functions.</p>
+      <p>These buttons give quick access to important vehicle functions.</p>
       <ul>
+        <li><strong>Handbook</strong>: if you have not done so yet, you can create a handbook for the vehicle here and summarize everything important for using it.</li>
         <li><strong>Cost calculator</strong>: estimates the cost of a planned trip based on the kilometer price and the estimated distance of the trip. Especially at the beginning, this helps you get a feeling for what a trip will cost.</li>
         <li><strong>Review</strong>: opens the vehicle cost analysis and shows suggestions for balancing payments and kilometer-price changes. This becomes most useful once you already have some trips recorded. The more entries you have, the more meaningful the analysis becomes.</li>
         <li><strong>PDF export</strong>: creates a PDF summary of all data for this vehicle, including trips, expenses, payments, and more. Useful for filing away or for reviewing things together around the kitchen table.</li>

@@ -24,8 +24,9 @@ tour:
   actions:
     title: Herramientas importantes
     desc: |
-      <p>Estos tres botones ofrecen acceso rápido a funciones importantes del vehículo.</p>
+      <p>Estos botones ofrecen acceso rápido a funciones importantes del vehículo.</p>
       <ul>
+        <li><strong>Manual</strong>: si todavía no lo habéis hecho, aquí podéis crear un manual del vehículo en el que resumir todo lo importante para su uso.</li>
         <li><strong>Calculadora de costes</strong>: estima el coste de un trayecto planificado a partir del precio por kilómetro y de la distancia estimada del trayecto. Sobre todo al principio, esto ayuda a hacerse una idea del coste de un viaje.</li>
         <li><strong>Análisis</strong>: abre el análisis de costes del vehículo y muestra propuestas para pagos de compensación y cambios en el precio por kilómetro. Esta función tiene más sentido cuando ya habéis registrado algunos trayectos. Cuantas más entradas haya, más útil será el análisis.</li>
         <li><strong>Exportar PDF</strong>: crea un resumen en PDF de todos los datos relacionados con este vehículo, como trayectos, gastos, pagos, etc. Útil para archivar o para revisar todo juntos alrededor de la mesa de la cocina.</li>
@@ -701,30 +702,52 @@ superadmin:
     error_empty: "El asunto y el texto del mensaje son obligatorios."
     confirm: "¿Enviar este mensaje a todos los usuarios del servidor?"
 handbook:
-  title: Handbook
-  open: Handbook
-  create: Create handbook
-  edit: Edit handbook
-  save: Save handbook
-  delete_confirm: Really delete this handbook?
-  created: Handbook created.
-  updated: Handbook updated.
-  deleted: Handbook deleted.
-  empty: No handbook has been created for this car yet.
-  no_permission: Occasional users can view the handbook, but they cannot create, edit, or delete it.
-  first_time_hint: The editor starts with a few markdown examples. You can overwrite or delete them at any time.
-  last_updated: "Last updated %date%"
-  photo_hint: You can upload multiple JPG, PNG, or GIF images. New uploads are appended to the markdown as image elements. Maximum 4 MB per file.
-  photo_too_large: One or more images exceed the maximum allowed size of 4 MB and were not uploaded.
-  photo_invalid_type: One or more files are not valid JPG, PNG, or GIF images and were not uploaded.
-  photo_upload_failed: One or more images could not be saved on the server.
+  title: Manual
+  open: Manual
+  create: Crear manual
+  edit: Editar manual
+  save: Guardar manual
+  delete_confirm: "¿Seguro que queréis eliminar este manual?"
+  created: Manual creado.
+  updated: Manual actualizado.
+  deleted: Manual eliminado.
+  empty: Todavía no se ha creado ningún manual para este vehículo.
+  no_permission: Los usuarios ocasionales pueden ver el manual, pero no crearlo, editarlo ni eliminarlo.
+  first_time_hint: El editor empieza con algunos ejemplos de Markdown. Podéis sobrescribirlos o borrarlos en cualquier momento.
+  last_updated: "Última actualización: %date%"
+  photo_hint: Podéis subir varias imágenes JPG, PNG o GIF. Las nuevas subidas se añaden al final como imágenes Markdown. Tamaño máximo 4 MB por archivo.
+  photo_too_large: Una o varias imágenes superan el tamaño máximo de 4 MB y no se han subido.
+  photo_invalid_type: Uno o varios archivos no son imágenes JPG, PNG o GIF válidas y no se han subido.
+  photo_upload_failed: Una o varias imágenes no pudieron guardarse en el servidor.
   form:
-    content: Markdown content
-    photos: Add photos
+    content: Contenido Markdown
+    photos: Añadir fotos
   example_markdown: |
-    # Quick overview
+    # Resumen rapido
 
-    Write down the things everyone should know before taking the car.
+    Escribe aqui todo lo que todo el mundo deberia saber antes de usar el vehiculo.
+
+    ## Antes de conducir
+
+    - Comprueba si el coche necesita combustible o carga.
+    - Aseguraos de que la llave vuelva a su lugar habitual.
+    - Comunica al grupo cualquier dano o problema nuevo.
+
+    ## Detalles importantes
+
+    **Lugar de aparcamiento:** Anotad aqui el sitio habitual.
+
+    **Tarjeta de combustible / tarjeta de carga:** Indicad donde se guarda.
+
+    ## Bueno saberlo
+
+    1. Describid pasos especiales de arranque si los hay.
+    2. Anotad reglas de limpieza o devolucion.
+    3. Dejad datos de contacto para cuestiones urgentes.
+
+    > Consejo: las fotos subidas se anaden abajo como imagenes Markdown y luego podeis moverlas como querais.
+
+    ![Foto de ejemplo](/ruta/a/la/foto.jpg)
 yes: Sí
 cancel: Cancelar
 confirm_delete_title: Confirmar eliminación

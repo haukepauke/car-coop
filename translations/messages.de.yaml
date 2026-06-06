@@ -25,8 +25,9 @@ tour:
   actions:
     title: Wichtige Werkzeuge
     desc: |
-      <p>Diese drei Buttons geben euch schnellen Zugriff auf wichtige Funktionen für das Fahrzeug.</p>
+      <p>Diese Buttons geben euch schnellen Zugriff auf wichtige Funktionen für das Fahrzeug.</p>
       <ul>
+        <li><strong>Handbuch</strong>: Falls noch nicht geschehen kann hier ein Handbuch für das Fahrzeug angelegt werden in dem ihr alles Wichtige für die Nutzung des Fahrzeugs zusammenfasst.</li>
         <li><strong>Kostenrechner</strong>: Schätzt die Kosten einer geplanten Fahrt anhand des Kilometerpreises und der geschätzten Entfernung der Fahrt. Das soll euch gerade am Anfang helfen eine Idee über die Kosten einer Fahrt zu bekommen.</li>
         <li><strong>Auswertung</strong>: Öffnet die Kostenanalyse des Fahrzeugs und zeigt Vorschläge für Ausgleichszahlungen und Kilometerpreis-Änderungen. Diese Funktion macht erst richtig Sinn, wenn ihr schon einige Fahrten hinter euch habt. Je mehr Einträge desto genauer ist die Analyse.</li>
         <li><strong>PDF-Export</strong>: Erstellt eine PDF-Zusammenfassung aller Daten zu diesem Fahrzeug (Fahrten, Ausgaben, Zahlungen, etc.). Zum Abheften oder für gemeinsame Auswertungen am Küchentisch.</li>

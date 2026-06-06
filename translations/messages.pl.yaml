@@ -24,8 +24,9 @@ tour:
   actions:
     title: Ważne narzędzia
     desc: |
-      <p>Te trzy przyciski dają szybki dostęp do ważnych funkcji związanych z pojazdem.</p>
+      <p>Te przyciski dają szybki dostęp do ważnych funkcji związanych z pojazdem.</p>
       <ul>
+        <li><strong>Podręcznik</strong>: jeśli jeszcze tego nie zrobiliście, możecie tutaj utworzyć podręcznik pojazdu, w którym zbierzecie wszystko, co ważne przy korzystaniu z pojazdu.</li>
         <li><strong>Kalkulator kosztów</strong>: szacuje koszt planowanego przejazdu na podstawie ceny za kilometr i przewidywanej długości trasy. Zwłaszcza na początku pomaga to zorientować się, ile może kosztować przejazd.</li>
         <li><strong>Analiza</strong>: otwiera analizę kosztów pojazdu i pokazuje propozycje płatności wyrównawczych oraz zmian cen za kilometr. Ta funkcja ma największy sens wtedy, gdy macie już zapisanych kilka przejazdów. Im więcej wpisów, tym trafniejsza analiza.</li>
         <li><strong>Eksport PDF</strong>: tworzy podsumowanie PDF wszystkich danych dotyczących tego pojazdu, takich jak przejazdy, wydatki, płatności itd. Przydatne do archiwizacji albo do wspólnego omawiania przy kuchennym stole.</li>
@@ -701,30 +702,52 @@ superadmin:
     error_empty: "Temat i treść wiadomości są wymagane."
     confirm: "Wysłać tę wiadomość do wszystkich użytkowników serwera?"
 handbook:
-  title: Handbook
-  open: Handbook
-  create: Create handbook
-  edit: Edit handbook
-  save: Save handbook
-  delete_confirm: Really delete this handbook?
-  created: Handbook created.
-  updated: Handbook updated.
-  deleted: Handbook deleted.
-  empty: No handbook has been created for this car yet.
-  no_permission: Occasional users can view the handbook, but they cannot create, edit, or delete it.
-  first_time_hint: The editor starts with a few markdown examples. You can overwrite or delete them at any time.
-  last_updated: "Last updated %date%"
-  photo_hint: You can upload multiple JPG, PNG, or GIF images. New uploads are appended to the markdown as image elements. Maximum 4 MB per file.
-  photo_too_large: One or more images exceed the maximum allowed size of 4 MB and were not uploaded.
-  photo_invalid_type: One or more files are not valid JPG, PNG, or GIF images and were not uploaded.
-  photo_upload_failed: One or more images could not be saved on the server.
+  title: Podręcznik
+  open: Podręcznik
+  create: Utwórz podręcznik
+  edit: Edytuj podręcznik
+  save: Zapisz podręcznik
+  delete_confirm: Czy na pewno usunąć ten podręcznik?
+  created: Utworzono podręcznik.
+  updated: Zaktualizowano podręcznik.
+  deleted: Usunięto podręcznik.
+  empty: Dla tego pojazdu nie utworzono jeszcze podręcznika.
+  no_permission: Użytkownicy okazjonalni mogą przeglądać podręcznik, ale nie mogą go tworzyć, edytować ani usuwać.
+  first_time_hint: Edytor zaczyna się od kilku przykładów Markdown. Możesz je w każdej chwili nadpisać lub usunąć.
+  last_updated: "Ostatnia aktualizacja: %date%"
+  photo_hint: Możesz przesłać wiele obrazów JPG, PNG lub GIF. Nowe pliki są dodawane na dole jako obrazy w Markdown. Maksymalny rozmiar pliku to 4 MB.
+  photo_too_large: Nie przesłano jednego lub większej liczby obrazów, ponieważ przekraczają maksymalny rozmiar 4 MB.
+  photo_invalid_type: Nie przesłano jednego lub większej liczby plików, ponieważ nie są prawidłowymi obrazami JPG, PNG lub GIF.
+  photo_upload_failed: Nie udało się zapisać na serwerze jednego lub większej liczby obrazów.
   form:
-    content: Markdown content
-    photos: Add photos
+    content: Treść Markdown
+    photos: Dodaj zdjęcia
   example_markdown: |
-    # Quick overview
+    # Szybki przeglad
 
-    Write down the things everyone should know before taking the car.
+    Zapisz tutaj wszystko, co kazdy powinien wiedziec przed skorzystaniem z pojazdu.
+
+    ## Przed jazda
+
+    - Sprawdz, czy samochod wymaga tankowania lub ladowania.
+    - Upewnij sie, ze klucz wraca na swoje stale miejsce.
+    - Zglos grupie wszelkie nowe uszkodzenia lub problemy.
+
+    ## Wazne szczegoly
+
+    **Miejsce parkingowe:** Wpisz tutaj zwykle miejsce postoju.
+
+    **Karta paliwowa / karta ladowania:** Zanotuj, gdzie jest przechowywana.
+
+    ## Warto wiedziec
+
+    1. Opisz szczegolne kroki uruchomienia, jesli takie istnieja.
+    2. Dodaj zasady sprzatania lub zwrotu pojazdu.
+    3. Zostaw dane kontaktowe do pilnych spraw.
+
+    > Wskazowka: przeslane zdjecia sa dodawane nizej jako obrazy Markdown i mozna je potem dowolnie przesuwac.
+
+    ![Przykladowe zdjecie](/sciezka/do/zdjecia.jpg)
 yes: Tak
 cancel: Anuluj
 confirm_delete_title: Potwierdź usunięcie
