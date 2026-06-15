@@ -144,14 +144,29 @@ docker compose -f docker-compose.prod.yml down -v
 To run the app on a VM with a web server of your choice (PHP 8.3+ required), clone the repository and run:
 
 ```bash
-APP_ENV=prod composer install --no-dev --optimize-autoloader
-APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
-php bin/console lexik:jwt:generate-keypair --skip-if-exists
-php bin/console doctrine:migrations:migrate
-php bin/console asset-map:compile
+deploy/manual-deploy.sh
 ```
 
-These commands must also be run after pulling updated code.
+The script runs the standard production steps:
+
+1. `composer install --no-dev --optimize-autoloader`
+2. `php bin/console cache:clear --no-warmup`
+3. `php bin/console cache:warmup`
+4. `php bin/console lexik:jwt:generate-keypair --skip-if-exists`
+5. `php bin/console doctrine:migrations:migrate --allow-no-migration`
+6. `php bin/console asset-map:compile`
+
+Useful options:
+
+```bash
+# Restart the Supervisor-managed messenger worker after deploy
+deploy/manual-deploy.sh --restart-worker
+
+# Ask workers to stop before deploying, then restart them after
+deploy/manual-deploy.sh --stop-workers-first --restart-worker
+```
+
+These steps should also be run after pulling updated code.
 
 ### Keeping the worker process running with Supervisor
 
