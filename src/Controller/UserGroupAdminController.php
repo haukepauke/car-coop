@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\UserType;
 use App\Form\UserTypeFormType;
 use App\Message\Event\PricePerUnitChangedEvent;
@@ -22,11 +21,9 @@ class UserGroupAdminController extends AbstractController
     use ActiveCarScopeTrait;
 
     #[Route('/admin/usergroup/new', name: 'app_usergroup_new')]
-    public function new(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
+    public function new(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $car = $user->getCar();
+        $car = $this->getActiveCarOrDeny($activeCarService);
 
         $usergroup = new UserType();
         $usergroup->setCar($car);
