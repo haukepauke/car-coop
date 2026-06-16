@@ -9,6 +9,7 @@ use App\Entity\Booking;
 use App\Entity\User;
 use App\Service\BookingService;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class BookingStateProcessor implements ProcessorInterface
 {
@@ -21,6 +22,10 @@ class BookingStateProcessor implements ProcessorInterface
     {
         if (!$data instanceof Booking) {
             return $data;
+        }
+
+        if ($data->getCar() !== null && $data->getUser() !== null && !$data->getCar()->hasUser($data->getUser())) {
+            throw new AccessDeniedHttpException('Booking user must belong to the selected car.');
         }
 
         $user = $this->security->getUser();

@@ -87,6 +87,24 @@ class BookingTest extends ApiTestCase
         $this->assertArrayHasKey('editor', $data);
     }
 
+    public function testPostRejectsUserOutsideSelectedCar(): void
+    {
+        $start = (new \DateTime('+70 days'))->format(\DateTime::ATOM);
+        $end   = (new \DateTime('+77 days'))->format(\DateTime::ATOM);
+
+        static::authClient()->request('POST', '/api/bookings', [
+            'json' => [
+                'startDate' => $start,
+                'endDate'   => $end,
+                'status'    => 'fixed',
+                'car'       => static::carIri(),
+                'user'      => static::otherUserIri(),
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
     public function testPostUnauthenticatedReturns401(): void
     {
         $start = (new \DateTime('+60 days'))->format(\DateTime::ATOM);

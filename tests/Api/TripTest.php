@@ -88,6 +88,23 @@ class TripTest extends ApiTestCase
         $this->assertArrayHasKey('editor', $data);
     }
 
+    public function testPostRejectsUsersOutsideSelectedCar(): void
+    {
+        static::authClient()->request('POST', '/api/trips', [
+            'json' => [
+                'startMileage' => 21000,
+                'endMileage'   => 21250,
+                'startDate'    => '2024-06-04',
+                'endDate'      => '2024-06-05',
+                'type'         => 'transport',
+                'car'          => static::carIri(),
+                'users'        => [static::otherUserIri()],
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
     public function testPostUnauthenticatedReturns401(): void
     {
         static::createClient()->request('POST', '/api/trips', [

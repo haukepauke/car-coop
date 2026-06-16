@@ -86,6 +86,22 @@ class ExpenseTest extends ApiTestCase
         $this->assertArrayHasKey('editor', $data);
     }
 
+    public function testPostRejectsUserOutsideSelectedCar(): void
+    {
+        static::authClient()->request('POST', '/api/expenses', [
+            'json' => [
+                'type'   => 'fuel',
+                'name'   => 'Fuel for wrong user',
+                'amount' => 50.0,
+                'date'   => '2024-04-01',
+                'car'    => static::carIri(),
+                'user'   => static::otherUserIri(),
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
     public function testPostUnauthenticatedReturns401(): void
     {
         static::createClient()->request('POST', '/api/expenses', [

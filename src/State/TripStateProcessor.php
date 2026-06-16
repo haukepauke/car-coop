@@ -9,6 +9,7 @@ use App\Entity\Trip;
 use App\Entity\User;
 use App\Service\TripService;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class TripStateProcessor implements ProcessorInterface
 {
@@ -21,6 +22,14 @@ class TripStateProcessor implements ProcessorInterface
     {
         if (!$data instanceof Trip) {
             return $data;
+        }
+
+        if ($data->getCar() !== null) {
+            foreach ($data->getUsers() as $tripUser) {
+                if (!$data->getCar()->hasUser($tripUser)) {
+                    throw new AccessDeniedHttpException('Trip users must belong to the selected car.');
+                }
+            }
         }
 
         $user = $this->security->getUser();

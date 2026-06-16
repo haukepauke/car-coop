@@ -134,6 +134,22 @@ class PaymentTest extends ApiTestCase
         $this->assertEquals(50.0, $data['amount']);
     }
 
+    public function testPostRejectsUsersOutsideSelectedCar(): void
+    {
+        static::authClient()->request('POST', '/api/payments', [
+            'json' => [
+                'date'     => '2024-06-01',
+                'amount'   => 10.00,
+                'type'     => 'cash',
+                'fromUser' => static::userIri(),
+                'toUser'   => static::otherUserIri(),
+                'car'      => static::carIri(),
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
     public function testPostUnauthenticatedReturns401(): void
     {
         static::createClient()->request('POST', '/api/payments', [

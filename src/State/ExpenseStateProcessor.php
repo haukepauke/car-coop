@@ -7,6 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Expense;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ExpenseStateProcessor implements ProcessorInterface
 {
@@ -18,6 +19,10 @@ class ExpenseStateProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
         if ($data instanceof Expense) {
+            if ($data->getCar() !== null && $data->getUser() !== null && !$data->getCar()->hasUser($data->getUser())) {
+                throw new AccessDeniedHttpException('Expense user must belong to the selected car.');
+            }
+
             $user = $this->security->getUser();
             if ($user instanceof User) {
                 $data->setEditor($user);
