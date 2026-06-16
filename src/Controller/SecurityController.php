@@ -52,10 +52,20 @@ class SecurityController extends AbstractController
     }
 
     #[Route(
-        path: '/logout', 
-        name: 'app_logout'
+        path: '/logout',
+        name: 'app_logout',
+        methods: ['POST']
     )]
-    public function logout(Security $security): Response
+    public function logout(Request $request, Security $security): Response
+    {
+        if (!$this->isCsrfTokenValid('logout', $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        return $this->logoutAndRedirect($security);
+    }
+
+    public function logoutAndRedirect(Security $security): Response
     {
         // Use the response from logout() so that cookie-clearing headers
         // (e.g. remember-me) are sent to the browser, then redirect externally.

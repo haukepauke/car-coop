@@ -96,8 +96,9 @@
                                     <li><a class="dropdown-item" href="{{ path('app_user_edit') }}">{{
                                             'user.profile.edit'|trans
                                             }}</a></li>
-                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{
-                                            'user.logout'|trans }}</a></li>
+                                    <li>
+                                        <button type="submit" form="logout-form" class="dropdown-item">{{ 'user.logout'|trans }}</button>
+                                    </li>
                                 </ul>
                             </li>
                             {% else %}
@@ -136,6 +137,12 @@
                 </div>
             </div>
             {% endblock %}
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <form id="logout-form" method="post" action="{{ path('app_logout') }}" class="d-none">
+            <input type="hidden" name="_token" value="{{ csrf_token('logout') }}">
+        </form>
+        {% endif %}
+
         </main>
 
         <footer class="p-2 mt-5 d-none d-lg-block">

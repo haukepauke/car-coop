@@ -21,17 +21,21 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserAdminController extends AbstractController
 {
     use ActiveCarScopeTrait;
 
-    public function __construct(private readonly InvitationMailerService $invitationMailer)
-    {
+    public function __construct(
+        private readonly InvitationMailerService $invitationMailer,
+        private readonly string $homepageUrl,
+    ) {
     }
 
     #[Route('/admin/user/list', name: 'app_user_list')]
@@ -252,7 +256,7 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/delete-account', name: 'app_user_delete_account', methods: ['POST'])]
-    public function deleteAccount(EntityManagerInterface $em, Request $request, MessageBusInterface $messageBus): Response
+    public function deleteAccount(EntityManagerInterface $em, Request $request, MessageBusInterface $messageBus, Security $security): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -281,7 +285,15 @@ class UserAdminController extends AbstractController
             $messageBus->dispatch($event);
         }
 
-        return $this->redirectToRoute('app_logout');
+        $logoutResponse = $security->logout(false);
+        $redirect = new RedirectResponse($this->homepageUrl);
+        if ($logoutResponse !== null) {
+            foreach ($logoutResponse->headers->getCookies() as $cookie) {
+                $redirect->headers->setCookie($cookie);
+            }
+        }
+
+        return $redirect;
     }
 
     #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete', methods: ['POST'])]
