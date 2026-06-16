@@ -36,6 +36,40 @@ class UserTest extends ApiTestCase
         $this->assertArrayHasKey('name', $data);
     }
 
+    public function testGetItemDoesNotExposeSensitiveFields(): void
+    {
+        $response = static::authClient()->request('GET', static::userIri());
+
+        $this->assertResponseIsSuccessful();
+        $data = $response->toArray();
+
+        $this->assertArrayNotHasKey('password', $data);
+        $this->assertArrayNotHasKey('roles', $data);
+        $this->assertArrayNotHasKey('isVerified', $data);
+        $this->assertArrayNotHasKey('firstLogin', $data);
+        $this->assertArrayNotHasKey('lastLogin', $data);
+        $this->assertArrayNotHasKey('notifiedOnEvents', $data);
+        $this->assertArrayNotHasKey('notifiedOnOwnEvents', $data);
+    }
+
+    public function testMeDoesNotExposeSensitiveFields(): void
+    {
+        $response = static::authClient()->request('GET', '/api/me');
+
+        $this->assertResponseIsSuccessful();
+        $data = $response->toArray();
+
+        $this->assertSame(static::$userId, $data['id']);
+        $this->assertSame(static::testEmail(), $data['email']);
+        $this->assertArrayNotHasKey('password', $data);
+        $this->assertArrayNotHasKey('roles', $data);
+        $this->assertArrayNotHasKey('isVerified', $data);
+        $this->assertArrayNotHasKey('firstLogin', $data);
+        $this->assertArrayNotHasKey('lastLogin', $data);
+        $this->assertArrayNotHasKey('notifiedOnEvents', $data);
+        $this->assertArrayNotHasKey('notifiedOnOwnEvents', $data);
+    }
+
     public function testGetCollectionUnauthenticatedReturns401(): void
     {
         static::createClient()->request('GET', '/api/users');
