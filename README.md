@@ -27,7 +27,7 @@ The software is running at [car-coop.net](https://car-coop.net). You can try it 
 
 ## Android ~~and iOS~~ App 
 
-Currently there is an Android and iOS app in development (using [flutter](https://flutter.dev/)). Release of the Android App on Google Play Store and fdroid is planned until may. Check out the [github project](https://github.com/haukepauke/car-coop-app). Developing open source for iOS and the apple store however is a pain and involves yearly fees which i am currently not willing to pay.
+Currently there is an Android and iOS app in development (using [flutter](https://flutter.dev/)). Release of the Android App on Google Play Store and fdroid is planned. Check out the [github project](https://github.com/haukepauke/car-coop-app). Developing open source for iOS and the apple store however is a pain and involves yearly fees which i am currently not willing to pay.
 
 ---
 
