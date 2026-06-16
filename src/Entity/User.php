@@ -41,11 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\Email()]
+    #[Assert\Length(max: 180)]
     #[Groups(['user:read'])]
     private $email;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank()]
+    #[Assert\Length(max: 50)]
     #[Groups(['user:read'])]
     private $name;
 
@@ -81,14 +83,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $bookings;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    #[Assert\Length(max: 10)]
     #[Groups(['user:read'])]
     private $color;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     #[Groups(['user:read'])]
     private $profilePicturePath;
 
     #[ORM\Column(type: 'string', length: 2)]
+    #[Assert\Length(max: 2)]
     #[Assert\Choice(User::LOCALES)]
     #[Groups(['user:read', 'user:write'])]
     private $locale;

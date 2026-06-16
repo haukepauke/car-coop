@@ -57,6 +57,7 @@ class CarHandbookAttachmentController extends AbstractController
         if (is_string($mimeType)) {
             $response->headers->set('Content-Type', $mimeType);
         }
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
 
         return $response;

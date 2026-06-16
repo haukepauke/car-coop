@@ -36,10 +36,12 @@ class Car
 
     #[ORM\Column(type: 'string', length: 30)]
     #[Assert\NotBlank()]
+    #[Assert\Length(max: 30)]
     #[Groups(['car:read'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 15, nullable: true)]
+    #[Assert\Length(max: 15)]
     #[Groups(['car:read'])]
     private $licensePlate;
 
@@ -49,10 +51,12 @@ class Car
     private $mileage;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     #[Groups(['car:read'])]
     private $make;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     #[Groups(['car:read'])]
     private $vendor;
 
@@ -80,10 +84,12 @@ class Car
     private $parkingLocations;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     #[Groups(['car:read'])]
     private $profilePicturePath;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Assert\Length(max: 50)]
     #[Groups(['car:read'])]
     private ?string $fuelType = null;
 

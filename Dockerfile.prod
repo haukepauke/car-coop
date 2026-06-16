@@ -60,9 +60,9 @@ RUN APP_ENV=prod APP_SECRET=buildsecret \
     php bin/console cache:warmup --no-interaction || true
 
 # ── Persistent directories & permissions ─────────────────────
-RUN mkdir -p public/uploads var/cache var/log \
- && chown -R www-data:www-data var/ public/uploads/ \
- && chmod -R 775 var/ public/uploads/
+RUN mkdir -p public/uploads/cars public/uploads/users public/media/cache var/cache var/log var/uploads/messages var/uploads/handbooks \
+ && chown -R www-data:www-data var/ public/uploads/ public/media/cache/ \
+ && chmod -R 775 var/ public/uploads/ public/media/cache/
 
 # ── Entrypoint ───────────────────────────────────────────────
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh

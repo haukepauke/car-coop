@@ -20,3 +20,9 @@ RUN echo "memory_limit = 512M" > "$PHP_INI_DIR/conf.d/app.ini"
 RUN mkdir -p /var/www/html/public/media/cache \
     && chown -R www-data:www-data /var/www/html/public/media/cache
 
+COPY docker-entrypoint.dev.sh /usr/local/bin/docker-entrypoint.dev.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.dev.sh
+
+ENTRYPOINT ["docker-entrypoint.dev.sh"]
+CMD ["apache2-foreground"]
+

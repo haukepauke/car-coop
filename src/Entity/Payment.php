@@ -75,6 +75,7 @@ class Payment
     private $toUser;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(max: 10000)]
     #[Groups(['payment:read', 'payment:write'])]
     private $comment;
 

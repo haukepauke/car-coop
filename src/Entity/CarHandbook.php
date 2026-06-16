@@ -11,6 +11,7 @@ use App\Repository\CarHandbookRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarHandbookRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['car' => 'exact'])]
@@ -24,6 +25,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class CarHandbook
 {
+    public const MAX_CONTENT_LENGTH = 50000;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -36,6 +39,7 @@ class CarHandbook
     private Car $car;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\Length(max: CarHandbook::MAX_CONTENT_LENGTH)]
     #[Groups(['car_handbook:read'])]
     private string $content = '';
 

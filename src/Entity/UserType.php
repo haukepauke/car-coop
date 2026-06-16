@@ -22,6 +22,7 @@ class UserType
 
     #[ORM\Column(type: 'string', length: 30)]
     #[Assert\NotBlank()]
+    #[Assert\Length(max: 30)]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'userTypes')]

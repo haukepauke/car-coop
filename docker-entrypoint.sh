@@ -18,8 +18,15 @@ if [ ! -f config/jwt/private.pem ]; then
 fi
 
 # ── Ensure writable runtime upload directories ────────────────────────────────
-mkdir -p var/uploads/messages
-chmod -R 0777 var/uploads
+mkdir -p \
+    var/cache \
+    var/log \
+    var/uploads/messages \
+    var/uploads/handbooks \
+    public/uploads/cars \
+    public/uploads/users \
+    public/media/cache
+chmod -R a+rwX var public/uploads public/media/cache
 
 # ── Run migrations ────────────────────────────────────────────────────────────
 php bin/console doctrine:migrations:migrate \

@@ -55,10 +55,12 @@ class Expense
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['expense:read', 'expense:write'])]
     private $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(max: 10000)]
     #[Groups(['expense:read', 'expense:write'])]
     private $comment;
 

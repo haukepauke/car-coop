@@ -94,6 +94,7 @@ class Trip
     private $type;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(max: 10000)]
     #[Groups(['trip:read', 'trip:write'])]
     private $comment;
 

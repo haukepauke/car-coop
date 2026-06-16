@@ -18,6 +18,7 @@ class Invitation
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     private $hash;
 
     #[ORM\Column(type: 'string', length: 10)]
@@ -40,6 +41,7 @@ class Invitation
 
     #[ORM\Column(type: 'string', length: 150)]
     #[Assert\Email()]
+    #[Assert\Length(max: 150)]
     private $email;
 
     public function getId(): ?int

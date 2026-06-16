@@ -7,6 +7,7 @@ use App\Entity\Message;
 use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,7 @@ class MessageApiCreateController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly FileUploaderService $uploader,
+        private readonly HtmlSanitizerInterface $message,
     ) {}
 
     public function __invoke(Request $request): JsonResponse
@@ -55,6 +57,11 @@ class MessageApiCreateController extends AbstractController
 
         // ── Validate content ──────────────────────────────────────────────────
         $content = trim($request->request->get('content', ''));
+        $content = trim($this->message->sanitize($content));
+        if (mb_strlen($content) > Message::MAX_CONTENT_LENGTH) {
+            throw new BadRequestHttpException(sprintf('Message content must be %d characters or fewer.', Message::MAX_CONTENT_LENGTH));
+        }
+
 
         /** @var UploadedFile[] $uploadedFiles */
         $uploadedFiles = $request->files->get('photos') ?? [];

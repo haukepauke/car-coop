@@ -6,6 +6,7 @@ use App\Entity\Message;
 use App\Entity\Car;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Validation;
 
 class MessageTest extends TestCase
 {
@@ -69,6 +70,19 @@ class MessageTest extends TestCase
             '/api/messages/42/attachments/manual.pdf',
             '/api/messages/42/attachments/photo1.jpg',
         ], $message->getAttachmentUrls());
+    }
+
+    public function testContentLengthIsValidated(): void
+    {
+        $message = new Message();
+        $message->setContent(str_repeat('x', Message::MAX_CONTENT_LENGTH + 1));
+
+        $violations = Validation::createValidatorBuilder()
+            ->enableAttributeMapping()
+            ->getValidator()
+            ->validate($message);
+
+        $this->assertGreaterThan(0, $violations->count());
     }
 
     // ── getSystemData() ───────────────────────────────────────────────────────

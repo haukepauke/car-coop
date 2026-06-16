@@ -9,6 +9,7 @@ use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class MessageController extends AbstractController
 {
     use ActiveCarScopeTrait;
+
+    public function __construct(private readonly HtmlSanitizerInterface $message)
+    {
+    }
 
     private const MAX_PHOTO_SIZE = 4 * 1024 * 1024; // 4 MB
     private const PHOTO_FOLDER = 'messages';
@@ -58,6 +63,13 @@ class MessageController extends AbstractController
         }
 
         $content = trim($request->request->get('content', ''));
+        $content = trim($this->message->sanitize($content));
+        if (mb_strlen($content) > Message::MAX_CONTENT_LENGTH) {
+            $this->addFlash('warning', sprintf('Message content must be %d characters or fewer.', Message::MAX_CONTENT_LENGTH));
+
+            return $this->redirectToRoute('app_message_board');
+        }
+
         /** @var UploadedFile[] $uploadedFiles */
         $uploadedFiles = $request->files->get('photos') ?? [];
         if (!is_array($uploadedFiles)) {

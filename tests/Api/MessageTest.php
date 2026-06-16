@@ -73,7 +73,8 @@ class MessageTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
         $headers = $client->getResponse()->getHeaders(false);
         $this->assertSame('application/pdf', $headers['content-type'][0] ?? null);
-        $this->assertStringContainsString('inline', $headers['content-disposition'][0] ?? '');
+        $this->assertSame('nosniff', $headers['x-content-type-options'][0] ?? null);
+        $this->assertStringContainsString('attachment', $headers['content-disposition'][0] ?? '');
     }
 
     public function testAttachmentDownloadUnauthenticatedReturns401(): void
@@ -113,6 +114,33 @@ class MessageTest extends ApiTestCase
         $data = json_decode($client->getResponse()->getContent(), true);
         $this->assertSame('Sent via multipart POST', $data['content']);
         $this->assertArrayHasKey('author', $data);
+    }
+
+    public function testPostSanitizesHtmlBeforeStoring(): void
+    {
+        $client = static::authClient();
+
+        $client->request('POST', '/api/messages', [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data',
+                'Accept'       => 'application/json',
+            ],
+            'extra' => [
+                'parameters' => [
+                    'car'     => (string) static::$carId,
+                    'content' => '<p><strong>Hello</strong><script>alert(1)</script><img src="x" onerror="alert(2)"></p>',
+                ],
+                'files' => [],
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(201);
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertStringContainsString('Hello', $data['content']);
+        $this->assertStringNotContainsString('<script', $data['content']);
+        $this->assertStringNotContainsString('onerror', $data['content']);
+        $this->assertStringNotContainsString('alert(1)', $data['content']);
+        $this->assertStringNotContainsString('alert(2)', $data['content']);
     }
 
     public function testPostUnauthenticatedReturns401(): void

@@ -40,7 +40,12 @@ class MessageAttachmentController extends AbstractController
         if (is_string($mimeType)) {
             $response->headers->set('Content-Type', $mimeType);
         }
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+
+        $disposition = $mimeType === 'application/pdf'
+            ? ResponseHeaderBag::DISPOSITION_ATTACHMENT
+            : ResponseHeaderBag::DISPOSITION_INLINE;
+        $response->setContentDisposition($disposition, $filename);
 
         return $response;
     }

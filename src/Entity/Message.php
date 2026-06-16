@@ -15,6 +15,7 @@ use App\State\MessageDeleteProcessor;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['car' => 'exact'])]
@@ -54,6 +55,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Message
 {
+    public const MAX_CONTENT_LENGTH = 10000;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -71,6 +74,7 @@ class Message
     private ?User $author = null;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\Length(max: Message::MAX_CONTENT_LENGTH)]
     #[Groups(['message:read'])]
     private string $content;
 
