@@ -225,3 +225,19 @@ APP_SECRET=<random-32-char-string>     # generate with: openssl rand -hex 16
 ```
 
 Any other variable from `.env` can be overridden the same way (e.g. `DATABASE_URL`, `MAILER_DSN`, `SENTRY_DSN`).
+
+### Dependency security checks
+
+Composer dependencies are checked with:
+
+```bash
+composer audit --locked
+```
+
+JavaScript dependencies are checked with:
+
+```bash
+npm audit --package-lock-only
+```
+
+Both audits run in GitHub Actions on pushes and pull requests. Dependabot is configured for Composer, npm, and GitHub Actions updates.
