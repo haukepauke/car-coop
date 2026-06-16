@@ -3,8 +3,12 @@
 .gitignore
 
 # Dev environment files
+.env
+.env.*
+!.env.example
 .env.local
 .env.*.local
+config/jwt/
 docker-compose.yml
 docker-compose.override.yml
 
