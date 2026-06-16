@@ -85,7 +85,7 @@
                 {{ message.systemData.key|trans(message.systemData.params)|raw }}
             {% else %}
                 {% if message.content %}
-                    {{ message.content|sanitize_html }}
+                    {{ message.content|render_message_content }}
                 {% endif %}
                 {% if message.photos %}
                 <div class="d-flex flex-wrap gap-2 mt-2">
