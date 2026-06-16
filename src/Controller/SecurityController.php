@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Security\SecurityAuditLogger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -16,8 +18,10 @@ class SecurityController extends AbstractController
 {
     use TargetPathTrait;
 
-    public function __construct(private readonly string $homepageUrl)
-    {
+    public function __construct(
+        private readonly string $homepageUrl,
+        private readonly SecurityAuditLogger $securityAuditLogger,
+    ) {
     }
 
     #[Route(
@@ -67,9 +71,14 @@ class SecurityController extends AbstractController
 
     public function logoutAndRedirect(Security $security): Response
     {
+        $user = $this->getUser();
+
         // Use the response from logout() so that cookie-clearing headers
         // (e.g. remember-me) are sent to the browser, then redirect externally.
         $logoutResponse = $security->logout(false);
+        $this->securityAuditLogger->logoutSuccess('form_logout', $user instanceof UserInterface ? $user : null, [
+            'firewall' => 'main',
+        ]);
 
         $redirect = new RedirectResponse($this->homepageUrl);
         if ($logoutResponse !== null) {

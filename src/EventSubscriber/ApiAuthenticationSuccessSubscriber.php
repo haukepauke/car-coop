@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Entity\User;
+use App\Security\SecurityAuditLogger;
 use App\Service\RefreshTokenService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
@@ -16,6 +17,7 @@ class ApiAuthenticationSuccessSubscriber implements EventSubscriberInterface
         private readonly RequestStack $requestStack,
         private readonly int $accessTokenTtl,
         private readonly int $refreshTokenTtl,
+        private readonly SecurityAuditLogger $securityAuditLogger,
     ) {
     }
 
@@ -41,6 +43,10 @@ class ApiAuthenticationSuccessSubscriber implements EventSubscriberInterface
             : null;
 
         $issuedRefreshToken = $this->refreshTokenService->create($user, $deviceName);
+        $this->securityAuditLogger->authenticationSuccess('api_login', $user, [
+            'firewall' => 'api',
+            'device_name_present' => null !== $deviceName,
+        ]);
 
         $event->setData([
             'token' => (string) ($event->getData()['token'] ?? ''),

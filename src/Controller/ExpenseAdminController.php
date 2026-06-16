@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Expense;
 use App\Form\ExpenseFormType;
 use App\Repository\ExpenseRepository;
+use App\Security\SecurityAuditLogger;
 use App\Service\ActiveCarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -121,17 +122,24 @@ class ExpenseAdminController extends AbstractController
     }
 
     #[Route('/admin/expense/delete/{expense}', name: 'app_expense_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, Expense $expense, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
+    public function delete(Request $request, EntityManagerInterface $em, Expense $expense, TranslatorInterface $translator, ActiveCarService $activeCarService, SecurityAuditLogger $securityAuditLogger): Response
     {
         $this->denyUnlessActiveCarScope($activeCarService, $expense->getCar());
 
         if (!$this->isCsrfTokenValid('expense_delete_' . $expense->getId(), $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_expense_delete', [
+                'target_expense_id' => $expense->getId(),
+            ]);
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_expense_edit', ['expense' => $expense->getId()]);
         }
 
         if ($this->getUser() !== $expense->getEditor()) {
+            $securityAuditLogger->authorizationDenied('app_expense_delete', [
+                'target_expense_id' => $expense->getId(),
+                'reason' => 'expense_editor_mismatch',
+            ]);
             $this->addFlash('error', $translator->trans('expenses.delete_not_allowed'));
 
             return $this->redirectToRoute('app_expense_list');

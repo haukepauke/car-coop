@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use App\Security\SecurityAuditLogger;
 use App\Service\RefreshTokenService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,6 +16,7 @@ class LogoutController extends AbstractController
 {
     public function __construct(
         private readonly RefreshTokenService $refreshTokenService,
+        private readonly SecurityAuditLogger $securityAuditLogger,
     ) {
     }
 
@@ -22,19 +24,28 @@ class LogoutController extends AbstractController
     {
         $payload = $this->decodeJson($request);
         if (null === $payload) {
+            $this->securityAuditLogger->logoutFailure('api_logout', 'invalid_json');
             return $this->json(['message' => 'Invalid JSON body.'], Response::HTTP_BAD_REQUEST);
         }
 
         $refreshToken = $payload['refresh_token'] ?? null;
         if (!is_string($refreshToken) || '' === trim($refreshToken)) {
+            $this->securityAuditLogger->logoutFailure('api_logout', 'missing_refresh_token');
             return $this->json(['message' => 'Missing refresh_token.'], Response::HTTP_BAD_REQUEST);
         }
 
         /** @var User $user */
         $user = $this->getUser();
         if (!$user instanceof User || !$this->refreshTokenService->revoke($refreshToken, $user)) {
+            $this->securityAuditLogger->logoutFailure('api_logout', 'invalid_refresh_token', [
+                'refresh_token_fingerprint' => substr(hash('sha256', trim($refreshToken)), 0, 16),
+            ]);
             return $this->json(['message' => 'Invalid refresh token.'], Response::HTTP_UNAUTHORIZED);
         }
+
+        $this->securityAuditLogger->logoutSuccess('api_logout', $user, [
+            'refresh_token_fingerprint' => substr(hash('sha256', trim($refreshToken)), 0, 16),
+        ]);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Payment;
 use App\Form\PaymentFormType;
 use App\Repository\PaymentRepository;
+use App\Security\SecurityAuditLogger;
 use App\Service\ActiveCarService;
 use App\Service\PaymentService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -122,11 +123,14 @@ class PaymentAdminController extends AbstractController
     }
 
     #[Route('/admin/payment/delete/{payment}', name: 'app_payment_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, Payment $payment, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
+    public function delete(Request $request, EntityManagerInterface $em, Payment $payment, TranslatorInterface $translator, ActiveCarService $activeCarService, SecurityAuditLogger $securityAuditLogger): Response
     {
         $this->denyUnlessActiveCarScope($activeCarService, $payment->getCar());
 
         if (!$this->isCsrfTokenValid('payment_delete_' . $payment->getId(), $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_payment_delete', [
+                'target_payment_id' => $payment->getId(),
+            ]);
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_payment_edit', ['payment' => $payment->getId()]);
@@ -135,6 +139,10 @@ class PaymentAdminController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         if ($payment->getFromUser() !== $user && $payment->getToUser() !== $user) {
+            $securityAuditLogger->authorizationDenied('app_payment_delete', [
+                'target_payment_id' => $payment->getId(),
+                'reason' => 'payment_participant_mismatch',
+            ]);
             $this->addFlash('error', $translator->trans('payments.delete_not_allowed'));
 
             return $this->redirectToRoute('app_payment_list');

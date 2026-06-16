@@ -11,6 +11,7 @@ use App\Message\Event\InvitationCreatedEvent;
 use App\Message\Event\UserRemovedEvent;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
+use App\Security\SecurityAuditLogger;
 use App\Service\ActiveCarService;
 use App\Service\FileUploaderService;
 use App\Service\InvitationMailerService;
@@ -156,6 +157,7 @@ class UserAdminController extends AbstractController
         UserRepository $userRepo,
         TranslatorInterface $translator,
         ActiveCarService $activeCarService,
+        SecurityAuditLogger $securityAuditLogger,
     ): Response {
         $this->denyUnlessActiveCarScope($activeCarService, $invite->getUserType()->getCar());
 
@@ -166,6 +168,10 @@ class UserAdminController extends AbstractController
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         if ($currentUser->getId() !== $invite->getCreatedBy()?->getId()) {
+            $securityAuditLogger->authorizationDenied('app_invite_resend', [
+                'target_invite_id' => $invite->getId(),
+                'reason' => 'invite_creator_mismatch',
+            ]);
             $this->addFlash('error', $translator->trans('invitation.resend_not_allowed'));
             return $this->redirectToRoute('app_user_list');
         }
@@ -233,12 +239,15 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/user/tour/hide', name: 'app_user_tour_hide', methods: ['POST'])]
-    public function hideTour(Request $request, EntityManagerInterface $em): JsonResponse
+    public function hideTour(Request $request, EntityManagerInterface $em, SecurityAuditLogger $securityAuditLogger): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
 
         if (!$this->isCsrfTokenValid('hide_tour_' . $user->getId(), (string) $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_user_tour_hide', [
+                'target_user_id' => $user->getId(),
+            ]);
             return $this->json(['message' => 'Invalid CSRF token.'], Response::HTTP_FORBIDDEN);
         }
 
@@ -297,17 +306,24 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/admin/invite/delete/{invite}', name: 'app_invite_delete', methods: ['POST'])]
-    public function deleteInvite(Request $request, EntityManagerInterface $em, Invitation $invite, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
+    public function deleteInvite(Request $request, EntityManagerInterface $em, Invitation $invite, TranslatorInterface $translator, ActiveCarService $activeCarService, SecurityAuditLogger $securityAuditLogger): Response
     {
         $this->denyUnlessActiveCarScope($activeCarService, $invite->getUserType()->getCar());
 
         if (!$this->isCsrfTokenValid('invite_delete_' . $invite->getId(), $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_invite_delete', [
+                'target_invite_id' => $invite->getId(),
+            ]);
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_user_list');
         }
 
         if ($this->getUser() !== $invite->getCreatedBy()) {
+            $securityAuditLogger->authorizationDenied('app_invite_delete', [
+                'target_invite_id' => $invite->getId(),
+                'reason' => 'invite_creator_mismatch',
+            ]);
             $this->addFlash('error', $translator->trans('invitation.delete_not_allowed'));
 
             return $this->redirectToRoute('app_user_list');
@@ -328,10 +344,14 @@ class UserAdminController extends AbstractController
         ActiveCarService $activeCarService,
         MessageBusInterface $messageBus,
         TranslatorInterface $translator,
+        SecurityAuditLogger $securityAuditLogger,
     ): Response {
         $activeCar = $this->denyUnlessUserBelongsToActiveCar($activeCarService, $user);
 
         if (!$this->isCsrfTokenValid('user_delete_' . $user->getId(), $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_user_delete', [
+                'target_user_id' => $user->getId(),
+            ]);
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_user_list');
@@ -341,6 +361,10 @@ class UserAdminController extends AbstractController
         /** @var \App\Entity\User $currentUser */
         $currentUser = $this->getUser();
         if ($currentUser->getId() === $user->getId()) {
+            $securityAuditLogger->authorizationDenied('app_user_delete', [
+                'target_user_id' => $user->getId(),
+                'reason' => 'self_delete_forbidden',
+            ]);
             $this->addFlash('error', $translator->trans('user.delete.not_allowed'));
 
             return $this->redirectToRoute('app_user_list');

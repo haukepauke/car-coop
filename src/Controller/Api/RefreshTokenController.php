@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use App\Security\SecurityAuditLogger;
 use App\Service\RefreshTokenService;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +20,7 @@ class RefreshTokenController extends AbstractController
         private readonly JWTTokenManagerInterface $jwtTokenManager,
         private readonly int $accessTokenTtl,
         private readonly int $refreshTokenTtl,
+        private readonly SecurityAuditLogger $securityAuditLogger,
     ) {
     }
 
@@ -26,21 +28,27 @@ class RefreshTokenController extends AbstractController
     {
         $payload = $this->decodeJson($request);
         if (null === $payload) {
+            $this->securityAuditLogger->refreshTokenFailure('invalid_json');
             return $this->json(['message' => 'Invalid JSON body.'], Response::HTTP_BAD_REQUEST);
         }
 
         $refreshToken = $payload['refresh_token'] ?? null;
         if (!is_string($refreshToken) || '' === trim($refreshToken)) {
+            $this->securityAuditLogger->refreshTokenFailure('missing_refresh_token');
             return $this->json(['message' => 'Missing refresh_token.'], Response::HTTP_BAD_REQUEST);
         }
 
         $issuedRefreshToken = $this->refreshTokenService->refresh($refreshToken);
         if (null === $issuedRefreshToken) {
+            $this->securityAuditLogger->refreshTokenFailure('invalid_refresh_token', $refreshToken);
             return $this->json(['message' => 'Invalid refresh token.'], Response::HTTP_UNAUTHORIZED);
         }
 
         /** @var User $user */
         $user = $issuedRefreshToken->refreshToken->getUser();
+        $this->securityAuditLogger->refreshTokenSuccess($user, $refreshToken, [
+            'firewall' => 'api',
+        ]);
 
         return $this->json([
             'token' => $this->jwtTokenManager->create($user),

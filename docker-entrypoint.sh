@@ -26,7 +26,27 @@ mkdir -p \
     public/uploads/cars \
     public/uploads/users \
     public/media/cache
-chmod -R a+rwX var public/uploads public/media/cache
+
+if [ "$(id -u)" = "0" ]; then
+    chown -R www-data:www-data \
+        var/cache \
+        var/log \
+        var/uploads \
+        public/uploads \
+        public/media/cache
+fi
+
+chmod 2775 \
+    var \
+    var/cache \
+    var/uploads \
+    var/uploads/messages \
+    var/uploads/handbooks \
+    public/uploads \
+    public/uploads/cars \
+    public/uploads/users \
+    public/media/cache
+chmod 2770 var/log
 
 # ── Run migrations ────────────────────────────────────────────────────────────
 php bin/console doctrine:migrations:migrate \

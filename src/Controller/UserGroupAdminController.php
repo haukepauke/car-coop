@@ -7,6 +7,7 @@ use App\Form\UserTypeFormType;
 use App\Message\Event\PricePerUnitChangedEvent;
 use App\Repository\UserRepository;
 use App\Repository\UserTypeRepository;
+use App\Security\SecurityAuditLogger;
 use App\Service\ActiveCarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -101,12 +102,16 @@ class UserGroupAdminController extends AbstractController
         EntityManagerInterface $em,
         TranslatorInterface $translator,
         ActiveCarService $activeCarService,
+        SecurityAuditLogger $securityAuditLogger,
     ): Response {
         $this->denyUnlessActiveCarScope($activeCarService, $usergroup->getCar());
 
         $car = $usergroup->getCar();
 
         if (!$this->isCsrfTokenValid('move_user_' . $usergroup->getId(), $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_usergroup_move_user', [
+                'target_usergroup_id' => $usergroup->getId(),
+            ]);
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);
@@ -132,13 +137,16 @@ class UserGroupAdminController extends AbstractController
     }
 
     #[Route('/admin/usergroup/delete/{usergroup}', name: 'app_usergroup_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, UserType $usergroup, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
+    public function delete(Request $request, EntityManagerInterface $em, UserType $usergroup, TranslatorInterface $translator, ActiveCarService $activeCarService, SecurityAuditLogger $securityAuditLogger): Response
     {
         $this->denyUnlessActiveCarScope($activeCarService, $usergroup->getCar());
 
         $car = $usergroup->getCar();
 
         if (!$this->isCsrfTokenValid('usergroup_delete_' . $usergroup->getId(), $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_usergroup_delete', [
+                'target_usergroup_id' => $usergroup->getId(),
+            ]);
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_usergroup_edit', ['usergroup' => $usergroup->getId()]);

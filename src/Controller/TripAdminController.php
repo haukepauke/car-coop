@@ -6,6 +6,7 @@ use App\Entity\Trip;
 use App\Form\TripFormType;
 use App\Form\TripSplitFormType;
 use App\Repository\TripRepository;
+use App\Security\SecurityAuditLogger;
 use App\Service\ActiveCarService;
 use App\Service\ParkingLocationService;
 use App\Service\TripService;
@@ -202,11 +203,14 @@ class TripAdminController extends AbstractController
     }
 
     #[Route('/admin/trip/delete/{trip}', name: 'app_trip_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $em, TripRepository $tripRepo, Trip $trip, TranslatorInterface $translator, ActiveCarService $activeCarService): Response
+    public function delete(Request $request, EntityManagerInterface $em, TripRepository $tripRepo, Trip $trip, TranslatorInterface $translator, ActiveCarService $activeCarService, SecurityAuditLogger $securityAuditLogger): Response
     {
         $this->denyUnlessActiveCarScope($activeCarService, $trip->getCar());
 
         if (!$this->isCsrfTokenValid('trip_delete_' . $trip->getId(), $request->request->get('_token'))) {
+            $securityAuditLogger->csrfFailure('app_trip_delete', [
+                'target_trip_id' => $trip->getId(),
+            ]);
             $this->addFlash('error', $translator->trans('error.csrf_invalid'));
 
             return $this->redirectToRoute('app_trip_edit', ['trip' => $trip->getId()]);

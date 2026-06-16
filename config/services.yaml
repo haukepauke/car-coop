@@ -68,5 +68,9 @@ services:
         arguments:
             $inner: '@api_platform.doctrine.orm.state.remove_processor'
 
+    App\Security\SecurityAuditLogger:
+        arguments:
+            $logger: '@monolog.logger.security'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
