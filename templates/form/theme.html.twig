@@ -15,6 +15,26 @@
     {%- endif %}
 {%- endblock form_errors %}
 
+{% block form_label_errors %}{% endblock form_label_errors %}
+
+{% block form_row -%}
+    {%- if compound is defined and compound -%}
+        {%- set element = "fieldset" -%}
+    {%- endif -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {"aria-describedby": id ~ "_help"}} -%}
+    {%- endif -%}
+    <{{ element|default("div") }}{% with {attr: row_attr|merge({class: (row_attr.class|default("") ~ " form-group")|trim})} %}{{ block("attributes") }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+        {%- if "checkbox" not in block_prefixes and "radio" not in block_prefixes -%}
+            {{- form_errors(form) -}}
+        {%- endif -%}
+    </{{ element|default("div") }}>
+{%- endblock form_row %}
+
 {% block form_label -%}
     {% if label is not same as(false) %}
         {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) %}

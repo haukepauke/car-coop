@@ -47,4 +47,27 @@ final class RegistrationScenarioTest extends ScenarioTestCase
         self::assertTrue($verifiedUser->isVerified());
         self::assertNull($verifiedUser->getCar());
     }
+
+    public function testDuplicateRegistrationEmailShowsOneValidationMessage(): void
+    {
+        $email = "duplicate-registration@test.local";
+        $this->createUser($email, locale: "de");
+
+        $crawler = $this->client->request("GET", "/de/register");
+        $this->ageRegistrationFormSession();
+
+        $form = $crawler->filterXPath("//form")->form([
+            "registration_form[email]" => $email,
+            "registration_form[name]" => "Duplicate Registration User",
+            "registration_form[locale]" => "de",
+            "registration_form[plainPassword]" => "ScenarioPass123!",
+            "registration_form[agreeTerms]" => 1,
+            "registration_form[website]" => "",
+        ]);
+
+        $this->client->submit($form);
+
+        $message = static::getContainer()->get("translator")->trans("user.email_taken", [], "validators", "de");
+        self::assertSame(1, substr_count((string) $this->client->getResponse()->getContent(), $message));
+    }
 }
