@@ -21,9 +21,16 @@ class MessageContentRenderer
         $previous = libxml_use_internal_errors(true);
 
         $document->loadHTML(
-            sprintf('<div>%s</div>', $sanitizedContent),
+            sprintf('<?xml encoding="UTF-8"><div>%s</div>', $sanitizedContent),
             LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,
         );
+
+        foreach (iterator_to_array($document->childNodes) as $child) {
+            if ($child->nodeType === XML_PI_NODE) {
+                $document->removeChild($child);
+            }
+        }
+        $document->encoding = 'UTF-8';
 
         libxml_clear_errors();
         libxml_use_internal_errors($previous);
