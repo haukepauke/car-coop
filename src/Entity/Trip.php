@@ -88,6 +88,9 @@ class Trip
     #[Groups(['trip:read', 'trip:write'])]
     private $costs;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $costShares = null;
+
     #[ORM\Column(type: 'string', length: 30)]
     #[Assert\Choice(Trip::TYPES)]
     #[Groups(['trip:read', 'trip:write'])]
@@ -213,6 +216,45 @@ class Trip
     public function setCosts(?float $costs): self
     {
         $this->costs = $costs;
+
+        return $this;
+    }
+
+    public function getCostShares(): array
+    {
+        return $this->costShares ?? [];
+    }
+
+    public function setCostShares(?array $costShares): self
+    {
+        $this->costShares = $costShares;
+
+        return $this;
+    }
+
+    public function getCostShareForUser(User $user): ?float
+    {
+        $userId = $user->getId();
+        if ($userId === null) {
+            return null;
+        }
+
+        $costShares = $this->getCostShares();
+        $costShare = $costShares[(string) $userId] ?? null;
+
+        return is_numeric($costShare) ? (float) $costShare : null;
+    }
+
+    public function setCostShareForUser(User $user, float $costShare): self
+    {
+        $userId = $user->getId();
+        if ($userId === null) {
+            return $this;
+        }
+
+        $costShares = $this->getCostShares();
+        $costShares[(string) $userId] = $costShare;
+        $this->costShares = $costShares;
 
         return $this;
     }

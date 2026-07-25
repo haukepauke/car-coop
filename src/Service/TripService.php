@@ -43,12 +43,12 @@ class TripService
         $originalEndMileage = $trip1->getEndMileage();
 
         $trip1->setEndMileage($splitMileage);
-        $trip1->setCosts($this->calculateTripCosts($trip1));
+        $this->applyTripCosts($trip1);
 
         $trip2->setStartMileage($splitMileage);
         $trip2->setEndMileage($originalEndMileage);
         $trip2->setCar($trip1->getCar());
-        $trip2->setCosts($this->calculateTripCosts($trip2));
+        $this->applyTripCosts($trip2);
 
         $this->em->persist($trip1);
         $this->em->persist($trip2);
@@ -57,7 +57,7 @@ class TripService
 
     private function prepareTrip(Trip $trip): void
     {
-        $trip->setCosts($this->calculateTripCosts($trip));
+        $this->applyTripCosts($trip);
         $trip->getCar()->setMileage($trip->getEndMileage());
     }
 
@@ -66,11 +66,32 @@ class TripService
         return $estimatedMileage * $this->getUserTypeForCar($user, $car)->getPricePerUnit();
     }
 
-    private function calculateTripCosts(Trip $trip): float
+    private function applyTripCosts(Trip $trip): void
+    {
+        $tripCostData = $this->calculateTripCostData($trip);
+
+        $trip->setCosts($tripCostData['costs']);
+        $trip->setCostShares($tripCostData['costShares']);
+    }
+
+    /**
+     * Calculate trip costs as immutable historical values.
+     *
+     * A paid trip's mileage is split evenly between all assigned users. Each
+     * user's share is priced with that user's group price for this car at the
+     * moment the trip is recorded or updated. The per-user shares are persisted
+     * on the trip so later group price changes do not alter old balances.
+     *
+     * @return array{costs: float, costShares: array<string, float>}
+     */
+    private function calculateTripCostData(Trip $trip): array
     {
         $tripType = $trip->getType();
         if ('service' === $tripType || str_contains((string) $tripType, '_free')) {
-            return 0.0;
+            return [
+                'costs' => 0.0,
+                'costShares' => [],
+            ];
         }
 
         $users = $trip->getUsers();
@@ -81,13 +102,22 @@ class TripService
 
         $mileageShare = $trip->getMileage() / $userCount;
         $costs = 0.0;
+        $costShares = [];
 
         foreach ($users as $user) {
             $userType = $this->getUserTypeForCar($user, $trip->getCar());
-            $costs += $mileageShare * $userType->getPricePerUnit();
+            $costShare = $mileageShare * $userType->getPricePerUnit();
+            $costs += $costShare;
+
+            if ($user->getId() !== null) {
+                $costShares[(string) $user->getId()] = $costShare;
+            }
         }
 
-        return $costs;
+        return [
+            'costs' => $costs,
+            'costShares' => $costShares,
+        ];
     }
 
     private function getUserTypeForCar(User $user, Car $car): UserType

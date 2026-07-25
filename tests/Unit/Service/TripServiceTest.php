@@ -94,6 +94,14 @@ class TripServiceTest extends TestCase
         return $user;
     }
 
+    private function firstTripUser(Trip $trip): User
+    {
+        $user = $trip->getUsers()->first();
+        assert($user instanceof User);
+
+        return $user;
+    }
+
     private function makeServiceTrip(): Trip
     {
         $trip = $this->makeCompletedTrip();
@@ -129,6 +137,24 @@ class TripServiceTest extends TestCase
         $this->service->createTrip($trip);
 
         $this->assertSame(120.0, $trip->getCosts());
+    }
+
+    public function testCreateTripStoresUserCostSharesAtCurrentUserGroupPrices(): void
+    {
+        $trip = $this->makeCompletedTrip(10000, 10300, 0.30);
+        $user1 = $this->firstTripUser($trip);
+        $user2 = $this->makeUserForCar($trip->getCar(), 0.50);
+        $trip->addUser($user2);
+        $this->setId($trip, 42);
+        $this->setId($user1, 1);
+        $this->setId($user2, 2);
+
+        $this->service->createTrip($trip);
+
+        $this->assertSame([
+            '1' => 45.0,
+            '2' => 75.0,
+        ], $trip->getCostShares());
     }
 
     public function testCreateTripSetsCostsToZeroForServiceTrip(): void
@@ -205,6 +231,34 @@ public function testCreateTripPersistsTripAndCar(): void
         $this->service->updateTrip($trip);
 
         $this->assertSame(100.0, $trip->getCosts());
+    }
+
+    public function testUpdateTripRecalculatesCostsWhenTripUsersChange(): void
+    {
+        $trip = $this->makeCompletedTrip(10000, 10300, 0.30);
+        $user1 = $this->firstTripUser($trip);
+        $user2 = $this->makeUserForCar($trip->getCar(), 0.50);
+        $user3 = $this->makeUserForCar($trip->getCar(), 0.80);
+        $this->setId($user1, 1);
+        $this->setId($user2, 2);
+        $this->setId($user3, 3);
+        $trip->addUser($user2);
+        $trip->setCosts(120.0);
+        $trip->setCostShares([
+            '1' => 45.0,
+            '2' => 75.0,
+        ]);
+
+        $trip->removeUser($user2);
+        $trip->addUser($user3);
+
+        $this->service->updateTrip($trip);
+
+        $this->assertSame(165.0, $trip->getCosts());
+        $this->assertSame([
+            '1' => 45.0,
+            '3' => 120.0,
+        ], $trip->getCostShares());
     }
 
     public function testUpdateTripSetsCostsToZeroForServiceTrip(): void

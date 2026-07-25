@@ -469,8 +469,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         foreach ($this->getTrips() as $trip) {
             if ($trip->getCar() === $car) {
-                $numUsers = max(1, $trip->getUsers()->count());
-                $balance -= $trip->getCosts() / $numUsers;
+                $balance -= $this->getTripCostShare($trip, $car);
             }
         }
 
@@ -493,6 +492,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $balance;
+    }
+
+    private function getTripCostShare(Trip $trip, Car $car): float
+    {
+        // Prefer the historical share captured when the trip was recorded.
+        // Recomputing from current user group prices would change old balances.
+        $recordedCostShare = $trip->getCostShareForUser($this);
+        if ($recordedCostShare !== null) {
+            return $recordedCostShare;
+        }
+
+        if ($trip->getCosts() <= 0.0) {
+            return 0.0;
+        }
+
+        $numUsers = max(1, $trip->getUsers()->count());
+
+        return $trip->getCosts() / $numUsers;
     }
 
     /**

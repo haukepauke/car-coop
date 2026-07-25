@@ -31,6 +31,12 @@ class UserTest extends TestCase
         return $car;
     }
 
+    private function setId(object $entity, int $id): void
+    {
+        $prop = new \ReflectionProperty($entity, 'id');
+        $prop->setValue($entity, $id);
+    }
+
     private function makeExpense(float $amount, string $date, Car $car = null): Expense
     {
         $e = new Expense();
@@ -69,6 +75,17 @@ class UserTest extends TestCase
             $trip->setCar($car);
         }
         return $trip;
+    }
+
+    private function addUserTypeForCar(User $user, Car $car, float $pricePerUnit): UserType
+    {
+        $userType = new UserType();
+        $userType->setName('Members');
+        $userType->setPricePerUnit($pricePerUnit);
+        $userType->setCar($car);
+        $user->addUserType($userType);
+
+        return $userType;
     }
 
     // ── getRoles() ────────────────────────────────────────────────────────────
@@ -251,6 +268,52 @@ class UserTest extends TestCase
 
         // balance = 100 (expense) - 40 (trip costs / 1 user) = 60
         $this->assertEquals(60.0, $user->getBalance($car));
+    }
+
+    public function testGetBalanceSubtractsUsersOwnTripShareWithUserGroupPrice(): void
+    {
+        $car   = $this->makeCar();
+        $user1 = $this->makeUser();
+        $user2 = new User();
+        $user2->setEmail('b@test.com');
+        $user2->setName('Bob');
+        $user2->setLocale('en');
+        $user2->setPassword('hashed');
+        $this->setId($user1, 1);
+        $this->setId($user2, 2);
+
+        $this->addUserTypeForCar($user1, $car, 0.30);
+        $this->addUserTypeForCar($user2, $car, 0.50);
+
+        $trip = $this->makeTrip(10000, 10300, 120.0, $car);
+        $trip->setCostShares([
+            '1' => 45.0,
+            '2' => 75.0,
+        ]);
+        $trip->addUser($user1);
+        $trip->addUser($user2);
+        $user1->addTrip($trip);
+        $user2->addTrip($trip);
+
+        $this->assertEquals(-45.0, $user1->getBalance($car));
+        $this->assertEquals(-75.0, $user2->getBalance($car));
+    }
+
+    public function testGetBalanceUsesRecordedTripCostShareAfterUserGroupPriceChanges(): void
+    {
+        $car = $this->makeCar();
+        $user = $this->makeUser();
+        $this->setId($user, 1);
+        $userType = $this->addUserTypeForCar($user, $car, 0.30);
+
+        $trip = $this->makeTrip(10000, 10100, 30.0, $car);
+        $trip->setCostShareForUser($user, 30.0);
+        $trip->addUser($user);
+        $user->addTrip($trip);
+
+        $userType->setPricePerUnit(0.90);
+
+        $this->assertEquals(-30.0, $user->getBalance($car));
     }
 
     public function testGetBalanceAddsMadePayments(): void
