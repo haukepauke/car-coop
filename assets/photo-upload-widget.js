@@ -30,6 +30,12 @@ function initializePhotoUploadWidget(root) {
 
         return withoutExtension.replace(/[\[\]\r\n]+/g, ' ').trim() || 'photo';
     };
+    const createIcon = (...classNames) => {
+        const icon = document.createElement('i');
+        icon.classList.add(...classNames);
+
+        return icon;
+    };
     const generateToken = () => {
         if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
             return crypto.randomUUID();
@@ -100,7 +106,7 @@ function initializePhotoUploadWidget(root) {
             if (extension === 'pdf') {
                 const badge = document.createElement('div');
                 badge.className = 'photo-preview-file';
-                badge.innerHTML = '<i class="fa-regular fa-file-pdf"></i>';
+                badge.appendChild(createIcon('fa-regular', 'fa-file-pdf'));
                 badge.title = file.name;
                 previewNode = badge;
             } else {
@@ -115,7 +121,7 @@ function initializePhotoUploadWidget(root) {
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
             removeBtn.className = 'photo-preview-remove';
-            removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            removeBtn.appendChild(createIcon('fa-solid', 'fa-xmark'));
             removeBtn.setAttribute('aria-label', 'Remove');
             removeBtn.addEventListener('click', () => {
                 if (dt !== null) {
