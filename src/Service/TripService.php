@@ -68,16 +68,26 @@ class TripService
 
     private function calculateTripCosts(Trip $trip): float
     {
-        $user = $trip->getUsers()->first();
-
         $tripType = $trip->getType();
         if ('service' === $tripType || str_contains((string) $tripType, '_free')) {
             return 0.0;
         }
 
-        $userType = $this->getUserTypeForCar($user, $trip->getCar());
+        $users = $trip->getUsers();
+        $userCount = $users->count();
+        if (0 === $userCount) {
+            throw new \LogicException('Trip has no users.');
+        }
 
-        return ($trip->getEndMileage() - $trip->getStartMileage()) * $userType->getPricePerUnit();
+        $mileageShare = $trip->getMileage() / $userCount;
+        $costs = 0.0;
+
+        foreach ($users as $user) {
+            $userType = $this->getUserTypeForCar($user, $trip->getCar());
+            $costs += $mileageShare * $userType->getPricePerUnit();
+        }
+
+        return $costs;
     }
 
     private function getUserTypeForCar(User $user, Car $car): UserType

@@ -120,6 +120,17 @@ class TripServiceTest extends TestCase
         $this->assertSame(90.0, $trip->getCosts());
     }
 
+    public function testCreateTripSplitsMileageBetweenUsersAndAppliesEachUsersGroupPrice(): void
+    {
+        $trip = $this->makeCompletedTrip(10000, 10300, 0.30);
+        $trip->addUser($this->makeUserForCar($trip->getCar(), 0.50));
+        $this->setId($trip, 42);
+
+        $this->service->createTrip($trip);
+
+        $this->assertSame(120.0, $trip->getCosts());
+    }
+
     public function testCreateTripSetsCostsToZeroForServiceTrip(): void
     {
         $trip = $this->makeServiceTrip();
