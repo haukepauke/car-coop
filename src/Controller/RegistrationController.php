@@ -160,6 +160,7 @@ class RegistrationController extends AbstractController
         EntityManagerInterface $entityManager,
         InvitationRepository $inviteRepo,
         CarRepository $carRepo,
+        UserRepository $userRepository,
         MessageBusInterface $messageBus,
         UserAuthenticatorInterface $userAuthenticator,
         \App\Security\LoginFormAuthenticator $authenticator,
@@ -174,6 +175,11 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_homepage');
         }
+
+        if (null !== $userRepository->findOneBy(['email' => $invite->getEmail()])) {
+            return $this->redirectToRoute('app_invite_accept', ['hash' => $hash]);
+        }
+
         $userType = $invite->getUserType();
 
         $car = $userType->getCar();

@@ -2,7 +2,9 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\User;
 use App\Repository\BookingRepository;
+use App\Service\ActiveCarService;
 use CalendarBundle\CalendarEvents;
 use CalendarBundle\Entity\Event;
 use CalendarBundle\Event\CalendarEvent;
@@ -15,15 +17,18 @@ class CalendarSubscriber implements EventSubscriberInterface
     private BookingRepository $bookingRepository;
     private UrlGeneratorInterface $router;
     private Security $security;
+    private ActiveCarService $activeCarService;
 
     public function __construct(
         BookingRepository $bookingRepository,
         UrlGeneratorInterface $router,
-        Security $security
+        Security $security,
+        ActiveCarService $activeCarService
     ) {
         $this->bookingRepository = $bookingRepository;
         $this->router = $router;
         $this->security = $security;
+        $this->activeCarService = $activeCarService;
     }
 
     public static function getSubscribedEvents()
@@ -35,9 +40,15 @@ class CalendarSubscriber implements EventSubscriberInterface
 
     public function onCalendarSetData(CalendarEvent $calendar)
     {
-        /** @var User $user */
         $user = $this->security->getUser();
-        $car = $user->getCar();
+        if (!$user instanceof User) {
+            return;
+        }
+
+        $car = $this->activeCarService->getActiveCar();
+        if (null === $car) {
+            return;
+        }
 
         $start = $calendar->getStart();
         $end = $calendar->getEnd();
