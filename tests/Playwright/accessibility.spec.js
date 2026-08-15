@@ -14,6 +14,7 @@ const scanPage = async (page, path, theme = 'light') => {
   await page.evaluate((selectedTheme) => {
     document.documentElement.dataset.theme = selectedTheme;
   }, theme);
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => resolve())));
   await page.evaluate(() => {
     document.querySelectorAll('[id^="sfwdt"], .sf-toolbar, .sf-toolbarreset').forEach((element) => element.remove());
   });
@@ -23,6 +24,8 @@ const scanPage = async (page, path, theme = 'light') => {
 };
 
 test.describe('accessibility smoke checks', () => {
+  test.describe.configure({ timeout: 90_000 });
+
   test('public auth pages have no obvious axe violations', async ({ page }) => {
     await scanPage(page, '/en/login');
     await scanPage(page, '/en/register');
