@@ -46,12 +46,11 @@
                              data-photo-upload-markdown-target="#{{ handbookForm.content.vars.id }}"
                              data-photo-upload-token-container="#photo-token-fields"
                              data-photo-upload-token-field-name="photoTokens[]">
-                            <div id="photo-add-btn"
-                                 class="photo-add-btn"
-                                 title="{{ 'handbook.form.photos'|trans }}"
-                                 aria-label="{{ 'handbook.form.photos'|trans }}"
-                                 role="button"
-                                 tabindex="0">
+                            <label id="photo-add-btn"
+                                   class="photo-add-btn"
+                                   for="message-photos"
+                                   title="{{ 'handbook.form.photos'|trans }}"
+                                   aria-label="{{ 'handbook.form.photos'|trans }}">
                                 <input type="file"
                                        name="{{ handbookForm.photos.vars.full_name }}"
                                        id="message-photos"
@@ -60,7 +59,7 @@
                                        class="photo-add-input"
                                        aria-label="{{ 'handbook.form.photos'|trans }}">
                                 <i class="fa-solid fa-plus"></i>
-                            </div>
+                            </label>
                         </div>
                         <div id="photo-token-fields"></div>
                         {% do handbookForm.photos.setRendered() %}
